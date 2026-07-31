@@ -17,3 +17,6 @@ __pycache__/
 
 # Outputs
 output/
+
+# Fetched upstream artifacts, re-obtainable via `make thermo-data`
+.cache/
