@@ -1,0 +1,19 @@
+# Virtual environments
+.venv/
+.venv-jax/
+
+# Vendored third-party source, not committed. Re-create with:
+#   git clone https://github.com/rkruegs123/jax-rnafold vendor/jax-rnafold
+#   git -C vendor/jax-rnafold checkout 13f08b7108f9f6ddac9cb67a487b24753f06caad
+#   uv pip install --python .venv-jax -e vendor/jax-rnafold
+vendor/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Outputs
+output/
