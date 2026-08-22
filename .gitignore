@@ -20,3 +20,13 @@ output/
 
 # Fetched upstream artifacts, re-obtainable via `make thermo-data`
 .cache/
+
+# LaTeX build products. paper/log_2022.sty is NOT ignored: it is the MoML
+# style file and the column width the figures are drawn to depends on it.
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.brf
+paper/*.log
+paper/*.out
+paper/moml_paper.pdf
