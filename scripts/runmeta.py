@@ -24,19 +24,40 @@ import pathlib
 import subprocess
 
 
-def _git(args, root: pathlib.Path) -> str:
-    return subprocess.run(
+def _git(args, root: pathlib.Path, *, strip: bool = True) -> str:
+    out = subprocess.run(
         ["git", *args], cwd=root, capture_output=True, text=True, check=False
-    ).stdout.strip()
+    ).stdout
+    return out.strip() if strip else out
+
+
+def _porcelain_path(line: str) -> str:
+    """The path out of one `git status --porcelain` line.
+
+    The status field is exactly two characters followed by a space, so the path
+    begins at index 3 -- but ONLY if the line still has its leading space. An
+    unmodified-in-index entry starts with one (" M path"), and calling .strip()
+    on the whole command output silently eats it from the FIRST line alone.
+    That shifted every first path by one character, and it was not merely
+    cosmetic: a leading " M runs/..." then failed the runs/ test and reported the
+    artifact as generated from a dirty tree. Rebuilt from the right-hand side so
+    the leading space cannot matter.
+
+    A rename is recorded as "R  old -> new"; the new path is what exists on disk.
+    """
+    body = line[2:].strip() if len(line) > 2 else line.strip()
+    if " -> " in body:
+        body = body.split(" -> ", 1)[1]
+    return body.strip('"')
 
 
 def git_provenance(root: pathlib.Path) -> dict:
-    porcelain = _git(["status", "--porcelain"], root)
-    lines = [ln for ln in porcelain.splitlines() if ln.strip()]
-    outside = [ln for ln in lines if not ln[3:].lstrip('"').startswith("runs/")]
+    porcelain = _git(["status", "--porcelain"], root, strip=False)
+    paths = [_porcelain_path(ln) for ln in porcelain.splitlines() if ln.strip()]
+    outside = [q for q in paths if not q.startswith("runs/")]
     return {
         "git_sha": _git(["rev-parse", "HEAD"], root),
-        "git_dirty": bool(lines),
+        "git_dirty": bool(paths),
         "git_dirty_excluding_runs": bool(outside),
-        "git_dirty_paths_outside_runs": [ln[3:] for ln in outside][:20],
+        "git_dirty_paths_outside_runs": outside[:20],
     }
