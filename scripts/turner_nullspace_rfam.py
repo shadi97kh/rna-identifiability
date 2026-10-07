@@ -74,7 +74,16 @@ C0 a corrupted parameter entry is caught by the reconstruction check on exactly
    each row's labels among the used columns changes the null dimension; C4 the
    planted size-7 double-mismatch defect makes N1 non-null.
 
-THREE RANK COMPUTATIONS
+REVISION r2 (2026-10-07). The first run (runs/2026-10-07_turner_nullspace_rfam/)
+agreed on every dimension across all three methods, with null and non-null
+eigenvalues separated by at least six orders of magnitude, but FAILED C2: its
+basis came from eigh of A^T A, which squares A's conditioning, and the vectors
+moved some row by 3.6e-9 to 9.1e-9 against the 1e-9 bar. The bar is unchanged.
+r2 takes the basis from a streamed QR of A and the SVD of R, at A's own
+conditioning, and keeps the Gram eigh as a fourth dimension count. r1's artifact
+is left as recorded.
+
+THREE RANK COMPUTATIONS (four in r2: plus QR+SVD, which also supplies the basis)
 eigh of the dense Gram matrix of the used columns; singleton elimination followed
 by eigh of the reduced Gram matrix with back-substitution; exact rank over GF(p)
 for the two largest primes below 2^20, of a random projection of the reduced
@@ -115,7 +124,7 @@ from scripts.turner_nullspace import (  # noqa: E402
 )
 from thermo.vienna_ref import assert_turner2004_params, reference_md  # noqa: E402
 
-RUN_ID = "2026-10-07_turner_nullspace_rfam"
+RUN_ID = "2026-10-07_turner_nullspace_rfam_r2"
 OUT = R / "runs" / RUN_ID
 SEED_FILE = R / "data" / "raw" / "structure" / "Rfam_15.1.seed.gz"
 TOL = 1e-9
@@ -252,6 +261,26 @@ def eigh_null_from_gram(G):
     return V[:, null], {"eig_tol": float(tol),
                         "largest_null_eig": float(w[null].max()) if null.any() else None,
                         "smallest_nonnull_eig": float(w[~null].min()) if (~null).any() else None}
+
+
+def qr_null(A: sp.csr_matrix, chunk: int = 16384):
+    """Null basis from a streamed QR of A itself, then the SVD of R.
+
+    Works at A's conditioning, not the square of it that eigh of A^T A pays, so the
+    basis vectors resolve the 1e-9 row bar (r1 of this run, with Gram eigenvectors,
+    left residuals of 3.6e-9 to 9.1e-9 although every dimension count agreed).
+    """
+    Rm = None
+    for a in range(0, A.shape[0], chunk):
+        B = A[a:a + chunk].astype(np.float64).toarray()
+        Rm = np.linalg.qr(B if Rm is None else np.vstack([Rm, B]), mode="r")
+    _, s, Vt = np.linalg.svd(Rm)
+    tol = max(A.shape) * np.finfo(float).eps * s.max()
+    null = s < tol
+    info = {"sv_tol": float(tol),
+            "largest_null_sv": float(s[null].max()) if null.any() else None,
+            "smallest_nonnull_sv": float(s[~null].min()) if (~null).any() else None}
+    return Vt[null].T.copy(), info
 
 
 def reduced_null(A: sp.csr_matrix):
@@ -411,7 +440,8 @@ def analyse(dangles, special_hp, P, rows, rng):
     A = M[:, used].tocsr()
 
     t0 = time.time()
-    Nf, inf = gram_null(A)
+    Ng, inf = gram_null(A)
+    Nf, inq = qr_null(A)  # the basis every downstream quantity uses
     Nr, inr, red = reduced_null(A)
     ranks = {str(p): projected_rank_mod_p(red, p, rng) for p in PRIMES}
     exact_null = red.shape[1] - max(ranks.values())
@@ -436,10 +466,11 @@ def analyse(dangles, special_hp, P, rows, rng):
         "coverage": {"dim": int(len(unused)), "by_table": dict(sorted(
             by_table_unused.items(), key=lambda z: -z[1]))},
         "used_columns": len(used),
-        "null_dim_within_used": {"eigh_gram": null_used, "eigh_reduced": int(Nr.shape[1]),
+        "null_dim_within_used": {"qr_svd": null_used, "eigh_gram": int(Ng.shape[1]),
+                                 "eigh_reduced": int(Nr.shape[1]),
                                  "exact_mod_p": exact_null, "rank_mod_p": ranks,
-                                 "agree": null_used == Nr.shape[1] == exact_null,
-                                 "gram": inf, "reduced": inr,
+                                 "agree": null_used == Ng.shape[1] == Nr.shape[1] == exact_null,
+                                 "qr": inq, "gram": inf, "reduced": inr,
                                  "seconds": round(time.time() - t0, 1)},
         "intrinsic_restricted": {"max_abs_row_change": an_null,
                                  "all_null": all(v <= TOL for v in an_null.values()),
