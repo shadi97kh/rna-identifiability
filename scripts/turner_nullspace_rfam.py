@@ -263,7 +263,7 @@ def eigh_null_from_gram(G):
                         "smallest_nonnull_eig": float(w[~null].min()) if (~null).any() else None}
 
 
-def qr_null(A: sp.csr_matrix, chunk: int = 16384):
+def qr_null(A: sp.csr_matrix, chunk: int = 16384, return_factors: bool = False):
     """Null basis from a streamed QR of A itself, then the SVD of R.
 
     Works at A's conditioning, not the square of it that eigh of A^T A pays, so the
@@ -280,6 +280,8 @@ def qr_null(A: sp.csr_matrix, chunk: int = 16384):
     info = {"sv_tol": float(tol),
             "largest_null_sv": float(s[null].max()) if null.any() else None,
             "smallest_nonnull_sv": float(s[~null].min()) if (~null).any() else None}
+    if return_factors:  # the full spectrum, for the effective-rank analysis
+        return Vt[null].T.copy(), info, Rm, s, Vt
     return Vt[null].T.copy(), info
 
 
@@ -572,5 +574,194 @@ def main():
     return 0
 
 
+# ----------------------------------------------------------------------------------
+# effective rank: python scripts/turner_nullspace_rfam.py --effective-rank
+# ----------------------------------------------------------------------------------
+ER_RUN_ID = "2026-10-07_rfam_effective_rank"
+ER_OUT = R / "runs" / ER_RUN_ID
+SIGMAS = {"kierzek2005_stated_rms": 0.6, "viennarna_table_resolution": 0.01}
+DELTAS = [float(x) for x in np.logspace(-3, 1, 41)]  # 0.001 .. 10 kcal/mol, 10 per decade
+ANCHOR_DELTAS = [0.001, 0.01, 0.1, 0.6, 1.0, 10.0]
+PLANT_EPS = 1e-4
+
+ER_DOC = {
+    "question": "The exact null space counts directions with singular value below machine "
+                "precision. A direction with a merely small singular value s is also not "
+                "recoverable: if each row's free energy carried error sigma (kcal/mol), a "
+                "least-squares fit fixes that direction's coefficient only to sigma / s "
+                "(kcal/mol; A is a count matrix, so sigma / s carries sigma's units). This "
+                "records the whole spectrum and the curve of how many directions are "
+                "uncertain beyond delta, for a grid of delta.",
+    "lower_bound": "The exact null dimension is a LOWER BOUND on what the data cannot "
+                   "determine. Every direction counted at any (sigma, delta) here includes "
+                   "the exact null directions (infinite uncertainty) plus the directions whose "
+                   "finite uncertainty exceeds delta.",
+    "caveats": [
+        "Rfam rows are consensus STRUCTURES, not energy measurements. sigma / s is the "
+        "uncertainty that this design WOULD leave if every row's free energy were measured "
+        "with independent error sigma. It characterises the conditioning of the design; it "
+        "is not an error bar Rfam itself delivers.",
+        "About 10% of rows duplicate another (sequence, structure) exactly; they count as "
+        "repeated measurements here, which can shrink sigma / s along directions they "
+        "dominate by at most sqrt(multiplicity).",
+        "Directions are right singular vectors of A over the USED columns; the coverage "
+        "columns (entries no row uses) are each undetermined in addition and are reported "
+        "separately, not folded into the curve.",
+    ],
+    "sigma_anchors": {"kierzek2005_stated_rms": "0.6 kcal/mol, the RMS Kierzek et al. 2005 "
+                      "state for their own fit", "viennarna_table_resolution": "0.01 kcal/mol, "
+                      "the resolution of ViennaRNA's integer parameter tables (dcal/mol)"},
+}
+ER_PRED = {
+    "E1": "At sigma = 0.6 and delta = 0.1 kcal/mol, the number of directions (over the used "
+          "columns) with uncertainty above delta is at least 10 x the exact null dimension "
+          "over the used columns. (Read against the TOTAL null dimension including coverage, "
+          "10x would exceed the number of reachable columns, so only the within-used reading "
+          "can be tested; recorded before computing.)",
+}
+
+
+def count_matrix(dangles, special_hp, P, rows):
+    """Count matrix with r2's exact reconstruction check on every row."""
+    md = reference_md()
+    md.dangles, md.special_hp = dangles, special_hp
+    ex = Extractor(P["special"], dangles, special_hp, lxc=P["lxc"])
+    counts, fails, checked = [], 0, False
+    for _, _, seq, db in rows:
+        fc = RNA.fold_compound(seq, md)
+        if not checked:
+            assert_turner2004_params(fc)
+            checked = True
+        e = int(round(fc.eval_structure(db) * 100))
+        c = ex.counts(seq, db)
+        off = c.pop(("_offset",), 0)
+        fails += sum(P["theta"][k] * v for k, v in c.items()) + off != e
+        counts.append(c)
+    cols = [k for k in sorted(P["theta"], key=repr) if _reachable(k, dangles, special_hp)]
+    return build_matrix(counts, cols).tocsr(), cols, fails
+
+
+def planted_control(Rm, s_tol, n_null, j):
+    """Append a near-duplicate of column j on a new row. Because A = Q R, the bordered
+    R' = [[R, r_j], [0, eps]] has exactly the singular values of the augmented A, and
+    the direction (e_j - e_new)/sqrt(2) has norm eps/sqrt(2). eps = 0 duplicates it."""
+    n = Rm.shape[1]
+    out = {}
+    for eps in (PLANT_EPS, 0.0):
+        Rp = np.zeros((n + 1, n + 1))
+        Rp[:n, :n] = Rm
+        Rp[:n, n] = Rm[:, j]
+        Rp[n, n] = eps
+        sp_ = np.linalg.svd(Rp, compute_uv=False)
+        if eps:
+            pred = eps / np.sqrt(2)
+            near = sp_[(sp_ > 0.99 * pred) & (sp_ < 1.01 * pred)]
+            out["near_duplicate"] = {
+                "eps": eps, "predicted_sv": float(pred),
+                "observed_sv_within_1pct": [float(x) for x in near],
+                "null_count_unchanged": int((sp_ < s_tol).sum()) == n_null,
+                "detected": near.size == 1 and int((sp_ < s_tol).sum()) == n_null}
+        else:
+            out["exact_duplicate"] = {"null_count": int((sp_ < s_tol).sum()),
+                                      "expected": n_null + 1,
+                                      "detected": int((sp_ < s_tol).sum()) == n_null + 1}
+    return out
+
+
+def main_effective_rank():
+    t0 = time.time()
+    out = {"run_id": ER_RUN_ID, "status": "PRE-REGISTERED, not yet run", "predictions": ER_PRED,
+           **ER_DOC, "deltas": DELTAS, "sigmas": SIGMAS, **git_provenance(R),
+           "viennarna_version": RNA.__version__,
+           "data": "rfam_15_1_seed rows exactly as in run 2026-10-07_turner_nullspace_rfam_r2"}
+    ER_OUT.mkdir(parents=True, exist_ok=True)
+
+    def save():
+        (ER_OUT / "metrics.json").write_text(json.dumps(out, indent=1, sort_keys=True,
+                                                        default=str))
+    save()
+    P = theta_from_par(dump_params())
+    rows, stats = load_rows()
+    out["rows"] = {"n": stats["rows"], "distinct": stats["distinct_rows"]}
+    out["configs"] = {}
+    for dangles in (0, 2):
+        for special_hp in (1, 0):
+            name = f"d{dangles}_special_hp{special_hp}"
+            M, cols, fails = count_matrix(dangles, special_hp, P, rows)
+            res = {"reconstruction_failures": int(fails)}
+            out["configs"][name] = res
+            if fails:
+                out["status"] = f"STOPPED: reconstruction failed in {name}"
+                save()
+                return 1
+            used = np.nonzero(np.asarray((M != 0).sum(axis=0)).ravel())[0]
+            ucols = [cols[i] for i in used]
+            A = M[:, used].tocsr()
+            N, info, Rm, s, Vt = qr_null(A, return_factors=True)
+            null = s < info["sv_tol"]
+            n_null = int(null.sum())
+            res.update({"used_columns": int(len(used)),
+                        "coverage_columns": int(len(cols) - len(used)),
+                        "exact_null_dim_used": n_null, "qr": info,
+                        "singular_values": [float(f"{x:.9g}") for x in s]})
+            tables = np.array([k[0] for k in ucols])
+            res["sigma"] = {}
+            for sname, sigma in SIGMAS.items():
+                with np.errstate(divide="ignore"):
+                    unc = np.where(null, np.inf, sigma / np.where(null, 1.0, s))
+                curve = {f"{d:.6g}": int((unc > d).sum()) for d in DELTAS}
+                anchors = {}
+                for d in ANCHOR_DELTAS:
+                    sel = unc > d
+                    w = (Vt[sel] ** 2).sum(axis=0)
+                    by = {t: float(w[tables == t].sum()) for t in np.unique(tables)}
+                    tot = sum(by.values()) or 1.0
+                    anchors[f"{d:g}"] = {
+                        "n_directions_used": int(sel.sum()),
+                        "n_beyond_exact_null": int(sel.sum()) - n_null,
+                        "n_including_coverage": int(sel.sum()) + len(cols) - len(used),
+                        "ratio_to_exact_null": float(sel.sum() / n_null) if n_null else None,
+                        "weight_by_table": {t: round(v / tot, 4) for t, v in
+                                            sorted(by.items(), key=lambda z: -z[1])
+                                            if v / tot > 1e-4}}
+                # marginal standard error of each individually identifiable entry
+                inv = np.where(null, 0.0, 1.0 / np.where(null, 1.0, s))
+                se = sigma * np.sqrt(((Vt * inv[:, None]) ** 2).sum(axis=0))
+                ident = (Vt[null] ** 2).sum(axis=0) < 1e-16
+                per_table = {}
+                for t in np.unique(tables):
+                    m = (tables == t) & ident
+                    if m.any():
+                        per_table[t] = {"n_identifiable": int(m.sum()),
+                                        "median_se": float(np.median(se[m])),
+                                        "max_se": float(se[m].max())}
+                res["sigma"][sname] = {
+                    "sigma_kcal": sigma,
+                    "uncertainty_per_direction": [None if not np.isfinite(x)
+                                                  else float(f"{x:.6g}") for x in unc],
+                    "curve_n_above_delta_used": curve, "anchors": anchors,
+                    "marginal_se_identifiable_entries_by_table": per_table}
+            j = ucols.index(("stack", 1, 2))
+            res["control_planted_column"] = planted_control(Rm, info["sv_tol"], n_null, j)
+            save()
+    cf = out["configs"]
+    a = {k: c["sigma"]["kierzek2005_stated_rms"]["anchors"]["0.1"] for k, c in cf.items()}
+    e1 = all(v["n_directions_used"] >= 10 * cf[k]["exact_null_dim_used"] for k, v in a.items())
+    out["verdicts"] = {
+        "E1": {"verdict": "confirmed" if e1 else "refuted",
+               "per_config": {k: {"exact_null_used": cf[k]["exact_null_dim_used"],
+                                  "n_above_0.1_at_sigma_0.6": v["n_directions_used"],
+                                  "ratio": v["ratio_to_exact_null"]} for k, v in a.items()}},
+        "control_planted": {k: {"near_duplicate": c["control_planted_column"]["near_duplicate"]
+                                ["detected"], "exact_duplicate": c["control_planted_column"]
+                                ["exact_duplicate"]["detected"]} for k, c in cf.items()},
+    }
+    out["status"] = "complete"
+    out["elapsed_seconds"] = round(time.time() - t0, 1)
+    save()
+    print(json.dumps(out["verdicts"], indent=1))
+    return 0
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main_effective_rank() if "--effective-rank" in sys.argv else main())
