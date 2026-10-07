@@ -77,8 +77,11 @@ C0 a corrupted parameter entry is caught by the reconstruction check on exactly
 THREE RANK COMPUTATIONS
 eigh of the dense Gram matrix of the used columns; singleton elimination followed
 by eigh of the reduced Gram matrix with back-substitution; exact rank over GF(p)
-for two primes, of a random projection of the reduced matrix (equal to the rank
-mod p with probability at least 1 - cols/p).
+for the two largest primes below 2^20, of a random projection of the reduced
+matrix, by blocked LU whose updates are exact float64 GEMMs. The projection
+equals the rank mod p with probability at least 1 - cols/p per prime, and can
+only UNDER-count rank, i.e. over-count null dimension, so an error shows up as
+disagreement with the two float methods rather than hiding a direction.
 
 Run: .venv/bin/python scripts/turner_nullspace_rfam.py
 """
@@ -108,7 +111,6 @@ from scripts.turner_nullspace import (  # noqa: E402
     build_matrix,
     dump_params,
     eliminate_singletons,
-    rank_mod_p,
     theta_from_par,
 )
 from thermo.vienna_ref import assert_turner2004_params, reference_md  # noqa: E402
@@ -269,6 +271,59 @@ def reduced_null(A: sp.csr_matrix):
                    reduced_shape=list(red.shape)), red
 
 
+PRIMES = (1_048_573, 1_048_571)  # the two largest primes below 2^20
+
+
+def rank_mod_p_blocked(A: np.ndarray, p: int, b: int = 512) -> int:
+    """Exact rank of an integer matrix over GF(p), p < 2^20, by blocked LU.
+
+    Entries are held as float64 in [0, p). A product of two is below 2^40 and a
+    sum of b <= 512 such products below 2^49 < 2^53, so every matrix multiply here
+    is exact in float64, which lets the trailing update run as one BLAS GEMM per
+    panel instead of one Python-level outer product per pivot.
+    """
+    assert p < 2**20 and b * p * p < 2**53
+    A = np.mod(np.asarray(A, dtype=np.int64), p).astype(np.float64)
+    m, n = A.shape
+    r, c0 = 0, 0
+    while c0 < n and r < m:
+        c1 = min(c0 + b, n)
+        rows = m - r
+        P = A[r:, c0:c1].copy()
+        L = np.zeros((rows, c1 - c0))
+        perm = np.arange(rows)
+        k = 0
+        for c in range(c1 - c0):
+            if k >= rows:
+                break
+            nz = np.nonzero(P[k:, c])[0]
+            if nz.size == 0:
+                continue
+            s_ = k + nz[0]
+            if s_ != k:
+                P[[k, s_]] = P[[s_, k]]
+                L[[k, s_]] = L[[s_, k]]
+                perm[[k, s_]] = perm[[s_, k]]
+            inv = pow(int(P[k, c]), p - 2, p)
+            below = np.nonzero(P[k + 1:, c])[0] + k + 1
+            if below.size:
+                mult = np.fmod(P[below, c] * inv, p)
+                L[below, k] = mult
+                P[below, c:] = np.fmod(P[below, c:] - np.fmod(np.outer(mult, P[k, c:]), p) + p, p)
+            k += 1
+        if c1 < n and k:
+            T = A[r:, c1:][perm]
+            Lk = L[:, :k]
+            for i in range(1, k):  # U12 = L11^-1 A12, unit lower triangular
+                T[i] = np.fmod(T[i] - np.fmod(Lk[i, :i] @ T[:i], p) + p, p)
+            if rows > k:
+                T[k:] = np.fmod(T[k:] - np.fmod(Lk[k:] @ T[:k], p) + p, p)
+            A[r:, c1:] = T
+        r += k
+        c0 = c1
+    return r
+
+
 def projected_rank_mod_p(red: sp.csr_matrix, p: int, rng) -> int:
     k = red.shape[1] + 8
     acc = np.zeros((red.shape[1], k), dtype=np.int64)
@@ -277,7 +332,7 @@ def projected_rank_mod_p(red: sp.csr_matrix, p: int, rng) -> int:
     for a in range(0, red.shape[0], step):  # chunked: bounded memory, no int64 overflow
         Rm = rng.integers(0, p, size=(min(step, red.shape[0] - a), k), dtype=np.int64)
         acc = (acc + (redT[:, a:a + step] @ Rm) % p) % p
-    return rank_mod_p(acc.T, p)
+    return rank_mod_p_blocked(acc.T, p)
 
 
 def table_identifiability(N, cols):
@@ -358,7 +413,7 @@ def analyse(dangles, special_hp, P, rows, rng):
     t0 = time.time()
     Nf, inf = gram_null(A)
     Nr, inr, red = reduced_null(A)
-    ranks = {str(p): projected_rank_mod_p(red, p, rng) for p in (2_147_483_647, 1_000_000_007)}
+    ranks = {str(p): projected_rank_mod_p(red, p, rng) for p in PRIMES}
     exact_null = red.shape[1] - max(ranks.values())
     null_used = Nf.shape[1]
 
