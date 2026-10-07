@@ -540,17 +540,27 @@ class TableEmbedding(torch.nn.Module):
 class BatchedStacks:
     """The graph batch for a fixed stack list, built once instead of per step.
 
-    Verified against StackEncoder.forward on construction: a fast path that is
-    not the same model is worse than no fast path.
+    112 stacks name 560 slots, but those slots draw on a vocabulary of about
+    seventeen distinct molecules, and the encoder is a pure function of the
+    molecule. So each DISTINCT molecule is message-passed once per step and the
+    result is gathered back to the slots, which is the same arithmetic over a
+    thirty-third of the graphs. `scripts/encoder_gauge_seeds.py` takes the same
+    route for the same reason.
+
+    Verified against StackEncoder.forward on construction and again after every
+    fit: a fast path that is not the same model is worse than no fast path.
     """
 
     def __init__(self, encoder: StackEncoder, records):
         self.records = list(records)
         tokens = [t for r in self.records for t in r.spec.slots()]
-        self.batch = Batch.from_data_list([encoder.graph_for(t) for t in tokens])
+        self.vocab = sorted(set(tokens))
+        index = {t: i for i, t in enumerate(self.vocab)}
+        self.batch = Batch.from_data_list([encoder.graph_for(t) for t in self.vocab])
+        self.gather = torch.tensor([index[t] for t in tokens], dtype=torch.long)
 
     def features(self, encoder: StackEncoder) -> torch.Tensor:
-        embedded = encoder.nucleoside(self.batch)
+        embedded = encoder.nucleoside(self.batch)[self.gather]
         stacked = embedded.reshape(
             len(self.records), N_STACK_SLOTS * encoder.nucleoside.hidden
         )
@@ -665,6 +675,15 @@ def fit_one(by_table, coords, arm, variant, held_key, seed, *, steps=STEPS,
 
     tr_batch = BatchedStacks(encoder, train)
     he_batch = BatchedStacks(encoder, held)
+    # The vocabulary fast path must BE StackEncoder.forward, not merely resemble
+    # it. Checked on the untrained weights of every fit, so a divergence cannot
+    # ride along unnoticed; the bound is float64 scatter-order round-off.
+    for batch in (tr_batch, he_batch):
+        agreement = batch.verify(encoder)
+        if not agreement < 1e-10:
+            raise AssertionError(
+                f"the batched encoder path is not the same model: max abs diff {agreement}"
+            )
 
     offset = embed = None
     tr_design = he_design = None
