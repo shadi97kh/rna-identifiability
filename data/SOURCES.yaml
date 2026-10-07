@@ -1,1 +1,24 @@
 sources:
+  rfam_15_1_seed:
+    description: Rfam release 15.1 seed alignments in Stockholm format, with the hand-curated consensus
+      secondary structure of each family (#=GC SS_cons).
+    landing_page: https://rfam.org/
+    download_url: https://ftp.ebi.ac.uk/pub/databases/Rfam/15.1/Rfam.seed.gz
+    licence: 'CC0 1.0. Release COPYING: ''Rfam is freely available under the Creative Commons Zero ("CC0")
+      licence.'''
+    licence_source: https://ftp.ebi.ac.uk/pub/databases/Rfam/15.1/COPYING
+    citation: 'Ontiveros-Palacios N, et al. Rfam 15: RNA families database in 2025. Nucleic Acids Res
+      2025;53:D258-D267. doi:10.1093/nar/gkae1023'
+    role: STRUCTURE GENERATING SET for the data-restricted Turner null space (scripts/turner_nullspace_rfam.py).
+      Structures are consensus projections onto seed sequences -- comparative, not per-molecule experimental
+      -- and are never a training label or a measurement. Substitutes for ArchiveII (BLOCKED item 27);
+      it is not ArchiveII.
+    files:
+    - path: data/raw/structure/Rfam_15.1.seed.gz
+      sha256: 41f014f4ab5628620935f089b1bb77987ebc162fda7c72bff368a32c9cccabac
+      bytes: 5928432
+      route: machine-readable
+      origin: https://ftp.ebi.ac.uk/pub/databases/Rfam/15.1/Rfam.seed.gz
+      verification: Distributed artifact, no transcription. Size checked against the FTP Content-Length;
+        sha256 taken at ingestion (the FTP publishes no checksum).
+    retrieved: '2026-10-07'

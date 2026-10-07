@@ -139,6 +139,7 @@ from __future__ import annotations
 
 import itertools
 import json
+import math
 import pathlib
 import sys
 import tempfile
@@ -366,11 +367,25 @@ def pair_table(db: str) -> list[int]:
 
 
 class Extractor:
-    def __init__(self, special: dict, dangles: int, special_hp: int, planted_defect=False):
+    def __init__(self, special: dict, dangles: int, special_hp: int, planted_defect=False,
+                 lxc: float | None = None):
         self.special = special
         self.d = dangles
         self.sp = special_hp
         self.planted = planted_defect
+        # Loops longer than MAXLOOP=30 are allowed only when lxc is given. ViennaRNA
+        # prices them as table[30] + (int)(lxc*log(u/30)); the truncation is not
+        # linear in lxc, so it is returned as a fixed offset under the key
+        # ("_offset",), never as a column. The generating set never sets lxc.
+        self.lxc = lxc
+
+    def _size(self, table, u, add):
+        if u <= 30:
+            add((table, u))
+            return
+        assert self.lxc is not None, f"{table} of size {u} > 30 needs lxc"
+        add((table, 30))
+        add(("_offset",), int(self.lxc * math.log(u / 30.0)))
 
     def counts(self, seq: str, db: str) -> dict:
         n = len(seq)
@@ -429,7 +444,7 @@ class Extractor:
 
     def _hairpin(self, seq, S, i, j, t, add, tau):
         u = j - i - 1
-        assert 3 <= u <= 30, u
+        assert u >= 3, u
         if self.sp:
             if u == 4 and seq[i - 1:j] in self.special["Tetraloop"]:
                 add(("Tetraloop", seq[i - 1:j]))
@@ -445,7 +460,7 @@ class Extractor:
                 if tau(t):
                     add(("TerminalAU",))
                 return
-        add(("hairpin", u))
+        self._size("hairpin", u, add)
         add(("mismatchH", t, S[i + 1], S[j - 1]))
         if self.planted and u == 7:
             add(("mismatchH", t, S[i + 1], S[j - 1]))  # C4: a deliberately broken identity
@@ -459,9 +474,8 @@ class Extractor:
         if nl == 0:
             add(("stack", t, t2))
             return
-        assert nl + ns <= 30
         if ns == 0:
-            add(("bulge", nl))
+            self._size("bulge", nl, add)
             if nl == 1:
                 add(("stack", t, t2))
             else:
@@ -480,7 +494,7 @@ class Extractor:
                 else:
                     add(("int21", t2, t, sq1, si1, sp1))
                 return
-            add(("internal_loop", nl + 1))
+            self._size("internal_loop", nl + 1, add)
             self._ninio(nl - ns, add)
             add(("mismatch1nI", t, si1, sj1))
             add(("mismatch1nI", t2, sq1, sp1))
@@ -495,7 +509,7 @@ class Extractor:
                 add(("mismatch23I", t, si1, sj1))
                 add(("mismatch23I", t2, sq1, sp1))
                 return
-        add(("internal_loop", nl + ns))
+        self._size("internal_loop", nl + ns, add)
         self._ninio(nl - ns, add)
         add(("mismatchI", t, si1, sj1))
         add(("mismatchI", t2, sq1, sp1))
