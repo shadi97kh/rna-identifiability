@@ -2,6 +2,7 @@
 .venv/
 .venv-jax/
 .venv-mxfold2/
+.venv-mxfold2-pins/
 
 # Vendored third-party source, not committed. Re-create with:
 #   git clone https://github.com/rkruegs123/jax-rnafold vendor/jax-rnafold
