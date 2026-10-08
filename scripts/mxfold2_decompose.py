@@ -76,13 +76,12 @@ sys.path.insert(0, str(R))
 from mxfold2.train import Train  # noqa: E402
 
 from scripts.mxfold2_counting import MX  # noqa: E402
+from scripts.mxfold2_gauge import Geometry  # noqa: E402
 from scripts.runmeta import git_provenance  # noqa: E402
 
 STUDY = R / "runs" / "2026-10-07_mxfold2_seed_study"
 DATA = R / ".cache" / "mxfold2-data"
 REL_TOL = 1e-3
-MAX_HELIX = 30
-CANON = {"AU", "UA", "GC", "CG", "GU", "UG"}
 SEED = 20261008
 
 CORRECTION_LONG_HELIX = (
@@ -139,122 +138,6 @@ def nested(partner):
                 if partner[k] > j or (0 < partner[k] < i):
                     return False
     return True
-
-
-class Geometry:
-    """Index structures of theta(x) and G(x) for one sequence."""
-
-    def __init__(self, seq):
-        n = len(seq)
-        self.n = n
-        al = np.zeros((n + 2, n + 2), bool)
-        for i in range(1, n + 1):
-            for j in range(i + 4, n + 1):
-                al[i, j] = seq[i - 1] + seq[j - 1] in CANON
-        self.I, self.J = np.nonzero(al)
-        self.e_in = al[self.I + 1, self.J - 1]
-        self.e_out = al[self.I - 1, self.J + 1]
-        self.n_p = 2 + self.e_in.astype(int) + self.e_out.astype(int)
-        self.hg = self.e_in.astype(int) - self.e_out.astype(int)
-        self.ua, self.ub = np.triu_indices(n + 1, 0)
-        keep = self.ua >= 1
-        self.ua, self.ub = self.ua[keep], self.ub[keep]
-        self.la = np.arange(2, n + 1)  # empty-interval entries U(a, a-1), correction c3
-        self.m = np.arange(1, MAX_HELIX + 1)
-        self.hw = -2.0 * (self.m - 1)
-        # longest run of stacked allowed pairs, along anti-diagonals
-        longest = 0
-        for s in range(2, 2 * n + 1):
-            i = np.arange(max(1, s - n), min(n, s - 1) + 1)
-            v = al[i, s - i]
-            if v.any():
-                d = np.diff(np.concatenate([[0], v.astype(int), [0]]))
-                longest = max(longest, int((np.nonzero(d == -1)[0] - np.nonzero(d == 1)[0]).max()))
-        self.longest_helix = longest
-        self.h_in_G = longest <= MAX_HELIX
-        self.hh = int(self.e_in.sum() + self.e_out.sum()) + float((self.hw ** 2).sum())
-
-    def theta(self, p):
-        S = p["score_helix_stacking"].numpy().astype(np.float64)
-        M = p["score_mismatch_hairpin"].numpy().astype(np.float64)
-        U = p["score_base_hairpin"].numpy().astype(np.float64)
-        hl = p["score_helix_length"].numpy().astype(np.float64)
-        assert S.shape == (self.n + 1, self.n + 1), S.shape
-        return {"Sin": np.where(self.e_in, S[self.I, self.J], 0.0),
-                "Sout": np.where(self.e_out, S[self.J, self.I], 0.0),
-                "Min": M[self.I, self.J], "Mout": M[self.J, self.I],
-                "U": U[self.ua, self.ub], "Ulow": U[self.la, self.la - 1],
-                "HL": hl[1:MAX_HELIX + 1]}
-
-    def norm2(self, d):
-        return float(sum((v ** 2).sum() for v in d.values()))
-
-    def proj_norm2(self, d):
-        dg = d["Sin"] + d["Min"] - d["Sout"] - d["Mout"]
-        val = float((dg ** 2 / self.n_p).sum())
-        if self.h_in_G:
-            dh = d["Sin"].sum() + d["Sout"].sum() + float((self.hw * d["HL"]).sum())
-            dhp = dh - float((self.hg * dg / self.n_p).sum())
-            hhp = self.hh - float((self.hg ** 2 / self.n_p).sum())
-            val += dhp ** 2 / hhp
-        return val
-
-    def random_in_G(self, rng):
-        c = rng.standard_normal(len(self.I))
-        g = {"Sin": c * self.e_in, "Min": c.copy(), "Sout": -c * self.e_out, "Mout": -c.copy(),
-             "U": np.zeros(len(self.ua)), "Ulow": np.zeros(len(self.la)),
-             "HL": np.zeros(MAX_HELIX)}
-        if self.h_in_G:
-            ch = rng.standard_normal()
-            g["Sin"] = g["Sin"] + ch * self.e_in
-            g["Sout"] = g["Sout"] + ch * self.e_out
-            g["HL"] = ch * self.hw
-        return g
-
-    def project(self, d):
-        """P_G d, as a theta-shaped dict."""
-        dg = d["Sin"] + d["Min"] - d["Sout"] - d["Mout"]
-        c = dg / self.n_p
-        out = {"Sin": c * self.e_in, "Min": c.copy(), "Sout": -c * self.e_out, "Mout": -c.copy(),
-               "U": np.zeros(len(self.ua)), "Ulow": np.zeros(len(self.la)),
-               "HL": np.zeros(MAX_HELIX)}
-        if self.h_in_G:
-            dh = d["Sin"].sum() + d["Sout"].sum() + float((self.hw * d["HL"]).sum())
-            dhp = dh - float((self.hg * c).sum())
-            hhp = self.hh - float((self.hg ** 2 / self.n_p).sum())
-            a = dhp / hhp
-            # h' = h - sum_p (h.g_p / n_p) g_p
-            ap = -a * self.hg / self.n_p
-            out["Sin"] += (a + ap) * self.e_in
-            out["Sout"] += (a - ap) * self.e_out
-            out["Min"] += ap
-            out["Mout"] -= ap
-            out["HL"] = a * self.hw
-        return out
-
-    def apply(self, p, d):
-        """Positional parameter dict with theta-direction d added (S, M, U, helix_length)."""
-        q = dict(p)
-        S = p["score_helix_stacking"].clone()
-        M = p["score_mismatch_hairpin"].clone()
-        U = p["score_base_hairpin"].clone()
-        hl = p["score_helix_length"].clone()
-        S[self.I, self.J] += torch.tensor(d["Sin"] * self.e_in, dtype=S.dtype)
-        S[self.J, self.I] += torch.tensor(d["Sout"] * self.e_out, dtype=S.dtype)
-        M[self.I, self.J] += torch.tensor(d["Min"], dtype=M.dtype)
-        M[self.J, self.I] += torch.tensor(d["Mout"], dtype=M.dtype)
-        U[self.ua, self.ub] += torch.tensor(d["U"], dtype=U.dtype)
-        U[self.la, self.la - 1] += torch.tensor(d["Ulow"], dtype=U.dtype)
-        hl[1:MAX_HELIX + 1] += torch.tensor(d["HL"], dtype=hl.dtype)
-        q["score_helix_stacking"] = S
-        for k in ("score_mismatch_external", "score_mismatch_hairpin",
-                  "score_mismatch_internal", "score_mismatch_multi"):
-            q[k] = M
-        for k in ("score_base_hairpin", "score_base_internal", "score_base_multi",
-                  "score_base_external"):
-            q[k] = U
-        q["score_helix_length"] = hl
-        return q
 
 
 def positional_value(key, p):
