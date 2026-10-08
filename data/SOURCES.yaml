@@ -22,3 +22,22 @@ sources:
       verification: Distributed artifact, no transcription. Size checked against the FTP Content-Length;
         sha256 taken at ingestion (the FTP publishes no checksum).
     retrieved: '2026-10-07'
+  mxfold2_datasets:
+    description: The datasets of MXfold2 (TrainSetA/B, TestSetA/B, bpRNA-1m TR0/VL0/TS0 canonical-pair
+      versions, bpRNA-new, RNAStrAlign) as BPSEQ files with list files, one tarball.
+    landing_page: https://doi.org/10.5281/zenodo.4430150
+    download_url: https://zenodo.org/records/4430150/files/mxfold2-data.tar.gz?download=1
+    licence: CC BY 4.0 (Zenodo record metadata)
+    citation: Sato K, Akiyama M, Sakakibara Y. RNA secondary structure prediction using deep learning
+      with thermodynamic integration. Nat Commun 2021;12:941. doi:10.1038/s41467-021-21194-4
+    role: 'TRAINING AND EVALUATION DATA for the MXfold2 seed study only: TR0 trains, TS0 is the fixed
+      evaluation set. The bundled archiveII/ directory is NOT used (BLOCKED item 27).'
+    files:
+    - path: data/raw/structure/mxfold2-data.tar.gz
+      sha256: 8332469e74c0b2be2140a883f92166488c308e87b662c39eebe771002e1ef51c
+      bytes: 20360424
+      route: machine-readable
+      origin: https://zenodo.org/records/4430150/files/mxfold2-data.tar.gz?download=1
+      verification: Distributed artifact, no transcription. md5 45a4d51f01517dd782216920ccc510b7 matches
+        the Zenodo record.
+    retrieved: '2026-10-07'
