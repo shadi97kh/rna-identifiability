@@ -303,5 +303,180 @@ def main():
     return 0
 
 
+# ==================================================================================
+# Family-matched control: python scripts/rfam_projection_robustness.py --family-matched
+# ==================================================================================
+FM_RUN_ID = "2026-10-08_rfam_projection_family_matched"
+FM_OUT = R / "runs" / FM_RUN_ID
+PRIOR = R / "runs" / RUN_ID / "metrics.json"
+
+FM_DOC = {
+    "question": "The low-drop subset (rows keeping >= 90% of their consensus pairs) has 199 "
+                "nontrivial null directions against 287 +- 5.4 for random subsamples of the "
+                "same row count (runs/2026-10-07_rfam_projection_robustness). The low-drop "
+                "subset differs from a random one in two ways at once: its rows are projected "
+                "with higher fidelity, AND its family composition is different (families whose "
+                "consensus fits their members poorly are under-represented). This control "
+                "separates the two.",
+    "design": "For each recorded seed, draw a random subsample of the FULL set matched to the "
+              "low-drop subset on total row count AND on the number of rows from each Rfam "
+              "family: for every family f, draw n_f(low-drop) rows uniformly without "
+              "replacement from all of f's rows. Family composition is then identical to "
+              "low-drop's; only within-family selection is random, so it mixes high- and "
+              "low-fidelity rows of the same families.",
+    "split": "plain random - family-matched = the part of the gap due to FAMILY COMPOSITION; "
+             "family-matched - low-drop = the part due to PROJECTION FIDELITY within families. "
+             "Shares are reported as fractions of plain random - low-drop.",
+    "plain_random_source": "the 8 plain-random subsamples of runs/2026-10-07_rfam_projection_"
+                           "robustness/metrics.json (same seeds, same row count), read from "
+                           "that artifact; its git sha is recorded and checked. The low-drop "
+                           "subset is recomputed here and must reproduce that artifact exactly.",
+    "forced_rows": "in a family where every row is low-drop, the matched draw must take all of "
+                   "them, so the matched subsample coincides with low-drop there; the number "
+                   "of such families and rows is reported, since they cannot contribute to the "
+                   "fidelity contrast.",
+}
+FM_PRED = {
+    "F1": "Projection fidelity contributes: the family-matched mean nontrivial dimension is more "
+          "than 2 SD (the family-matched SD) above the low-drop value.",
+    "F2": "Family composition contributes: the plain-random mean exceeds the family-matched "
+          "mean by more than 2 x sqrt(SD_plain^2 + SD_matched^2).",
+}
+
+
+def matched_subsample(fams, low, seed):
+    rng = np.random.default_rng(seed)
+    by_fam, need = {}, {}
+    for i, f in enumerate(fams):
+        by_fam.setdefault(f, []).append(i)
+    for i in low:
+        need[fams[i]] = need.get(fams[i], 0) + 1
+    out = []
+    for f in sorted(need):
+        out.extend(rng.choice(by_fam[f], size=need[f], replace=False).tolist())
+    return np.sort(np.array(out)), by_fam, need
+
+
+def main_family_matched():
+    from scripts.turner_nullspace_rfam import count_matrix
+
+    t0 = time.time()
+    seeds = recorded_seeds()
+    prior = json.loads(PRIOR.read_text())
+    out = {"run_id": FM_RUN_ID, "status": "PRE-REGISTERED, not yet run", **FM_DOC,
+           "predictions": FM_PRED, "seeds": list(seeds), "low_drop_threshold": LOW_DROP,
+           "prior_artifact": {"path": str(PRIOR.relative_to(R)), "git_sha": prior["git_sha"],
+                              "git_dirty_excluding_runs": prior["git_dirty_excluding_runs"]},
+           **git_provenance(R), "viennarna_version": RNA.__version__}
+    FM_OUT.mkdir(parents=True, exist_ok=True)
+
+    def save():
+        (FM_OUT / "metrics.json").write_text(json.dumps(out, indent=2, sort_keys=True,
+                                                        default=str))
+    save()
+    assert prior["status"] == "complete" and prior["seeds"] == list(seeds)
+    rows = rows_with_fraction()
+    fams = [r[0] for r in rows]
+    low = np.nonzero(np.array([r[4] is not None and r[4] >= LOW_DROP for r in rows]))[0]
+    assert len(low) == prior["rows"]["low_drop"]
+    subsets = {"low_drop": low}
+    forced = None
+    for sd in seeds:
+        idx, by_fam, need = matched_subsample(fams, low, sd)
+        assert len(idx) == len(low)
+        subsets[f"family_matched_{sd}"] = idx
+        if forced is None:
+            ff = [f for f in need if need[f] == len(by_fam[f])]
+            forced = {"families_in_low_drop": len(need),
+                      "families_fully_low_drop": len(ff),
+                      "rows_in_fully_low_drop_families": int(sum(need[f] for f in ff)),
+                      "rows_free_to_vary": int(len(low) - sum(need[f] for f in ff))}
+    out["forced"] = forced
+    lowset = set(low.tolist())
+    out["overlap_with_low_drop"] = {k: int(len(lowset & set(v.tolist())))
+                                    for k, v in subsets.items() if k != "low_drop"}
+    save()
+
+    P = theta_from_par(dump_params())
+    rows4 = [(a, n, s_, d) for a, n, s_, d, _, _ in rows]
+    out["configs"] = {}
+    for dangles in (0, 2):
+        for special_hp in (1, 0):
+            name = f"d{dangles}_special_hp{special_hp}"
+            M, cols, fails = count_matrix(dangles, special_hp, P, rows4)
+            res = {"reconstruction_failures": int(fails), "subsets": {}}
+            out["configs"][name] = res
+            if fails:
+                out["status"] = f"STOPPED: reconstruction failed in {name}"
+                save()
+                return 1
+            an = analytic_directions(cols, dangles, special_hp)
+            krng = np.random.default_rng(seeds[0])
+            for sname, idx in subsets.items():
+                t1 = time.time()
+                dd = subset_dims(M.tocsr(), idx, cols, an, krng)
+                dd["distinct_rows"] = len({(rows[i][2], rows[i][3]) for i in idx})
+                dd["seconds"] = round(time.time() - t1, 1)
+                res["subsets"][sname] = dd
+                save()
+            pr = prior["configs"][name]["summary"]
+            fm = np.array([res["subsets"][f"family_matched_{x}"]["nontrivial_dim"]
+                           for x in seeds])
+            fm_used = np.array([res["subsets"][f"family_matched_{x}"]["used_columns"]
+                                for x in seeds])
+            pr_used = np.array([prior["configs"][name]["subsets"][f"random_{x}"]["used_columns"]
+                                for x in seeds])
+            lowd = res["subsets"]["low_drop"]["nontrivial_dim"]
+            low_used = res["subsets"]["low_drop"]["used_columns"]
+            rmean, rsd = pr["random_mean"], pr["random_sd"]
+            fmean, fsd = float(fm.mean()), float(fm.std(ddof=1))
+            gap = rmean - lowd
+            res["summary"] = {
+                "low_drop_reproduces_prior": lowd == pr["nontrivial_low_drop"],
+                "nontrivial_low_drop": lowd, "nontrivial_family_matched": fm.tolist(),
+                "family_matched_mean": fmean, "family_matched_sd": fsd,
+                "plain_random_mean": rmean, "plain_random_sd": rsd,
+                "share_projection_fidelity": (fmean - lowd) / gap if gap else None,
+                "share_family_composition": (rmean - fmean) / gap if gap else None,
+                "F1_fm_above_low_by_sd": (fmean - lowd) / fsd if fsd > 0 else None,
+                "F1": fsd > 0 and fmean - lowd > 2 * fsd,
+                "F2_z": (rmean - fmean) / float(np.hypot(rsd, fsd)),
+                "F2": rmean - fmean > 2 * float(np.hypot(rsd, fsd)),
+                "used_columns": {"low_drop": low_used, "family_matched_mean":
+                                 float(fm_used.mean()), "plain_random_mean":
+                                 float(pr_used.mean())},
+                "K3_assignment_changes_result": len(set(fm.tolist()) | {lowd}) > 1,
+            }
+            save()
+    cf = out["configs"]
+    allsub = [d for c in cf.values() for d in c["subsets"].values()]
+    out["verdicts"] = {
+        "F1": "confirmed" if all(c["summary"]["F1"] for c in cf.values()) else "refuted",
+        "F2": "confirmed" if all(c["summary"]["F2"] for c in cf.values()) else "refuted",
+        "split": {k: {kk: c["summary"][kk] for kk in (
+            "nontrivial_low_drop", "family_matched_mean", "family_matched_sd",
+            "plain_random_mean", "plain_random_sd", "share_projection_fidelity",
+            "share_family_composition")} for k, c in cf.items()},
+        "controls": {
+            "low_drop_reproduces_prior": all(c["summary"]["low_drop_reproduces_prior"]
+                                             for c in cf.values()),
+            "K1_all_detected": all(d["K1_random_nonnull"]["detected"] for d in allsub),
+            "K2_all_pass": all(d["K2_basis_row_bar"]["passes"] for d in allsub),
+            "K3_all_detected": all(c["summary"]["K3_assignment_changes_result"]
+                                   for c in cf.values()),
+            "dimension_methods_agree": all(d["null_dim_within_used"]["agree"] for d in allsub),
+            "nontrivial_definitions_agree": all(d["nontrivial_definitions_agree"]
+                                                for d in allsub),
+        },
+    }
+    out["status"] = "complete"
+    out["elapsed_seconds"] = round(time.time() - t0, 1)
+    save()
+    print(json.dumps(out["verdicts"], indent=1))
+    return 0
+
+
 if __name__ == "__main__":
+    if "--family-matched" in sys.argv:
+        sys.exit(main_family_matched())
     sys.exit(main())
