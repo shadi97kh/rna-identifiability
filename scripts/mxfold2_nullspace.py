@@ -100,6 +100,20 @@ exactly one direction per sequence and leaves the rest free. Check Q6 below conf
 numerically that c_x moves every enumerated structure by exactly N. Prediction W2 of
 the seed study (scripts/mxfold2_seed_study.py) tests the consequence directly.
 
+CORRECTION TO THE COUNTING RULE, 2026-10-08. For type C the rule omitted the empty
+unpaired interval. positional.cpp reads score_base_*(a, a-1) with no guard for a
+bulge's empty side and for a multiloop whose first branch is adjacent to its closing
+pair; in type C that is a strictly-lower-triangle entry of the unpaired channel, a
+parameter like any other. It is now counted (scripts/mxfold2_counting.py). G_x, h and
+c_x do not involve those entries, so Q1, Q2, Q4/Q4_correction and Q6 are unaffected
+in kind; the null dimensions are recomputed by re-running this script.
+Separately, in the SHIPPED model every strictly-lower-triangle entry of the positional
+score matrices is a sequence- and position-independent constant per channel
+(fold/layers.py, PairedLayer.forward: x_l is taken from the already-triu'd x_u, so the
+lower convolution branch is discarded and the final MLP sees zeros). This analysis
+treats the positional outputs as free, as the decomposition does; the constancy is a
+property of the trained architecture, reported with the seed study.
+
 NEGATIVE CONTROLS
 C1. A random direction with null component removed changes some structure's total.
 C2. Every numerical null basis vector leaves every structure unchanged to 1e-9.
@@ -135,6 +149,7 @@ sys.path.insert(0, str(R))
 
 import RNA  # noqa: E402
 
+from scripts.mxfold2_counting import MX  # noqa: E402
 from scripts.runmeta import git_provenance  # noqa: E402
 from scripts.turner_nullspace import (  # noqa: E402
     build_matrix,
@@ -185,102 +200,6 @@ def enumerate_structures(seq: str) -> list[str]:
     out = sorted({s.structure for s in subs})
     assert "." * len(seq) in out
     return out
-
-
-class MX:
-    """Count vector of MXfold2's positional score (model_type 'C' or 'M')."""
-
-    def __init__(self, model_type: str, exterior_stem_term: bool = True):
-        assert model_type in ("C", "M")
-        self.t = model_type
-        self.ext = exterior_stem_term
-
-    def counts(self, seq: str, db: str) -> dict:
-        n = len(seq)
-        pt = pair_table(db)
-        c: dict[tuple, int] = {}
-
-        def add(k, v=1):
-            c[k] = c.get(k, 0) + v
-
-        def unpaired(a, b):  # interval a..b inclusive, 1-based
-            if b < a:
-                return
-            if self.t == "C":
-                add(("U", a, b))
-            else:
-                for k in range(a, b + 1):
-                    add(("u", k))
-
-        # exterior
-        k = 1
-        while k <= n:
-            if pt[k] > k:
-                if self.ext:
-                    add(("M", pt[k], k))
-                k = pt[k] + 1
-            else:
-                unpaired(k, k)
-                k += 1
-
-        # helices: maximal stack runs, each from its outermost pair
-        for i in range(1, n + 1):
-            j = pt[i]
-            if j <= i:
-                continue
-            if i > 1 and j < n and pt[i - 1] == j + 1:
-                continue  # not the outermost pair of its helix
-            m = 1
-            while pt[i + m] == j - m and i + m < j - m:
-                m += 1
-            for kk in range(1, m):
-                add(("S", i + kk - 1, j - kk + 1))
-                add(("S", j - kk, i + kk))
-            add(("helix_length", min(m, 30)))
-            # the loop closed by the innermost pair
-            a, b = i + m - 1, j - m + 1
-            self._loop(a, b, pt, add, unpaired)
-        return c
-
-    def _loop(self, i, j, pt, add, unpaired):
-        inner = []
-        p = i + 1
-        while p < j:
-            if pt[p] > p:
-                inner.append((p, pt[p]))
-                p = pt[p] + 1
-            else:
-                p += 1
-        add(("M", i, j))
-        if not inner:
-            add(("hairpin_length", min(j - i - 1, 30)))
-            unpaired(i + 1, j - 1)
-            return
-        if len(inner) == 1:
-            p, q = inner[0]
-            l1, l2 = p - i - 1, j - q - 1
-            ls, ll = min(l1, l2), max(l1, l2)
-            assert ll > 0, "a stack inside a loop position means the helix walk is wrong"
-            add(("M", q, p))
-            unpaired(i + 1, p - 1)
-            unpaired(q + 1, j - 1)
-            if ls == 0:
-                add(("bulge_length", min(ll, 30)))
-            else:
-                add(("internal_length", min(ls + ll, 30)))
-                add(("internal_explicit", min(ls, 4), min(ll, 4)))
-                if ls == ll:
-                    add(("internal_symmetry", min(ll, 15)))
-                add(("internal_asymmetry", min(ll - ls, 28)))
-            return
-        # multiloop
-        first = inner[0][0]
-        unpaired(i + 1, first - 1)  # leading run as one interval
-        for idx, (u, v) in enumerate(inner):
-            add(("M", v, u))
-            nxt = inner[idx + 1][0] if idx + 1 < len(inner) else j
-            for kk in range(v + 1, nxt):
-                unpaired(kk, kk)  # later runs one nucleotide at a time
 
 
 def analytic(cols, pairs_seen, model_type):
