@@ -237,7 +237,19 @@ PREREG = {
                                "trace of every SGD run equals its linear reconstruction from the "
                                "logged per-step v.g under Nesterov momentum (relative error "
                                "<= 1e-6 of the trace's range), and v.w changes only on steps "
-                               "whose pred or ref has a helix > 30 pairs"},
+                               "whose pred or ref has a helix > 30 pairs",
+               "operational_amendment_2026_10_08": "The relative-to-range criterion is "
+                               "ill-posed when v.w is conserved (the range is then rounding "
+                               "noise). Before any SGD run: (i) reconstruction: for every SGD "
+                               "run and epoch e, |v.w(e) - v.w_recon(e)| <= 1e-3 + 1e-6 * range, "
+                               "with v.w_recon accumulated in float64 from the logged v.g (MXfold2 "
+                               "SGD: torch.optim.SGD, nesterov=True, momentum 0.9, dampening 0, "
+                               "wd 0, lr 1e-3; buf_1 = g_1, buf_t = 0.9 buf_(t-1) + g_t, step = "
+                               "-lr (g_t + 0.9 buf_t), on steps with loss > 0 only); (ii) "
+                               "conservation: |v.w(10) - v.w_longonly(10)| <= 1e-2, where "
+                               "v.w_longonly reconstructs the trace from the long-helix steps' v.g "
+                               "alone (float32 weight rounding is the only other source); both "
+                               "reported next to the AdamW per-epoch |delta v.w| for scale"},
         "S2": {"prior_claude": "Under AdamW the seed SD of v.w grows from epoch 0 to epoch 10 "
                                "(live AdamW w=1.0 and w=0.125 checkpoints)"},
         "R1": {"prior_claude": "The regulariser arm has smaller null-space seed variance V_G "
