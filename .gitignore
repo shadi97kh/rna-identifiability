@@ -1,11 +1,19 @@
 # Virtual environments
 .venv/
 .venv-jax/
+.venv-mxfold2/
 
 # Vendored third-party source, not committed. Re-create with:
 #   git clone https://github.com/rkruegs123/jax-rnafold vendor/jax-rnafold
 #   git -C vendor/jax-rnafold checkout 13f08b7108f9f6ddac9cb67a487b24753f06caad
 #   uv pip install --python .venv-jax -e vendor/jax-rnafold
+#   git clone https://github.com/mxfold/mxfold2 vendor/mxfold2
+#   git -C vendor/mxfold2 checkout 51b213676708bebd664f0c40873a46e09353e1ee
+#   uv venv .venv-mxfold2 --python 3.11
+#   uv pip install --python .venv-mxfold2 torch==2.13.0 --index-url https://download.pytorch.org/whl/cu130
+#   uv pip install --python .venv-mxfold2 numpy==2.4.6 tqdm "pybind11>=2.12" setuptools wheel poetry-core
+#   uv pip install --python .venv-mxfold2 --no-deps --no-build-isolation ./vendor/mxfold2
+#   (MXfold2 pins torch ^1.4 and numpy ^1.18; both are overridden deliberately.)
 vendor/
 
 # Python
