@@ -84,6 +84,22 @@ Q5. What the regulariser DOES constrain is a different object: directions that m
     sequence) but not to ref - ref2. That is the step-3 phenomenon (a direction
     flat in L_struct and pinned by L_thermo), not a gauge choice.
 
+CORRECTION TO Q4, 2026-10-07 (from the user; Q4's pre-registered text is left as it
+was written). "Gauge-invariant" in Q4 holds only for the EXACT null space G_x: the
+directions that leave every structure's total unchanged. The structured hinge loss is
+blind to more than that. For each sequence it is blind to G_x plus ONE further
+direction, the constant shift c_x, which moves every structure's total by the same
+amount N (here: +(b-a+1) on every unpaired interval U(a,b), or +1 on every u(k) in
+type M, and +1 on every S and M entry, inside and outside, so +1 per unpaired
+nucleotide and +2 per pair). Any direction that moves all structures equally is c_x
+times a constant plus an element of G_x. So, relative to the hinge loss's full
+invariance, the thermodynamic regulariser is NOT gauge-invariant in general: it sees
+c_x, because c_x changes the reference structure's total, and it is blind to every
+direction of G_x (the per-pair trades and the stack/helix-length trade). It pins
+exactly one direction per sequence and leaves the rest free. Check Q6 below confirms
+numerically that c_x moves every enumerated structure by exactly N. Prediction W2 of
+the seed study (scripts/mxfold2_seed_study.py) tests the consequence directly.
+
 NEGATIVE CONTROLS
 C1. A random direction with null component removed changes some structure's total.
 C2. Every numerical null basis vector leaves every structure unchanged to 1e-9.
@@ -363,6 +379,19 @@ def analyse(name, seq, model_type, rng):
                      and _is_exterior(pair_table(s), int(k.split("_")[2])) for s in structs)]
     c4 = max(float(np.abs(Md @ an[k]).max()) for k in ext_pairs) if ext_pairs else 0.0
 
+    # Q6: the constant-shift direction c_x moves every structure's total by exactly N
+    cx = np.zeros(len(cols))
+    for n_, k in enumerate(cols):
+        if k[0] in ("S", "M", "u"):
+            cx[n_] = 1.0
+        elif k[0] == "U":
+            cx[n_] = k[2] - k[1] + 1
+    moved = M @ cx
+    q6 = {"length_N": len(seq), "min_move": float(moved.min()), "max_move": float(moved.max()),
+          "every_structure_moves_by_N": bool(np.abs(moved - len(seq)).max() <= TOL),
+          "component_outside_exact_null_space": float(np.linalg.norm(cx - N @ (N.T @ cx))
+                                                      / np.linalg.norm(cx)) if N.size else 1.0}
+
     return {
         "sequence": seq, "length": len(seq), "model_type": model_type,
         "C0_counting_invariants": {"n_structures_failing": c0_fail, "passes": c0_fail == 0},
@@ -395,6 +424,7 @@ def analyse(name, seq, model_type, rng):
         "C4_no_exterior_stem_term": {"n_exterior_capable_pairs": len(ext_pairs),
                                      "max_change_of_pair_gauge": c4,
                                      "detected": c4 > 1e-6},
+        "Q6_constant_shift": q6,
     }
 
 
@@ -435,8 +465,14 @@ def main():
               else "refuted",
         "Q3": "confirmed" if not any(r["Q3_opening_vs_stacking"]["any_null"] for r in res)
               else "refuted",
-        "Q4": "by construction (read from loss.py): the regulariser is a function of one "
-              "structure's total, and every null direction leaves every total unchanged",
+        "Q4": "holds ONLY for the exact null space: the regulariser is a function of one "
+              "structure's total, so it is blind to every direction of G_x; it is NOT "
+              "invariant under the hinge loss's full invariance, see Q4_correction",
+        "Q4_correction": "the regulariser sees the constant-shift direction c_x (it moves the "
+                         "reference total by N) and is blind to G_x: it pins exactly one "
+                         "direction per sequence and leaves the rest free (user, 2026-10-07)",
+        "Q6": "confirmed" if all(r["Q6_constant_shift"]["every_structure_moves_by_N"]
+                                 for r in res) else "refuted",
         "null_dims": {k: r["null_dim"] for k, r in out["results"].items()},
         "pairs_occurring": {k: r["n_pairs_occurring"] for k, r in out["results"].items()},
         "controls": {k: {"C0": r["C0_counting_invariants"]["passes"],
