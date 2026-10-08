@@ -197,9 +197,20 @@ PREREG = {
                "status": "REFUTED BY CONSTRUCTION before any training: the head is a training "
                          "no-op (established_before_registration.head_is_training_noop; P0.3)"},
         "G3": {"rule_user": "The floor is small relative to both.",
-               "operational": "floor = bitwise difference of duplicate runs: epoch 1 already "
-                              "bitwise 0 (seed study determinism_control); epoch 10 from the live "
-                              "_dup runs and reg_dup"},
+               "operational": "floor = the difference between two trainings of the SAME seed, "
+                              "decomposed exactly like a seed difference (null and identifiable "
+                              "parts on TS0): epoch 10 from the live _dup runs and reg_dup; epoch "
+                              "1 from every seed with both an original phase-epoch1 checkpoint "
+                              "and a live epoch-1 checkpoint",
+               "correction_2026_10_08": "The earlier statement 'epoch 1 already bitwise 0' was "
+                              "wrong in general. Seed 20261006 is bitwise identical in four "
+                              "configurations, but seeds 20261007 and 20261008 differ between "
+                              "the original phase-epoch1 runs (4 per GPU, default allocator, two "
+                              "co-tenants out of memory) and the live runs (3 per GPU, "
+                              "expandable segments), same GPU index: every network tensor "
+                              "differs, relative L2 0.34 and 0.31 after one epoch. The floor is "
+                              "therefore measured, never assumed, and every seed-variance "
+                              "figure is reported against it."},
         "W1": {"rule_user": "Null-space seed variance is the same in arms 1 and 2.",
                "amended_2026_10_08": "before any analysis: the 95% interval for the median over "
                                      "sequences of log(V_G(0.125) / V_G(1.0)) comes from a paired "
