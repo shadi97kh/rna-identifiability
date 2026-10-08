@@ -302,5 +302,282 @@ def main():
     return 0 if len(ok) == 8 else 1
 
 
+# ==================================================================================
+# Phases after epoch1 (user instructions of 2026-10-08)
+# ==================================================================================
+ALLOC_CONF = "expandable_segments:True"
+MAX_PER_GPU = 3
+DET_SEED_INDEX = 0          # the seed trained twice for the determinism control
+FULL_EPOCHS = 10
+OOM_RETRIES = 1
+
+DETERMINISM_PREREG = {
+    "what": "One seed (the first recorded seed) trained twice under deliberately different "
+            "GPU co-location, compared with each other and with its original epoch-1 run.",
+    "epoch1_pair": {
+        "detA": "GPU 0, sharing the card with the two OOM re-runs (3 processes)",
+        "detB": "GPU 1, alone (1 process)",
+        "original": "the phase-epoch1 run: GPU 0, 4 processes, default CUDA allocator",
+    },
+    "ten_epoch_pairs": "the full study adds one duplicate per weight arm on the OTHER GPU, "
+                       "in a different wave, so the floor is also measured at epoch 10",
+    "mxfold2_determinism_flags_from_source": {
+        "file": "vendor/mxfold2/mxfold2/train.py (51b2136), Train.run, when --seed >= 0",
+        "sets": ["torch.manual_seed(seed)  (seeds CPU and CUDA generators)",
+                 "random.seed(seed)", "torch.backends.cudnn.deterministic = True",
+                 "torch.backends.cudnn.benchmark = False"],
+        "does_not_set": ["torch.use_deterministic_algorithms(True)",
+                         "CUBLAS_WORKSPACE_CONFIG", "numpy's generator (not used for training)"],
+        "runtime_record": "each process also records the flags as observed at runtime "
+                          "(timing.json: determinism)",
+    },
+    "measures": [
+        "bitwise equality of every model and optimiser tensor after epoch 1 (and epoch 10)",
+        "TS0: per-sequence predicted structure and score differences",
+        "TS0: the pair's score-table difference decomposed exactly as the seed variance "
+        "(V_G and V_tot with n = 2, i.e. ||theta_A - theta_B||^2 / 2 per sequence), by the "
+        "evaluator, after the validity checks V1-V3",
+    ],
+    "rule_user": "If training is bitwise deterministic the floor is exactly zero. If it is "
+                 "not, every later seed-variance figure is reported against this floor.",
+    "prior_claude": "Bitwise identical across co-location. Reason: batch size 1, seeded CUDA "
+                    "generator, cuDNN deterministic with benchmark off, folding DP on the CPU. "
+                    "The most likely way it fails: with benchmark off, cuDNN still picks "
+                    "algorithms heuristically and that choice can depend on free workspace "
+                    "memory, which co-location changes; cuBLAS runs without "
+                    "CUBLAS_WORKSPACE_CONFIG; atomics in some backward kernels.",
+}
+
+PROJECTION_CORRECTION = (
+    "Correction recorded 2026-10-08, BEFORE any decomposition is computed. The protocol states "
+    "that h is orthogonal to every g_p (h.g_p = 1 - 1 = 0). That holds only for pairs where "
+    "both S_in(i,j) and S_out(j,i) exist. A pair that can stack on one side only, e.g. i = 1 "
+    "(no outside stack), has h.g_p = +1 or -1. P_G is therefore computed with h replaced by "
+    "h' = h - sum_p (h.g_p / g_p.g_p) g_p (Gram-Schmidt). The span G(x), every prediction and "
+    "every other definition are unchanged; this fixes the arithmetic, not the question.")
+
+FULL_DESIGN = {
+    "runs": "2 weights x 8 seeds, each a FRESH continuous 10-epoch `mxfold2 train` run, plus "
+            "one duplicate per weight (determinism floor at epoch 10): 18 runs",
+    "why_fresh_not_resumed": "MXfold2's --resume re-seeds torch at start and restores no RNG "
+                             "state (train.py Train.run), so a resumed epoch 2 replays epoch "
+                             "1's shuffle order and dropout masks exactly. Continuing the "
+                             "epoch-1 checkpoints would not be MXfold2's own 10-epoch run. "
+                             "The epoch-1 checkpoints serve timing and the determinism control.",
+    "pairing": "data order, initialisation and dropout draws depend only on the seed (the "
+               "same number of generator draws per step in both arms), so each seed is a "
+               "paired comparison between the two weights",
+    "placement": "seed i, weight w -> GPU (i + arm index) mod 2, so each GPU carries 4 runs "
+                 "of each arm; duplicates on the GPU opposite their original, queued last",
+    "concurrency": f"at most {MAX_PER_GPU} processes per GPU (6 at once); a freed slot starts "
+                   "the next queued run on that GPU",
+    "allocator": f"PYTORCH_CUDA_ALLOC_CONF={ALLOC_CONF}",
+    "oom_policy": f"a run that fails is restarted from scratch at most {OOM_RETRIES} time(s); "
+                  "every attempt is recorded",
+    "cpu_contention": "the family-matched Rfam control may run concurrently with a thread cap; "
+                      "timing is not a deliverable of this phase",
+}
+
+
+def arch_conf():
+    arch = OUT / "arch.conf"
+    if not arch.exists():
+        keep, skip = [], False
+        for ln in CONF.read_text().split("\n"):
+            if skip:
+                skip = False
+                continue
+            if ln.strip() == "--param":
+                skip = True
+                continue
+            if ln.strip():
+                keep.append(ln)
+        arch.write_text("\n".join(keep) + "\n")
+    return arch
+
+
+def read_out():
+    return json.loads((OUT / "metrics.json").read_text())
+
+
+def start_run(run, arch):
+    d = OUT / "seeds" / run["name"]
+    (d / "checkpoints").mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(run["gpu"]), OMP_NUM_THREADS="1",
+               MKL_NUM_THREADS="1", PYTORCH_CUDA_ALLOC_CONF=ALLOC_CONF,
+               MXF_TIMING_OUT=str(d / "timing.json"))
+    cmd = [str(PY_MX), str(RUNNER), "train", f"@{arch}", "--param", str(d / "param.pth"),
+           "--save-config", str(d / "model.conf"), "--log-dir", str(d / "checkpoints"),
+           "--epochs", str(run["epochs"]), "--gpu", "0", "--seed", str(run["seed"]),
+           "--loss-func", "hinge_mix", "--score-loss-weight", str(run["weight"]),
+           "--disable-progress-bar", "data/TR0-canonicals.lst"]
+    log = (d / f"stdout.attempt{run['attempt']}.log").open("w")
+    return subprocess.Popen(cmd, cwd=DATA, env=env, stdout=log, stderr=subprocess.STDOUT)
+
+
+def schedule(runs, out, key):
+    """Run every entry of `runs` with at most MAX_PER_GPU live processes per GPU."""
+    arch = arch_conf()
+    queue = {0: [r for r in runs if r["gpu"] == 0], 1: [r for r in runs if r["gpu"] == 1]}
+    live, rec = [], {r["name"]: {**{k: r[k] for k in ("seed", "weight", "gpu", "epochs",
+                                                     "role")}, "attempts": []} for r in runs}
+    while any(queue.values()) or live:
+        for g in (0, 1):
+            while queue[g] and sum(1 for _, r in live if r["gpu"] == g) < MAX_PER_GPU:
+                r = queue[g].pop(0)
+                r.setdefault("attempt", 0)
+                live.append((start_run(r, arch), r))
+                rec[r["name"]]["attempts"].append({"attempt": r["attempt"],
+                                                   "started": time.strftime("%H:%M:%S")})
+        for p, r in list(live):
+            code = p.poll()
+            if code is None:
+                continue
+            live.remove((p, r))
+            a = rec[r["name"]]["attempts"][-1]
+            a.update({"exit_code": code, "ended": time.strftime("%H:%M:%S")})
+            if code != 0 and r["attempt"] < OOM_RETRIES:
+                r["attempt"] += 1
+                queue[r["gpu"]].insert(0, r)
+        for name, v in rec.items():
+            ck = OUT / "seeds" / name / "checkpoints"
+            v["epochs_checkpointed"] = len(list(ck.glob("epoch-*"))) if ck.exists() else 0
+        out[key] = {"runs": rec, "updated": time.strftime("%Y-%m-%d %H:%M:%S")}
+        write(out)
+        time.sleep(30)
+    return rec
+
+
+def compare_checkpoints(a, b):
+    """Bitwise comparison of two MXfold2 checkpoints (model and optimiser state)."""
+    import torch
+
+    ca = torch.load(a, map_location="cpu", weights_only=True)
+    cb = torch.load(b, map_location="cpu", weights_only=True)
+    out = {"model_tensors": 0, "model_tensors_bitwise_equal": 0, "model_max_abs_diff": 0.0}
+    for k, ta in ca["model_state_dict"].items():
+        tb = cb["model_state_dict"][k]
+        out["model_tensors"] += 1
+        eq = torch.equal(ta, tb)
+        out["model_tensors_bitwise_equal"] += int(eq)
+        if not eq and ta.is_floating_point():
+            out["model_max_abs_diff"] = max(out["model_max_abs_diff"],
+                                            float((ta - tb).abs().max()))
+
+    def flat(state):
+        xs = []
+        for st in state["state"].values():
+            xs += [v for v in st.values() if torch.is_tensor(v)]
+        return xs
+
+    oa, ob = flat(ca["optimizer_state_dict"]), flat(cb["optimizer_state_dict"])
+    out["optimizer_tensors"] = len(oa)
+    out["optimizer_tensors_bitwise_equal"] = sum(int(torch.equal(x, y))
+                                                 for x, y in zip(oa, ob, strict=True))
+    out["bitwise_identical"] = (out["model_tensors_bitwise_equal"] == out["model_tensors"]
+                                and out["optimizer_tensors_bitwise_equal"] == len(oa))
+    return out
+
+
+def gpu_gate(out, key):
+    g = gpus()
+    out[key] = {"gpus": g, "min_free_mib": MIN_FREE_MIB, "load_1min": os.getloadavg()[0],
+                "checked": time.strftime("%Y-%m-%d %H:%M:%S")}
+    ok = len(g) >= 2 and all(x["free_mib"] >= MIN_FREE_MIB for x in g)
+    if not ok:
+        out["status"] = f"NOT LAUNCHED ({key}): a GPU is not free"
+    write(out)
+    return ok
+
+
+def phase_rerun_determinism():
+    seeds = recorded_seeds()
+    out = read_out()
+    out["determinism_control"] = {"preregistered": DETERMINISM_PREREG,
+                                  "preregistered_at": time.strftime("%Y-%m-%d %H:%M:%S")}
+    out["projection_correction"] = PROJECTION_CORRECTION
+    out["provenance_phase_rerun_determinism"] = git_provenance(R)
+    write(out)
+    if not gpu_gate(out, "launch_gate_rerun_determinism"):
+        return 1
+    s0 = seeds[DET_SEED_INDEX]
+    runs = [
+        {"name": f"seed{seeds[3]}_w1.0_rerun", "seed": seeds[3], "weight": 1.0, "gpu": 0,
+         "epochs": 1, "role": "re-run of an OOM seed"},
+        {"name": f"seed{seeds[6]}_w1.0_rerun", "seed": seeds[6], "weight": 1.0, "gpu": 0,
+         "epochs": 1, "role": "re-run of an OOM seed"},
+        {"name": f"seed{s0}_w1.0_detA", "seed": s0, "weight": 1.0, "gpu": 0, "epochs": 1,
+         "role": "determinism A: GPU 0 with the two re-runs"},
+        {"name": f"seed{s0}_w1.0_detB", "seed": s0, "weight": 1.0, "gpu": 1, "epochs": 1,
+         "role": "determinism B: GPU 1 alone"},
+    ]
+    out["status"] = "RUNNING phase rerun-determinism"
+    write(out)
+    rec = schedule(runs, out, "phase_rerun_determinism")
+    ck = {k: OUT / "seeds" / k / "checkpoints" / "epoch-1"
+          for k in (f"seed{s0}_w1.0", f"seed{s0}_w1.0_detA", f"seed{s0}_w1.0_detB")}
+    res = {}
+    if all(p.exists() for p in ck.values()):
+        res = {"detA_vs_detB": compare_checkpoints(ck[f"seed{s0}_w1.0_detA"],
+                                                    ck[f"seed{s0}_w1.0_detB"]),
+               "original_vs_detA": compare_checkpoints(ck[f"seed{s0}_w1.0"],
+                                                        ck[f"seed{s0}_w1.0_detA"]),
+               "original_vs_detB": compare_checkpoints(ck[f"seed{s0}_w1.0"],
+                                                        ck[f"seed{s0}_w1.0_detB"])}
+    flags = {}
+    for name in rec:
+        tj = OUT / "seeds" / name / "timing.json"
+        if tj.exists():
+            t = json.loads(tj.read_text())
+            flags[name] = t.get("determinism")
+            rec[name]["epoch_seconds"] = t["epochs"][0]["seconds"] if t["epochs"] else None
+            rec[name]["gpu_peak_mib"] = t.get("gpu_peak_mib")
+    out["determinism_control"]["epoch1_bitwise"] = res
+    out["determinism_control"]["runtime_flags"] = flags
+    ok = all(v["attempts"] and v["attempts"][-1].get("exit_code") == 0 for v in rec.values())
+    out["status"] = ("rerun-determinism COMPLETE" if ok and res
+                     else "rerun-determinism finished with failures")
+    write(out)
+    print(json.dumps(res, indent=1))
+    return 0 if ok and res else 1
+
+
+def phase_full():
+    seeds = recorded_seeds()
+    out = read_out()
+    out["full_study"] = {"design": FULL_DESIGN, "preregistered_at":
+                         time.strftime("%Y-%m-%d %H:%M:%S"), **git_provenance(R)}
+    runs = []
+    for i, s in enumerate(seeds):
+        for a, w in enumerate(WEIGHTS):
+            runs.append({"name": f"full_seed{s}_w{w}", "seed": s, "weight": w,
+                         "gpu": (i + a) % 2, "epochs": FULL_EPOCHS, "role": "study"})
+    for a, w in enumerate(WEIGHTS):
+        runs.append({"name": f"full_seed{seeds[0]}_w{w}_dup", "seed": seeds[0], "weight": w,
+                     "gpu": 1 - (0 + a) % 2, "epochs": FULL_EPOCHS,
+                     "role": "determinism duplicate (other GPU, last wave)"})
+    out["full_study"]["assignment"] = [{k: r[k] for k in ("name", "seed", "weight", "gpu",
+                                                          "role")} for r in runs]
+    write(out)
+    if not gpu_gate(out, "launch_gate_full"):
+        return 1
+    out["status"] = "RUNNING phase full"
+    write(out)
+    rec = schedule(runs, out, "phase_full")
+    for w in WEIGHTS:
+        o = OUT / "seeds" / f"full_seed{seeds[0]}_w{w}" / "checkpoints" / f"epoch-{FULL_EPOCHS}"
+        d = OUT / "seeds" / f"full_seed{seeds[0]}_w{w}_dup" / "checkpoints" / f"epoch-{FULL_EPOCHS}"
+        if o.exists() and d.exists():
+            out.setdefault("determinism_control", {}).setdefault("epoch10_bitwise", {})[
+                f"w{w}"] = compare_checkpoints(o, d)
+    ok = all(v["epochs_checkpointed"] == FULL_EPOCHS for v in rec.values())
+    out["status"] = "full COMPLETE (training)" if ok else "full finished with failures"
+    write(out)
+    return 0 if ok else 1
+
+
 if __name__ == "__main__":
+    if "--phase" in sys.argv:
+        ph = sys.argv[sys.argv.index("--phase") + 1]
+        sys.exit({"rerun-determinism": phase_rerun_determinism, "full": phase_full}[ph]())
     sys.exit(main())
