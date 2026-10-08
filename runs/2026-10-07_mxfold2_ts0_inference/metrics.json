@@ -1,0 +1,88 @@
+{
+ "N1_A_cpu_vs_B_cpu": {
+  "differing_structures": [],
+  "max_relative_score_diff": 1.264697945866099e-06,
+  "n": 1305,
+  "n_identical_structures": 1305,
+  "n_scores_outside_tol": 0,
+  "passes": true,
+  "scores_outside_tol": []
+ },
+ "N2_A_gpu_vs_A_cpu": {
+  "differing_structures": [],
+  "max_relative_score_diff": 1.1842311913618728e-05,
+  "n": 1305,
+  "n_identical_structures": 1305,
+  "n_scores_outside_tol": 0,
+  "passes": true,
+  "scores_outside_tol": []
+ },
+ "accuracy_A_cpu": {
+  "mean_per_sequence": {
+   "F": 0.5701344180625908,
+   "PPV": 0.5143796726444506,
+   "SEN": 0.6851870882334438
+  },
+  "n_scored": 1304,
+  "n_without_reference_pairs": 1,
+  "pooled": {
+   "F": 0.5657521506626366,
+   "PPV": 0.48234781057347315,
+   "SEN": 0.6840300227700784
+  }
+ },
+ "accuracy_A_gpu": {
+  "mean_per_sequence": {
+   "F": 0.5701344180625908,
+   "PPV": 0.5143796726444506,
+   "SEN": 0.6851870882334438
+  },
+  "n_scored": 1304,
+  "n_without_reference_pairs": 1,
+  "pooled": {
+   "F": 0.5657521506626366,
+   "PPV": 0.48234781057347315,
+   "SEN": 0.6840300227700784
+  }
+ },
+ "accuracy_B_cpu": {
+  "mean_per_sequence": {
+   "F": 0.5701344180625908,
+   "PPV": 0.5143796726444506,
+   "SEN": 0.6851870882334438
+  },
+  "n_scored": 1304,
+  "n_without_reference_pairs": 1,
+  "pooled": {
+   "F": 0.5657521506626366,
+   "PPV": 0.48234781057347315,
+   "SEN": 0.6840300227700784
+  }
+ },
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "05876d960500c24a9c9aa79323dd8426e734bccb",
+ "model": "shipped TrainSetAB (models/TrainSetAB.conf, TrainSetAB.pth), MXfold2 51b2136",
+ "predictions": {
+  "N1": "A_cpu and B_cpu: identical structures for every sequence, scores within 0.001 * max(1,|score|)",
+  "N2": "A_gpu and A_cpu agree to the same tolerance"
+ },
+ "published_ts0_for_a_different_model": {
+  "F": 0.575,
+  "PPV": 0.52,
+  "SEN": 0.682,
+  "source": "Sato et al. 2021 Nat Commun 12:941, Table 2, sequence-wise CV on TS0, MXfold2 trained on TR0"
+ },
+ "run_id": "2026-10-07_mxfold2_ts0_inference",
+ "seconds": {
+  "A_cpu": 2498.5867228507996,
+  "A_gpu": 276.0384497642517,
+  "B_cpu": 2236.8519337177277
+ },
+ "status": "complete",
+ "verdicts": {
+  "N1": "confirmed",
+  "N2": "confirmed"
+ }
+}

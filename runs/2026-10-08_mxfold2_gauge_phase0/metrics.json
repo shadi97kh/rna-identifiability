@@ -1,0 +1,957 @@
+{
+ "P0_1_masks": {
+  "first_mismatches": [],
+  "n_h_dropped_long_helix": 13,
+  "n_mismatch": 0,
+  "n_sequences": 12119,
+  "pass": true
+ },
+ "P0_2_v_symmetry": {
+  "n_long_helix_sequences": 0,
+  "pass": true,
+  "per_sequence": [
+   {
+    "cos": 1.1714194280635326e-09,
+    "file": "bpRNA_RFAM_20914.bpseq",
+    "len": 87,
+    "long_helix": false,
+    "loss_rel": 5.960464477539063e-08
+   },
+   {
+    "cos": 1.464130967983035e-09,
+    "file": "bpRNA_RFAM_12822.bpseq",
+    "len": 180,
+    "long_helix": false,
+    "loss_rel": 5.960464477539063e-08
+   },
+   {
+    "cos": 3.879332039263542e-09,
+    "file": "bpRNA_RFAM_11787.bpseq",
+    "len": 129,
+    "long_helix": false,
+    "loss_rel": 5.960464477539063e-08
+   },
+   {
+    "cos": 3.9299562387754035e-09,
+    "file": "bpRNA_RFAM_2661.bpseq",
+    "len": 382,
+    "long_helix": false,
+    "loss_rel": 2.980232238769531e-07
+   },
+   {
+    "cos": 4.2668797569991503e-10,
+    "file": "bpRNA_tmRNA_224.bpseq",
+    "len": 421,
+    "long_helix": false,
+    "loss_rel": 2.9802322387695312e-08
+   },
+   {
+    "cos": 1.1201495615998587e-09,
+    "file": "bpRNA_SPR_487.bpseq",
+    "len": 72,
+    "long_helix": false,
+    "loss_rel": 7.450580596923828e-09
+   },
+   {
+    "cos": 4.023015144225621e-09,
+    "file": "bpRNA_RFAM_42159.bpseq",
+    "len": 120,
+    "long_helix": false,
+    "loss_rel": 1.341104507446289e-07
+   },
+   {
+    "cos": 2.8237073612222745e-09,
+    "file": "bpRNA_RFAM_42725.bpseq",
+    "len": 158,
+    "long_helix": false,
+    "loss_rel": 1.4901161193847656e-08
+   },
+   {
+    "cos": 7.832138145904344e-10,
+    "file": "bpRNA_RFAM_12406.bpseq",
+    "len": 84,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 2.7542533159418527e-09,
+    "file": "bpRNA_RFAM_41771.bpseq",
+    "len": 78,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 0.0,
+    "file": "bpRNA_RFAM_7168.bpseq",
+    "len": 89,
+    "long_helix": false,
+    "loss_rel": 4.470348358154297e-08
+   },
+   {
+    "cos": 4.178819878615361e-09,
+    "file": "bpRNA_RFAM_10631.bpseq",
+    "len": 170,
+    "long_helix": false,
+    "loss_rel": 5.960464477539063e-08
+   },
+   {
+    "cos": 3.846265825233866e-09,
+    "file": "bpRNA_RFAM_1704.bpseq",
+    "len": 67,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 3.973321352186117e-09,
+    "file": "bpRNA_RFAM_11320.bpseq",
+    "len": 72,
+    "long_helix": false,
+    "loss_rel": 1.4901161193847656e-08
+   },
+   {
+    "cos": 4.3351976126762687e-10,
+    "file": "bpRNA_RFAM_38973.bpseq",
+    "len": 419,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 2.7314265812053556e-09,
+    "file": "bpRNA_RFAM_9264.bpseq",
+    "len": 183,
+    "long_helix": false,
+    "loss_rel": 2.9802322387695312e-08
+   },
+   {
+    "cos": 4.860438865908656e-09,
+    "file": "bpRNA_SRP_424.bpseq",
+    "len": 279,
+    "long_helix": false,
+    "loss_rel": 5.960464477539063e-08
+   },
+   {
+    "cos": 1.8891126794531747e-09,
+    "file": "bpRNA_RFAM_13869.bpseq",
+    "len": 135,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 2.8842248766035633e-09,
+    "file": "bpRNA_RFAM_5863.bpseq",
+    "len": 106,
+    "long_helix": false,
+    "loss_rel": 2.9802322387695312e-08
+   },
+   {
+    "cos": 0.0,
+    "file": "bpRNA_RFAM_23198.bpseq",
+    "len": 49,
+    "long_helix": false,
+    "loss_rel": 3.429659610570725e-07
+   },
+   {
+    "cos": 2.8278688922429225e-09,
+    "file": "bpRNA_RFAM_29010.bpseq",
+    "len": 71,
+    "long_helix": false,
+    "loss_rel": 5.960464477539063e-08
+   },
+   {
+    "cos": 5.661346939915923e-09,
+    "file": "bpRNA_RNP_111.bpseq",
+    "len": 249,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 2.302020910726998e-09,
+    "file": "bpRNA_RFAM_15722.bpseq",
+    "len": 137,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 7.355436509549585e-10,
+    "file": "bpRNA_RFAM_18316.bpseq",
+    "len": 139,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 3.672035878318193e-09,
+    "file": "bpRNA_RFAM_1309.bpseq",
+    "len": 72,
+    "long_helix": false,
+    "loss_rel": 2.9802322387695312e-08
+   },
+   {
+    "cos": 3.6746606239096515e-09,
+    "file": "bpRNA_RFAM_40422.bpseq",
+    "len": 91,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 9.527942970794886e-10,
+    "file": "bpRNA_RFAM_21701.bpseq",
+    "len": 81,
+    "long_helix": false,
+    "loss_rel": 0.0
+   },
+   {
+    "cos": 1.5310919393984057e-09,
+    "file": "bpRNA_RFAM_38329.bpseq",
+    "len": 222,
+    "long_helix": false,
+    "loss_rel": 2.9802322387695312e-08
+   },
+   {
+    "cos": 8.181346889282442e-10,
+    "file": "bpRNA_RFAM_24121.bpseq",
+    "len": 79,
+    "long_helix": false,
+    "loss_rel": 1.4901161193847656e-08
+   },
+   {
+    "cos": 4.729828351897345e-09,
+    "file": "bpRNA_RFAM_38405.bpseq",
+    "len": 223,
+    "long_helix": false,
+    "loss_rel": 0.0
+   }
+  ],
+  "worst": {
+   "cos": 5.661346939915923e-09,
+   "loss_rel": 3.429659610570725e-07,
+   "other": 0.0,
+   "table": 1.9073486328125e-06
+  }
+ },
+ "P0_3_head_noop": {
+  "min_control_grad_rel": 0.13981054685295277,
+  "n_argmax_differ": 0,
+  "pass": true,
+  "per_sequence": [
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.010597000749284,
+    "file": "bpRNA_RFAM_19486.bpseq",
+    "grad_rel": 0.0,
+    "len": 71,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.811971071633108,
+    "file": "bpRNA_RFAM_19486.bpseq",
+    "grad_rel": 7.496111208508047e-07,
+    "len": 71,
+    "loss_diff": 2.086162567138672e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9742060036722788,
+    "file": "bpRNA_RFAM_19253.bpseq",
+    "grad_rel": 7.626178743428985e-08,
+    "len": 96,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9080963863071531,
+    "file": "bpRNA_RFAM_19253.bpseq",
+    "grad_rel": 4.935464091720578e-08,
+    "len": 96,
+    "loss_diff": 1.1920928955078125e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9812205216730248,
+    "file": "bpRNA_RFAM_7943.bpseq",
+    "grad_rel": 3.991445572074966e-07,
+    "len": 64,
+    "loss_diff": 1.043081283569336e-07,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9917857778424938,
+    "file": "bpRNA_RFAM_7943.bpseq",
+    "grad_rel": 2.2168061851387758e-07,
+    "len": 64,
+    "loss_diff": 1.7881393432617188e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.5843799039970252,
+    "file": "bpRNA_RFAM_11751.bpseq",
+    "grad_rel": 0.0,
+    "len": 88,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.0527418620318632,
+    "file": "bpRNA_RFAM_11751.bpseq",
+    "grad_rel": 3.2456351200769066e-07,
+    "len": 88,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.48547692174218177,
+    "file": "bpRNA_RFAM_11428.bpseq",
+    "grad_rel": 2.3209634995839037e-08,
+    "len": 76,
+    "loss_diff": 5.960464477539063e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.5782906871138087,
+    "file": "bpRNA_RFAM_11428.bpseq",
+    "grad_rel": 1.0962231173596902e-07,
+    "len": 76,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9382402521548694,
+    "file": "bpRNA_RFAM_38732.bpseq",
+    "grad_rel": 4.1765944455936636e-07,
+    "len": 111,
+    "loss_diff": 1.4901161193847656e-07,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9054449749413073,
+    "file": "bpRNA_RFAM_38732.bpseq",
+    "grad_rel": 4.200158478792143e-07,
+    "len": 111,
+    "loss_diff": 1.1920928955078125e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.1286048817658532,
+    "file": "bpRNA_RFAM_16891.bpseq",
+    "grad_rel": 3.487441828947725e-07,
+    "len": 43,
+    "loss_diff": 4.470348358154297e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.8889692901464491,
+    "file": "bpRNA_RFAM_16891.bpseq",
+    "grad_rel": 0.0,
+    "len": 43,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.7897816363328386,
+    "file": "bpRNA_RFAM_37437.bpseq",
+    "grad_rel": 1.8760998182960697e-06,
+    "len": 83,
+    "loss_diff": 1.4901161193847656e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.7879941068066392,
+    "file": "bpRNA_RFAM_37437.bpseq",
+    "grad_rel": 5.637854904466359e-07,
+    "len": 83,
+    "loss_diff": 5.960464477539063e-08,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9609510926422346,
+    "file": "bpRNA_RFAM_23247.bpseq",
+    "grad_rel": 1.6800999946508292e-07,
+    "len": 47,
+    "loss_diff": 3.5762786865234375e-07,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9747918840522429,
+    "file": "bpRNA_RFAM_23247.bpseq",
+    "grad_rel": 1.3611071753286596e-07,
+    "len": 47,
+    "loss_diff": 4.76837158203125e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9818122242792162,
+    "file": "bpRNA_RFAM_1333.bpseq",
+    "grad_rel": 0.0,
+    "len": 71,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.0693221322520843,
+    "file": "bpRNA_RFAM_1333.bpseq",
+    "grad_rel": 2.193255349206473e-08,
+    "len": 71,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9023655010835763,
+    "file": "bpRNA_RFAM_5649.bpseq",
+    "grad_rel": 2.663416692542472e-08,
+    "len": 90,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9334793354795072,
+    "file": "bpRNA_RFAM_5649.bpseq",
+    "grad_rel": 3.4748891179883975e-07,
+    "len": 90,
+    "loss_diff": 2.384185791015625e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.842220342679372,
+    "file": "bpRNA_RFAM_24062.bpseq",
+    "grad_rel": 0.0,
+    "len": 84,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.8228740758976405,
+    "file": "bpRNA_RFAM_24062.bpseq",
+    "grad_rel": 4.053425371633102e-08,
+    "len": 84,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.0027545903206507,
+    "file": "bpRNA_CRW_55532.bpseq",
+    "grad_rel": 3.0082791073397716e-08,
+    "len": 120,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9167332837818379,
+    "file": "bpRNA_CRW_55532.bpseq",
+    "grad_rel": 8.351136018590467e-08,
+    "len": 120,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.2168214475651133,
+    "file": "bpRNA_RFAM_14159.bpseq",
+    "grad_rel": 1.1919624352519325e-08,
+    "len": 135,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.824922340909925,
+    "file": "bpRNA_RFAM_14159.bpseq",
+    "grad_rel": 2.0061571976383148e-07,
+    "len": 135,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9047207536358012,
+    "file": "bpRNA_RFAM_20459.bpseq",
+    "grad_rel": 4.0453114557892363e-07,
+    "len": 84,
+    "loss_diff": 2.384185791015625e-07,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.8964146116173365,
+    "file": "bpRNA_RFAM_20459.bpseq",
+    "grad_rel": 2.303404927684265e-08,
+    "len": 84,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9246743651224966,
+    "file": "bpRNA_RFAM_20495.bpseq",
+    "grad_rel": 2.1912395172456596e-07,
+    "len": 105,
+    "loss_diff": 2.980232238769531e-07,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.8974039708417756,
+    "file": "bpRNA_RFAM_20495.bpseq",
+    "grad_rel": 4.714062302509689e-08,
+    "len": 105,
+    "loss_diff": 5.960464477539063e-08,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.3968984843979317,
+    "file": "bpRNA_RFAM_34844.bpseq",
+    "grad_rel": 1.390532094827739e-06,
+    "len": 84,
+    "loss_diff": 1.043081283569336e-07,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.0034843648117786,
+    "file": "bpRNA_RFAM_34844.bpseq",
+    "grad_rel": 5.742358920343854e-07,
+    "len": 84,
+    "loss_diff": 1.7881393432617188e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.13981054685295277,
+    "file": "bpRNA_RFAM_4402.bpseq",
+    "grad_rel": 1.0940953621206488e-08,
+    "len": 106,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.6419267123198134,
+    "file": "bpRNA_RFAM_4402.bpseq",
+    "grad_rel": 1.0921727762093687e-08,
+    "len": 106,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9131664719443078,
+    "file": "bpRNA_RFAM_18489.bpseq",
+    "grad_rel": 3.159972339696125e-08,
+    "len": 89,
+    "loss_diff": 1.1920928955078125e-07,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9349688756114424,
+    "file": "bpRNA_RFAM_18489.bpseq",
+    "grad_rel": 2.727149972302764e-07,
+    "len": 89,
+    "loss_diff": 4.76837158203125e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.7570577487568968,
+    "file": "bpRNA_RFAM_42234.bpseq",
+    "grad_rel": 2.455248214295418e-08,
+    "len": 79,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.7573543282012707,
+    "file": "bpRNA_RFAM_42234.bpseq",
+    "grad_rel": 1.5034384122638956e-07,
+    "len": 79,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9816606860539676,
+    "file": "bpRNA_RFAM_33758.bpseq",
+    "grad_rel": 4.817689880770852e-08,
+    "len": 94,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.038620216899715,
+    "file": "bpRNA_RFAM_33758.bpseq",
+    "grad_rel": 5.902364089597951e-08,
+    "len": 94,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9702839883527948,
+    "file": "bpRNA_RFAM_25275.bpseq",
+    "grad_rel": 4.054992287930451e-08,
+    "len": 35,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.8732756297160956,
+    "file": "bpRNA_RFAM_25275.bpseq",
+    "grad_rel": 2.3892363093217237e-07,
+    "len": 35,
+    "loss_diff": 5.960464477539063e-08,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.242240008496591,
+    "file": "bpRNA_RFAM_3302.bpseq",
+    "grad_rel": 1.2927270635170433e-06,
+    "len": 161,
+    "loss_diff": 1.4901161193847656e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 1.6632861502235183,
+    "file": "bpRNA_RFAM_3302.bpseq",
+    "grad_rel": 9.970889001965698e-07,
+    "len": 161,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9018603434742197,
+    "file": "bpRNA_SPR_261.bpseq",
+    "grad_rel": 1.287738876440404e-06,
+    "len": 84,
+    "loss_diff": 2.60770320892334e-07,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 4.10700973763289,
+    "file": "bpRNA_SPR_261.bpseq",
+    "grad_rel": 0.0,
+    "len": 84,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.35628418518083943,
+    "file": "bpRNA_RFAM_35708.bpseq",
+    "grad_rel": 5.329562252788346e-07,
+    "len": 79,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.6911335971332941,
+    "file": "bpRNA_RFAM_35708.bpseq",
+    "grad_rel": 6.416146669085581e-07,
+    "len": 79,
+    "loss_diff": 0.0,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.927584345026732,
+    "file": "bpRNA_RFAM_3172.bpseq",
+    "grad_rel": 8.019392516913147e-07,
+    "len": 162,
+    "loss_diff": 1.1324882507324219e-06,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9480015221640252,
+    "file": "bpRNA_RFAM_3172.bpseq",
+    "grad_rel": 1.869231448361403e-07,
+    "len": 162,
+    "loss_diff": 4.76837158203125e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.7392410249845012,
+    "file": "bpRNA_RFAM_31889.bpseq",
+    "grad_rel": 0.0,
+    "len": 62,
+    "loss_diff": 5.960464477539063e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.757273591635466,
+    "file": "bpRNA_RFAM_31889.bpseq",
+    "grad_rel": 0.0,
+    "len": 62,
+    "loss_diff": 5.960464477539063e-08,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.9674092827296012,
+    "file": "bpRNA_RFAM_33751.bpseq",
+    "grad_rel": 0.0,
+    "len": 85,
+    "loss_diff": 0.0,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.967939795006247,
+    "file": "bpRNA_RFAM_33751.bpseq",
+    "grad_rel": 2.3027148586854366e-07,
+    "len": 85,
+    "loss_diff": 3.5762786865234375e-07,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.7125712703375294,
+    "file": "bpRNA_RFAM_25286.bpseq",
+    "grad_rel": 1.2241620798365164e-07,
+    "len": 37,
+    "loss_diff": 5.960464477539063e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.8255279823384488,
+    "file": "bpRNA_RFAM_25286.bpseq",
+    "grad_rel": 1.5082788363201663e-07,
+    "len": 37,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "train"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.2315830319774975,
+    "file": "bpRNA_RFAM_32075.bpseq",
+    "grad_rel": 1.3572441483272062e-06,
+    "len": 64,
+    "loss_diff": 5.960464477539063e-08,
+    "mode": "eval"
+   },
+   {
+    "argmax_same": true,
+    "control_grad_rel": 0.3420816882458609,
+    "file": "bpRNA_RFAM_32075.bpseq",
+    "grad_rel": 7.531251159870178e-07,
+    "len": 64,
+    "loss_diff": 2.9802322387695312e-08,
+    "mode": "train"
+   }
+  ],
+  "worst_grad_rel": 1.8760998182960697e-06
+ },
+ "P0_4_defining": {
+  "NC1_changed": 1289,
+  "NC1_pass": true,
+  "NC1_struct_changed": 1057,
+  "NC2_n_h_in_G": 1305,
+  "NC2_ok": 1305,
+  "NC2_pass": true,
+  "NC3_fail": 0,
+  "NC3_max_abs": 4.76837158203125e-07,
+  "NC3_pass": true,
+  "P0_1_null_norm_pass": true,
+  "dE_pred_excess_max": -2.0523162841796877e-05,
+  "dE_pred_rel_max": 4.76837158203125e-07,
+  "dE_ref_excess_max": -1.9836016535758973e-05,
+  "dE_ref_rel_max": 1.129474802687811e-06,
+  "defining_pass": true,
+  "flips_explained": 0,
+  "flips_unexplained": [],
+  "n": 1305,
+  "n_ref_realisable": 1258,
+  "null_norm_rel_max": 3.5776301459353914e-16,
+  "pass": true,
+  "residual_rel_max": 1.6703341172104694e-16,
+  "struct_identical": 1305
+ },
+ "P0_4_progress": {
+  "of": 1305,
+  "seconds": 1320.3,
+  "sequences_done": 1301
+ },
+ "P0_5_runner": {
+  "a_lam0_vs_plain": {
+   "bitwise_identical": true,
+   "model_max_abs_diff": 0.0,
+   "model_tensors": 130,
+   "model_tensors_bitwise_equal": 130,
+   "optimizer_tensors": 321,
+   "optimizer_tensors_bitwise_equal": 321
+  },
+  "b_sgd_lam0_vs_plain": {
+   "bitwise_identical": true,
+   "model_max_abs_diff": 0.0,
+   "model_tensors": 130,
+   "model_tensors_bitwise_equal": 130,
+   "optimizer_tensors": 107,
+   "optimizer_tensors_bitwise_equal": 107
+  },
+  "c_resume_rng_restored": true,
+  "c_resume_vs_continuous": {
+   "bitwise_identical": true,
+   "model_max_abs_diff": 0.0,
+   "model_tensors": 130,
+   "model_tensors_bitwise_equal": 130,
+   "optimizer_tensors": 321,
+   "optimizer_tensors_bitwise_equal": 321
+  },
+  "d_parsed_epochs": {
+   "a_gauge_adamw_lam0": [
+    [
+     1,
+     2.505021
+    ]
+   ],
+   "a_plain_adamw": [
+    [
+     1,
+     2.505021
+    ]
+   ],
+   "b_plain_sgd": [
+    [
+     1,
+     1.715741
+    ]
+   ],
+   "c_gauge_1then_resume": [
+    [
+     1,
+     2.505021
+    ],
+    [
+     2,
+     0.50773
+    ]
+   ],
+   "c_gauge_2epochs": [
+    [
+     1,
+     2.505021
+    ],
+    [
+     2,
+     0.50773
+    ]
+   ]
+  },
+  "e_lam1_vs_lam0": {
+   "bitwise_identical": false,
+   "model_max_abs_diff": 0.016251403838396072,
+   "model_tensors": 130,
+   "model_tensors_bitwise_equal": 23,
+   "optimizer_tensors": 321,
+   "optimizer_tensors_bitwise_equal": 107
+  },
+  "e_mean_lamR": 0.4592868555560112,
+  "exit_codes": {
+   "a1": 0,
+   "a2": 0,
+   "b1": 0,
+   "b2": 0,
+   "c1": 0,
+   "c2": 0,
+   "c3": 0,
+   "e1": 0
+  },
+  "f_crosscheck_rel_max": 1.233985724312013e-16,
+  "pass": true
+ },
+ "all_pass": true,
+ "elapsed_seconds": 2517.2,
+ "provenance": {
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "e7c1ef09a4701f51b80abb072bf137c514c81676",
+  "n_amendments": 0,
+  "prereg_sha256": "a226a9879b8fddef5a106c738d1eb0e5212b922ebd409b2c42ed70fc77e40b63"
+ },
+ "run_id": "2026-10-08_mxfold2_gauge_phase0",
+ "status": "complete",
+ "thresholds": {
+  "P0_1_masks": "torch masks equal Geometry (uppercased) on every TR0 and TS0 sequence; torch null_norm2 equals Geometry.proj_norm2 on the TS0 theta of the shipped TrainSetAB weights to <= 1e-10 relative",
+  "P0_1_rel_tol": 1e-10,
+  "P0_2": {
+   "cos_tol": 1e-06,
+   "delta": 0.37,
+   "loss_rel_tol": 1e-06,
+   "n_sequences": 30,
+   "other_abs_tol": 1e-06,
+   "table_abs_tol": 1e-05
+  },
+  "P0_2_v_symmetry": "30 seeded TR0 sequences, shipped weights, eval mode, delta = 0.37: every S entry moves by delta and helix_length[m] by -2 delta (m-1) within 1e-5 absolute, M and U are unchanged within 1e-6, the hinge_mix loss changes by <= 1e-6 relative and |v.grad L| / (|v| |grad L|) <= 1e-6, the last two on sequences whose pred and ref have no helix > 30 pairs",
+  "P0_3": {
+   "control_min_change": 0.001,
+   "grad_rel_tol": 1e-05,
+   "max_len": 200,
+   "n_sequences": 30
+  },
+  "P0_3_head_noop": "30 seeded TR0 sequences <= 200 nt, shipped weights: hinge_mix weight gradient with the head (canonicalise inserted after make_param) vs without, in eval mode and in train mode with identical dropout: relative L2 difference <= 1e-5 and identical argmax structures; deterministic positive control: projecting out the unit direction of the step's own theta-gradient, after removing its G component (a non-null direction by construction), must change the weight gradient by >= 1e-3 relative on every sequence and mode",
+  "P0_4": {
+   "abs_floor": 2e-05,
+   "dE_rel_tol": 1e-06,
+   "residual_rel_tol": 1e-12,
+   "tie_bound": 1e-05
+  },
+  "P0_4_defining_check": "all 1,305 TS0 sequences, shipped TrainSetAB weights: identical predicted structures with and without the head, except near-tie flips whose score gap under the original parameters is <= tie_bound * max(1, |E|) + abs_floor; |dE| <= dE_rel_tol * max(1, |E|) + abs_floor for the predicted and (where realisable) the reference structure (abs_floor covers float32 summation, whose error scales with the partial sums rather than |E|); residual null norm of the canonical theta <= 1e-12 * ||theta||^2",
+  "P0_4_negative_controls": {
+   "NC1": "theta - ||P_G theta|| r (r a random direction on theta's coordinates, its G component removed, unit norm in theta space) must change the predicted-structure score by > 1e-3 relative on >= 95% of sequences and change at least one predicted structure",
+   "NC2": "the head without h (g_p only) must leave a residual null norm >= 100 x the full head's on >= 90% of the sequences where h is in G",
+   "NC3": "a random G perturbation (norm = ||theta||) applied before the head must not survive it: canonical tables equal within 1e-4 absolute, and the predicted structure equal to the head's own (s_c) up to near-ties as in P0.4, on every sequence",
+   "thresholds": {
+    "NC1_frac": 0.95,
+    "NC1_rel": 0.001,
+    "NC2_frac": 0.9,
+    "NC2_ratio": 100.0,
+    "NC3_abs": 0.0001
+   }
+  },
+  "P0_5": {
+   "crosscheck_steps": 5,
+   "crosscheck_tol": 1e-09,
+   "max_len": 80,
+   "n_sequences": 20
+  },
+  "P0_5_runner": "CPU, 20 seeded TR0 sequences <= 80 nt: (a) gauge runner with lambda = 0 is bitwise equal to the plain timed runner after 1 epoch (AdamW); (b) the same for --optimizer SGD; (c) 1 epoch + resume to epoch 2 with the RNG sidecar is bitwise equal to 2 uninterrupted epochs; (d) the stdout 'Train Epoch' loss lines parse; (e) positive control: lambda = 1 changes the weights; (f) the float64 CPU crosscheck of R agrees to <= 1e-9",
+  "stop_rule": "any Phase 0 failure stops everything; nothing trains"
+ },
+ "torch": "2.13.0+cu130"
+}

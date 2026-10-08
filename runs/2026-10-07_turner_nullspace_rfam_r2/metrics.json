@@ -1,0 +1,948 @@
+{
+  "configs": {
+    "d0_special_hp0": {
+      "C0_corrupted_entry_detected": {
+        "('ML_ci',)": {
+          "detected": true,
+          "rows_failing": 27763,
+          "rows_using": 27763
+        },
+        "('TerminalAU',)": {
+          "detected": true,
+          "rows_failing": 76519,
+          "rows_using": 76519
+        },
+        "('hairpin', 30)": {
+          "detected": true,
+          "rows_failing": 10196,
+          "rows_using": 10196
+        },
+        "('mismatchH', 5, 3, 1)": {
+          "detected": true,
+          "rows_failing": 4169,
+          "rows_using": 4169
+        },
+        "('stack', 1, 2)": {
+          "detected": true,
+          "rows_failing": 65790,
+          "rows_using": 65790
+        }
+      },
+      "C1_random_nonnull_changes": {
+        "fails_as_required": true,
+        "max_abs_change": 242.27596560882827
+      },
+      "C2_null_basis_unchanged": {
+        "max_abs_change": 1.7546225450714565e-13,
+        "passes": true
+      },
+      "C3_row_shuffle": {
+        "changes_dim": true,
+        "null_dim_shuffled": 0
+      },
+      "C4_planted_defect": {
+        "N1_max_abs_change": 16.0,
+        "detected": true
+      },
+      "R5_uniform_stack_shift": {
+        "in_null_space": false,
+        "max_abs_change": 622.0
+      },
+      "coverage": {
+        "by_table": {
+          "int21": 463,
+          "int22": 4333
+        },
+        "dim": 4796
+      },
+      "dangles": 0,
+      "identifiability_by_table": {
+        "ML_cc": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ML_ci": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ML_cu": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "TerminalAU": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "bulge": {
+          "individually_identifiable": 30,
+          "used": 30
+        },
+        "hairpin": {
+          "individually_identifiable": 0,
+          "used": 28
+        },
+        "int11": {
+          "individually_identifiable": 576,
+          "used": 576
+        },
+        "int21": {
+          "individually_identifiable": 1784,
+          "used": 1841
+        },
+        "int22": {
+          "individually_identifiable": 4514,
+          "used": 4883
+        },
+        "internal_loop": {
+          "individually_identifiable": 0,
+          "used": 27
+        },
+        "mismatch1nI": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatch23I": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchH": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchI": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "ninio_m": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ninio_max": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "stack": {
+          "individually_identifiable": 36,
+          "used": 36
+        }
+      },
+      "intrinsic_restricted": {
+        "all_null": true,
+        "max_abs_row_change": {
+          "N1_hairpin_mismatch_vs_init": 0.0,
+          "N2_interior_mismatch_vs_init": 0.0
+        },
+        "rank_on_used_columns": 2
+      },
+      "n_columns_reachable": 12607,
+      "nontrivial": {
+        "dim": 214,
+        "weight_by_table": {
+          "int21": 0.1441,
+          "int22": 0.8559
+        }
+      },
+      "null_dim_total": 5012,
+      "null_dim_within_used": {
+        "agree": true,
+        "eigh_gram": 216,
+        "eigh_reduced": 216,
+        "exact_mod_p": 216,
+        "gram": {
+          "eig_tol": 0.0001844600500755352,
+          "largest_null_eig": 1.1522864253191104e-10,
+          "smallest_nonnull_eig": 0.031828461778719
+        },
+        "qr": {
+          "largest_null_sv": 9.678558102860477e-13,
+          "smallest_nonnull_sv": 0.17840533001762074,
+          "sv_tol": 2.4940757412015543e-07
+        },
+        "qr_svd": 216,
+        "rank_mod_p": {
+          "1048571": 5402,
+          "1048573": 5402
+        },
+        "reduced": {
+          "eig_tol": 0.00010101369417311103,
+          "largest_null_eig": 3.6605604357846896e-09,
+          "reduced_shape": [
+            106723,
+            5618
+          ],
+          "singleton_columns_eliminated": 2193,
+          "smallest_nonnull_eig": 0.1563597189637109
+        },
+        "seconds": 835.4
+      },
+      "reconstruction": {
+        "first_failures": [],
+        "n_checked": 108916,
+        "n_failed": 0,
+        "passes": true,
+        "rows_with_long_loop_offset": 13000
+      },
+      "shape": [
+        108916,
+        12607
+      ],
+      "special_hp": 0,
+      "used_columns": 7811
+    },
+    "d0_special_hp1": {
+      "C0_corrupted_entry_detected": {
+        "('ML_ci',)": {
+          "detected": true,
+          "rows_failing": 27763,
+          "rows_using": 27763
+        },
+        "('TerminalAU',)": {
+          "detected": true,
+          "rows_failing": 77189,
+          "rows_using": 77189
+        },
+        "('hairpin', 30)": {
+          "detected": true,
+          "rows_failing": 10196,
+          "rows_using": 10196
+        },
+        "('mismatchH', 5, 3, 1)": {
+          "detected": true,
+          "rows_failing": 4032,
+          "rows_using": 4032
+        },
+        "('stack', 1, 2)": {
+          "detected": true,
+          "rows_failing": 65790,
+          "rows_using": 65790
+        }
+      },
+      "C1_random_nonnull_changes": {
+        "fails_as_required": true,
+        "max_abs_change": 521.0005616956221
+      },
+      "C2_null_basis_unchanged": {
+        "max_abs_change": 1.5396985687645976e-13,
+        "passes": true
+      },
+      "C3_row_shuffle": {
+        "changes_dim": true,
+        "null_dim_shuffled": 0
+      },
+      "C4_planted_defect": {
+        "N1_max_abs_change": 16.0,
+        "detected": true
+      },
+      "R5_uniform_stack_shift": {
+        "in_null_space": false,
+        "max_abs_change": 622.0
+      },
+      "coverage": {
+        "by_table": {
+          "Hexaloop": 4,
+          "int21": 463,
+          "int22": 4333
+        },
+        "dim": 4800
+      },
+      "dangles": 0,
+      "identifiability_by_table": {
+        "ML_cc": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ML_ci": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ML_cu": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "TerminalAU": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "Tetraloop": {
+          "individually_identifiable": 16,
+          "used": 16
+        },
+        "Triloop": {
+          "individually_identifiable": 2,
+          "used": 2
+        },
+        "bulge": {
+          "individually_identifiable": 30,
+          "used": 30
+        },
+        "hairpin": {
+          "individually_identifiable": 1,
+          "used": 28
+        },
+        "int11": {
+          "individually_identifiable": 576,
+          "used": 576
+        },
+        "int21": {
+          "individually_identifiable": 1784,
+          "used": 1841
+        },
+        "int22": {
+          "individually_identifiable": 4514,
+          "used": 4883
+        },
+        "internal_loop": {
+          "individually_identifiable": 0,
+          "used": 27
+        },
+        "mismatch1nI": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatch23I": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchH": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchI": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "ninio_m": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ninio_max": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "stack": {
+          "individually_identifiable": 36,
+          "used": 36
+        }
+      },
+      "intrinsic_restricted": {
+        "all_null": true,
+        "max_abs_row_change": {
+          "N1_hairpin_mismatch_vs_init": 0.0,
+          "N2_interior_mismatch_vs_init": 0.0
+        },
+        "rank_on_used_columns": 2
+      },
+      "n_columns_reachable": 12629,
+      "nontrivial": {
+        "dim": 214,
+        "weight_by_table": {
+          "int21": 0.1441,
+          "int22": 0.8559
+        }
+      },
+      "null_dim_total": 5016,
+      "null_dim_within_used": {
+        "agree": true,
+        "eigh_gram": 216,
+        "eigh_reduced": 216,
+        "exact_mod_p": 216,
+        "gram": {
+          "eig_tol": 0.0001849518943284286,
+          "largest_null_eig": 5.383481051747763e-13,
+          "smallest_nonnull_eig": 0.031813362283412965
+        },
+        "qr": {
+          "largest_null_sv": 9.680552297488723e-13,
+          "smallest_nonnull_sv": 0.178363007048542,
+          "sv_tol": 2.4945260373788107e-07
+        },
+        "qr_svd": 216,
+        "rank_mod_p": {
+          "1048571": 5420,
+          "1048573": 5420
+        },
+        "reduced": {
+          "eig_tol": 0.00010136875116376813,
+          "largest_null_eig": 6.7168510950973414e-09,
+          "reduced_shape": [
+            106723,
+            5636
+          ],
+          "singleton_columns_eliminated": 2193,
+          "smallest_nonnull_eig": 0.15627641205575862
+        },
+        "seconds": 726.4
+      },
+      "reconstruction": {
+        "first_failures": [],
+        "n_checked": 108916,
+        "n_failed": 0,
+        "passes": true,
+        "rows_with_long_loop_offset": 13000
+      },
+      "shape": [
+        108916,
+        12629
+      ],
+      "special_hp": 1,
+      "used_columns": 7829
+    },
+    "d2_special_hp0": {
+      "C0_corrupted_entry_detected": {
+        "('ML_ci',)": {
+          "detected": true,
+          "rows_failing": 27763,
+          "rows_using": 27763
+        },
+        "('TerminalAU',)": {
+          "detected": true,
+          "rows_failing": 76519,
+          "rows_using": 76519
+        },
+        "('hairpin', 30)": {
+          "detected": true,
+          "rows_failing": 10196,
+          "rows_using": 10196
+        },
+        "('mismatchH', 5, 3, 1)": {
+          "detected": true,
+          "rows_failing": 4169,
+          "rows_using": 4169
+        },
+        "('stack', 1, 2)": {
+          "detected": true,
+          "rows_failing": 65790,
+          "rows_using": 65790
+        }
+      },
+      "C1_random_nonnull_changes": {
+        "fails_as_required": true,
+        "max_abs_change": 210.3875188522933
+      },
+      "C2_null_basis_unchanged": {
+        "max_abs_change": 6.348335319404844e-13,
+        "passes": true
+      },
+      "C3_row_shuffle": {
+        "changes_dim": true,
+        "null_dim_shuffled": 0
+      },
+      "C4_planted_defect": {
+        "N1_max_abs_change": 16.0,
+        "detected": true
+      },
+      "R5_uniform_stack_shift": {
+        "in_null_space": false,
+        "max_abs_change": 622.0
+      },
+      "R6_r1_artifact": {
+        "in_null_space": false,
+        "max_abs_change": 36.0
+      },
+      "coverage": {
+        "by_table": {
+          "int21": 463,
+          "int22": 4333
+        },
+        "dim": 4796
+      },
+      "dangles": 2,
+      "identifiability_by_table": {
+        "ML_cc": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ML_ci": {
+          "individually_identifiable": 0,
+          "used": 1
+        },
+        "ML_cu": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "TerminalAU": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "bulge": {
+          "individually_identifiable": 30,
+          "used": 30
+        },
+        "dangle3": {
+          "individually_identifiable": 24,
+          "used": 24
+        },
+        "dangle5": {
+          "individually_identifiable": 24,
+          "used": 24
+        },
+        "hairpin": {
+          "individually_identifiable": 0,
+          "used": 28
+        },
+        "int11": {
+          "individually_identifiable": 576,
+          "used": 576
+        },
+        "int21": {
+          "individually_identifiable": 1784,
+          "used": 1841
+        },
+        "int22": {
+          "individually_identifiable": 4514,
+          "used": 4883
+        },
+        "internal_loop": {
+          "individually_identifiable": 0,
+          "used": 27
+        },
+        "mismatch1nI": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatch23I": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchExt": {
+          "individually_identifiable": 96,
+          "used": 96
+        },
+        "mismatchH": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchI": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchM": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "ninio_m": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ninio_max": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "stack": {
+          "individually_identifiable": 36,
+          "used": 36
+        }
+      },
+      "intrinsic_restricted": {
+        "all_null": true,
+        "max_abs_row_change": {
+          "N1_hairpin_mismatch_vs_init": 0.0,
+          "N2_interior_mismatch_vs_init": 0.0,
+          "N3_multiloop_mismatch_vs_ci": 0.0
+        },
+        "rank_on_used_columns": 3
+      },
+      "n_columns_reachable": 12847,
+      "nontrivial": {
+        "dim": 214,
+        "weight_by_table": {
+          "int21": 0.1441,
+          "int22": 0.8559
+        }
+      },
+      "null_dim_total": 5013,
+      "null_dim_within_used": {
+        "agree": true,
+        "eigh_gram": 217,
+        "eigh_reduced": 217,
+        "exact_mod_p": 217,
+        "gram": {
+          "eig_tol": 0.00019035615156129328,
+          "largest_null_eig": 9.658610725334108e-09,
+          "smallest_nonnull_eig": 0.031180042059733775
+        },
+        "qr": {
+          "largest_null_sv": 4.583284535374138e-12,
+          "smallest_nonnull_sv": 0.17657871349546503,
+          "sv_tol": 2.4955733586933605e-07
+        },
+        "qr_svd": 217,
+        "rank_mod_p": {
+          "1048571": 5641,
+          "1048573": 5641
+        },
+        "reduced": {
+          "eig_tol": 0.0001054558198530422,
+          "largest_null_eig": 7.949662218991997e-11,
+          "reduced_shape": [
+            106723,
+            5858
+          ],
+          "singleton_columns_eliminated": 2193,
+          "smallest_nonnull_eig": 0.15489604203290122
+        },
+        "seconds": 957.2
+      },
+      "reconstruction": {
+        "first_failures": [],
+        "n_checked": 108916,
+        "n_failed": 0,
+        "passes": true,
+        "rows_with_long_loop_offset": 13000
+      },
+      "shape": [
+        108916,
+        12847
+      ],
+      "special_hp": 0,
+      "used_columns": 8051
+    },
+    "d2_special_hp1": {
+      "C0_corrupted_entry_detected": {
+        "('ML_ci',)": {
+          "detected": true,
+          "rows_failing": 27763,
+          "rows_using": 27763
+        },
+        "('TerminalAU',)": {
+          "detected": true,
+          "rows_failing": 77189,
+          "rows_using": 77189
+        },
+        "('hairpin', 30)": {
+          "detected": true,
+          "rows_failing": 10196,
+          "rows_using": 10196
+        },
+        "('mismatchH', 5, 3, 1)": {
+          "detected": true,
+          "rows_failing": 4032,
+          "rows_using": 4032
+        },
+        "('stack', 1, 2)": {
+          "detected": true,
+          "rows_failing": 65790,
+          "rows_using": 65790
+        }
+      },
+      "C1_random_nonnull_changes": {
+        "fails_as_required": true,
+        "max_abs_change": 459.73542531980917
+      },
+      "C2_null_basis_unchanged": {
+        "max_abs_change": 5.606185671111285e-13,
+        "passes": true
+      },
+      "C3_row_shuffle": {
+        "changes_dim": true,
+        "null_dim_shuffled": 0
+      },
+      "C4_planted_defect": {
+        "N1_max_abs_change": 16.0,
+        "detected": true
+      },
+      "R5_uniform_stack_shift": {
+        "in_null_space": false,
+        "max_abs_change": 622.0
+      },
+      "R6_r1_artifact": {
+        "in_null_space": false,
+        "max_abs_change": 36.0
+      },
+      "coverage": {
+        "by_table": {
+          "Hexaloop": 4,
+          "int21": 463,
+          "int22": 4333
+        },
+        "dim": 4800
+      },
+      "dangles": 2,
+      "identifiability_by_table": {
+        "ML_cc": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ML_ci": {
+          "individually_identifiable": 0,
+          "used": 1
+        },
+        "ML_cu": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "TerminalAU": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "Tetraloop": {
+          "individually_identifiable": 16,
+          "used": 16
+        },
+        "Triloop": {
+          "individually_identifiable": 2,
+          "used": 2
+        },
+        "bulge": {
+          "individually_identifiable": 30,
+          "used": 30
+        },
+        "dangle3": {
+          "individually_identifiable": 24,
+          "used": 24
+        },
+        "dangle5": {
+          "individually_identifiable": 24,
+          "used": 24
+        },
+        "hairpin": {
+          "individually_identifiable": 1,
+          "used": 28
+        },
+        "int11": {
+          "individually_identifiable": 576,
+          "used": 576
+        },
+        "int21": {
+          "individually_identifiable": 1784,
+          "used": 1841
+        },
+        "int22": {
+          "individually_identifiable": 4514,
+          "used": 4883
+        },
+        "internal_loop": {
+          "individually_identifiable": 0,
+          "used": 27
+        },
+        "mismatch1nI": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatch23I": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchExt": {
+          "individually_identifiable": 96,
+          "used": 96
+        },
+        "mismatchH": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchI": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "mismatchM": {
+          "individually_identifiable": 0,
+          "used": 96
+        },
+        "ninio_m": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "ninio_max": {
+          "individually_identifiable": 1,
+          "used": 1
+        },
+        "stack": {
+          "individually_identifiable": 36,
+          "used": 36
+        }
+      },
+      "intrinsic_restricted": {
+        "all_null": true,
+        "max_abs_row_change": {
+          "N1_hairpin_mismatch_vs_init": 0.0,
+          "N2_interior_mismatch_vs_init": 0.0,
+          "N3_multiloop_mismatch_vs_ci": 0.0
+        },
+        "rank_on_used_columns": 3
+      },
+      "n_columns_reachable": 12869,
+      "nontrivial": {
+        "dim": 214,
+        "weight_by_table": {
+          "int21": 0.1441,
+          "int22": 0.8559
+        }
+      },
+      "null_dim_total": 5017,
+      "null_dim_within_used": {
+        "agree": true,
+        "eigh_gram": 217,
+        "eigh_reduced": 217,
+        "exact_mod_p": 217,
+        "gram": {
+          "eig_tol": 0.00019085055152812157,
+          "largest_null_eig": 4.4985519003361193e-10,
+          "smallest_nonnull_eig": 0.03116244833307253
+        },
+        "qr": {
+          "largest_null_sv": 4.583531533538472e-12,
+          "smallest_nonnull_sv": 0.17652888802719532,
+          "sv_tol": 2.4960233736954016e-07
+        },
+        "qr_svd": 217,
+        "rank_mod_p": {
+          "1048571": 5659,
+          "1048573": 5659
+        },
+        "reduced": {
+          "eig_tol": 0.0001058126046400028,
+          "largest_null_eig": 3.3005244910148326e-11,
+          "reduced_shape": [
+            106723,
+            5876
+          ],
+          "singleton_columns_eliminated": 2193,
+          "smallest_nonnull_eig": 0.1548185364799894
+        },
+        "seconds": 798.4
+      },
+      "reconstruction": {
+        "first_failures": [],
+        "n_checked": 108916,
+        "n_failed": 0,
+        "passes": true,
+        "rows_with_long_loop_offset": 13000
+      },
+      "shape": [
+        108916,
+        12869
+      ],
+      "special_hp": 1,
+      "used_columns": 8069
+    }
+  },
+  "data": "rfam_15_1_seed (CC0), consensus structures projected onto seed sequences; comparative, not per-molecule experimental; not ArchiveII",
+  "elapsed_seconds": 3671.7,
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "ad67313c86a9d45576c532710fd91dfe87d67ce6",
+  "predictions": {
+    "R1": "data null space strictly larger than intrinsic: >2 (d0), >3 (d2)",
+    "R2": "most of the excess is coverage, concentrated in int22/int21/int11 and special hairpins",
+    "R3": "a non-zero nontrivial remainder exists beyond coverage and intrinsic",
+    "R4": "every intrinsic direction restricted to used entries is null on every row (check)",
+    "R5": "uniform stack shift is not null on Rfam",
+    "R6": "the r1 generating-set multiloop artifact is not null on real multiloops (d2)"
+  },
+  "projection": {
+    "distinct_rows": 98174,
+    "dropped_non_ACGU": 474,
+    "families": 4227,
+    "families_with_crossing": 0,
+    "length_min_median_max": [
+      19,
+      84,
+      4065
+    ],
+    "pairs_dropped_crossing": 0,
+    "pairs_dropped_gap": 117115,
+    "pairs_dropped_noncanonical": 199114,
+    "pairs_dropped_short_hairpin": 2995,
+    "rows": 108916,
+    "rows_without_pairs": 4293,
+    "sequences": 109390
+  },
+  "run_id": "2026-10-07_turner_nullspace_rfam_r2",
+  "status": "complete",
+  "verdicts": {
+    "R1": {
+      "null_dim_total": {
+        "d0_special_hp0": 5012,
+        "d0_special_hp1": 5016,
+        "d2_special_hp0": 5013,
+        "d2_special_hp1": 5017
+      },
+      "verdict": "confirmed"
+    },
+    "R2": {
+      "d0_special_hp0": {
+        "coverage": 4796,
+        "excess": 5010,
+        "top_tables": {
+          "int21": 463,
+          "int22": 4333
+        }
+      },
+      "d0_special_hp1": {
+        "coverage": 4800,
+        "excess": 5014,
+        "top_tables": {
+          "Hexaloop": 4,
+          "int21": 463,
+          "int22": 4333
+        }
+      },
+      "d2_special_hp0": {
+        "coverage": 4796,
+        "excess": 5010,
+        "top_tables": {
+          "int21": 463,
+          "int22": 4333
+        }
+      },
+      "d2_special_hp1": {
+        "coverage": 4800,
+        "excess": 5014,
+        "top_tables": {
+          "Hexaloop": 4,
+          "int21": 463,
+          "int22": 4333
+        }
+      }
+    },
+    "R3": {
+      "nontrivial_dim": {
+        "d0_special_hp0": 214,
+        "d0_special_hp1": 214,
+        "d2_special_hp0": 214,
+        "d2_special_hp1": 214
+      },
+      "verdict": "confirmed"
+    },
+    "R4": true,
+    "R5": true,
+    "R6": true,
+    "controls": {
+      "d0_special_hp0": {
+        "C0": true,
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "rank_methods_agree": true
+      },
+      "d0_special_hp1": {
+        "C0": true,
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "rank_methods_agree": true
+      },
+      "d2_special_hp0": {
+        "C0": true,
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "rank_methods_agree": true
+      },
+      "d2_special_hp1": {
+        "C0": true,
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "rank_methods_agree": true
+      }
+    }
+  },
+  "viennarna_version": "2.7.2"
+}

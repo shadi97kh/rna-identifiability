@@ -1,0 +1,1135 @@
+{
+  "configs": {
+    "d0_special_hp0": {
+      "C0_corrupted_entry_detected": {
+        "('ML_ci',)": {
+          "detected": true,
+          "rows_failing": 336,
+          "rows_using": 336
+        },
+        "('TerminalAU',)": {
+          "detected": true,
+          "rows_failing": 584,
+          "rows_using": 584
+        },
+        "('int22', 2, 1, 3, 1, 4, 2)": {
+          "detected": true,
+          "rows_failing": 1,
+          "rows_using": 1
+        },
+        "('mismatchH', 5, 3, 1)": {
+          "detected": true,
+          "rows_failing": 34,
+          "rows_using": 34
+        },
+        "('stack', 1, 2)": {
+          "detected": true,
+          "rows_failing": 3564,
+          "rows_using": 3564
+        }
+      },
+      "C1_random_nonnull_changes_energy": {
+        "fails_as_required": true,
+        "max_abs_row_change": 43.267264880001235,
+        "threshold": 1e-06
+      },
+      "C2_null_basis_rows_unchanged": {
+        "max_abs_row_change": 1.4627117912595496e-12,
+        "passes": true,
+        "tolerance": 1e-09
+      },
+      "C3_label_shuffle": {
+        "column_permutation_leaves_dim_unchanged": true,
+        "note": "rank is permutation invariant, so only the within-row shuffle is a control",
+        "null_dim_column_permuted": 2,
+        "null_dim_row_shuffled": 0,
+        "null_dim_unshuffled": 2,
+        "row_shuffle_changes_dim": true
+      },
+      "C4_planted_defect": {
+        "N1_max_abs_row_change_under_defect": 1.0,
+        "detected": true
+      },
+      "P2_uniform_stack_shift": {
+        "component_outside_null_space": 1.0,
+        "distinct_row_changes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10
+        ],
+        "in_null_space": false,
+        "max_abs_row_change": 10.0
+      },
+      "analytic": {
+        "dim_equals_null_dim": true,
+        "directions": {
+          "N1_hairpin_mismatch_vs_init": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          },
+          "N2_interior_mismatch_vs_init": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          }
+        },
+        "n_directions": 2,
+        "span_mismatch_sine": 1.1711983122354235e-10
+      },
+      "columns": {
+        "n_reachable": 12607,
+        "n_reachable_never_used": 0,
+        "n_used_by_generating_set": 12607,
+        "reachable_never_used": [],
+        "used_but_not_declared_reachable": []
+      },
+      "dangles": 0,
+      "eigh_full_crosscheck": {
+        "agrees": true,
+        "eig_tol": 4.4643216062985413e-07,
+        "largest_eig": 159478.9967683681,
+        "largest_null_eig": 6.850318802295169e-14,
+        "null_dim": 2,
+        "seconds": 276.0,
+        "smallest_nonnull_eig": 0.0021126542069480557
+      },
+      "eigh_reduced": {
+        "eig_tol": 1.1522127434055735e-08,
+        "largest_eig": 90088.6264210569,
+        "largest_null_eig": 1.7578692722827705e-14,
+        "null_dim": 2,
+        "rank": 12605,
+        "reduced_shape": [
+          11710,
+          576
+        ],
+        "seconds": 0.8,
+        "singleton_columns_eliminated": 12031,
+        "smallest_nonnull_eig": 0.18445336025162626
+      },
+      "exact_rank": {
+        "agrees_with_eigh": true,
+        "method": "singleton elimination, then Gaussian elimination over GF(p), two primes",
+        "null_dim": 2,
+        "rank": 12605,
+        "rank_mod_p": {
+          "1000000007": 574,
+          "2147483647": 574
+        }
+      },
+      "n_rows": 23741,
+      "null_basis_loadings": {
+        "N1_hairpin_mismatch_vs_init": {
+          "largest_entries": [
+            [
+              "('mismatchH', 6, 2, 4)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 3, 1)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 3, 2)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 3, 3)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 3, 4)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 4, 1)",
+              0.08980265101338746
+            ]
+          ],
+          "weight_by_table": {
+            "hairpin": 0.225806,
+            "mismatchH": 0.774194
+          }
+        },
+        "N2_interior_mismatch_vs_init": {
+          "largest_entries": [
+            [
+              "('internal_loop', 11)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 10)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 27)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 26)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 25)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 28)",
+              -0.10050378152592121
+            ]
+          ],
+          "weight_by_table": {
+            "internal_loop": 0.272727,
+            "mismatch1nI": 0.242424,
+            "mismatch23I": 0.242424,
+            "mismatchI": 0.242424
+          }
+        }
+      },
+      "null_dim": 2,
+      "rank": 12605,
+      "reconstruction": {
+        "first_failures": [],
+        "max_abs_kcal_float": 3.552713678800501e-15,
+        "n_checked": 23741,
+        "n_failed": 0,
+        "passes": true,
+        "units": "integer 0.01 kcal/mol; exact equality required"
+      },
+      "shape": [
+        23741,
+        12607
+      ],
+      "special_hp": 0,
+      "tied": {
+        "C2_max_abs_row_change": 4.955480470414386e-13,
+        "eigh": {
+          "eig_tol": 1.7979543362971194e-07,
+          "largest_eig": 150060.5351923068,
+          "largest_null_eig": 1.5285802354178896e-13,
+          "null_dim": 2,
+          "reduced_shape": [
+            21381,
+            5396
+          ],
+          "singleton_columns_eliminated": 2360,
+          "smallest_nonnull_eig": 0.005669809428196255
+        },
+        "n_columns": 7756,
+        "null_dim": 2,
+        "rank": 7754
+      }
+    },
+    "d0_special_hp1": {
+      "C0_corrupted_entry_detected": {
+        "('ML_ci',)": {
+          "detected": true,
+          "rows_failing": 336,
+          "rows_using": 336
+        },
+        "('TerminalAU',)": {
+          "detected": true,
+          "rows_failing": 652,
+          "rows_using": 652
+        },
+        "('int22', 2, 1, 3, 1, 4, 2)": {
+          "detected": true,
+          "rows_failing": 1,
+          "rows_using": 1
+        },
+        "('mismatchH', 5, 3, 1)": {
+          "detected": true,
+          "rows_failing": 32,
+          "rows_using": 32
+        },
+        "('stack', 1, 2)": {
+          "detected": true,
+          "rows_failing": 3564,
+          "rows_using": 3564
+        }
+      },
+      "C1_random_nonnull_changes_energy": {
+        "fails_as_required": true,
+        "max_abs_row_change": 11.121995590367368,
+        "threshold": 1e-06
+      },
+      "C2_null_basis_rows_unchanged": {
+        "max_abs_row_change": 1.0138833701977638e-12,
+        "passes": true,
+        "tolerance": 1e-09
+      },
+      "C3_label_shuffle": {
+        "column_permutation_leaves_dim_unchanged": true,
+        "note": "rank is permutation invariant, so only the within-row shuffle is a control",
+        "null_dim_column_permuted": 2,
+        "null_dim_row_shuffled": 0,
+        "null_dim_unshuffled": 2,
+        "row_shuffle_changes_dim": true
+      },
+      "C4_planted_defect": {
+        "N1_max_abs_row_change_under_defect": 1.0,
+        "detected": true
+      },
+      "P2_uniform_stack_shift": {
+        "component_outside_null_space": 1.0,
+        "distinct_row_changes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10
+        ],
+        "in_null_space": false,
+        "max_abs_row_change": 10.0
+      },
+      "analytic": {
+        "dim_equals_null_dim": true,
+        "directions": {
+          "N1_hairpin_mismatch_vs_init": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          },
+          "N2_interior_mismatch_vs_init": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          }
+        },
+        "n_directions": 2,
+        "span_mismatch_sine": 4.2158500162458447e-11
+      },
+      "columns": {
+        "n_reachable": 12629,
+        "n_reachable_never_used": 0,
+        "n_used_by_generating_set": 12629,
+        "reachable_never_used": [],
+        "used_but_not_declared_reachable": []
+      },
+      "dangles": 0,
+      "eigh_full_crosscheck": {
+        "agrees": true,
+        "eig_tol": 4.471692521389541e-07,
+        "largest_eig": 159464.03336008688,
+        "largest_null_eig": 5.847582575757846e-14,
+        "null_dim": 2,
+        "seconds": 203.0,
+        "smallest_nonnull_eig": 0.002110451410454962
+      },
+      "eigh_reduced": {
+        "eig_tol": 1.1599294537692764e-08,
+        "largest_eig": 90066.5147546789,
+        "largest_null_eig": -8.87376930100915e-15,
+        "null_dim": 2,
+        "rank": 12627,
+        "reduced_shape": [
+          11692,
+          580
+        ],
+        "seconds": 0.8,
+        "singleton_columns_eliminated": 12049,
+        "smallest_nonnull_eig": 0.17911455943475968
+      },
+      "exact_rank": {
+        "agrees_with_eigh": true,
+        "method": "singleton elimination, then Gaussian elimination over GF(p), two primes",
+        "null_dim": 2,
+        "rank": 12627,
+        "rank_mod_p": {
+          "1000000007": 578,
+          "2147483647": 578
+        }
+      },
+      "n_rows": 23741,
+      "null_basis_loadings": {
+        "N1_hairpin_mismatch_vs_init": {
+          "largest_entries": [
+            [
+              "('mismatchH', 6, 1, 2)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 1, 3)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 1, 4)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 2, 1)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 2, 2)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 2, 3)",
+              0.09016696346674323
+            ]
+          ],
+          "weight_by_table": {
+            "hairpin": 0.219512,
+            "mismatchH": 0.780488
+          }
+        },
+        "N2_interior_mismatch_vs_init": {
+          "largest_entries": [
+            [
+              "('internal_loop', 21)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 20)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 19)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 18)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 17)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 22)",
+              -0.10050378152592121
+            ]
+          ],
+          "weight_by_table": {
+            "internal_loop": 0.272727,
+            "mismatch1nI": 0.242424,
+            "mismatch23I": 0.242424,
+            "mismatchI": 0.242424
+          }
+        }
+      },
+      "null_dim": 2,
+      "rank": 12627,
+      "reconstruction": {
+        "first_failures": [],
+        "max_abs_kcal_float": 3.552713678800501e-15,
+        "n_checked": 23741,
+        "n_failed": 0,
+        "passes": true,
+        "units": "integer 0.01 kcal/mol; exact equality required"
+      },
+      "shape": [
+        23741,
+        12629
+      ],
+      "special_hp": 1,
+      "tied": {
+        "C2_max_abs_row_change": 7.446132398411506e-13,
+        "eigh": {
+          "eig_tol": 1.7989063568713492e-07,
+          "largest_eig": 150028.7777496338,
+          "largest_null_eig": 3.883954504626711e-14,
+          "null_dim": 2,
+          "reduced_shape": [
+            21363,
+            5400
+          ],
+          "singleton_columns_eliminated": 2378,
+          "smallest_nonnull_eig": 0.005664398548234144
+        },
+        "n_columns": 7778,
+        "null_dim": 2,
+        "rank": 7776
+      }
+    },
+    "d2_special_hp0": {
+      "C0_corrupted_entry_detected": {
+        "('ML_ci',)": {
+          "detected": true,
+          "rows_failing": 336,
+          "rows_using": 336
+        },
+        "('TerminalAU',)": {
+          "detected": true,
+          "rows_failing": 584,
+          "rows_using": 584
+        },
+        "('int22', 2, 1, 3, 1, 4, 2)": {
+          "detected": true,
+          "rows_failing": 1,
+          "rows_using": 1
+        },
+        "('mismatchH', 5, 3, 1)": {
+          "detected": true,
+          "rows_failing": 34,
+          "rows_using": 34
+        },
+        "('stack', 1, 2)": {
+          "detected": true,
+          "rows_failing": 3564,
+          "rows_using": 3564
+        }
+      },
+      "C1_random_nonnull_changes_energy": {
+        "fails_as_required": true,
+        "max_abs_row_change": 8.982335665654487,
+        "threshold": 1e-06
+      },
+      "C2_null_basis_rows_unchanged": {
+        "max_abs_row_change": 5.375248857131254e-13,
+        "passes": true,
+        "tolerance": 1e-09
+      },
+      "C3_label_shuffle": {
+        "column_permutation_leaves_dim_unchanged": true,
+        "note": "rank is permutation invariant, so only the within-row shuffle is a control",
+        "null_dim_column_permuted": 3,
+        "null_dim_row_shuffled": 0,
+        "null_dim_unshuffled": 3,
+        "row_shuffle_changes_dim": true
+      },
+      "C4_planted_defect": {
+        "N1_max_abs_row_change_under_defect": 1.0,
+        "detected": true
+      },
+      "C5_r1_spurious_direction_broken": {
+        "broken": true,
+        "max_abs_row_change": 1.0
+      },
+      "P2_uniform_stack_shift": {
+        "component_outside_null_space": 1.0,
+        "distinct_row_changes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10
+        ],
+        "in_null_space": false,
+        "max_abs_row_change": 10.0
+      },
+      "analytic": {
+        "dim_equals_null_dim": true,
+        "directions": {
+          "N1_hairpin_mismatch_vs_init": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          },
+          "N2_interior_mismatch_vs_init": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          },
+          "N3_multiloop_mismatch_vs_ci": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          }
+        },
+        "n_directions": 3,
+        "span_mismatch_sine": 1.902849883134349e-11
+      },
+      "columns": {
+        "n_reachable": 12847,
+        "n_reachable_never_used": 0,
+        "n_used_by_generating_set": 12847,
+        "reachable_never_used": [],
+        "used_but_not_declared_reachable": []
+      },
+      "dangles": 2,
+      "eigh_full_crosscheck": {
+        "agrees": true,
+        "eig_tol": 5.203941209418318e-07,
+        "largest_eig": 182427.55267061808,
+        "largest_null_eig": 2.5777292948448734e-13,
+        "null_dim": 3,
+        "seconds": 285.4,
+        "smallest_nonnull_eig": 0.0019197310826293283
+      },
+      "eigh_reduced": {
+        "eig_tol": 1.5449966944874506e-08,
+        "largest_eig": 100695.31892304386,
+        "largest_null_eig": -1.1007114676476255e-14,
+        "null_dim": 3,
+        "rank": 12844,
+        "reduced_shape": [
+          11585,
+          691
+        ],
+        "seconds": 2.2,
+        "singleton_columns_eliminated": 12156,
+        "smallest_nonnull_eig": 0.10126918239243331
+      },
+      "exact_rank": {
+        "agrees_with_eigh": true,
+        "method": "singleton elimination, then Gaussian elimination over GF(p), two primes",
+        "null_dim": 3,
+        "rank": 12844,
+        "rank_mod_p": {
+          "1000000007": 688,
+          "2147483647": 688
+        }
+      },
+      "n_rows": 23741,
+      "null_basis_loadings": {
+        "N1_hairpin_mismatch_vs_init": {
+          "largest_entries": [
+            [
+              "('mismatchH', 6, 2, 4)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 3, 1)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 3, 2)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 3, 3)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 3, 4)",
+              0.08980265101338746
+            ],
+            [
+              "('mismatchH', 6, 4, 1)",
+              0.08980265101338746
+            ]
+          ],
+          "weight_by_table": {
+            "hairpin": 0.225806,
+            "mismatchH": 0.774194
+          }
+        },
+        "N2_interior_mismatch_vs_init": {
+          "largest_entries": [
+            [
+              "('internal_loop', 11)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 10)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 27)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 26)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 25)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 28)",
+              -0.10050378152592121
+            ]
+          ],
+          "weight_by_table": {
+            "internal_loop": 0.272727,
+            "mismatch1nI": 0.242424,
+            "mismatch23I": 0.242424,
+            "mismatchI": 0.242424
+          }
+        },
+        "N3_multiloop_mismatch_vs_ci": {
+          "largest_entries": [
+            [
+              "('mismatchM', 6, 2, 4)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 3, 1)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 3, 2)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 3, 3)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 3, 4)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 4, 1)",
+              0.10153461651336192
+            ]
+          ],
+          "weight_by_table": {
+            "ML_ci": 0.010309,
+            "mismatchM": 0.989691
+          }
+        }
+      },
+      "null_dim": 3,
+      "rank": 12844,
+      "reconstruction": {
+        "first_failures": [],
+        "max_abs_kcal_float": 3.552713678800501e-15,
+        "n_checked": 23741,
+        "n_failed": 0,
+        "passes": true,
+        "units": "integer 0.01 kcal/mol; exact equality required"
+      },
+      "shape": [
+        23741,
+        12847
+      ],
+      "special_hp": 0,
+      "tied": {
+        "C2_max_abs_row_change": 1.5316949097954335e-12,
+        "eigh": {
+          "eig_tol": 2.0847801796144593e-07,
+          "largest_eig": 170368.6307396312,
+          "largest_null_eig": 7.871998243329342e-14,
+          "null_dim": 3,
+          "reduced_shape": [
+            21256,
+            5511
+          ],
+          "singleton_columns_eliminated": 2485,
+          "smallest_nonnull_eig": 0.005093014359224799
+        },
+        "n_columns": 7996,
+        "null_dim": 3,
+        "rank": 7993
+      }
+    },
+    "d2_special_hp1": {
+      "C0_corrupted_entry_detected": {
+        "('ML_ci',)": {
+          "detected": true,
+          "rows_failing": 336,
+          "rows_using": 336
+        },
+        "('TerminalAU',)": {
+          "detected": true,
+          "rows_failing": 652,
+          "rows_using": 652
+        },
+        "('int22', 2, 1, 3, 1, 4, 2)": {
+          "detected": true,
+          "rows_failing": 1,
+          "rows_using": 1
+        },
+        "('mismatchH', 5, 3, 1)": {
+          "detected": true,
+          "rows_failing": 32,
+          "rows_using": 32
+        },
+        "('stack', 1, 2)": {
+          "detected": true,
+          "rows_failing": 3564,
+          "rows_using": 3564
+        }
+      },
+      "C1_random_nonnull_changes_energy": {
+        "fails_as_required": true,
+        "max_abs_row_change": 38.7443252031937,
+        "threshold": 1e-06
+      },
+      "C2_null_basis_rows_unchanged": {
+        "max_abs_row_change": 1.012104202530173e-11,
+        "passes": true,
+        "tolerance": 1e-09
+      },
+      "C3_label_shuffle": {
+        "column_permutation_leaves_dim_unchanged": true,
+        "note": "rank is permutation invariant, so only the within-row shuffle is a control",
+        "null_dim_column_permuted": 3,
+        "null_dim_row_shuffled": 0,
+        "null_dim_unshuffled": 3,
+        "row_shuffle_changes_dim": true
+      },
+      "C4_planted_defect": {
+        "N1_max_abs_row_change_under_defect": 1.0,
+        "detected": true
+      },
+      "C5_r1_spurious_direction_broken": {
+        "broken": true,
+        "max_abs_row_change": 1.0
+      },
+      "P2_uniform_stack_shift": {
+        "component_outside_null_space": 1.0,
+        "distinct_row_changes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10
+        ],
+        "in_null_space": false,
+        "max_abs_row_change": 10.0
+      },
+      "analytic": {
+        "dim_equals_null_dim": true,
+        "directions": {
+          "N1_hairpin_mismatch_vs_init": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          },
+          "N2_interior_mismatch_vs_init": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          },
+          "N3_multiloop_mismatch_vs_ci": {
+            "max_abs_row_change": 0.0,
+            "null_to_1e-9": true
+          }
+        },
+        "n_directions": 3,
+        "span_mismatch_sine": 3.474647293936153e-10
+      },
+      "columns": {
+        "n_reachable": 12869,
+        "n_reachable_never_used": 0,
+        "n_used_by_generating_set": 12869,
+        "reachable_never_used": [],
+        "used_but_not_declared_reachable": []
+      },
+      "dangles": 2,
+      "eigh_full_crosscheck": {
+        "agrees": true,
+        "eig_tol": 5.212340657236978e-07,
+        "largest_eig": 182409.6312196794,
+        "largest_null_eig": 2.5928467191389506e-13,
+        "null_dim": 3,
+        "seconds": 307.9,
+        "smallest_nonnull_eig": 0.0019118340364699653
+      },
+      "eigh_reduced": {
+        "eig_tol": 1.553412260110477e-08,
+        "largest_eig": 100661.10612642164,
+        "largest_null_eig": 2.4102903325004998e-14,
+        "null_dim": 3,
+        "rank": 12866,
+        "reduced_shape": [
+          11567,
+          695
+        ],
+        "seconds": 2.6,
+        "singleton_columns_eliminated": 12174,
+        "smallest_nonnull_eig": 0.09246433741919784
+      },
+      "exact_rank": {
+        "agrees_with_eigh": true,
+        "method": "singleton elimination, then Gaussian elimination over GF(p), two primes",
+        "null_dim": 3,
+        "rank": 12866,
+        "rank_mod_p": {
+          "1000000007": 692,
+          "2147483647": 692
+        }
+      },
+      "n_rows": 23741,
+      "null_basis_loadings": {
+        "N1_hairpin_mismatch_vs_init": {
+          "largest_entries": [
+            [
+              "('mismatchH', 6, 1, 2)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 1, 3)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 1, 4)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 2, 1)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 2, 2)",
+              0.09016696346674323
+            ],
+            [
+              "('mismatchH', 6, 2, 3)",
+              0.09016696346674323
+            ]
+          ],
+          "weight_by_table": {
+            "hairpin": 0.219512,
+            "mismatchH": 0.780488
+          }
+        },
+        "N2_interior_mismatch_vs_init": {
+          "largest_entries": [
+            [
+              "('internal_loop', 21)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 20)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 19)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 18)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 17)",
+              -0.10050378152592121
+            ],
+            [
+              "('internal_loop', 22)",
+              -0.10050378152592121
+            ]
+          ],
+          "weight_by_table": {
+            "internal_loop": 0.272727,
+            "mismatch1nI": 0.242424,
+            "mismatch23I": 0.242424,
+            "mismatchI": 0.242424
+          }
+        },
+        "N3_multiloop_mismatch_vs_ci": {
+          "largest_entries": [
+            [
+              "('mismatchM', 6, 1, 2)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 1, 3)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 1, 4)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 2, 1)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 2, 2)",
+              0.10153461651336192
+            ],
+            [
+              "('mismatchM', 6, 2, 3)",
+              0.10153461651336192
+            ]
+          ],
+          "weight_by_table": {
+            "ML_ci": 0.010309,
+            "mismatchM": 0.989691
+          }
+        }
+      },
+      "null_dim": 3,
+      "rank": 12866,
+      "reconstruction": {
+        "first_failures": [],
+        "max_abs_kcal_float": 3.552713678800501e-15,
+        "n_checked": 23741,
+        "n_failed": 0,
+        "passes": true,
+        "units": "integer 0.01 kcal/mol; exact equality required"
+      },
+      "shape": [
+        23741,
+        12869
+      ],
+      "special_hp": 1,
+      "tied": {
+        "C2_max_abs_row_change": 2.522913260611512e-12,
+        "eigh": {
+          "eig_tol": 2.085734045372465e-07,
+          "largest_eig": 170322.95683650754,
+          "largest_null_eig": 2.6072423833469587e-13,
+          "null_dim": 3,
+          "reduced_shape": [
+            21238,
+            5515
+          ],
+          "singleton_columns_eliminated": 2503,
+          "smallest_nonnull_eig": 0.0050775449204473935
+        },
+        "n_columns": 8018,
+        "null_dim": 3,
+        "rank": 8015
+      }
+    }
+  },
+  "elapsed_seconds": 2459.6,
+  "generating_set": {
+    "by_construction": {
+      "bulge": 378,
+      "ext_d3": 24,
+      "ext_d5": 24,
+      "ext_mm": 96,
+      "ext_none": 6,
+      "ext_two": 12,
+      "hairpin": 576,
+      "hairpin_size": 168,
+      "helix_len": 16,
+      "il_inner": 4800,
+      "il_outer": 4800,
+      "il_size": 287,
+      "int11": 576,
+      "int12": 64,
+      "int21": 2304,
+      "int22": 9216,
+      "ml_adjacent": 36,
+      "ml_branch": 96,
+      "ml_closing": 96,
+      "ml_degree": 12,
+      "ml_gap2": 96,
+      "special_hairpin": 22,
+      "stack": 36
+    },
+    "max_length": 73,
+    "n_rows": 23741,
+    "nature": "deterministic constructions spanning the model's domain; not data, never fitted"
+  },
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "31f714e8e76d11f1af4c4ff9cfff921e1aecec81",
+  "params": {
+    "MLintern_array": [
+      -90,
+      -90,
+      -90,
+      -90,
+      -90,
+      -90,
+      -90,
+      -90
+    ],
+    "SaltStack": 0,
+    "lxc": 107.856,
+    "n_entries_parsed": 12869,
+    "n_hexaloops": 4,
+    "n_tetraloops": 16,
+    "n_triloops": 2
+  },
+  "predictions": {
+    "A1": "N1 = +mismatchH(all) -hairpin[4..30] (and -hairpin[3] when special_hp=0) is null",
+    "A2": "N2 = +mismatchI,+mismatch1nI,+mismatch23I(all) -2*internal_loop[4..30] is null",
+    "A3": "N3 = +mismatchM(all) -ci is null in d2 only",
+    "A4": "nothing else: dim d0=2, d2=3 for both special_hp, raw and tied alike",
+    "A5": "P3 mostly wrong: survivors are initiation-vs-mismatch trades; dangles vs terminal mismatches not null; no coaxial terms in the model",
+    "P1": "null space NOT empty",
+    "P2": "uniform stack shift NOT in the null space",
+    "P3": "survivors are initiation/per-unpaired trades, dangles vs terminal mismatches, coaxial vs multiloop"
+  },
+  "run_id": "2026-10-07_turner_nullspace_r2",
+  "scope": "MODEL-INTRINSIC null space; the ArchiveII data null space is BLOCKED (docs/BLOCKED.md item 27)",
+  "status": "complete",
+  "verdicts": {
+    "A1_A2_A3": {
+      "verdict": "confirmed"
+    },
+    "A4": {
+      "expected": {
+        "d0_special_hp0": 2,
+        "d0_special_hp1": 2,
+        "d2_special_hp0": 3,
+        "d2_special_hp1": 3
+      },
+      "got_raw": {
+        "d0_special_hp0": 2,
+        "d0_special_hp1": 2,
+        "d2_special_hp0": 3,
+        "d2_special_hp1": 3
+      },
+      "got_tied": {
+        "d0_special_hp0": 2,
+        "d0_special_hp1": 2,
+        "d2_special_hp0": 3,
+        "d2_special_hp1": 3
+      },
+      "verdict": "confirmed"
+    },
+    "P1": {
+      "null_dims": {
+        "d0_special_hp0": 2,
+        "d0_special_hp1": 2,
+        "d2_special_hp0": 3,
+        "d2_special_hp1": 3
+      },
+      "verdict": "confirmed"
+    },
+    "P2": {
+      "verdict": "confirmed"
+    },
+    "P3": {
+      "reason": "every surviving direction is a loop-initiation vs terminal-mismatch trade; none involves per-unpaired increments, dangles vs mismatches, or coaxial stacking (absent from the model)",
+      "verdict": "refuted in substance (see A5)"
+    },
+    "controls": {
+      "d0_special_hp0": {
+        "C0": true,
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": null,
+        "exact_rank_agrees": true,
+        "full_eigh_agrees": true
+      },
+      "d0_special_hp1": {
+        "C0": true,
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": null,
+        "exact_rank_agrees": true,
+        "full_eigh_agrees": true
+      },
+      "d2_special_hp0": {
+        "C0": true,
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "exact_rank_agrees": true,
+        "full_eigh_agrees": true
+      },
+      "d2_special_hp1": {
+        "C0": true,
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "exact_rank_agrees": true,
+        "full_eigh_agrees": true
+      }
+    }
+  },
+  "viennarna_version": "2.7.2"
+}
