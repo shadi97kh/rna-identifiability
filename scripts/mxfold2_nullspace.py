@@ -118,6 +118,12 @@ NEGATIVE CONTROLS
 C1. A random direction with null component removed changes some structure's total.
 C2. Every numerical null basis vector leaves every structure unchanged to 1e-9.
 C3. Within-row label shuffle changes the null dimension.
+    LIMITATION, noted 2026-10-08 after the corrected run: C3 has no power when the true
+    matrix already has full row rank, since no shuffle can raise the rank above the row
+    count. That is the case for hairpin/C after the empty-interval correction (12 of 12
+    structures independent; 500 of 500 shuffles also give rank 12), so its recorded
+    C3 = false reflects an instrument with nothing to detect, not a defect. The verdict
+    is left as recorded.
 C4. Planted defect: an extractor that charges the exterior stem nothing (Turner-like)
     must make the Q1 pair gauge stop being null for pairs that can be exterior stems.
 
