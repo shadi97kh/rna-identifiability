@@ -623,8 +623,14 @@ def phase_runs() -> int:
         write(RUNS_DIR / "metrics.json", out)
         return 1
     gs = safe_gpus()
+    mg = subprocess.run(["make", "gpu"], cwd=R, capture_output=True, text=True)  # CLAUDE.md rule
     out["launch_gate"] = {"gpus": gs, "disk_free_gb": disk_free_gb(),
+                          "make_gpu_exit": mg.returncode, "make_gpu_tail": mg.stdout[-300:],
                           "checked": time.strftime("%Y-%m-%d %H:%M:%S")}
+    if mg.returncode != 0 or "BUSY" in mg.stdout:
+        out["status"] = "NOT LAUNCHED: make gpu reports BUSY"
+        write(RUNS_DIR / "metrics.json", out)
+        return 1
     if isinstance(gs, dict) or len(gs) < 2 or any(x["free_mib"] < RESERVE_MIB for x in gs):
         out["status"] = "NOT LAUNCHED: a GPU is not free"
         write(RUNS_DIR / "metrics.json", out)
