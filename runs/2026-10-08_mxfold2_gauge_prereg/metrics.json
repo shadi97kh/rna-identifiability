@@ -158,6 +158,166 @@
     "title": "MXfold2 gauge methods: post-hoc head, SGD on the weight-space gauge v, null-component regulariser"
    },
    "reason": "G3 correction: the epoch-1 determinism floor is not bitwise zero in general. Seeds 20261007 and 20261008 differ between the original phase-epoch1 runs and the live runs (every network tensor; relative L2 0.34 and 0.31 after one epoch) although seed 20261006 is identical in four configurations. The floor is defined as the measured same-seed difference at epochs 1 and 10. Recorded before any analysis."
+  },
+  {
+   "date": "2026-10-08 16:51:16",
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "536cb5d7971ddf48e15f0ae50fb9b3eb8f519604",
+   "prereg": {
+    "analysis": {
+     "data": "TS0 (1,305 sequences, the seed study's pre-registered evaluation set), CPU only",
+     "decomposition": "per sequence: theta as in scripts/mxfold2_decompose.py (corrections c1-c3); null part = P_G, identifiable part = the rest; V1-V3 must pass on every model before any statistic is reported",
+     "stage_2a_2b": "2a = live arms when the live study ends; 2b = everything; 2a must reproduce bitwise in 2b",
+     "statistics": "seed-level resampling: paired bootstrap over seed indices, 10,000 resamples, default_rng(20261006); leave-one-seed-out jackknife reported alongside; resamples that draw a single seed are dropped and counted"
+    },
+    "established_before_registration": {
+     "float32": "MXfold2's C++ DP is float32 (ScoreType float; float64 tensors silently give garbage, src/param/util.h), so the defining check is stated in float32.",
+     "head_is_training_noop": "An output head theta -> theta - P_G theta leaves the hinge_mix loss unchanged as a function of the network weights: the loss depends on theta only through structure totals, and d loss/d theta is a combination of structure count vectors, orthogonal to G(x). Proved and checked by three independent lenses (weight gradients agree to 2.4e-7 relative); P0.3 regenerates the check into an artifact. Network form of docs/gauge.md:116-122.",
+     "live_study": "Arms 1 (AdamW w=1.0) and 2 (AdamW w=0.125) are the live fresh runs of runs/2026-10-07_mxfold2_seed_study, with duplicates for an epoch-10 floor.",
+     "resume_inexact": "MXfold2 --resume re-seeds and restores no RNG state; cuDNN's RNN dropout state cannot be restored. Arm 1 of the original proposal is not resumed.",
+     "turner_frozen": "In MixC under hinge_mix the Turner tables receive no gradient.",
+     "weight_space_gauge_v": "v = +1 on zuker.net.fc_paired.fc.4.bias[0] (S channel), -2 on zuker.fc_length.score_helix_length.net.0.weight[0, 2..30]. Moving the weights along v moves every S entry by delta and helix_length[m] by -2 delta (m-1), i.e. along the output gauge h; the loss is flat along v on every step whose pred and ref contain no helix longer than 30 pairs (3 TR0 references do). Under AdamW, v.w moved by -4.8 to +5.4 across the 8 seeds in epoch 1 (seed SD ~1 at init, ~3.2 after epoch 1)."
+    },
+    "phase0": {
+     "P0_1_masks": "torch masks equal Geometry (uppercased) on every TR0 and TS0 sequence; torch null_norm2 equals Geometry.proj_norm2 on the TS0 theta of the shipped TrainSetAB weights to <= 1e-10 relative",
+     "P0_1_rel_tol": 1e-10,
+     "P0_2": {
+      "cos_tol": 1e-06,
+      "delta": 0.37,
+      "loss_rel_tol": 1e-06,
+      "n_sequences": 30,
+      "other_abs_tol": 1e-06,
+      "table_abs_tol": 1e-05
+     },
+     "P0_2_v_symmetry": "30 seeded TR0 sequences, shipped weights, eval mode, delta = 0.37: every S entry moves by delta and helix_length[m] by -2 delta (m-1) within 1e-5 absolute, M and U are unchanged within 1e-6, the hinge_mix loss changes by <= 1e-6 relative and |v.grad L| / (|v| |grad L|) <= 1e-6, the last two on sequences whose pred and ref have no helix > 30 pairs",
+     "P0_3": {
+      "control_min_change": 0.001,
+      "grad_rel_tol": 1e-05,
+      "max_len": 200,
+      "n_sequences": 30
+     },
+     "P0_3_head_noop": "30 seeded TR0 sequences <= 200 nt, shipped weights: hinge_mix weight gradient with the head (canonicalise inserted after make_param) vs without, in eval mode and in train mode with identical dropout: relative L2 difference <= 1e-5 and identical argmax structures; deterministic positive control: projecting out the unit direction of the step's own theta-gradient, after removing its G component (a non-null direction by construction), must change the weight gradient by >= 1e-3 relative on every sequence and mode",
+     "P0_4": {
+      "abs_floor": 2e-05,
+      "dE_rel_tol": 1e-06,
+      "residual_rel_tol": 1e-12,
+      "tie_bound": 1e-05
+     },
+     "P0_4_defining_check": "all 1,305 TS0 sequences, shipped TrainSetAB weights: identical predicted structures with and without the head, except near-tie flips whose score gap under the original parameters is <= tie_bound * max(1, |E|) + abs_floor; |dE| <= dE_rel_tol * max(1, |E|) + abs_floor for the predicted and (where realisable) the reference structure (abs_floor covers float32 summation, whose error scales with the partial sums rather than |E|); residual null norm of the canonical theta <= 1e-12 * ||theta||^2",
+     "P0_4_negative_controls": {
+      "NC1": "theta - ||P_G theta|| r (r a random direction on theta's coordinates, its G component removed, unit norm in theta space) must change the predicted-structure score by > 1e-3 relative on >= 95% of sequences and change at least one predicted structure",
+      "NC2": "the head without h (g_p only) must leave a residual null norm >= 100 x the full head's on >= 90% of the sequences where h is in G",
+      "NC3": "a random G perturbation (norm = ||theta||) applied before the head must not survive it: canonical tables equal within 1e-4 absolute, and the predicted structure equal to the head's own (s_c) up to near-ties as in P0.4, on every sequence",
+      "thresholds": {
+       "NC1_frac": 0.95,
+       "NC1_rel": 0.001,
+       "NC2_frac": 0.9,
+       "NC2_ratio": 100.0,
+       "NC3_abs": 0.0001
+      }
+     },
+     "P0_5": {
+      "crosscheck_steps": 5,
+      "crosscheck_tol": 1e-09,
+      "max_len": 80,
+      "n_sequences": 20
+     },
+     "P0_5_runner": "CPU, 20 seeded TR0 sequences <= 80 nt: (a) gauge runner with lambda = 0 is bitwise equal to the plain timed runner after 1 epoch (AdamW); (b) the same for --optimizer SGD; (c) 1 epoch + resume to epoch 2 with the RNG sidecar is bitwise equal to 2 uninterrupted epochs; (d) the stdout 'Train Epoch' loss lines parse; (e) positive control: lambda = 1 changes the weights; (f) the float64 CPU crosscheck of R agrees to <= 1e-9",
+     "stop_rule": "any Phase 0 failure stops everything; nothing trains"
+    },
+    "pilot": {
+     "arms": "lambda = 0 and lambda_f = f * L0 / R0 for f in grid, where L0 and R0 are the held-out mean hinge_mix loss and mean R at step 0 in eval mode; every arm re-seeded identically (same order, same dropout)",
+     "data": "500 seeded TR0 sequences <= 200 nt as the training stream; 200 disjoint seeded TR0 sequences <= 200 nt held out; TS0 never used",
+     "delta_max": 0.02,
+     "eval_steps": [
+      0,
+      100,
+      250,
+      500
+     ],
+     "grid_f": [
+      0.01,
+      0.03,
+      0.1,
+      0.3,
+      1.0
+     ],
+     "rho_max": 0.5,
+     "rule": "choose the smallest f with rho = R_ho(lambda, 500) / R_ho(0, 500) <= 0.5 and delta = L_ho(lambda, 500) / L_ho(0, 500) - 1 <= 0.02; if none qualifies, the regulariser arm is NOT launched and the SGD arm proceeds alone",
+     "seed": 20261008,
+     "start": "seeds/seed20261006_w1.0/checkpoints/epoch-1 of the live study (model and AdamW state), read only",
+     "steps": 500
+    },
+    "plan": "approved 2026-10-08",
+    "predictions": {
+     "C1": {
+      "prior_impl": "Canonicalised predictions are identical on every evaluated model (structures; scores within the P0.4 tolerance)"
+     },
+     "F": "TS0 PPV/SEN/F per model and per arm reported with NO prediction",
+     "G1": {
+      "operational": "more than 50% of ||theta_A - theta_B||^2, pooled over TS0, lies in G; compared at matched training loss (e_A = 10, e_B = earliest SGD epoch with loss <= L_A(10); if none, e_B = 10 and e_A = the AdamW epoch whose loss is closest to L_B(10); labelled descriptive if the matched losses differ by > 10%); reported against three baselines: dim G / dim theta, 20 random directions per sequence, AdamW-AdamW and SGD-SGD seed pairs",
+      "prior_impl": "likely refuted: a CPU probe put 16-28% of a theta change in G",
+      "rule_spec": "Without the head, A (AdamW seed 20261006, live) vs B (SGD seed 20261006) differ mostly in the null component."
+     },
+     "G2": {
+      "rule_spec": "With the head, the identifiable component of C vs D is smaller than that of A vs B by more than the floor.",
+      "status": "REFUTED BY CONSTRUCTION before any training: the head is a training no-op (established_before_registration.head_is_training_noop; P0.3)"
+     },
+     "G3": {
+      "correction_2026_10_08": "The earlier statement 'epoch 1 already bitwise 0' was wrong in general. Seed 20261006 is bitwise identical in four configurations, but seeds 20261007 and 20261008 differ between the original phase-epoch1 runs (4 per GPU, default allocator, two co-tenants out of memory) and the live runs (3 per GPU, expandable segments), same GPU index: every network tensor differs, relative L2 0.34 and 0.31 after one epoch. The floor is therefore measured, never assumed, and every seed-variance figure is reported against it.",
+      "operational": "floor = the difference between two trainings of the SAME seed, decomposed exactly like a seed difference (null and identifiable parts on TS0): epoch 10 from the live _dup runs and reg_dup; epoch 1 from every seed with both an original phase-epoch1 checkpoint and a live epoch-1 checkpoint",
+      "rule_spec": "The floor is small relative to both."
+     },
+     "H1": {
+      "rule_spec": "Arms 3 and 4 have zero null-space seed variance and smaller identifiable seed variance than arms 1 and 2.",
+      "status": "split: 'zero null variance' of canonicalised tables is a CHECK; 'smaller identifiable variance' from the head is REFUTED BY CONSTRUCTION; the non-tautological successor is R2"
+     },
+     "H2": {
+      "rule_spec": "Arms 3 and 4 are indistinguishable because the head already pins the constant shift the regulariser was pinning.",
+      "status": "WITHDRAWN: c_x is not in G (13-79% of it lies outside), so the head does not touch it, and H2 contradicts the filed W2"
+     },
+     "R1": {
+      "prior_impl": "The regulariser arm has smaller null-space seed variance V_G than live AdamW w=1.0 (a check that the penalty works), paired seed bootstrap interval of the median log ratio below 0"
+     },
+     "R2": {
+      "prior_impl": "The regulariser arm has smaller IDENTIFIABLE seed variance than live AdamW w=1.0; paired seed bootstrap interval of the median per-sequence log ratio below 0. Uncertain. If refuted, the result is the diagnosis alone: gauge drift is real and optimiser-dependent, harmless to predictions, and it invalidates reading learned tables as energies.",
+      "rule_spec_intent": "the method claim (successor of H1)"
+     },
+     "S1": {
+      "operational_amendment_2026_10_08": "The relative-to-range criterion is ill-posed when v.w is conserved (the range is then rounding noise). Before any SGD run: (i) reconstruction: for every SGD run and epoch e, |v.w(e) - v.w_recon(e)| <= 1e-3 + 1e-6 * range, with v.w_recon accumulated in float64 from the logged v.g (MXfold2 SGD: torch.optim.SGD, nesterov=True, momentum 0.9, dampening 0, wd 0, lr 1e-3; buf_1 = g_1, buf_t = 0.9 buf_(t-1) + g_t, step = -lr (g_t + 0.9 buf_t), on steps with loss > 0 only); (ii) conservation: |v.w(10) - v.w_longonly(10)| <= 1e-2, where v.w_longonly reconstructs the trace from the long-helix steps' v.g alone (float32 weight rounding is the only other source); both reported next to the AdamW per-epoch |delta v.w| for scale",
+      "prior_impl": "SGD conserves v.w exactly except on long-helix steps: the v.w trace of every SGD run equals its linear reconstruction from the logged per-step v.g under Nesterov momentum (relative error <= 1e-6 of the trace's range), and v.w changes only on steps whose pred or ref has a helix > 30 pairs"
+     },
+     "S2": {
+      "prior_impl": "Under AdamW the seed SD of v.w grows from epoch 0 to epoch 10 (live AdamW w=1.0 and w=0.125 checkpoints)"
+     },
+     "W1": {
+      "amended_2026_10_08": "before any analysis: the 95% interval for the median over sequences of log(V_G(0.125) / V_G(1.0)) comes from a paired SEED-LEVEL bootstrap (all 1,305 per-sequence variances share the same 8 models, so a sequence bootstrap omits the dominant error); 'same' = interval inside [log 0.8, log 1.25]; the original sequence bootstrap is reported as secondary",
+      "rule_spec": "Null-space seed variance is the same in arms 1 and 2."
+     },
+     "W2": {
+      "operational": "kappa_k(x) = <theta_k, c_x'> / ||c_x'||^2 with c_x = +1 on every S and M entry and +(b-a+1) on U(a,b) (0 on U(a,a-1)), c_x' = c_x - P_G c_x; statistic = median over x of Var_0.125 / Var_1.0 > 1, paired seed bootstrap",
+      "rule_spec": "The constant-shift direction varies more in arm 2 than arm 1."
+     }
+    },
+    "runs": {
+     "amendments": "any change after registration is appended by --phase amend with a date and reason and committed before the step it affects",
+     "arms": {
+      "reg": "all 8 recorded seeds; AdamW (code default); w = 1.0; lambda = lambda* from the pilot artifact",
+      "reg_dup": "a duplicate of reg seed 20261006 on the other GPU (epoch-10 floor; fills wave 2's idle slot)",
+      "sgd": "seeds 20261006, 20261007, 20261008; --optimizer SGD (MXfold2: Nesterov, momentum 0.9, wd 0) at the default lr 1e-3; w = 1.0; lambda = 0 (R logged)"
+     },
+     "limits": "<= 3 of our processes per GPU; at most one start per GPU per 120 s; a run starts only if its GPU has >= 7500 MiB free, the disk >= 5 GB free and the run code (runner, hooks, gauge, timed wrapper) is byte-identical to launch",
+     "pairing": "every run is seed-paired with the live AdamW w=1.0 run of the same seed (same initialisation, data order and dropout draws)",
+     "resume_policy": "a run that dies resumes from its newest loadable checkpoint with the RNG sidecar (data order exact; on the GPU every dropout mask diverges after the first post-resume step), flagged trajectory_exact = false; at most 2 recoveries; NaN = diverged, not retried; every analysis also reported with flagged runs excluded; if sgd seed 20261006 is flagged, a fresh rerun is queued last and replaces it for A-vs-B",
+     "settings": "TR0 uncapped, 10 epochs, checkpoints every epoch, PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+     "smoke": "first: two concurrent 1-epoch runs on 200 seeded TR0 sequences, one per GPU, in the reg configuration (or SGD with lambda = 0 if no lambda* qualified): checkpoints bitwise identical and the CPU float64 crosscheck of R <= 1e-9; peak memory and epoch time recorded; any failure stops",
+     "wait": "start only after no live seed-study process remains"
+    },
+    "title": "MXfold2 gauge methods: post-hoc head, SGD on the weight-space gauge v, null-component regulariser"
+   },
+   "reason": "S1 made well-posed before any SGD run: the relative-to-range tolerance is ill-posed under conservation; replaced by an absolute reconstruction criterion (1e-3 + 1e-6 * range) and a conservation criterion (1e-2 at epoch 10 after removing long-helix-step contributions), with MXfold2's SGD update written out."
   }
  ],
  "git_dirty": true,
