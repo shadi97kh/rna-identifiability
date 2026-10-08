@@ -121,6 +121,14 @@ def main():
            **T, **N, "torch": torch.__version__,
            "gpu_peak_mib": (torch.cuda.max_memory_allocated() / 2**20
                             if torch.cuda.is_available() else None)}
+    rec["determinism"] = {
+        "cudnn_deterministic": torch.backends.cudnn.deterministic,
+        "cudnn_benchmark": torch.backends.cudnn.benchmark,
+        "use_deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
+        "CUBLAS_WORKSPACE_CONFIG": os.environ.get("CUBLAS_WORKSPACE_CONFIG"),
+        "PYTORCH_CUDA_ALLOC_CONF": os.environ.get("PYTORCH_CUDA_ALLOC_CONF"),
+        "cudnn_version": torch.backends.cudnn.version(),
+        "device": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}
     ep = sum(e["seconds"] for e in EPOCHS)
     rec["overhead_s"] = ep - sum(T.values())
     with open(os.environ["MXF_TIMING_OUT"], "w") as fh:

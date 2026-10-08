@@ -39,3 +39,7 @@ paper/*.brf
 paper/*.log
 paper/*.out
 paper/moml_paper.pdf
+
+# Model weights and per-epoch checkpoints from training runs; the run record is metrics.json
+runs/**/checkpoints/
+runs/**/*.pth
