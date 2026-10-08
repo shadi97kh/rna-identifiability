@@ -275,6 +275,12 @@ def qr_null(A: sp.csr_matrix, chunk: int = 16384, return_factors: bool = False):
         B = A[a:a + chunk].astype(np.float64).toarray()
         Rm = np.linalg.qr(B if Rm is None else np.vstack([Rm, B]), mode="r")
     _, s, Vt = np.linalg.svd(Rm)
+    if len(s) < Vt.shape[0]:
+        # fewer rows than columns (added 2026-10-08 for small subsamples): R is short, the
+        # SVD returns min(rows, cols) singular values, and the remaining right singular
+        # vectors are exactly null. Pad with zeros. No effect when rows >= cols, which is
+        # every run before this date.
+        s = np.concatenate([s, np.zeros(Vt.shape[0] - len(s))])
     tol = max(A.shape) * np.finfo(float).eps * s.max()
     null = s < tol
     info = {"sv_tol": float(tol),
