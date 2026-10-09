@@ -1,0 +1,2645 @@
+{
+ "control": {
+  "d0_special_hp0": {
+   "20261006": {
+    "C2_max_abs_change": 1.1972899097327581e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8906,
+    "nontrivial_dim": 472,
+    "null_dim_total": 9380,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 474,
+     "eigh_reduced": 474,
+     "exact_mod_p": 474,
+     "qr_svd": 474
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12607
+    ],
+    "used_columns": 3701
+   },
+   "20261007": {
+    "C2_max_abs_change": 2.013491370161935e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 9010,
+    "nontrivial_dim": 433,
+    "null_dim_total": 9445,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 435,
+     "eigh_reduced": 435,
+     "exact_mod_p": 435,
+     "qr_svd": 435
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12607
+    ],
+    "used_columns": 3597
+   },
+   "20261008": {
+    "C2_max_abs_change": 1.933618196114928e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8893,
+    "nontrivial_dim": 474,
+    "null_dim_total": 9369,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 476,
+     "eigh_reduced": 476,
+     "exact_mod_p": 476,
+     "qr_svd": 476
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12607
+    ],
+    "used_columns": 3714
+   },
+   "20261009": {
+    "C2_max_abs_change": 1.3145224925931176e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8885,
+    "nontrivial_dim": 486,
+    "null_dim_total": 9373,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 488,
+     "eigh_reduced": 488,
+     "exact_mod_p": 488,
+     "qr_svd": 488
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12607
+    ],
+    "used_columns": 3722
+   },
+   "20261010": {
+    "C2_max_abs_change": 2.7307563871157235e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8890,
+    "nontrivial_dim": 467,
+    "null_dim_total": 9359,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 469,
+     "eigh_reduced": 469,
+     "exact_mod_p": 469,
+     "qr_svd": 469
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12607
+    ],
+    "used_columns": 3717
+   },
+   "20261011": {
+    "C2_max_abs_change": 2.4962497346958656e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8869,
+    "nontrivial_dim": 513,
+    "null_dim_total": 9384,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 515,
+     "eigh_reduced": 515,
+     "exact_mod_p": 515,
+     "qr_svd": 515
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12607
+    ],
+    "used_columns": 3738
+   },
+   "20261012": {
+    "C2_max_abs_change": 2.6513190609744535e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8954,
+    "nontrivial_dim": 443,
+    "null_dim_total": 9399,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 445,
+     "eigh_reduced": 445,
+     "exact_mod_p": 445,
+     "qr_svd": 445
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12607
+    ],
+    "used_columns": 3653
+   },
+   "20261013": {
+    "C2_max_abs_change": 1.3655762623965747e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8992,
+    "nontrivial_dim": 456,
+    "null_dim_total": 9450,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 458,
+     "eigh_reduced": 458,
+     "exact_mod_p": 458,
+     "qr_svd": 458
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12607
+    ],
+    "used_columns": 3615
+   }
+  },
+  "d0_special_hp1": {
+   "20261006": {
+    "C2_max_abs_change": 1.288871055385164e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8910,
+    "nontrivial_dim": 472,
+    "null_dim_total": 9384,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 474,
+     "eigh_reduced": 474,
+     "exact_mod_p": 474,
+     "qr_svd": 474
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12629
+    ],
+    "used_columns": 3719
+   },
+   "20261007": {
+    "C2_max_abs_change": 3.358648709340451e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 9014,
+    "nontrivial_dim": 433,
+    "null_dim_total": 9449,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 435,
+     "eigh_reduced": 435,
+     "exact_mod_p": 435,
+     "qr_svd": 435
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12629
+    ],
+    "used_columns": 3615
+   },
+   "20261008": {
+    "C2_max_abs_change": 2.2931798079480416e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8899,
+    "nontrivial_dim": 474,
+    "null_dim_total": 9375,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 476,
+     "eigh_reduced": 476,
+     "exact_mod_p": 476,
+     "qr_svd": 476
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12629
+    ],
+    "used_columns": 3730
+   },
+   "20261009": {
+    "C2_max_abs_change": 1.9926580632726285e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8889,
+    "nontrivial_dim": 486,
+    "null_dim_total": 9377,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 488,
+     "eigh_reduced": 488,
+     "exact_mod_p": 488,
+     "qr_svd": 488
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12629
+    ],
+    "used_columns": 3740
+   },
+   "20261010": {
+    "C2_max_abs_change": 2.8381817751225703e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8895,
+    "nontrivial_dim": 467,
+    "null_dim_total": 9364,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 469,
+     "eigh_reduced": 469,
+     "exact_mod_p": 469,
+     "qr_svd": 469
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12629
+    ],
+    "used_columns": 3734
+   },
+   "20261011": {
+    "C2_max_abs_change": 2.75620672118837e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8873,
+    "nontrivial_dim": 513,
+    "null_dim_total": 9388,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 515,
+     "eigh_reduced": 515,
+     "exact_mod_p": 515,
+     "qr_svd": 515
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12629
+    ],
+    "used_columns": 3756
+   },
+   "20261012": {
+    "C2_max_abs_change": 2.646734731684051e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8958,
+    "nontrivial_dim": 443,
+    "null_dim_total": 9403,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 445,
+     "eigh_reduced": 445,
+     "exact_mod_p": 445,
+     "qr_svd": 445
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12629
+    ],
+    "used_columns": 3671
+   },
+   "20261013": {
+    "C2_max_abs_change": 2.2244775195034289e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8996,
+    "nontrivial_dim": 457,
+    "null_dim_total": 9455,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 459,
+     "eigh_reduced": 459,
+     "exact_mod_p": 459,
+     "qr_svd": 459
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12629
+    ],
+    "used_columns": 3633
+   }
+  },
+  "d2_special_hp0": {
+   "20261006": {
+    "C2_max_abs_change": 1.2278464666038618e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8906,
+    "nontrivial_dim": 472,
+    "null_dim_total": 9381,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 475,
+     "eigh_reduced": 475,
+     "exact_mod_p": 475,
+     "qr_svd": 475
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12847
+    ],
+    "used_columns": 3941
+   },
+   "20261007": {
+    "C2_max_abs_change": 8.11873626053311e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 9010,
+    "nontrivial_dim": 433,
+    "null_dim_total": 9446,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 436,
+     "eigh_reduced": 436,
+     "exact_mod_p": 436,
+     "qr_svd": 436
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12847
+    ],
+    "used_columns": 3837
+   },
+   "20261008": {
+    "C2_max_abs_change": 6.085149745205243e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8893,
+    "nontrivial_dim": 474,
+    "null_dim_total": 9370,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 477,
+     "eigh_reduced": 477,
+     "exact_mod_p": 477,
+     "qr_svd": 477
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12847
+    ],
+    "used_columns": 3954
+   },
+   "20261009": {
+    "C2_max_abs_change": 1.3848929056488324e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8885,
+    "nontrivial_dim": 486,
+    "null_dim_total": 9374,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 489,
+     "eigh_reduced": 489,
+     "exact_mod_p": 489,
+     "qr_svd": 489
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12847
+    ],
+    "used_columns": 3962
+   },
+   "20261010": {
+    "C2_max_abs_change": 1.7649304327044257e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8890,
+    "nontrivial_dim": 467,
+    "null_dim_total": 9360,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 470,
+     "eigh_reduced": 470,
+     "exact_mod_p": 470,
+     "qr_svd": 470
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12847
+    ],
+    "used_columns": 3957
+   },
+   "20261011": {
+    "C2_max_abs_change": 9.575272432588156e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8869,
+    "nontrivial_dim": 513,
+    "null_dim_total": 9385,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 516,
+     "eigh_reduced": 516,
+     "exact_mod_p": 516,
+     "qr_svd": 516
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12847
+    ],
+    "used_columns": 3978
+   },
+   "20261012": {
+    "C2_max_abs_change": 1.3816796692227643e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8954,
+    "nontrivial_dim": 443,
+    "null_dim_total": 9400,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 446,
+     "eigh_reduced": 446,
+     "exact_mod_p": 446,
+     "qr_svd": 446
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12847
+    ],
+    "used_columns": 3893
+   },
+   "20261013": {
+    "C2_max_abs_change": 5.766231676168632e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8992,
+    "nontrivial_dim": 456,
+    "null_dim_total": 9451,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 459,
+     "eigh_reduced": 459,
+     "exact_mod_p": 459,
+     "qr_svd": 459
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12847
+    ],
+    "used_columns": 3855
+   }
+  },
+  "d2_special_hp1": {
+   "20261006": {
+    "C2_max_abs_change": 1.2310356727052163e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8910,
+    "nontrivial_dim": 472,
+    "null_dim_total": 9385,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 475,
+     "eigh_reduced": 475,
+     "exact_mod_p": 475,
+     "qr_svd": 475
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12869
+    ],
+    "used_columns": 3959
+   },
+   "20261007": {
+    "C2_max_abs_change": 5.943954096282456e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 9014,
+    "nontrivial_dim": 433,
+    "null_dim_total": 9450,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 436,
+     "eigh_reduced": 436,
+     "exact_mod_p": 436,
+     "qr_svd": 436
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12869
+    ],
+    "used_columns": 3855
+   },
+   "20261008": {
+    "C2_max_abs_change": 9.206795482247232e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8899,
+    "nontrivial_dim": 474,
+    "null_dim_total": 9376,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 477,
+     "eigh_reduced": 477,
+     "exact_mod_p": 477,
+     "qr_svd": 477
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12869
+    ],
+    "used_columns": 3970
+   },
+   "20261009": {
+    "C2_max_abs_change": 8.307113677497036e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8889,
+    "nontrivial_dim": 486,
+    "null_dim_total": 9378,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 489,
+     "eigh_reduced": 489,
+     "exact_mod_p": 489,
+     "qr_svd": 489
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12869
+    ],
+    "used_columns": 3980
+   },
+   "20261010": {
+    "C2_max_abs_change": 1.6847303717024142e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8895,
+    "nontrivial_dim": 467,
+    "null_dim_total": 9365,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 470,
+     "eigh_reduced": 470,
+     "exact_mod_p": 470,
+     "qr_svd": 470
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12869
+    ],
+    "used_columns": 3974
+   },
+   "20261011": {
+    "C2_max_abs_change": 6.098898784005075e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8873,
+    "nontrivial_dim": 513,
+    "null_dim_total": 9389,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 516,
+     "eigh_reduced": 516,
+     "exact_mod_p": 516,
+     "qr_svd": 516
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12869
+    ],
+    "used_columns": 3996
+   },
+   "20261012": {
+    "C2_max_abs_change": 1.5928243153693483e-13,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8958,
+    "nontrivial_dim": 443,
+    "null_dim_total": 9404,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 446,
+     "eigh_reduced": 446,
+     "exact_mod_p": 446,
+     "qr_svd": 446
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12869
+    ],
+    "used_columns": 3911
+   },
+   "20261013": {
+    "C2_max_abs_change": 6.12514054233737e-14,
+    "C2_passes": true,
+    "counts": {
+     "distinct": 11955,
+     "distinct_pair_bearing": 11955,
+     "nominal": 11955,
+     "pair_bearing": 11955
+    },
+    "coverage_dim": 8996,
+    "nontrivial_dim": 457,
+    "null_dim_total": 9456,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 460,
+     "eigh_reduced": 460,
+     "exact_mod_p": 460,
+     "qr_svd": 460
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     11955,
+     12869
+    ],
+    "used_columns": 3873
+   }
+  }
+ },
+ "control_branch": {
+  "d0_special_hp0": {
+   "branch": "BELOW",
+   "max": 513,
+   "mean": 468.0,
+   "min": 433,
+   "recorded_at": "2026-10-08 19:43:16",
+   "sd": 25.059928172283335,
+   "subsample_dims": [
+    472,
+    433,
+    474,
+    486,
+    467,
+    513,
+    443,
+    456
+   ],
+   "tr0_nontrivial": 426,
+   "z": -1.6759824573820066
+  },
+  "d0_special_hp1": {
+   "branch": "BELOW",
+   "max": 513,
+   "mean": 468.125,
+   "min": 433,
+   "recorded_at": "2026-10-08 19:33:14",
+   "sd": 24.993927834004573,
+   "subsample_dims": [
+    472,
+    433,
+    474,
+    486,
+    467,
+    513,
+    443,
+    457
+   ],
+   "tr0_nontrivial": 426,
+   "z": -1.6854093634169967
+  },
+  "d2_special_hp0": {
+   "branch": "BELOW",
+   "max": 513,
+   "mean": 468.0,
+   "min": 433,
+   "recorded_at": "2026-10-08 20:08:10",
+   "sd": 25.059928172283335,
+   "subsample_dims": [
+    472,
+    433,
+    474,
+    486,
+    467,
+    513,
+    443,
+    456
+   ],
+   "tr0_nontrivial": 426,
+   "z": -1.6759824573820066
+  },
+  "d2_special_hp1": {
+   "branch": "BELOW",
+   "max": 513,
+   "mean": 468.125,
+   "min": 433,
+   "recorded_at": "2026-10-08 19:55:19",
+   "sd": 24.993927834004573,
+   "subsample_dims": [
+    472,
+    433,
+    474,
+    486,
+    467,
+    513,
+    443,
+    457
+   ],
+   "tr0_nontrivial": 426,
+   "z": -1.6854093634169967
+  }
+ },
+ "data": "TR0 + TS0 canonical-pair bpRNA reference structures (mxfold2_datasets, CC BY 4.0); Rfam 15.1 seed rows exactly as in runs/2026-10-07_turner_nullspace_rfam_r2 for the control and saturation",
+ "elapsed_seconds": 6519.7,
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "181ae0fe7bedc6f41b9e3b8adacb803ed09051a3",
+ "match_size_distinct_pair_bearing": 11955,
+ "predictions": {
+  "C2": "every reported null basis vector moves no row by more than 1e-9; the worst row change is reported",
+  "T1": {
+   "fact_recorded_before_running": "TR0 is NOT shorter than Rfam: median length 105 nt (max 498) vs Rfam's 84 (max 4,065), profiled read-only before registration",
+   "operational": "0 < nontrivial < 214 in every configuration ('nontrivial' already excludes the 2 (d0) or 3 (d2) intrinsic directions)",
+   "prior_claude": "likely refuted on the 'below 214' side: a random 62% subsample of Rfam rows had MORE nontrivial directions (287.4 +- 5.4) than the full set, and TR0+TS0 is about 11% of Rfam's rows; uncertain, because fewer rows also use fewer columns",
+   "rule_user": "The TR0-restricted nontrivial dimension is below Rfam's 214, because TR0 has fewer families and shorter sequences, and above the intrinsic 2."
+  },
+  "anchor_check": "the whole distinct pair-bearing Rfam population in d0_special_hp0 must reproduce the full Rfam set's nontrivial dimension exactly (unpaired rows have zero count vectors; duplicates cannot change a rank)",
+  "context_point_rule": "the existing 67,418-row Rfam subsamples (drawn from NOMINAL rows) are 'effectively on the curve' only if the expected number of distinct pair-bearing rows in such a draw is within 1% of 67,418; otherwise they stay context",
+  "inherited": "exact reconstruction on every row (any failure stops the run), C0, C1, C3, C4, R5, R6, agreement of the dimension methods",
+  "joint_read": "d0_special_hp0: interpolate the saturation run's seed-mean nontrivial dimension, and its seed SD, linearly in log row count between the two saturation sizes bracketing TR0+TS0's distinct pair-bearing count; z = (TR0 - interpolated mean) / interpolated SD; |z| <= 2: row count explains TR0's dimension; |z| > 2: corpus identity does; also whether TR0 lies inside the min-max envelope interpolated between the bracketing sizes. Reported alongside the range test, not instead of it.",
+  "matched_size_control": {
+   "rule": "per configuration, recorded BEFORE anything else is interpreted: with r = [min, max] of the 8 matched-size Rfam subsamples' nontrivial dimension, ABOVE (TR0 > max) or BELOW (TR0 < min) = at matched row count the dimension depends on corpus identity (Rfam consensus projections vs bpRNA per-molecule references), direction reported; INSIDE (min <= TR0 <= max) = it does not, so the measurement is a property of the model's structure space rather than of a corpus and Rfam's 214 stops being a single-source number. INSIDE is an informative outcome, not a failed control, and does not void the run."
+  }
+ },
+ "rfam": {
+  "context_point_67418": {
+   "effectively_on_curve": false,
+   "expected_distinct_pair_bearing_in_a_nominal_draw": 59623.75022636098,
+   "relative_gap": 0.11561081274494973,
+   "threshold": 0.01
+  },
+  "counts": {
+   "distinct": 98174,
+   "distinct_pair_bearing": 94142,
+   "nominal": 108916,
+   "pair_bearing": 104623
+  },
+  "population_size": 94142,
+  "sampling_population": "distinct pair-bearing rows"
+ },
+ "run_id": "2026-10-08_turner_nullspace_tr0",
+ "saturation": {
+  "1000": {
+   "20261006": {
+    "C2_max_abs_change": 3.4403252816006535e-14,
+    "C2_passes": true,
+    "coverage_dim": 11349,
+    "nontrivial_dim": 424,
+    "null_dim_total": 11775,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 426,
+     "eigh_reduced": 426,
+     "exact_mod_p": 426,
+     "qr_svd": 426
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1258
+   },
+   "20261007": {
+    "C2_max_abs_change": 2.885885974635016e-14,
+    "C2_passes": true,
+    "coverage_dim": 11369,
+    "nontrivial_dim": 397,
+    "null_dim_total": 11768,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 399,
+     "eigh_reduced": 399,
+     "exact_mod_p": 399,
+     "qr_svd": 399
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1238
+   },
+   "20261008": {
+    "C2_max_abs_change": 1.2155153186060863e-14,
+    "C2_passes": true,
+    "coverage_dim": 11407,
+    "nontrivial_dim": 358,
+    "null_dim_total": 11767,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 360,
+     "eigh_reduced": 360,
+     "exact_mod_p": 360,
+     "qr_svd": 360
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1200
+   },
+   "20261009": {
+    "C2_max_abs_change": 1.4910598797324148e-14,
+    "C2_passes": true,
+    "coverage_dim": 11439,
+    "nontrivial_dim": 321,
+    "null_dim_total": 11762,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 323,
+     "eigh_reduced": 323,
+     "exact_mod_p": 323,
+     "qr_svd": 323
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1168
+   },
+   "20261010": {
+    "C2_max_abs_change": 3.49069731453433e-14,
+    "C2_passes": true,
+    "coverage_dim": 11400,
+    "nontrivial_dim": 370,
+    "null_dim_total": 11772,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 372,
+     "eigh_reduced": 372,
+     "exact_mod_p": 372,
+     "qr_svd": 372
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1207
+   },
+   "20261011": {
+    "C2_max_abs_change": 1.4708286671938353e-14,
+    "C2_passes": true,
+    "coverage_dim": 11330,
+    "nontrivial_dim": 419,
+    "null_dim_total": 11751,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 421,
+     "eigh_reduced": 421,
+     "exact_mod_p": 421,
+     "qr_svd": 421
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1277
+   },
+   "20261012": {
+    "C2_max_abs_change": 1.7173220311084147e-14,
+    "C2_passes": true,
+    "coverage_dim": 11399,
+    "nontrivial_dim": 373,
+    "null_dim_total": 11774,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 375,
+     "eigh_reduced": 375,
+     "exact_mod_p": 375,
+     "qr_svd": 375
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1208
+   },
+   "20261013": {
+    "C2_max_abs_change": 1.5807667674838655e-14,
+    "C2_passes": true,
+    "coverage_dim": 11395,
+    "nontrivial_dim": 363,
+    "null_dim_total": 11760,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 365,
+     "eigh_reduced": 365,
+     "exact_mod_p": 365,
+     "qr_svd": 365
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1212
+   }
+  },
+  "10000": {
+   "20261006": {
+    "C2_max_abs_change": 1.3875836243903983e-14,
+    "C2_passes": true,
+    "coverage_dim": 9150,
+    "nontrivial_dim": 515,
+    "null_dim_total": 9667,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 517,
+     "eigh_reduced": 517,
+     "exact_mod_p": 517,
+     "qr_svd": 517
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     10000,
+     12607
+    ],
+    "used_columns": 3457
+   },
+   "20261007": {
+    "C2_max_abs_change": 9.92557273350736e-15,
+    "C2_passes": true,
+    "coverage_dim": 9280,
+    "nontrivial_dim": 397,
+    "null_dim_total": 9679,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 399,
+     "eigh_reduced": 399,
+     "exact_mod_p": 399,
+     "qr_svd": 399
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     10000,
+     12607
+    ],
+    "used_columns": 3327
+   },
+   "20261008": {
+    "C2_max_abs_change": 1.3046266745792743e-14,
+    "C2_passes": true,
+    "coverage_dim": 9199,
+    "nontrivial_dim": 417,
+    "null_dim_total": 9618,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 419,
+     "eigh_reduced": 419,
+     "exact_mod_p": 419,
+     "qr_svd": 419
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     10000,
+     12607
+    ],
+    "used_columns": 3408
+   },
+   "20261009": {
+    "C2_max_abs_change": 7.300395368520923e-14,
+    "C2_passes": true,
+    "coverage_dim": 9203,
+    "nontrivial_dim": 449,
+    "null_dim_total": 9654,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 451,
+     "eigh_reduced": 451,
+     "exact_mod_p": 451,
+     "qr_svd": 451
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     10000,
+     12607
+    ],
+    "used_columns": 3404
+   },
+   "20261010": {
+    "C2_max_abs_change": 1.2258423442990107e-14,
+    "C2_passes": true,
+    "coverage_dim": 9205,
+    "nontrivial_dim": 424,
+    "null_dim_total": 9631,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 426,
+     "eigh_reduced": 426,
+     "exact_mod_p": 426,
+     "qr_svd": 426
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     10000,
+     12607
+    ],
+    "used_columns": 3402
+   },
+   "20261011": {
+    "C2_max_abs_change": 2.1141508682598342e-14,
+    "C2_passes": true,
+    "coverage_dim": 9158,
+    "nontrivial_dim": 494,
+    "null_dim_total": 9654,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 496,
+     "eigh_reduced": 496,
+     "exact_mod_p": 496,
+     "qr_svd": 496
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     10000,
+     12607
+    ],
+    "used_columns": 3449
+   },
+   "20261012": {
+    "C2_max_abs_change": 1.1278955200366703e-14,
+    "C2_passes": true,
+    "coverage_dim": 9184,
+    "nontrivial_dim": 453,
+    "null_dim_total": 9639,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 455,
+     "eigh_reduced": 455,
+     "exact_mod_p": 455,
+     "qr_svd": 455
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     10000,
+     12607
+    ],
+    "used_columns": 3423
+   },
+   "20261013": {
+    "C2_max_abs_change": 1.2686398698051604e-14,
+    "C2_passes": true,
+    "coverage_dim": 9220,
+    "nontrivial_dim": 488,
+    "null_dim_total": 9710,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 490,
+     "eigh_reduced": 490,
+     "exact_mod_p": 490,
+     "qr_svd": 490
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     10000,
+     12607
+    ],
+    "used_columns": 3387
+   }
+  },
+  "3000": {
+   "20261006": {
+    "C2_max_abs_change": 1.2466048159021081e-14,
+    "C2_passes": true,
+    "coverage_dim": 10689,
+    "nontrivial_dim": 353,
+    "null_dim_total": 11044,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 355,
+     "eigh_reduced": 355,
+     "exact_mod_p": 355,
+     "qr_svd": 355
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     3000,
+     12607
+    ],
+    "used_columns": 1918
+   },
+   "20261007": {
+    "C2_max_abs_change": 3.337607967779377e-14,
+    "C2_passes": true,
+    "coverage_dim": 10678,
+    "nontrivial_dim": 374,
+    "null_dim_total": 11054,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 376,
+     "eigh_reduced": 376,
+     "exact_mod_p": 376,
+     "qr_svd": 376
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     3000,
+     12607
+    ],
+    "used_columns": 1929
+   },
+   "20261008": {
+    "C2_max_abs_change": 2.663169164363044e-14,
+    "C2_passes": true,
+    "coverage_dim": 10640,
+    "nontrivial_dim": 407,
+    "null_dim_total": 11049,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 409,
+     "eigh_reduced": 409,
+     "exact_mod_p": 409,
+     "qr_svd": 409
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     3000,
+     12607
+    ],
+    "used_columns": 1967
+   },
+   "20261009": {
+    "C2_max_abs_change": 2.1328425137134843e-14,
+    "C2_passes": true,
+    "coverage_dim": 10637,
+    "nontrivial_dim": 397,
+    "null_dim_total": 11036,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 399,
+     "eigh_reduced": 399,
+     "exact_mod_p": 399,
+     "qr_svd": 399
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     3000,
+     12607
+    ],
+    "used_columns": 1970
+   },
+   "20261010": {
+    "C2_max_abs_change": 2.87664857212544e-14,
+    "C2_passes": true,
+    "coverage_dim": 10616,
+    "nontrivial_dim": 378,
+    "null_dim_total": 10996,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 380,
+     "eigh_reduced": 380,
+     "exact_mod_p": 380,
+     "qr_svd": 380
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     3000,
+     12607
+    ],
+    "used_columns": 1991
+   },
+   "20261011": {
+    "C2_max_abs_change": 2.2746561578745883e-14,
+    "C2_passes": true,
+    "coverage_dim": 10670,
+    "nontrivial_dim": 379,
+    "null_dim_total": 11051,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 381,
+     "eigh_reduced": 381,
+     "exact_mod_p": 381,
+     "qr_svd": 381
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     3000,
+     12607
+    ],
+    "used_columns": 1937
+   },
+   "20261012": {
+    "C2_max_abs_change": 1.869132019299835e-14,
+    "C2_passes": true,
+    "coverage_dim": 10646,
+    "nontrivial_dim": 354,
+    "null_dim_total": 11002,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 356,
+     "eigh_reduced": 356,
+     "exact_mod_p": 356,
+     "qr_svd": 356
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     3000,
+     12607
+    ],
+    "used_columns": 1961
+   },
+   "20261013": {
+    "C2_max_abs_change": 1.791882614510243e-14,
+    "C2_passes": true,
+    "coverage_dim": 10666,
+    "nontrivial_dim": 364,
+    "null_dim_total": 11032,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 366,
+     "eigh_reduced": 366,
+     "exact_mod_p": 366,
+     "qr_svd": 366
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     3000,
+     12607
+    ],
+    "used_columns": 1941
+   }
+  },
+  "30000": {
+   "20261006": {
+    "C2_max_abs_change": 1.1964714113440322e-13,
+    "C2_passes": true,
+    "coverage_dim": 7188,
+    "nontrivial_dim": 397,
+    "null_dim_total": 7587,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 399,
+     "eigh_reduced": 399,
+     "exact_mod_p": 399,
+     "qr_svd": 399
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     30000,
+     12607
+    ],
+    "used_columns": 5419
+   },
+   "20261007": {
+    "C2_max_abs_change": 3.2487491676281946e-13,
+    "C2_passes": true,
+    "coverage_dim": 7222,
+    "nontrivial_dim": 369,
+    "null_dim_total": 7593,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 371,
+     "eigh_reduced": 371,
+     "exact_mod_p": 371,
+     "qr_svd": 371
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     30000,
+     12607
+    ],
+    "used_columns": 5385
+   },
+   "20261008": {
+    "C2_max_abs_change": 4.2732776587405394e-13,
+    "C2_passes": true,
+    "coverage_dim": 7223,
+    "nontrivial_dim": 399,
+    "null_dim_total": 7624,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 401,
+     "eigh_reduced": 401,
+     "exact_mod_p": 401,
+     "qr_svd": 401
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     30000,
+     12607
+    ],
+    "used_columns": 5384
+   },
+   "20261009": {
+    "C2_max_abs_change": 2.5480094731437803e-13,
+    "C2_passes": true,
+    "coverage_dim": 7254,
+    "nontrivial_dim": 381,
+    "null_dim_total": 7637,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 383,
+     "eigh_reduced": 383,
+     "exact_mod_p": 383,
+     "qr_svd": 383
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     30000,
+     12607
+    ],
+    "used_columns": 5353
+   },
+   "20261010": {
+    "C2_max_abs_change": 3.515228020556486e-13,
+    "C2_passes": true,
+    "coverage_dim": 7241,
+    "nontrivial_dim": 358,
+    "null_dim_total": 7601,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 360,
+     "eigh_reduced": 360,
+     "exact_mod_p": 360,
+     "qr_svd": 360
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     30000,
+     12607
+    ],
+    "used_columns": 5366
+   },
+   "20261011": {
+    "C2_max_abs_change": 1.1514435499831275e-13,
+    "C2_passes": true,
+    "coverage_dim": 7202,
+    "nontrivial_dim": 386,
+    "null_dim_total": 7590,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 388,
+     "eigh_reduced": 388,
+     "exact_mod_p": 388,
+     "qr_svd": 388
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     30000,
+     12607
+    ],
+    "used_columns": 5405
+   },
+   "20261012": {
+    "C2_max_abs_change": 4.430902115391239e-13,
+    "C2_passes": true,
+    "coverage_dim": 7203,
+    "nontrivial_dim": 384,
+    "null_dim_total": 7589,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 386,
+     "eigh_reduced": 386,
+     "exact_mod_p": 386,
+     "qr_svd": 386
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     30000,
+     12607
+    ],
+    "used_columns": 5404
+   },
+   "20261013": {
+    "C2_max_abs_change": 2.675781416504078e-13,
+    "C2_passes": true,
+    "coverage_dim": 7264,
+    "nontrivial_dim": 384,
+    "null_dim_total": 7650,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 386,
+     "eigh_reduced": 386,
+     "exact_mod_p": 386,
+     "qr_svd": 386
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     30000,
+     12607
+    ],
+    "used_columns": 5343
+   }
+  }
+ },
+ "saturation_anchor": {
+  "C2_max_abs_change": 3.094232985840858e-13,
+  "C2_passes": true,
+  "coverage_dim": 4796,
+  "nontrivial_dim": 214,
+  "null_dim_total": 5012,
+  "null_dim_within_used": {
+   "agree": true,
+   "eigh_gram": 216,
+   "eigh_reduced": 216,
+   "exact_mod_p": 216,
+   "qr_svd": 216
+  },
+  "reconstruction_failures": 0,
+  "reproduces_full_set": true,
+  "rfam_r2_full_set_nontrivial": 214,
+  "rows": 94142,
+  "shape": [
+   94142,
+   12607
+  ],
+  "used_columns": 7811
+ },
+ "saturation_context_67418": {
+  "basis": "nominal rows (see rfam.context_point_67418)",
+  "random_mean": 287.375,
+  "random_sd": 5.3967582862307255
+ },
+ "saturation_sizes": [
+  1000,
+  3000,
+  10000,
+  30000
+ ],
+ "seeds": [
+  20261006,
+  20261007,
+  20261008,
+  20261009,
+  20261010,
+  20261011,
+  20261012,
+  20261013
+ ],
+ "status": "complete",
+ "tr0_results": {
+  "d0_special_hp0": {
+   "C0_corrupted_entry_detected": {
+    "('ML_ci',)": {
+     "detected": true,
+     "rows_failing": 4662,
+     "rows_using": 4662
+    },
+    "('TerminalAU',)": {
+     "detected": true,
+     "rows_failing": 9092,
+     "rows_using": 9092
+    },
+    "('hairpin', 30)": {
+     "detected": true,
+     "rows_failing": 1553,
+     "rows_using": 1553
+    },
+    "('mismatchH', 5, 3, 1)": {
+     "detected": true,
+     "rows_failing": 525,
+     "rows_using": 525
+    },
+    "('stack', 1, 2)": {
+     "detected": true,
+     "rows_failing": 7573,
+     "rows_using": 7573
+    }
+   },
+   "C1_random_nonnull_changes": {
+    "fails_as_required": true,
+    "max_abs_change": 364.41806760496087
+   },
+   "C2_null_basis_unchanged": {
+    "max_abs_change": 2.231854642843257e-13,
+    "passes": true
+   },
+   "C3_row_shuffle": {
+    "changes_dim": true,
+    "null_dim_shuffled": 0
+   },
+   "C4_planted_defect": {
+    "N1_max_abs_change": 4.0,
+    "detected": true
+   },
+   "R5_uniform_stack_shift": {
+    "in_null_space": false,
+    "max_abs_change": 121.0
+   },
+   "coverage": {
+    "by_table": {
+     "int11": 11,
+     "int21": 1162,
+     "int22": 6873
+    },
+    "dim": 8046
+   },
+   "dangles": 0,
+   "identifiability_by_table": {
+    "ML_cc": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ML_ci": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ML_cu": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "TerminalAU": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "bulge": {
+     "individually_identifiable": 28,
+     "used": 30
+    },
+    "hairpin": {
+     "individually_identifiable": 0,
+     "used": 28
+    },
+    "int11": {
+     "individually_identifiable": 549,
+     "used": 565
+    },
+    "int21": {
+     "individually_identifiable": 890,
+     "used": 1142
+    },
+    "int22": {
+     "individually_identifiable": 1714,
+     "used": 2343
+    },
+    "internal_loop": {
+     "individually_identifiable": 0,
+     "used": 27
+    },
+    "mismatch1nI": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatch23I": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchH": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchI": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "ninio_m": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ninio_max": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "stack": {
+     "individually_identifiable": 36,
+     "used": 36
+    }
+   },
+   "intrinsic_restricted": {
+    "all_null": true,
+    "max_abs_row_change": {
+     "N1_hairpin_mismatch_vs_init": 0.0,
+     "N2_interior_mismatch_vs_init": 0.0
+    },
+    "rank_on_used_columns": 2
+   },
+   "n_columns_reachable": 12607,
+   "nontrivial": {
+    "dim": 426,
+    "weight_by_table": {
+     "bulge": 0.0015,
+     "int11": 0.0161,
+     "int21": 0.2773,
+     "int22": 0.7051
+    }
+   },
+   "null_dim_total": 8474,
+   "null_dim_within_used": {
+    "agree": true,
+    "eigh_gram": 428,
+    "eigh_reduced": 428,
+    "exact_mod_p": 428,
+    "gram": {
+     "eig_tol": 7.753241521982998e-06,
+     "largest_null_eig": 2.7091797980451604e-12,
+     "smallest_nonnull_eig": 0.02120202992786387
+    },
+    "qr": {
+     "largest_null_sv": 1.2287700292508624e-12,
+     "smallest_nonnull_sv": 0.14560916841965751,
+     "sv_tol": 7.344822647760298e-09
+    },
+    "qr_svd": 428,
+    "rank_mod_p": {
+     "1048571": 1864,
+     "1048573": 1864
+    },
+    "reduced": {
+     "eig_tol": 2.575392291607437e-06,
+     "largest_null_eig": 1.6255543764510644e-09,
+     "reduced_shape": [
+      9686,
+      2292
+     ],
+     "singleton_columns_eliminated": 2269,
+     "smallest_nonnull_eig": 0.0944469854700156
+    },
+    "seconds": 94.4
+   },
+   "reconstruction": {
+    "first_failures": [],
+    "n_checked": 11955,
+    "n_failed": 0,
+    "passes": true,
+    "rows_with_long_loop_offset": 1971
+   },
+   "shape": [
+    11955,
+    12607
+   ],
+   "special_hp": 0,
+   "used_columns": 4561
+  },
+  "d0_special_hp1": {
+   "C0_corrupted_entry_detected": {
+    "('ML_ci',)": {
+     "detected": true,
+     "rows_failing": 4662,
+     "rows_using": 4662
+    },
+    "('TerminalAU',)": {
+     "detected": true,
+     "rows_failing": 9150,
+     "rows_using": 9150
+    },
+    "('hairpin', 30)": {
+     "detected": true,
+     "rows_failing": 1553,
+     "rows_using": 1553
+    },
+    "('mismatchH', 5, 3, 1)": {
+     "detected": true,
+     "rows_failing": 521,
+     "rows_using": 521
+    },
+    "('stack', 1, 2)": {
+     "detected": true,
+     "rows_failing": 7573,
+     "rows_using": 7573
+    }
+   },
+   "C1_random_nonnull_changes": {
+    "fails_as_required": true,
+    "max_abs_change": 70.30591640473352
+   },
+   "C2_null_basis_unchanged": {
+    "max_abs_change": 1.6749637785890366e-13,
+    "passes": true
+   },
+   "C3_row_shuffle": {
+    "changes_dim": true,
+    "null_dim_shuffled": 0
+   },
+   "C4_planted_defect": {
+    "N1_max_abs_change": 4.0,
+    "detected": true
+   },
+   "R5_uniform_stack_shift": {
+    "in_null_space": false,
+    "max_abs_change": 121.0
+   },
+   "coverage": {
+    "by_table": {
+     "Hexaloop": 4,
+     "int11": 11,
+     "int21": 1162,
+     "int22": 6873
+    },
+    "dim": 8050
+   },
+   "dangles": 0,
+   "identifiability_by_table": {
+    "ML_cc": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ML_ci": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ML_cu": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "TerminalAU": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "Tetraloop": {
+     "individually_identifiable": 16,
+     "used": 16
+    },
+    "Triloop": {
+     "individually_identifiable": 2,
+     "used": 2
+    },
+    "bulge": {
+     "individually_identifiable": 28,
+     "used": 30
+    },
+    "hairpin": {
+     "individually_identifiable": 1,
+     "used": 28
+    },
+    "int11": {
+     "individually_identifiable": 549,
+     "used": 565
+    },
+    "int21": {
+     "individually_identifiable": 890,
+     "used": 1142
+    },
+    "int22": {
+     "individually_identifiable": 1714,
+     "used": 2343
+    },
+    "internal_loop": {
+     "individually_identifiable": 0,
+     "used": 27
+    },
+    "mismatch1nI": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatch23I": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchH": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchI": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "ninio_m": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ninio_max": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "stack": {
+     "individually_identifiable": 36,
+     "used": 36
+    }
+   },
+   "intrinsic_restricted": {
+    "all_null": true,
+    "max_abs_row_change": {
+     "N1_hairpin_mismatch_vs_init": 0.0,
+     "N2_interior_mismatch_vs_init": 0.0
+    },
+    "rank_on_used_columns": 2
+   },
+   "n_columns_reachable": 12629,
+   "nontrivial": {
+    "dim": 426,
+    "weight_by_table": {
+     "bulge": 0.0015,
+     "int11": 0.0161,
+     "int21": 0.2773,
+     "int22": 0.7051
+    }
+   },
+   "null_dim_total": 8478,
+   "null_dim_within_used": {
+    "agree": true,
+    "eigh_gram": 428,
+    "eigh_reduced": 428,
+    "exact_mod_p": 428,
+    "gram": {
+     "eig_tol": 7.785114138895859e-06,
+     "largest_null_eig": 8.275799511823583e-11,
+     "smallest_nonnull_eig": 0.02099561589727133
+    },
+    "qr": {
+     "largest_null_sv": 1.2288478870955553e-12,
+     "smallest_nonnull_sv": 0.1448986400808353,
+     "sv_tol": 7.345423896782103e-09
+    },
+    "qr_svd": 428,
+    "rank_mod_p": {
+     "1048571": 1882,
+     "1048573": 1882
+    },
+    "reduced": {
+     "eig_tol": 2.596073333982573e-06,
+     "largest_null_eig": 8.158397698758113e-12,
+     "reduced_shape": [
+      9686,
+      2310
+     ],
+     "singleton_columns_eliminated": 2269,
+     "smallest_nonnull_eig": 0.09435337280218073
+    },
+    "seconds": 96.0
+   },
+   "reconstruction": {
+    "first_failures": [],
+    "n_checked": 11955,
+    "n_failed": 0,
+    "passes": true,
+    "rows_with_long_loop_offset": 1971
+   },
+   "shape": [
+    11955,
+    12629
+   ],
+   "special_hp": 1,
+   "used_columns": 4579
+  },
+  "d2_special_hp0": {
+   "C0_corrupted_entry_detected": {
+    "('ML_ci',)": {
+     "detected": true,
+     "rows_failing": 4662,
+     "rows_using": 4662
+    },
+    "('TerminalAU',)": {
+     "detected": true,
+     "rows_failing": 9092,
+     "rows_using": 9092
+    },
+    "('hairpin', 30)": {
+     "detected": true,
+     "rows_failing": 1553,
+     "rows_using": 1553
+    },
+    "('mismatchH', 5, 3, 1)": {
+     "detected": true,
+     "rows_failing": 525,
+     "rows_using": 525
+    },
+    "('stack', 1, 2)": {
+     "detected": true,
+     "rows_failing": 7573,
+     "rows_using": 7573
+    }
+   },
+   "C1_random_nonnull_changes": {
+    "fails_as_required": true,
+    "max_abs_change": 364.99733622468125
+   },
+   "C2_null_basis_unchanged": {
+    "max_abs_change": 1.619709683216286e-13,
+    "passes": true
+   },
+   "C3_row_shuffle": {
+    "changes_dim": true,
+    "null_dim_shuffled": 0
+   },
+   "C4_planted_defect": {
+    "N1_max_abs_change": 4.0,
+    "detected": true
+   },
+   "R5_uniform_stack_shift": {
+    "in_null_space": false,
+    "max_abs_change": 121.0
+   },
+   "R6_r1_artifact": {
+    "in_null_space": false,
+    "max_abs_change": 7.0
+   },
+   "coverage": {
+    "by_table": {
+     "dangle3": 1,
+     "int11": 11,
+     "int21": 1162,
+     "int22": 6873
+    },
+    "dim": 8047
+   },
+   "dangles": 2,
+   "identifiability_by_table": {
+    "ML_cc": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ML_ci": {
+     "individually_identifiable": 0,
+     "used": 1
+    },
+    "ML_cu": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "TerminalAU": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "bulge": {
+     "individually_identifiable": 28,
+     "used": 30
+    },
+    "dangle3": {
+     "individually_identifiable": 23,
+     "used": 23
+    },
+    "dangle5": {
+     "individually_identifiable": 24,
+     "used": 24
+    },
+    "hairpin": {
+     "individually_identifiable": 0,
+     "used": 28
+    },
+    "int11": {
+     "individually_identifiable": 549,
+     "used": 565
+    },
+    "int21": {
+     "individually_identifiable": 890,
+     "used": 1142
+    },
+    "int22": {
+     "individually_identifiable": 1714,
+     "used": 2343
+    },
+    "internal_loop": {
+     "individually_identifiable": 0,
+     "used": 27
+    },
+    "mismatch1nI": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatch23I": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchExt": {
+     "individually_identifiable": 96,
+     "used": 96
+    },
+    "mismatchH": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchI": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchM": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "ninio_m": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ninio_max": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "stack": {
+     "individually_identifiable": 36,
+     "used": 36
+    }
+   },
+   "intrinsic_restricted": {
+    "all_null": true,
+    "max_abs_row_change": {
+     "N1_hairpin_mismatch_vs_init": 0.0,
+     "N2_interior_mismatch_vs_init": 0.0,
+     "N3_multiloop_mismatch_vs_ci": 0.0
+    },
+    "rank_on_used_columns": 3
+   },
+   "n_columns_reachable": 12847,
+   "nontrivial": {
+    "dim": 426,
+    "weight_by_table": {
+     "bulge": 0.0015,
+     "int11": 0.0161,
+     "int21": 0.2773,
+     "int22": 0.7051
+    }
+   },
+   "null_dim_total": 8476,
+   "null_dim_within_used": {
+    "agree": true,
+    "eigh_gram": 429,
+    "eigh_reduced": 429,
+    "exact_mod_p": 429,
+    "gram": {
+     "eig_tol": 8.162505987325104e-06,
+     "largest_null_eig": 7.64679637095952e-12,
+     "smallest_nonnull_eig": 0.020457205098662064
+    },
+    "qr": {
+     "largest_null_sv": 1.229005562869642e-12,
+     "smallest_nonnull_sv": 0.1430286862789019,
+     "sv_tol": 7.346167575277287e-09
+    },
+    "qr_svd": 429,
+    "rank_mod_p": {
+     "1048571": 2100,
+     "1048573": 2100
+    },
+    "reduced": {
+     "eig_tol": 2.842877139039143e-06,
+     "largest_null_eig": 1.0142242108582755e-10,
+     "reduced_shape": [
+      9684,
+      2529
+     ],
+     "singleton_columns_eliminated": 2271,
+     "smallest_nonnull_eig": 0.091065836638177
+    },
+    "seconds": 113.1
+   },
+   "reconstruction": {
+    "first_failures": [],
+    "n_checked": 11955,
+    "n_failed": 0,
+    "passes": true,
+    "rows_with_long_loop_offset": 1971
+   },
+   "shape": [
+    11955,
+    12847
+   ],
+   "special_hp": 0,
+   "used_columns": 4800
+  },
+  "d2_special_hp1": {
+   "C0_corrupted_entry_detected": {
+    "('ML_ci',)": {
+     "detected": true,
+     "rows_failing": 4662,
+     "rows_using": 4662
+    },
+    "('TerminalAU',)": {
+     "detected": true,
+     "rows_failing": 9150,
+     "rows_using": 9150
+    },
+    "('hairpin', 30)": {
+     "detected": true,
+     "rows_failing": 1553,
+     "rows_using": 1553
+    },
+    "('mismatchH', 5, 3, 1)": {
+     "detected": true,
+     "rows_failing": 521,
+     "rows_using": 521
+    },
+    "('stack', 1, 2)": {
+     "detected": true,
+     "rows_failing": 7573,
+     "rows_using": 7573
+    }
+   },
+   "C1_random_nonnull_changes": {
+    "fails_as_required": true,
+    "max_abs_change": 225.0351468678496
+   },
+   "C2_null_basis_unchanged": {
+    "max_abs_change": 1.1125731683592904e-13,
+    "passes": true
+   },
+   "C3_row_shuffle": {
+    "changes_dim": true,
+    "null_dim_shuffled": 0
+   },
+   "C4_planted_defect": {
+    "N1_max_abs_change": 4.0,
+    "detected": true
+   },
+   "R5_uniform_stack_shift": {
+    "in_null_space": false,
+    "max_abs_change": 121.0
+   },
+   "R6_r1_artifact": {
+    "in_null_space": false,
+    "max_abs_change": 7.0
+   },
+   "coverage": {
+    "by_table": {
+     "Hexaloop": 4,
+     "dangle3": 1,
+     "int11": 11,
+     "int21": 1162,
+     "int22": 6873
+    },
+    "dim": 8051
+   },
+   "dangles": 2,
+   "identifiability_by_table": {
+    "ML_cc": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ML_ci": {
+     "individually_identifiable": 0,
+     "used": 1
+    },
+    "ML_cu": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "TerminalAU": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "Tetraloop": {
+     "individually_identifiable": 16,
+     "used": 16
+    },
+    "Triloop": {
+     "individually_identifiable": 2,
+     "used": 2
+    },
+    "bulge": {
+     "individually_identifiable": 28,
+     "used": 30
+    },
+    "dangle3": {
+     "individually_identifiable": 23,
+     "used": 23
+    },
+    "dangle5": {
+     "individually_identifiable": 24,
+     "used": 24
+    },
+    "hairpin": {
+     "individually_identifiable": 1,
+     "used": 28
+    },
+    "int11": {
+     "individually_identifiable": 549,
+     "used": 565
+    },
+    "int21": {
+     "individually_identifiable": 890,
+     "used": 1142
+    },
+    "int22": {
+     "individually_identifiable": 1714,
+     "used": 2343
+    },
+    "internal_loop": {
+     "individually_identifiable": 0,
+     "used": 27
+    },
+    "mismatch1nI": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatch23I": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchExt": {
+     "individually_identifiable": 96,
+     "used": 96
+    },
+    "mismatchH": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchI": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "mismatchM": {
+     "individually_identifiable": 0,
+     "used": 96
+    },
+    "ninio_m": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "ninio_max": {
+     "individually_identifiable": 1,
+     "used": 1
+    },
+    "stack": {
+     "individually_identifiable": 36,
+     "used": 36
+    }
+   },
+   "intrinsic_restricted": {
+    "all_null": true,
+    "max_abs_row_change": {
+     "N1_hairpin_mismatch_vs_init": 0.0,
+     "N2_interior_mismatch_vs_init": 0.0,
+     "N3_multiloop_mismatch_vs_ci": 0.0
+    },
+    "rank_on_used_columns": 3
+   },
+   "n_columns_reachable": 12869,
+   "nontrivial": {
+    "dim": 426,
+    "weight_by_table": {
+     "bulge": 0.0015,
+     "int11": 0.0161,
+     "int21": 0.2773,
+     "int22": 0.7051
+    }
+   },
+   "null_dim_total": 8480,
+   "null_dim_within_used": {
+    "agree": true,
+    "eigh_gram": 429,
+    "eigh_reduced": 429,
+    "exact_mod_p": 429,
+    "gram": {
+     "eig_tol": 8.1944567730495e-06,
+     "largest_null_eig": 6.962085191256366e-11,
+     "smallest_nonnull_eig": 0.020251495541647062
+    },
+    "qr": {
+     "largest_null_sv": 1.229109019525572e-12,
+     "smallest_nonnull_sv": 0.14230774940826887,
+     "sv_tol": 7.346768913063285e-09
+    },
+    "qr_svd": 429,
+    "rank_mod_p": {
+     "1048571": 2118,
+     "1048573": 2118
+    },
+    "reduced": {
+     "eig_tol": 2.8636134405044065e-06,
+     "largest_null_eig": 1.1209955984455694e-13,
+     "reduced_shape": [
+      9684,
+      2547
+     ],
+     "singleton_columns_eliminated": 2271,
+     "smallest_nonnull_eig": 0.08879146974594268
+    },
+    "seconds": 114.7
+   },
+   "reconstruction": {
+    "first_failures": [],
+    "n_checked": 11955,
+    "n_failed": 0,
+    "passes": true,
+    "rows_with_long_loop_offset": 1971
+   },
+   "shape": [
+    11955,
+    12869
+   ],
+   "special_hp": 1,
+   "used_columns": 4818
+  }
+ },
+ "tr0_ts0": {
+  "counts": {
+   "distinct": 11970,
+   "distinct_pair_bearing": 11955,
+   "nominal": 11970,
+   "pair_bearing": 11955
+  },
+  "loader": {
+   "by_list": {
+    "TR0": 10814,
+    "TS0": 1305
+   },
+   "dropped_non_ACGU": 149,
+   "pairs_removed_short_hairpin": 506,
+   "raw": 12119,
+   "structures_touched_by_short_hairpin_rule": 406
+  },
+  "tr0_ts0_overlap_distinct": 0
+ },
+ "verdicts": {
+  "C2": {
+   "passes": true,
+   "worst_row_change_all_analyses": 4.430902115391239e-13,
+   "worst_row_change_tr0": 2.231854642843257e-13
+  },
+  "T1": {
+   "nontrivial": {
+    "d0_special_hp0": 426,
+    "d0_special_hp1": 426,
+    "d2_special_hp0": 426,
+    "d2_special_hp1": 426
+   },
+   "verdict": "refuted"
+  },
+  "anchor_check": true,
+  "dimensions_tr0": {
+   "d0_special_hp0": {
+    "never_exercised": 8046,
+    "nontrivial": 426,
+    "null_dim_total": 8474,
+    "null_dim_within_used": 428
+   },
+   "d0_special_hp1": {
+    "never_exercised": 8050,
+    "nontrivial": 426,
+    "null_dim_total": 8478,
+    "null_dim_within_used": 428
+   },
+   "d2_special_hp0": {
+    "never_exercised": 8047,
+    "nontrivial": 426,
+    "null_dim_total": 8476,
+    "null_dim_within_used": 429
+   },
+   "d2_special_hp1": {
+    "never_exercised": 8051,
+    "nontrivial": 426,
+    "null_dim_total": 8480,
+    "null_dim_within_used": 429
+   }
+  },
+  "inherited_checks_tr0": {
+   "d0_special_hp0": {
+    "C0": true,
+    "C1": true,
+    "C3": true,
+    "C4": true,
+    "R5_not_null": true,
+    "methods_agree": true,
+    "reconstruction": true
+   },
+   "d0_special_hp1": {
+    "C0": true,
+    "C1": true,
+    "C3": true,
+    "C4": true,
+    "R5_not_null": true,
+    "methods_agree": true,
+    "reconstruction": true
+   },
+   "d2_special_hp0": {
+    "C0": true,
+    "C1": true,
+    "C3": true,
+    "C4": true,
+    "R5_not_null": true,
+    "methods_agree": true,
+    "reconstruction": true
+   },
+   "d2_special_hp1": {
+    "C0": true,
+    "C1": true,
+    "C3": true,
+    "C4": true,
+    "R5_not_null": true,
+    "methods_agree": true,
+    "reconstruction": true
+   }
+  },
+  "joint_read": {
+   "bracket": [
+    10000,
+    30000
+   ],
+   "inside_envelope": true,
+   "interp_envelope": [
+    390.6610796360414,
+    496.1457753277129
+   ],
+   "interp_mean": 442.8614266322691,
+   "interp_sd": 36.90099837855355,
+   "reading": "row count explains it",
+   "tr0_nontrivial": 426,
+   "tr0_rows": 11955,
+   "z": -0.45693686819240065
+  },
+  "matched_size_control_branch": {
+   "d0_special_hp0": "BELOW",
+   "d0_special_hp1": "BELOW",
+   "d2_special_hp0": "BELOW",
+   "d2_special_hp1": "BELOW"
+  },
+  "reconstruction_failures_all_analyses": 0,
+  "saturation_curve": {
+   "1000": {
+    "max": 424,
+    "mean": 378.125,
+    "min": 321,
+    "sd": 34.06060774560548
+   },
+   "10000": {
+    "max": 515,
+    "mean": 454.625,
+    "min": 397,
+    "sd": 41.43475939008559
+   },
+   "3000": {
+    "max": 407,
+    "mean": 375.75,
+    "min": 353,
+    "sd": 19.181464267061873
+   },
+   "30000": {
+    "max": 399,
+    "mean": 382.25,
+    "min": 358,
+    "sd": 13.540943204117756
+   },
+   "anchor_full_population": 214
+  }
+ },
+ "viennarna_version": "2.7.2"
+}
