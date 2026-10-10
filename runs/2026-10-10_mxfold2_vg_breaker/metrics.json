@@ -1,0 +1,1156 @@
+{
+ "all_13": {
+  "bpRNA_RFAM_20929": {
+   "breaker": true,
+   "length": 122,
+   "longest_run_admitted": 32,
+   "pred": {
+    "E_w": 52.900169372558594,
+    "E_w_plus_dv": 54.380157470703125,
+    "dE": 1.4799880981445312,
+    "dE_from_counts_times_actual_dtheta": 1.4799973666667938,
+    "dE_over_d": 3.9999678328230575,
+    "dE_predicted_d_h_dot_count": 1.48,
+    "h_dot_count": 4.0,
+    "helix_length_counts": {
+     "30": 1.0,
+     "6": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 32,
+    "n_S_entries_counted": 72.0,
+    "pairs_missing_from_DP_return": [
+     [
+      60,
+      69
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      60,
+      69
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 48.24943542480469,
+    "E_w_plus_dv": 48.249427795410156,
+    "dE": -7.62939453125e-06,
+    "dE_from_counts_times_actual_dtheta": -2.6226043701171875e-06,
+    "dE_over_d": -2.0619985219594594e-05,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 30,
+    "longest_helix_scored_structure": 30,
+    "n_S_entries_counted": 58.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 0.032786887139081955
+  },
+  "bpRNA_RFAM_20932": {
+   "breaker": true,
+   "length": 129,
+   "longest_run_admitted": 33,
+   "pred": {
+    "E_w": 75.0761489868164,
+    "E_w_plus_dv": 76.55613708496094,
+    "dE": 1.4799880981445312,
+    "dE_from_counts_times_actual_dtheta": 1.479997843503952,
+    "dE_over_d": 3.9999678328230575,
+    "dE_predicted_d_h_dot_count": 1.48,
+    "h_dot_count": 4.0,
+    "helix_length_counts": {
+     "30": 1.0,
+     "4": 1.0,
+     "8": 2.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 32,
+    "n_S_entries_counted": 96.0,
+    "pairs_missing_from_DP_return": [
+     [
+      30,
+      73
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      30,
+      73
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 49.645751953125,
+    "E_w_plus_dv": 49.64574432373047,
+    "dE": -7.62939453125e-06,
+    "dE_from_counts_times_actual_dtheta": -2.652406692504883e-06,
+    "dE_over_d": -2.0619985219594594e-05,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 30,
+    "longest_helix_scored_structure": 30,
+    "n_S_entries_counted": 58.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 0.031007757410407066
+  },
+  "bpRNA_RFAM_20933": {
+   "breaker": true,
+   "length": 121,
+   "longest_run_admitted": 31,
+   "pred": {
+    "E_w": 61.79617691040039,
+    "E_w_plus_dv": 62.536170959472656,
+    "dE": 0.7399940490722656,
+    "dE_from_counts_times_actual_dtheta": 0.7399971187114716,
+    "dE_over_d": 1.9999839164115287,
+    "dE_predicted_d_h_dot_count": 0.74,
+    "h_dot_count": 2.0,
+    "helix_length_counts": {
+     "30": 1.0,
+     "5": 1.0,
+     "6": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 31,
+    "n_S_entries_counted": 78.0,
+    "pairs_missing_from_DP_return": [
+     [
+      61,
+      67
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      61,
+      67
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 50.89054870605469,
+    "E_w_plus_dv": 50.890541076660156,
+    "dE": -7.62939453125e-06,
+    "dE_from_counts_times_actual_dtheta": -2.652406692504883e-06,
+    "dE_over_d": -2.0619985219594594e-05,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 30,
+    "longest_helix_scored_structure": 30,
+    "n_S_entries_counted": 58.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 0.016528919339179993
+  },
+  "bpRNA_RFAM_20959": {
+   "breaker": false,
+   "length": 84,
+   "longest_run_admitted": 34,
+   "pred": {
+    "E_w": 75.41710662841797,
+    "E_w_plus_dv": 75.41710662841797,
+    "dE": 0.0,
+    "dE_from_counts_times_actual_dtheta": 6.258487701416016e-07,
+    "dE_over_d": 0.0,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "11": 1.0,
+     "22": 1.0
+    },
+    "longest_helix_returned_by_DP": 22,
+    "longest_helix_scored_structure": 22,
+    "n_S_entries_counted": 62.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "pred_restoration": {
+    "pairs_restored": [],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 53.08997344970703,
+    "E_w_plus_dv": 53.08997344970703,
+    "dE": 0.0,
+    "dE_from_counts_times_actual_dtheta": 2.384185791015625e-07,
+    "dE_over_d": 0.0,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "1": 2.0,
+     "16": 1.0,
+     "5": 2.0
+    },
+    "longest_helix_returned_by_DP": 16,
+    "longest_helix_scored_structure": 16,
+    "n_S_entries_counted": 46.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": -2.2351741790771484e-08
+  },
+  "bpRNA_RFAM_21831": {
+   "breaker": true,
+   "length": 135,
+   "longest_run_admitted": 41,
+   "pred": {
+    "E_w": 92.04120635986328,
+    "E_w_plus_dv": 100.18119812011719,
+    "dE": 8.139991760253906,
+    "dE_from_counts_times_actual_dtheta": 8.139997810125351,
+    "dE_over_d": 21.999977730415964,
+    "dE_predicted_d_h_dot_count": 8.14,
+    "h_dot_count": 22.0,
+    "helix_length_counts": {
+     "11": 1.0,
+     "2": 1.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 41,
+    "n_S_entries_counted": 102.0,
+    "pairs_missing_from_DP_return": [
+     [
+      33,
+      103
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      33,
+      103
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 60.878353118896484,
+    "E_w_plus_dv": 60.87833786010742,
+    "dE": -1.52587890625e-05,
+    "dE_from_counts_times_actual_dtheta": -2.682209014892578e-06,
+    "dE_over_d": -4.123997043918919e-05,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "29": 1.0,
+     "3": 1.0,
+     "8": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 29,
+    "n_S_entries_counted": 74.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 0.16296294517815113
+  },
+  "bpRNA_RFAM_22139": {
+   "breaker": true,
+   "length": 96,
+   "longest_run_admitted": 32,
+   "pred": {
+    "E_w": 53.39903259277344,
+    "E_w_plus_dv": 54.8790283203125,
+    "dE": 1.4799957275390625,
+    "dE_from_counts_times_actual_dtheta": 1.4799973666667938,
+    "dE_over_d": 3.999988452808277,
+    "dE_predicted_d_h_dot_count": 1.48,
+    "h_dot_count": 4.0,
+    "helix_length_counts": {
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 32,
+    "n_S_entries_counted": 62.0,
+    "pairs_missing_from_DP_return": [
+     [
+      47,
+      60
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      47,
+      60
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 44.60446548461914,
+    "E_w_plus_dv": 44.604454040527344,
+    "dE": -1.1444091796875e-05,
+    "dE_from_counts_times_actual_dtheta": -2.8908252716064453e-06,
+    "dE_over_d": -3.0929977829391894e-05,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "29": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 29,
+    "n_S_entries_counted": 56.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 0.04166668839752674
+  },
+  "bpRNA_RFAM_22273": {
+   "breaker": true,
+   "length": 86,
+   "longest_run_admitted": 31,
+   "pred": {
+    "E_w": 55.306583404541016,
+    "E_w_plus_dv": 56.04656982421875,
+    "dE": 0.7399864196777344,
+    "dE_from_counts_times_actual_dtheta": 0.739997386932373,
+    "dE_over_d": 1.9999632964263092,
+    "dE_predicted_d_h_dot_count": 0.74,
+    "h_dot_count": 2.0,
+    "helix_length_counts": {
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 31,
+    "n_S_entries_counted": 60.0,
+    "pairs_missing_from_DP_return": [
+     [
+      35,
+      52
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      35,
+      52
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 55.19997024536133,
+    "E_w_plus_dv": 55.93995666503906,
+    "dE": 0.7399864196777344,
+    "dE_from_counts_times_actual_dtheta": 0.739997386932373,
+    "dE_over_d": 1.9999632964263092,
+    "dE_predicted_d_h_dot_count": 0.74,
+    "h_dot_count": 2.0,
+    "helix_length_counts": {
+     "3": 1.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 31,
+    "n_S_entries_counted": 64.0,
+    "pairs_missing_from_DP_return": [
+     [
+      35,
+      52
+     ]
+    ]
+   },
+   "v_dot_g_eval_mode": -0.013955041766166687
+  },
+  "bpRNA_RFAM_22316": {
+   "breaker": true,
+   "length": 98,
+   "longest_run_admitted": 35,
+   "pred": {
+    "E_w": 54.74406433105469,
+    "E_w_plus_dv": 58.444053649902344,
+    "dE": 3.6999893188476562,
+    "dE_from_counts_times_actual_dtheta": 3.6999973952770233,
+    "dE_over_d": 9.999971132020693,
+    "dE_predicted_d_h_dot_count": 3.7,
+    "h_dot_count": 10.0,
+    "helix_length_counts": {
+     "1": 2.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 35,
+    "n_S_entries_counted": 68.0,
+    "pairs_missing_from_DP_return": [
+     [
+      30,
+      57
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      30,
+      57
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 53.50226974487305,
+    "E_w_plus_dv": 56.462257385253906,
+    "dE": 2.9599876403808594,
+    "dE_from_counts_times_actual_dtheta": 2.9599973261356354,
+    "dE_over_d": 7.9999665956239445,
+    "dE_predicted_d_h_dot_count": 2.96,
+    "h_dot_count": 8.0,
+    "helix_length_counts": {
+     "1": 1.0,
+     "2": 1.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 34,
+    "n_S_entries_counted": 68.0,
+    "pairs_missing_from_DP_return": [
+     [
+      31,
+      56
+     ]
+    ]
+   },
+   "v_dot_g_eval_mode": -0.0935058519244194
+  },
+  "bpRNA_RFAM_22342": {
+   "breaker": true,
+   "length": 83,
+   "longest_run_admitted": 34,
+   "pred": {
+    "E_w": 61.82626724243164,
+    "E_w_plus_dv": 64.78626251220703,
+    "dE": 2.9599952697753906,
+    "dE_from_counts_times_actual_dtheta": 2.9599973559379578,
+    "dE_over_d": 7.999987215609164,
+    "dE_predicted_d_h_dot_count": 2.96,
+    "h_dot_count": 8.0,
+    "helix_length_counts": {
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 34,
+    "n_S_entries_counted": 66.0,
+    "pairs_missing_from_DP_return": [
+     [
+      32,
+      54
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      32,
+      54
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 62.564842224121094,
+    "E_w_plus_dv": 65.52483367919922,
+    "dE": 2.959991455078125,
+    "dE_from_counts_times_actual_dtheta": 2.959997296333313,
+    "dE_over_d": 7.999976905616554,
+    "dE_predicted_d_h_dot_count": 2.96,
+    "h_dot_count": 8.0,
+    "helix_length_counts": {
+     "2": 1.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 34,
+    "n_S_entries_counted": 68.0,
+    "pairs_missing_from_DP_return": [
+     [
+      32,
+      54
+     ]
+    ]
+   },
+   "v_dot_g_eval_mode": -0.14171624183654785
+  },
+  "bpRNA_RFAM_22363": {
+   "breaker": true,
+   "length": 75,
+   "longest_run_admitted": 34,
+   "pred": {
+    "E_w": 70.5575180053711,
+    "E_w_plus_dv": 73.51750946044922,
+    "dE": 2.959991455078125,
+    "dE_from_counts_times_actual_dtheta": 2.95999738574028,
+    "dE_over_d": 7.999976905616554,
+    "dE_predicted_d_h_dot_count": 2.96,
+    "h_dot_count": 8.0,
+    "helix_length_counts": {
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 34,
+    "n_S_entries_counted": 66.0,
+    "pairs_missing_from_DP_return": [
+     [
+      30,
+      44
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      30,
+      44
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 46.35512161254883,
+    "E_w_plus_dv": 46.35512161254883,
+    "dE": 0.0,
+    "dE_from_counts_times_actual_dtheta": 1.1026859283447266e-06,
+    "dE_over_d": 0.0,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "16": 1.0,
+     "2": 1.0,
+     "9": 1.0
+    },
+    "longest_helix_returned_by_DP": 16,
+    "longest_helix_scored_structure": 16,
+    "n_S_entries_counted": 48.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 0.1066666692495346
+  },
+  "bpRNA_RFAM_25077": {
+   "breaker": false,
+   "length": 323,
+   "longest_run_admitted": 32,
+   "pred": {
+    "E_w": 68.74669647216797,
+    "E_w_plus_dv": 68.74669647216797,
+    "dE": 0.0,
+    "dE_from_counts_times_actual_dtheta": -1.3709068298339844e-06,
+    "dE_over_d": 0.0,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "1": 2.0,
+     "2": 2.0,
+     "3": 3.0,
+     "5": 6.0,
+     "6": 3.0,
+     "7": 3.0,
+     "8": 1.0
+    },
+    "longest_helix_returned_by_DP": 8,
+    "longest_helix_scored_structure": 8,
+    "n_S_entries_counted": 144.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "pred_restoration": {
+    "pairs_restored": [],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": -12.680839538574219,
+    "E_w_plus_dv": -12.680839538574219,
+    "dE": 0.0,
+    "dE_from_counts_times_actual_dtheta": -2.384185791015625e-07,
+    "dE_over_d": 0.0,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "1": 4.0,
+     "2": 8.0,
+     "3": 3.0,
+     "4": 1.0,
+     "5": 1.0,
+     "9": 1.0
+    },
+    "longest_helix_returned_by_DP": 9,
+    "longest_helix_scored_structure": 9,
+    "n_S_entries_counted": 58.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 5.21540641784668e-08
+  },
+  "bpRNA_RFAM_33422": {
+   "breaker": true,
+   "length": 107,
+   "longest_run_admitted": 41,
+   "pred": {
+    "E_w": 94.85470581054688,
+    "E_w_plus_dv": 102.99469757080078,
+    "dE": 8.139991760253906,
+    "dE_from_counts_times_actual_dtheta": 8.13999742269516,
+    "dE_over_d": 21.999977730415964,
+    "dE_predicted_d_h_dot_count": 8.14,
+    "h_dot_count": 22.0,
+    "helix_length_counts": {
+     "3": 1.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 41,
+    "n_S_entries_counted": 84.0,
+    "pairs_missing_from_DP_return": [
+     [
+      36,
+      68
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      36,
+      68
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 74.8918228149414,
+    "E_w_plus_dv": 74.89181518554688,
+    "dE": -7.62939453125e-06,
+    "dE_from_counts_times_actual_dtheta": -1.5497207641601562e-06,
+    "dE_over_d": -2.0619985219594594e-05,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "2": 1.0,
+     "27": 1.0,
+     "7": 1.0
+    },
+    "longest_helix_returned_by_DP": 27,
+    "longest_helix_scored_structure": 27,
+    "n_S_entries_counted": 66.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 0.20560747012495995
+  },
+  "bpRNA_RFAM_40050": {
+   "breaker": true,
+   "length": 78,
+   "longest_run_admitted": 32,
+   "pred": {
+    "E_w": 73.8359146118164,
+    "E_w_plus_dv": 75.31590270996094,
+    "dE": 1.4799880981445312,
+    "dE_from_counts_times_actual_dtheta": 1.4799973368644714,
+    "dE_over_d": 3.9999678328230575,
+    "dE_predicted_d_h_dot_count": 1.48,
+    "h_dot_count": 4.0,
+    "helix_length_counts": {
+     "2": 1.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 32,
+    "n_S_entries_counted": 64.0,
+    "pairs_missing_from_DP_return": [
+     [
+      31,
+      48
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      31,
+      48
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 62.95017623901367,
+    "E_w_plus_dv": 62.95016098022461,
+    "dE": -1.52587890625e-05,
+    "dE_from_counts_times_actual_dtheta": -2.9206275939941406e-06,
+    "dE_over_d": -4.123997043918919e-05,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "2": 1.0,
+     "29": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 29,
+    "n_S_entries_counted": 58.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "v_dot_g_eval_mode": 0.05128203146159649
+  }
+ },
+ "checkpoint": "runs/2026-10-08_mxfold2_gauge_runs/seeds/sgd_seed20261006_w1.0/checkpoints/epoch-1",
+ "d": 0.37,
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "4cc13df3b00b021799645febb440d002ec22d5d6",
+ "mode": "eval (no dropout); CPU; float32 DP",
+ "pair": {
+  "breaker": {
+   "length": 98,
+   "longest_run_admitted": 35,
+   "pred": {
+    "E_w": 54.74406433105469,
+    "E_w_plus_dv": 58.444053649902344,
+    "dE": 3.6999893188476562,
+    "dE_from_counts_times_actual_dtheta": 3.6999973952770233,
+    "dE_over_d": 9.999971132020693,
+    "dE_predicted_d_h_dot_count": 3.7,
+    "h_dot_count": 10.0,
+    "helix_length_counts": {
+     "1": 2.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 35,
+    "n_S_entries_counted": 68.0,
+    "pairs_missing_from_DP_return": [
+     [
+      30,
+      57
+     ]
+    ]
+   },
+   "pred_restoration": {
+    "pairs_restored": [
+     [
+      30,
+      57
+     ]
+    ],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 53.50226974487305,
+    "E_w_plus_dv": 56.462257385253906,
+    "dE": 2.9599876403808594,
+    "dE_from_counts_times_actual_dtheta": 2.9599973261356354,
+    "dE_over_d": 7.9999665956239445,
+    "dE_predicted_d_h_dot_count": 2.96,
+    "h_dot_count": 8.0,
+    "helix_length_counts": {
+     "1": 1.0,
+     "2": 1.0,
+     "30": 1.0
+    },
+    "longest_helix_returned_by_DP": 29,
+    "longest_helix_scored_structure": 34,
+    "n_S_entries_counted": 68.0,
+    "pairs_missing_from_DP_return": [
+     [
+      31,
+      56
+     ]
+    ]
+   },
+   "sequence": "bpRNA_RFAM_22316",
+   "theta_shift": {
+    "S": {
+     "expected": 0.37,
+     "max_abs_dev_every_entry": 2.9802322387695312e-08,
+     "shape": [
+      99,
+      99
+     ]
+    },
+    "other_positional_tables_max_abs": {
+     "score_base_external": 0.0,
+     "score_base_hairpin": 0.0,
+     "score_base_internal": 0.0,
+     "score_base_multi": 0.0,
+     "score_basepair": 0.0,
+     "score_bulge_length": 0.0,
+     "score_hairpin_length": 0.0,
+     "score_internal_asymmetry": 0.0,
+     "score_internal_explicit": 0.0,
+     "score_internal_length": 0.0,
+     "score_internal_symmetry": 0.0,
+     "score_mismatch_external": 0.0,
+     "score_mismatch_hairpin": 0.0,
+     "score_mismatch_internal": 0.0,
+     "score_mismatch_multi": 0.0
+    },
+    "score_helix_length": {
+     "actual": [
+      0.0,
+      0.0,
+      -0.7400000691413879,
+      -1.4800000190734863,
+      -2.2200000286102295,
+      -2.9600002765655518,
+      -3.700000047683716,
+      -4.440000057220459,
+      -5.179999828338623,
+      -5.919999599456787,
+      -6.660000324249268,
+      -7.399999618530273,
+      -8.140000343322754,
+      -8.880000114440918,
+      -9.619999885559082,
+      -10.359999656677246,
+      -11.09999942779541,
+      -11.84000015258789,
+      -12.580000877380371,
+      -13.319999694824219,
+      -14.059999465942383,
+      -14.800000190734863,
+      -15.539999961853027,
+      -16.280000686645508,
+      -17.020002365112305,
+      -17.76000213623047,
+      -18.5,
+      -19.240001678466797,
+      -19.98000144958496,
+      -20.720003128051758,
+      -21.460002899169922
+     ],
+     "expected": [
+      -0.0,
+      -0.0,
+      -0.74,
+      -1.48,
+      -2.2199999999999998,
+      -2.96,
+      -3.7,
+      -4.4399999999999995,
+      -5.18,
+      -5.92,
+      -6.66,
+      -7.4,
+      -8.14,
+      -8.879999999999999,
+      -9.62,
+      -10.36,
+      -11.1,
+      -11.84,
+      -12.58,
+      -13.32,
+      -14.06,
+      -14.8,
+      -15.54,
+      -16.28,
+      -17.02,
+      -17.759999999999998,
+      -18.5,
+      -19.24,
+      -19.98,
+      -20.72,
+      -21.46
+     ],
+     "max_abs_dev": 3.1280517589493684e-06
+    }
+   },
+   "v_dot_g_eval_mode": -0.0935058519244194
+  },
+  "non_breaker": {
+   "length": 84,
+   "longest_run_admitted": 34,
+   "pred": {
+    "E_w": 75.41710662841797,
+    "E_w_plus_dv": 75.41710662841797,
+    "dE": 0.0,
+    "dE_from_counts_times_actual_dtheta": 6.258487701416016e-07,
+    "dE_over_d": 0.0,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "11": 1.0,
+     "22": 1.0
+    },
+    "longest_helix_returned_by_DP": 22,
+    "longest_helix_scored_structure": 22,
+    "n_S_entries_counted": 62.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "pred_restoration": {
+    "pairs_restored": [],
+    "validated_counts_equal_the_prediction_call": true
+   },
+   "ref": {
+    "E_w": 53.08997344970703,
+    "E_w_plus_dv": 53.08997344970703,
+    "dE": 0.0,
+    "dE_from_counts_times_actual_dtheta": 2.384185791015625e-07,
+    "dE_over_d": 0.0,
+    "dE_predicted_d_h_dot_count": 0.0,
+    "h_dot_count": 0.0,
+    "helix_length_counts": {
+     "1": 2.0,
+     "16": 1.0,
+     "5": 2.0
+    },
+    "longest_helix_returned_by_DP": 16,
+    "longest_helix_scored_structure": 16,
+    "n_S_entries_counted": 46.0,
+    "pairs_missing_from_DP_return": []
+   },
+   "sequence": "bpRNA_RFAM_20959",
+   "theta_shift": {
+    "S": {
+     "expected": 0.37,
+     "max_abs_dev_every_entry": 2.9802322387695312e-08,
+     "shape": [
+      85,
+      85
+     ]
+    },
+    "other_positional_tables_max_abs": {
+     "score_base_external": 0.0,
+     "score_base_hairpin": 0.0,
+     "score_base_internal": 0.0,
+     "score_base_multi": 0.0,
+     "score_basepair": 0.0,
+     "score_bulge_length": 0.0,
+     "score_hairpin_length": 0.0,
+     "score_internal_asymmetry": 0.0,
+     "score_internal_explicit": 0.0,
+     "score_internal_length": 0.0,
+     "score_internal_symmetry": 0.0,
+     "score_mismatch_external": 0.0,
+     "score_mismatch_hairpin": 0.0,
+     "score_mismatch_internal": 0.0,
+     "score_mismatch_multi": 0.0
+    },
+    "score_helix_length": {
+     "actual": [
+      0.0,
+      0.0,
+      -0.7400000691413879,
+      -1.4800000190734863,
+      -2.2200000286102295,
+      -2.9600002765655518,
+      -3.700000047683716,
+      -4.440000057220459,
+      -5.179999828338623,
+      -5.919999599456787,
+      -6.660000324249268,
+      -7.399999618530273,
+      -8.140000343322754,
+      -8.880000114440918,
+      -9.619999885559082,
+      -10.359999656677246,
+      -11.09999942779541,
+      -11.84000015258789,
+      -12.580000877380371,
+      -13.319999694824219,
+      -14.059999465942383,
+      -14.800000190734863,
+      -15.539999961853027,
+      -16.280000686645508,
+      -17.020002365112305,
+      -17.76000213623047,
+      -18.5,
+      -19.240001678466797,
+      -19.98000144958496,
+      -20.720003128051758,
+      -21.460002899169922
+     ],
+     "expected": [
+      -0.0,
+      -0.0,
+      -0.74,
+      -1.48,
+      -2.2199999999999998,
+      -2.96,
+      -3.7,
+      -4.4399999999999995,
+      -5.18,
+      -5.92,
+      -6.66,
+      -7.4,
+      -8.14,
+      -8.879999999999999,
+      -9.62,
+      -10.36,
+      -11.1,
+      -11.84,
+      -12.58,
+      -13.32,
+      -14.06,
+      -14.8,
+      -15.54,
+      -16.28,
+      -17.02,
+      -17.759999999999998,
+      -18.5,
+      -19.24,
+      -19.98,
+      -20.72,
+      -21.46
+     ],
+     "max_abs_dev": 3.1280517589493684e-06
+    }
+   },
+   "v_dot_g_eval_mode": -2.2351741790771484e-08
+  }
+ },
+ "run_id": "2026-10-10_mxfold2_vg_breaker",
+ "status": "complete",
+ "summary": {
+  "all_pred_restorations_validated": true,
+  "breaker_iff_a_scored_structure_has_a_helix_over_30": true,
+  "breaker_iff_h_dot_count_nonzero": true,
+  "hook_flag_could_fire_on_any_of_the_13": false,
+  "table": {
+   "bpRNA_RFAM_20929": {
+    "breaker": true,
+    "h_pred": 4.0,
+    "h_ref": 0.0,
+    "pred_helix": 32,
+    "pred_helix_returned": 29,
+    "ref_helix": 30,
+    "ref_helix_returned": 30,
+    "run_admitted": 32
+   },
+   "bpRNA_RFAM_20932": {
+    "breaker": true,
+    "h_pred": 4.0,
+    "h_ref": 0.0,
+    "pred_helix": 32,
+    "pred_helix_returned": 29,
+    "ref_helix": 30,
+    "ref_helix_returned": 30,
+    "run_admitted": 33
+   },
+   "bpRNA_RFAM_20933": {
+    "breaker": true,
+    "h_pred": 2.0,
+    "h_ref": 0.0,
+    "pred_helix": 31,
+    "pred_helix_returned": 29,
+    "ref_helix": 30,
+    "ref_helix_returned": 30,
+    "run_admitted": 31
+   },
+   "bpRNA_RFAM_20959": {
+    "breaker": false,
+    "h_pred": 0.0,
+    "h_ref": 0.0,
+    "pred_helix": 22,
+    "pred_helix_returned": 22,
+    "ref_helix": 16,
+    "ref_helix_returned": 16,
+    "run_admitted": 34
+   },
+   "bpRNA_RFAM_21831": {
+    "breaker": true,
+    "h_pred": 22.0,
+    "h_ref": 0.0,
+    "pred_helix": 41,
+    "pred_helix_returned": 29,
+    "ref_helix": 29,
+    "ref_helix_returned": 29,
+    "run_admitted": 41
+   },
+   "bpRNA_RFAM_22139": {
+    "breaker": true,
+    "h_pred": 4.0,
+    "h_ref": 0.0,
+    "pred_helix": 32,
+    "pred_helix_returned": 29,
+    "ref_helix": 29,
+    "ref_helix_returned": 29,
+    "run_admitted": 32
+   },
+   "bpRNA_RFAM_22273": {
+    "breaker": true,
+    "h_pred": 2.0,
+    "h_ref": 2.0,
+    "pred_helix": 31,
+    "pred_helix_returned": 29,
+    "ref_helix": 31,
+    "ref_helix_returned": 29,
+    "run_admitted": 31
+   },
+   "bpRNA_RFAM_22316": {
+    "breaker": true,
+    "h_pred": 10.0,
+    "h_ref": 8.0,
+    "pred_helix": 35,
+    "pred_helix_returned": 29,
+    "ref_helix": 34,
+    "ref_helix_returned": 29,
+    "run_admitted": 35
+   },
+   "bpRNA_RFAM_22342": {
+    "breaker": true,
+    "h_pred": 8.0,
+    "h_ref": 8.0,
+    "pred_helix": 34,
+    "pred_helix_returned": 29,
+    "ref_helix": 34,
+    "ref_helix_returned": 29,
+    "run_admitted": 34
+   },
+   "bpRNA_RFAM_22363": {
+    "breaker": true,
+    "h_pred": 8.0,
+    "h_ref": 0.0,
+    "pred_helix": 34,
+    "pred_helix_returned": 29,
+    "ref_helix": 16,
+    "ref_helix_returned": 16,
+    "run_admitted": 34
+   },
+   "bpRNA_RFAM_25077": {
+    "breaker": false,
+    "h_pred": 0.0,
+    "h_ref": 0.0,
+    "pred_helix": 8,
+    "pred_helix_returned": 8,
+    "ref_helix": 9,
+    "ref_helix_returned": 9,
+    "run_admitted": 32
+   },
+   "bpRNA_RFAM_33422": {
+    "breaker": true,
+    "h_pred": 22.0,
+    "h_ref": 0.0,
+    "pred_helix": 41,
+    "pred_helix_returned": 29,
+    "ref_helix": 27,
+    "ref_helix_returned": 27,
+    "run_admitted": 41
+   },
+   "bpRNA_RFAM_40050": {
+    "breaker": true,
+    "h_pred": 4.0,
+    "h_ref": 0.0,
+    "pred_helix": 32,
+    "pred_helix_returned": 29,
+    "ref_helix": 29,
+    "ref_helix_returned": 29,
+    "run_admitted": 32
+   }
+  }
+ }
+}
