@@ -1,0 +1,623 @@
+{
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "d6ce41f622586950637a9c04d9d10f9a277ef1e7",
+ "long_run_sequences": {
+  "TR0": [
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+  ],
+  "TS0": [],
+  "matches_phase0": true,
+  "n_TR0": 13,
+  "n_TS0": 0,
+  "n_total": 13,
+  "phase0_recorded_total": 13
+ },
+ "order_reconstruction": {
+  "1": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "10": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "2": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "3": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "4": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "5": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "6": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "7": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "8": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  },
+  "9": {
+   "n_mismatched_steps": 0,
+   "reproduces_all_logged_lengths": true
+  }
+ },
+ "per_epoch": {
+  "1": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4253,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 7,
+    "[0.1, inf)": 4,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 29,
+    "[1e-07, 1e-06)": 580,
+    "[1e-08, 1e-07)": 5941
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.03278679773211479,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.031007852405309677,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.016528921201825142,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.16296297311782837,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.02083333022892475,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.042570795863866806,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.3956247791647911,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.05241156741976738,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.10666684061288834,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.13084111362695694,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.051282016560435295
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9996276039398109
+  },
+  "10": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4641,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 6,
+    "[0.1, inf)": 5,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 317,
+    "[1e-08, 1e-07)": 5845
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.03278687968850136,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.031007777899503708,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.01652892865240574,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.16296283341944218,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.0416666679084301,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.04271847382187843,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.14462225884199142,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.1693240851163864,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.10666673257946968,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.20560745522379875,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.051282165572047234
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9997614325300976
+  },
+  "2": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4668,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 5,
+    "[0.1, inf)": 6,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 335,
+    "[1e-08, 1e-07)": 5800
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.03278690576553345,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.031007759273052216,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.016528930515050888,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.16296295262873173,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.04166666604578495,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.1044139713048935,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.35873764753341675,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.3138640224933624,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.10666666179895401,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.20560742542147636,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.051282068714499474
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9998283816504735
+  },
+  "3": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4710,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 7,
+    "[0.1, inf)": 4,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 303,
+    "[1e-08, 1e-07)": 5790
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.03278687596321106,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.031007766723632812,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.016528930515050888,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.16296295076608658,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.04166666604578495,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.01863544061779976,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.014071092009544373,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.43206627666950226,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.10666661337018013,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.20560747012495995,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.05128205940127373
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9997870542885894
+  },
+  "4": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4688,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 6,
+    "[0.1, inf)": 5,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 308,
+    "[1e-08, 1e-07)": 5807
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.032786887139081955,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.03100774809718132,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.01652892865240574,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.16296306438744068,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.04166664369404316,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.07700777053833008,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.1638837233185768,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.2608878016471863,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.10666661337018013,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.20560742542147636,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.051281942054629326
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9997937298417084
+  },
+  "5": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4609,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 6,
+    "[0.1, inf)": 5,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 288,
+    "[1e-08, 1e-07)": 5906
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.03278687968850136,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.031007755547761917,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.016528934240341187,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.1629630196839571,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.04166665859520435,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.026269618421792984,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.17332740873098373,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.4054190665483475,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.1066666729748249,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.20560747012495995,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.05128202214837074
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9998102285774801
+  },
+  "6": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4655,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 6,
+    "[0.1, inf)": 5,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 319,
+    "[1e-08, 1e-07)": 5829
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.03278687037527561,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.031007718294858932,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.016528915613889694,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.1629629861563444,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.04166668839752674,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.04977276548743248,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.20913073420524597,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.20265723764896393,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.1066666916012764,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.2056075595319271,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.051282038912177086
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9997859545990825
+  },
+  "7": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4562,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 6,
+    "[0.1, inf)": 5,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 337,
+    "[1e-08, 1e-07)": 5904
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.032786861062049866,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.0310077965259552,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.016528941690921783,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.16296297498047352,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.04166665859520435,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.03725878521800041,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.3355569541454315,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.43047501146793365,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.10666663572192192,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.20560744777321815,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.05128198675811291
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9998282824984766
+  },
+  "8": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4673,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 6,
+    "[0.1, inf)": 5,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 308,
+    "[1e-08, 1e-07)": 5822
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.03278686851263046,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.03100774809718132,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.01652899570763111,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.16296295635402203,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.04166666604578495,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.06347730755805969,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.24415305256843567,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.1935865730047226,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.1066666729748249,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.20560752972960472,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.051282087340950966
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9997915778402993
+  },
+  "9": {
+   "abs_vg_decade_counts": {
+    "[0, 1e-08)": 4658,
+    "[0.0001, 0.001)": 0,
+    "[0.001, 0.01)": 0,
+    "[0.01, 0.1)": 6,
+    "[0.1, inf)": 5,
+    "[1e-05, 0.0001)": 0,
+    "[1e-06, 1e-05)": 0,
+    "[1e-07, 1e-06)": 313,
+    "[1e-08, 1e-07)": 5832
+   },
+   "high_in_long_run_set": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+   ],
+   "high_not_in_long_run_set": [],
+   "high_steps": {
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq": 0.03278687596321106,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq": 0.031007757410407066,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq": 0.016529032960534096,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq": 0.16296295635402203,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq": 0.04166666604578495,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq": 0.06641089916229248,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq": 0.2744945287704468,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq": 0.1534290686249733,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq": 0.106666699051857,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq": 0.20560750924050808,
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq": 0.051282038912177086
+   },
+   "long_run_not_high": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+   ],
+   "n_high": 11,
+   "n_long_helix_steps": 0,
+   "n_update_steps": 10814,
+   "sum_abs_vg_high_over_all": 0.9997917303291206
+  }
+ },
+ "question": {
+  "run": "sgd_seed20261006_w1.0 (the converged SGD seed)",
+  "steps_considered": "update steps only (backward = true); every other step leaves the weights unchanged",
+  "threshold": 0.0001,
+  "user": "list every step with |v.g| above 1e-4 for all 10 epochs; intersect with the 13 sequences admitting a helix longer than 30 pairs (h dropped from G(x)); report the intersection, the count per epoch, and whether the high steps are the same sequences every epoch. If they are the 13, that is the whole answer and the registered exception was stated on the wrong criterion."
+ },
+ "run_id": "2026-10-10_mxfold2_sgd_vg_steps",
+ "status": "complete",
+ "summary": {
+  "high_steps_are_exactly_the_long_run_TR0_sequences_every_epoch": false,
+  "in_every_epoch": [
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+  ],
+  "long_run_TR0_minus_union": [
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20959.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25077.bpseq"
+  ],
+  "n_high_per_epoch": {
+   "1": 11,
+   "10": 11,
+   "2": 11,
+   "3": 11,
+   "4": 11,
+   "5": 11,
+   "6": 11,
+   "7": 11,
+   "8": 11,
+   "9": 11
+  },
+  "n_in_every_epoch": 11,
+  "n_union": 11,
+  "same_sequences_every_epoch": true,
+  "union": [
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+  ],
+  "union_cap_long_run_TR0": [
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20929.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20932.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_20933.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_21831.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22139.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22273.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22316.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22342.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_22363.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_33422.bpseq",
+   "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40050.bpseq"
+  ],
+  "union_minus_long_run_TR0": []
+ }
+}
