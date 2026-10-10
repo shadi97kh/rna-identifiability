@@ -33,6 +33,10 @@ pairs therefore comes back SPLIT AT THE CAP: an outer run of 29, a one-pair gap,
 run of m - 30. Both are <= 30 for every m <= 60, so a flag reading the returned structure
 cannot fire for any helix of 31-60 pairs (TR0's longest admitted run is 41).
 
+CONFIGURATION DEPENDENCE (added 2026-10-10): the same scored structures are rescored by the DP
+at other --max-helix-length H against the rule read from the DP (uncompensated iff m >
+min(H + 1, 30), shift 2d(m - c)), and the TR0 exception-set size is counted for each H.
+
 FINDING THAT SHAPED THE SECOND PART (recorded here because it was found while exploring,
 before this script was written): MXfold2's traceback for a helix longer than 30 pairs
 (TBType::C_HELIX_E, vendor/mxfold2/mxfold2/src/fold/zuker.cpp:389) loops k < m where the
@@ -178,11 +182,11 @@ def main():
     m2.eval()
     w_hl = 2.0 * torch.clamp(torch.arange(MAX_HELIX + 1, dtype=torch.float64) - 1, min=0)
 
-    def dp(mdl, param, seq, **kw):
+    def dp(mdl, param, seq, H=MAX_HELIX, **kw):
         p = {"turner": {k: v.detach().cpu() for k, v in param["turner"].items()},
              "positional": {k: v.detach().cpu() for k, v in param["positional"].items()}}
         p = {k: mdl.clear_count(v) for k, v in p.items()}
-        v, _, pair = interface.predict_mxfold(seq, p, max_helix_length=MAX_HELIX, **kw)
+        v, _, pair = interface.predict_mxfold(seq, p, max_helix_length=H, **kw)
         return float(v), list(pair), p["positional"]
 
     def h_dot(cnt):
@@ -203,6 +207,7 @@ def main():
                                  loss_pos_paired=0.5, loss_neg_paired=0.005)
         pred, added = restore_dropped_pairs(pred_ret)
         _, _, c_chk = dp(model, a, seq, max_internal_length=L, constraint=pred)
+        scored[name] = {"seq": seq, "a": a, "b": b, "pred": pred, "ref": ref}
         r["pred_restoration"] = {
             "pairs_restored": added,
             "validated_counts_equal_the_prediction_call": all(
@@ -242,6 +247,7 @@ def main():
                     and k not in ("score_helix_stacking", "score_helix_length")}}
         return r
 
+    scored = {}
     steps = json.loads(STEPS_ART.read_text())
     thirteen = [pathlib.Path(p).stem for p in steps["long_run_sequences"]["TR0"]]
     breakers = {pathlib.Path(p).stem for p in steps["summary"]["in_every_epoch"]}
@@ -285,6 +291,44 @@ def main():
                       "h_ref": v["ref"]["h_dot_count"], "h_pred": v["pred"]["h_dot_count"]}
                   for n, v in a13.items()},
     }
+    # configuration dependence of the exception: the SAME scored structures rescored by the DP
+    # at other --max-helix-length H (scoring rule only; nothing is retrained or re-predicted).
+    # Reading the DP: a helix of m pairs is uncompensated when m > c(H) = min(H + 1, 30), and
+    # shifts by 2d(m - c(H)); so any H >= 29 gives the released 31-pair threshold.
+    cfg = {}
+    for role, n in PAIR.items():
+        sc = scored[n]
+        for key in ("pred", "ref"):
+            hs = [m for _, _, m in helices(sc[key])]
+            for H in (10, 20, 28, 29, 30, 32, 40):
+                c = min(H + 1, MAX_HELIX)
+                L = len(sc["seq"])
+                ea, _, _ = dp(model, sc["a"], sc["seq"], H=H, max_internal_length=L,
+                              constraint=sc[key])
+                eb, _, _ = dp(m2, sc["b"], sc["seq"], H=H, max_internal_length=L,
+                              constraint=sc[key])
+                pred_ = 2 * sum(m - c for m in hs if m > c)
+                cfg[f"{role}/{key}/H={H}"] = {"c": c, "helix_lengths": sorted(hs, reverse=True),
+                                              "dE_over_d": (eb - ea) / D,
+                                              "predicted_2_sum_m_minus_c": pred_,
+                                              "agree": abs((eb - ea) / D - pred_) <= 1e-3}
+    from scripts.mxfold2_head_checks import bpseq_raw, listed
+    runs = [longest_run(allowed_matrix(bpseq_raw(f)[0])) for f in listed("TR0-canonicals.lst")]
+    runs = np.array(runs)
+    out["configuration_dependence"] = {
+        "rule_from_the_DP": "a helix of m pairs is uncompensated when m > c(H) = min(H + 1, 30) "
+                            "(H = --max-helix-length; 30 = the last index of LengthLayer(31)); "
+                            "its score shifts by 2d(m - c(H))",
+        "rescoring_check": cfg,
+        "rescoring_check_all_agree": all(v["agree"] for v in cfg.values()),
+        "TR0_longest_admitted_run": {"n_sequences": int(runs.size), "max": int(runs.max()),
+                                     "median": float(np.median(runs))},
+        "TR0_sequences_in_the_exception_set_by_H": {
+            str(H): {"threshold_run": min(H + 1, MAX_HELIX) + 1,
+                     "n": int((runs >= min(H + 1, MAX_HELIX) + 1).sum())}
+            for H in (10, 15, 20, 25, 28, 29, 30, 32, 40)},
+    }
+    write(out)
     out["status"] = "complete"
     write(out)
     print(json.dumps(out["summary"], indent=1))
