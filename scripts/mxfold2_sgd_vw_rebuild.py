@@ -112,7 +112,7 @@ def main():
         os.chdir(cwd)
     orders = epoch_orders(len(ds))
 
-    full, hi11, rest11, rest13, per_epoch = [], [], [], [], {}
+    full, hi11, rest11, rest13, per_epoch, all_abs = [], [], [], [], {}, []
     for e in range(1, EPOCHS + 1):
         z = np.load(RUN / "gauge" / f"steps-epoch-{e}.npz")
         order = np.array(orders[e])
@@ -124,6 +124,7 @@ def main():
         in13 = np.isin(seqs, list(thirteen))
         assert np.array_equal(in11, np.abs(vg) > 1e-4), f"epoch {e}: the 11 != the >1e-4 steps"
         full.append(vg)
+        all_abs.append(np.abs(vg))
         hi11.append(np.where(in11, vg, 0.0))
         rest11.append(np.where(in11, 0.0, vg))
         rest13.append(np.where(in13, 0.0, vg))
@@ -131,7 +132,10 @@ def main():
                              "signed_sum_vg_high": float(vg[in11].sum()),
                              "signed_sum_vg_rest": float(vg[~in11].sum()),
                              "sum_abs_vg_high": float(np.abs(vg[in11]).sum()),
-                             "sum_abs_vg_rest": float(np.abs(vg[~in11]).sum())}
+                             "sum_abs_vg_rest": float(np.abs(vg[~in11]).sum()),
+                             "median_abs_vg_all_update_steps": float(np.median(np.abs(vg))),
+                             "median_abs_vg_rest": float(np.median(np.abs(vg[~in11]))),
+                             "max_abs_vg_rest": float(np.abs(vg[~in11]).max())}
 
     v0 = float(r1["actual"]["0"])
     actual = {int(k): float(v) for k, v in r1["actual"].items()}
@@ -159,6 +163,8 @@ def main():
         "high_share_of_reconstructed_signed_drift": d_hi / d_full,
         "signed_sum_vg_high": sum(p["signed_sum_vg_high"] for p in per_epoch.values()),
         "signed_sum_vg_rest": sum(p["signed_sum_vg_rest"] for p in per_epoch.values()),
+        "median_abs_vg_all_update_steps_pooled": float(np.median(np.concatenate(all_abs))),
+        "reconstructed_share_of_actual_drift": d_full / d_act,
         "residual_drift_with_the_11_removed": {
             "from_logged_vg (rest only)": d_rest,
             "actual_minus_high_contribution": left,
