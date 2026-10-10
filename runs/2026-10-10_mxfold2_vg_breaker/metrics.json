@@ -16,6 +16,22 @@
      "30": 1.0,
      "6": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 32,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       31,
+       98
+      ],
+      "returned_runs": [
+       29,
+       2
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 32,
     "n_S_entries_counted": 72.0,
@@ -46,6 +62,7 @@
     "helix_length_counts": {
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 30,
     "longest_helix_scored_structure": 30,
     "n_S_entries_counted": 58.0,
@@ -70,6 +87,22 @@
      "4": 1.0,
      "8": 2.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 32,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       1,
+       102
+      ],
+      "returned_runs": [
+       29,
+       2
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 32,
     "n_S_entries_counted": 96.0,
@@ -100,6 +133,7 @@
     "helix_length_counts": {
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 30,
     "longest_helix_scored_structure": 30,
     "n_S_entries_counted": 58.0,
@@ -124,6 +158,22 @@
      "5": 1.0,
      "6": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 31,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       32,
+       96
+      ],
+      "returned_runs": [
+       29,
+       1
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 31,
     "n_S_entries_counted": 78.0,
@@ -154,6 +204,7 @@
     "helix_length_counts": {
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 30,
     "longest_helix_scored_structure": 30,
     "n_S_entries_counted": 58.0,
@@ -177,6 +228,7 @@
      "11": 1.0,
      "22": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 22,
     "longest_helix_scored_structure": 22,
     "n_S_entries_counted": 62.0,
@@ -199,6 +251,7 @@
      "16": 1.0,
      "5": 2.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 16,
     "longest_helix_scored_structure": 16,
     "n_S_entries_counted": 46.0,
@@ -223,6 +276,22 @@
      "2": 1.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 41,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       4,
+       132
+      ],
+      "returned_runs": [
+       29,
+       11
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 41,
     "n_S_entries_counted": 102.0,
@@ -255,6 +324,7 @@
      "3": 1.0,
      "8": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 29,
     "n_S_entries_counted": 74.0,
@@ -277,6 +347,22 @@
     "helix_length_counts": {
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 32,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       18,
+       89
+      ],
+      "returned_runs": [
+       29,
+       2
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 32,
     "n_S_entries_counted": 62.0,
@@ -307,6 +393,7 @@
     "helix_length_counts": {
      "29": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 29,
     "n_S_entries_counted": 56.0,
@@ -329,6 +416,22 @@
     "helix_length_counts": {
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 31,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       6,
+       81
+      ],
+      "returned_runs": [
+       29,
+       1
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 31,
     "n_S_entries_counted": 60.0,
@@ -360,6 +463,22 @@
      "3": 1.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 31,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       6,
+       81
+      ],
+      "returned_runs": [
+       29,
+       1
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 31,
     "n_S_entries_counted": 64.0,
@@ -388,6 +507,22 @@
      "1": 2.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 35,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       1,
+       86
+      ],
+      "returned_runs": [
+       29,
+       5
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 35,
     "n_S_entries_counted": 68.0,
@@ -420,6 +555,22 @@
      "2": 1.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 34,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       2,
+       85
+      ],
+      "returned_runs": [
+       29,
+       4
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 34,
     "n_S_entries_counted": 68.0,
@@ -447,6 +598,22 @@
     "helix_length_counts": {
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 34,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       3,
+       83
+      ],
+      "returned_runs": [
+       29,
+       4
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 34,
     "n_S_entries_counted": 66.0,
@@ -478,6 +645,22 @@
      "2": 1.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 34,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       3,
+       83
+      ],
+      "returned_runs": [
+       29,
+       4
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 34,
     "n_S_entries_counted": 68.0,
@@ -505,6 +688,22 @@
     "helix_length_counts": {
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 34,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       1,
+       73
+      ],
+      "returned_runs": [
+       29,
+       4
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 34,
     "n_S_entries_counted": 66.0,
@@ -537,6 +736,7 @@
      "2": 1.0,
      "9": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 16,
     "longest_helix_scored_structure": 16,
     "n_S_entries_counted": 48.0,
@@ -565,6 +765,7 @@
      "7": 3.0,
      "8": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 8,
     "longest_helix_scored_structure": 8,
     "n_S_entries_counted": 144.0,
@@ -590,6 +791,7 @@
      "5": 1.0,
      "9": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 9,
     "longest_helix_scored_structure": 9,
     "n_S_entries_counted": 58.0,
@@ -613,6 +815,22 @@
      "3": 1.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 41,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       7,
+       97
+      ],
+      "returned_runs": [
+       29,
+       11
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 41,
     "n_S_entries_counted": 84.0,
@@ -645,6 +863,7 @@
      "27": 1.0,
      "7": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 27,
     "longest_helix_scored_structure": 27,
     "n_S_entries_counted": 66.0,
@@ -668,6 +887,22 @@
      "2": 1.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 32,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       2,
+       77
+      ],
+      "returned_runs": [
+       29,
+       2
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 32,
     "n_S_entries_counted": 64.0,
@@ -699,6 +934,7 @@
      "2": 1.0,
      "29": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 29,
     "n_S_entries_counted": 58.0,
@@ -712,7 +948,7 @@
  "git_dirty": true,
  "git_dirty_excluding_runs": false,
  "git_dirty_paths_outside_runs": [],
- "git_sha": "4cc13df3b00b021799645febb440d002ec22d5d6",
+ "git_sha": "7582aec29b5bb83c6f3d93dbecbeef6d309fd0ae",
  "mode": "eval (no dropout); CPU; float32 DP",
  "pair": {
   "breaker": {
@@ -730,6 +966,22 @@
      "1": 2.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 35,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       1,
+       86
+      ],
+      "returned_runs": [
+       29,
+       5
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 35,
     "n_S_entries_counted": 68.0,
@@ -762,6 +1014,22 @@
      "2": 1.0,
      "30": 1.0
     },
+    "long_helix_split_in_DP_return": [
+     {
+      "m": 34,
+      "missing_offsets": [
+       29
+      ],
+      "outer_pair": [
+       2,
+       85
+      ],
+      "returned_runs": [
+       29,
+       4
+      ]
+     }
+    ],
     "longest_helix_returned_by_DP": 29,
     "longest_helix_scored_structure": 34,
     "n_S_entries_counted": 68.0,
@@ -886,6 +1154,7 @@
      "11": 1.0,
      "22": 1.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 22,
     "longest_helix_scored_structure": 22,
     "n_S_entries_counted": 62.0,
@@ -908,6 +1177,7 @@
      "16": 1.0,
      "5": 2.0
     },
+    "long_helix_split_in_DP_return": [],
     "longest_helix_returned_by_DP": 16,
     "longest_helix_scored_structure": 16,
     "n_S_entries_counted": 46.0,
@@ -1019,7 +1289,16 @@
   "all_pred_restorations_validated": true,
   "breaker_iff_a_scored_structure_has_a_helix_over_30": true,
   "breaker_iff_h_dot_count_nonzero": true,
+  "every_long_helix_split_at_offset_29_into_29_and_m_minus_30": true,
   "hook_flag_could_fire_on_any_of_the_13": false,
+  "long_helix_lengths_seen": [
+   31,
+   32,
+   34,
+   35,
+   41
+  ],
+  "n_long_helices_checked": 14,
   "table": {
    "bpRNA_RFAM_20929": {
     "breaker": true,
