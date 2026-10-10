@@ -944,11 +944,375 @@
   }
  },
  "checkpoint": "runs/2026-10-08_mxfold2_gauge_runs/seeds/sgd_seed20261006_w1.0/checkpoints/epoch-1",
+ "configuration_dependence": {
+  "TR0_longest_admitted_run": {
+   "max": 41,
+   "median": 9.0,
+   "n_sequences": 10814
+  },
+  "TR0_sequences_in_the_exception_set_by_H": {
+   "10": {
+    "n": 2002,
+    "threshold_run": 12
+   },
+   "15": {
+    "n": 312,
+    "threshold_run": 17
+   },
+   "20": {
+    "n": 54,
+    "threshold_run": 22
+   },
+   "25": {
+    "n": 18,
+    "threshold_run": 27
+   },
+   "28": {
+    "n": 13,
+    "threshold_run": 30
+   },
+   "29": {
+    "n": 13,
+    "threshold_run": 31
+   },
+   "30": {
+    "n": 13,
+    "threshold_run": 31
+   },
+   "32": {
+    "n": 13,
+    "threshold_run": 31
+   },
+   "40": {
+    "n": 13,
+    "threshold_run": 31
+   }
+  },
+  "rescoring_check": {
+   "breaker/pred/H=10": {
+    "agree": true,
+    "c": 11,
+    "dE_over_d": 47.999995463603256,
+    "helix_lengths": [
+     35,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 48
+   },
+   "breaker/pred/H=20": {
+    "agree": true,
+    "c": 21,
+    "dE_over_d": 28.00000164959882,
+    "helix_lengths": [
+     35,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 28
+   },
+   "breaker/pred/H=28": {
+    "agree": true,
+    "c": 29,
+    "dE_over_d": 11.99998597841005,
+    "helix_lengths": [
+     35,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 12
+   },
+   "breaker/pred/H=29": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 9.999981442013302,
+    "helix_lengths": [
+     35,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 10
+   },
+   "breaker/pred/H=30": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 9.999971132020693,
+    "helix_lengths": [
+     35,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 10
+   },
+   "breaker/pred/H=32": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 9.999971132020693,
+    "helix_lengths": [
+     35,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 10
+   },
+   "breaker/pred/H=40": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 9.999960822028083,
+    "helix_lengths": [
+     35,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 10
+   },
+   "breaker/ref/H=10": {
+    "agree": true,
+    "c": 11,
+    "dE_over_d": 45.999990927206504,
+    "helix_lengths": [
+     34,
+     2,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 46
+   },
+   "breaker/ref/H=20": {
+    "agree": true,
+    "c": 21,
+    "dE_over_d": 25.99998680320946,
+    "helix_lengths": [
+     34,
+     2,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 26
+   },
+   "breaker/ref/H=28": {
+    "agree": true,
+    "c": 29,
+    "dE_over_d": 9.999971132020693,
+    "helix_lengths": [
+     34,
+     2,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 10
+   },
+   "breaker/ref/H=29": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 7.9999665956239445,
+    "helix_lengths": [
+     34,
+     2,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 8
+   },
+   "breaker/ref/H=30": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 7.9999665956239445,
+    "helix_lengths": [
+     34,
+     2,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 8
+   },
+   "breaker/ref/H=32": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 7.9999665956239445,
+    "helix_lengths": [
+     34,
+     2,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 8
+   },
+   "breaker/ref/H=40": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 7.999956285631335,
+    "helix_lengths": [
+     34,
+     2,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 8
+   },
+   "non_breaker/pred/H=10": {
+    "agree": true,
+    "c": 11,
+    "dE_over_d": 21.99999835040118,
+    "helix_lengths": [
+     22,
+     11
+    ],
+    "predicted_2_sum_m_minus_c": 22
+   },
+   "non_breaker/pred/H=20": {
+    "agree": true,
+    "c": 21,
+    "dE_over_d": 1.9999736064189189,
+    "helix_lengths": [
+     22,
+     11
+    ],
+    "predicted_2_sum_m_minus_c": 2
+   },
+   "non_breaker/pred/H=28": {
+    "agree": true,
+    "c": 29,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     22,
+     11
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/pred/H=29": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     22,
+     11
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/pred/H=30": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     22,
+     11
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/pred/H=32": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     22,
+     11
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/pred/H=40": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     22,
+     11
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/ref/H=10": {
+    "agree": true,
+    "c": 11,
+    "dE_over_d": 9.999991752005911,
+    "helix_lengths": [
+     16,
+     5,
+     5,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 10
+   },
+   "non_breaker/ref/H=20": {
+    "agree": true,
+    "c": 21,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     16,
+     5,
+     5,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/ref/H=28": {
+    "agree": true,
+    "c": 29,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     16,
+     5,
+     5,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/ref/H=29": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     16,
+     5,
+     5,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/ref/H=30": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     16,
+     5,
+     5,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/ref/H=32": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     16,
+     5,
+     5,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   },
+   "non_breaker/ref/H=40": {
+    "agree": true,
+    "c": 30,
+    "dE_over_d": 0.0,
+    "helix_lengths": [
+     16,
+     5,
+     5,
+     1,
+     1
+    ],
+    "predicted_2_sum_m_minus_c": 0
+   }
+  },
+  "rescoring_check_all_agree": true,
+  "rule_from_the_DP": "a helix of m pairs is uncompensated when m > c(H) = min(H + 1, 30) (H = --max-helix-length; 30 = the last index of LengthLayer(31)); its score shifts by 2d(m - c(H))"
+ },
  "d": 0.37,
  "git_dirty": true,
  "git_dirty_excluding_runs": false,
  "git_dirty_paths_outside_runs": [],
- "git_sha": "7582aec29b5bb83c6f3d93dbecbeef6d309fd0ae",
+ "git_sha": "e59e90c32f2e7b4475a7223bad713b2433824a18",
  "mode": "eval (no dropout); CPU; float32 DP",
  "pair": {
   "breaker": {
