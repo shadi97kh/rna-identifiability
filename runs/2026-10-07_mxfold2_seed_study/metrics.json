@@ -7006,20 +7006,27 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "20:08:40",
+      "exit_code": 0,
       "started": "14:01:27"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 4,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "study",
     "seed": 20261006,
     "weight": 0.125
    },
    "full_seed20261006_w0.125_dup": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "started": "03:42:18"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 3,
     "gpu": 0,
     "role": "determinism duplicate (other GPU, last wave)",
     "seed": 20261006,
@@ -7029,20 +7036,27 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "21:27:12",
+      "exit_code": 0,
       "started": "14:01:27"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 3,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "study",
     "seed": 20261006,
     "weight": 1.0
    },
    "full_seed20261006_w1.0_dup": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "started": "01:19:45"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 9,
     "gpu": 1,
     "role": "determinism duplicate (other GPU, last wave)",
     "seed": 20261006,
@@ -7052,11 +7066,13 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "21:26:42",
+      "exit_code": 0,
       "started": "14:01:27"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 3,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "study",
     "seed": 20261007,
@@ -7066,11 +7082,13 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "20:08:40",
+      "exit_code": 0,
       "started": "14:01:27"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 4,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "study",
     "seed": 20261007,
@@ -7080,11 +7098,13 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "20:08:10",
+      "exit_code": 0,
       "started": "14:01:27"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 4,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "study",
     "seed": 20261008,
@@ -7094,108 +7114,172 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "21:26:42",
+      "exit_code": 0,
       "started": "14:01:27"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 3,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "study",
     "seed": 20261008,
     "weight": 1.0
    },
    "full_seed20261009_w0.125": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "ended": "03:41:18",
+      "exit_code": 0,
+      "started": "21:27:12"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "study",
     "seed": 20261009,
     "weight": 0.125
    },
    "full_seed20261009_w1.0": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "ended": "01:16:45",
+      "exit_code": 0,
+      "started": "20:08:40"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "study",
     "seed": 20261009,
     "weight": 1.0
    },
    "full_seed20261010_w0.125": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "ended": "01:19:15",
+      "exit_code": 0,
+      "started": "20:09:10"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "study",
     "seed": 20261010,
     "weight": 0.125
    },
    "full_seed20261010_w1.0": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "ended": "03:40:48",
+      "exit_code": 0,
+      "started": "21:27:12"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "study",
     "seed": 20261010,
     "weight": 1.0
    },
    "full_seed20261011_w0.125": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "ended": "03:41:48",
+      "exit_code": 0,
+      "started": "21:27:42"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "study",
     "seed": 20261011,
     "weight": 0.125
    },
    "full_seed20261011_w1.0": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "ended": "01:17:15",
+      "exit_code": 0,
+      "started": "20:09:10"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "study",
     "seed": 20261011,
     "weight": 1.0
    },
    "full_seed20261012_w0.125": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "started": "01:17:15"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 9,
     "gpu": 1,
     "role": "study",
     "seed": 20261012,
     "weight": 0.125
    },
    "full_seed20261012_w1.0": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "started": "03:41:18"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 3,
     "gpu": 0,
     "role": "study",
     "seed": 20261012,
     "weight": 1.0
    },
    "full_seed20261013_w0.125": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "started": "03:41:48"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 3,
     "gpu": 0,
     "role": "study",
     "seed": 20261013,
     "weight": 0.125
    },
    "full_seed20261013_w1.0": {
-    "attempts": [],
+    "attempts": [
+     {
+      "attempt": 0,
+      "started": "01:17:45"
+     }
+    ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 9,
     "gpu": 1,
     "role": "study",
     "seed": 20261013,
     "weight": 1.0
    }
   },
-  "updated": "2026-10-08 17:16:07"
+  "updated": "2026-10-09 05:59:20"
  },
  "phase_rerun_determinism": {
   "runs": {
