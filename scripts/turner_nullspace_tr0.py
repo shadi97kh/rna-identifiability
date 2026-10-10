@@ -30,15 +30,32 @@ CONTROL AND SATURATION (Rfam r2 rows; population = distinct pair-bearing rows)
                         plus the whole population as the top anchor (no seeds)
 The artifact is rewritten atomically after every analysis.
 
+AMENDMENT 1 (decided 2026-10-08 after the run, with both reads known; user's decision; the
+reason's wording approved 2026-10-10): the joint
+read is NOT APPLICABLE, recorded as a registered test that its own data invalidated, not as
+a result. Its registered interpolation is linear in log row count across the bracketing
+saturation sizes (10k, 30k), which presumes the curve is approximately linear in log row
+count there; the registration states no such condition. The saturation curve's slope
+reverses at or near 10k (seed means 378, 376, 455, 382 at 1k-30k; 214 on the whole
+population), so 442.9 is not supported as an estimate of the curve at 11,955 rows, and the
+matched-size control, a direct measurement at exactly that row count, supersedes it.
+--amend-joint-read applies it, keeping the interpolated numbers with the reason they are not
+used and the replaced block verbatim. main() refuses to overwrite an existing artifact; to
+re-run, move the artifact aside, run, commit, then --amend-joint-read and commit again.
+
 Run: OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 .venv/bin/python scripts/turner_nullspace_tr0.py
+Amend: .venv/bin/python scripts/turner_nullspace_tr0.py --amend-joint-read [--dry-run]
+       (--dry-run only together with --amend-joint-read; any other argument is refused)
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import os
 import pathlib
+import subprocess
 import sys
 import time
 
@@ -215,6 +232,10 @@ def expected_distinct_pb(rows, n_draw):
 
 
 def main():
+    if (OUT / "metrics.json").exists():
+        raise SystemExit(f"{(OUT / 'metrics.json').relative_to(R)} exists; a re-run rewrites the "
+                         f"registered computation and drops its amendments, so move it aside "
+                         f"first (see AMENDMENT 1 in the docstring)")
     t0 = time.time()
     seeds = recorded_seeds()
     out = {"run_id": RUN_ID, "status": "PRE-REGISTERED, not yet run", "predictions": PRED,
@@ -381,5 +402,234 @@ def main():
     return 0
 
 
+AMEND_JOINT_READ_ID = "joint_read_not_applicable"
+# the reason as approved by the user on 2026-10-10, worded by Claude from the original below
+AMEND_JOINT_READ_REASON_USER = (
+    "The registered interpolation is linear in log row count between the bracketing "
+    "saturation sizes, which presumes the curve is approximately linear in log row count "
+    "between them. The measured curve (378, 376, 455, 382, 214) turns over at or near 10k (the "
+    "rise from 3k to 10k and the fall from 10k to 30k are each about 5 SE), with the 10k and "
+    "30k seed ranges barely overlapping, so its 442.9 is a property of the straight line rather "
+    "than an estimate of the curve at 11,955 rows. The direct matched-size measurement at "
+    "exactly 11,955 rows (468 +/- 25) is the valid comparator and supersedes it.")
+# the user's original wording (2026-10-08), kept in the amendment record
+AMEND_JOINT_READ_REASON_USER_ORIGINAL = (
+    "The registered interpolation is linear in log row count between the bracketing "
+    "saturation sizes. That presumes monotonicity between them. The measured curve (378, 376, "
+    "455, 382, 214) has a real peak between 10k and 30k, with the 10k and 30k seed ranges "
+    "barely overlapping, so the interpolation crosses a hump and its 442.9 is a property of "
+    "the straight line rather than an estimate of the curve at 11,955 rows. The direct "
+    "matched-size measurement at exactly 11,955 rows (468 +/- 25) is the valid comparator and "
+    "supersedes it.")
+AMEND_JOINT_READ_REASON_PROVENANCE = (
+    "worded by Claude from the user's original reason (amendments[].reason_user_original), "
+    "which named monotonicity as the premise (the operative one is linearity, and a curve "
+    "non-increasing on [10k, 30k] is not rejected) and placed a peak inside [10k, 30k] (not "
+    "resolved); approved by the user on 2026-10-10")
+AMEND_JOINT_READ_TIMING = ("decided after the run, with the range test (BELOW in all four "
+                           "configurations) and this read ('row count explains it') both known")
+
+
+def _refuse(msg):
+    raise SystemExit(f"refusing to amend: {msg}")
+
+
+def amend_joint_read(dry_run=False):
+    """Amendment 1 (user, 2026-10-08, after the run): the joint read is NOT APPLICABLE.
+
+    A registered test that its own data invalidated, not a result. verdicts.joint_read is
+    replaced by its status, the user's reason, the premise and the timing, the raw facts
+    recomputed from the artifact's per-seed records, descriptive statistics and a note
+    (both Claude's, labelled so), the superseding comparator, and the interpolated numbers
+    with the reason they are not used. The replaced block is kept verbatim under
+    `amendments`. The pre-registration (`predictions`) is not touched.
+
+    Refuses unless the artifact is committed and unmodified, the code tree is clean, the
+    stored interpolation recomputes in full, and every number the user's reason quotes is
+    the artifact's. --dry-run prints the result and writes nothing."""
+    p = OUT / "metrics.json"
+    rel = str(p.relative_to(R))
+    tracked = subprocess.run(["git", "ls-files", "--error-unmatch", rel], cwd=R,
+                             capture_output=True).returncode == 0
+    unmodified = subprocess.run(["git", "diff", "--quiet", "HEAD", "--", rel],
+                                cwd=R).returncode == 0
+    prov = git_provenance(R)
+    gate = {"artifact_tracked": tracked, "artifact_unmodified": unmodified,
+            "code_tree_clean": not prov["git_dirty_excluding_runs"]}
+    if not all(gate.values()) and not dry_run:
+        _refuse(gate)
+    raw = p.read_bytes()
+    out = json.loads(raw)
+    if out.get("status") != "complete":
+        _refuse(f"status is {out.get('status')!r}")
+    if any(a.get("id") == AMEND_JOINT_READ_ID for a in out.get("amendments", [])):
+        _refuse(f"amendment {AMEND_JOINT_READ_ID} is already recorded")
+
+    jr = out["verdicts"]["joint_read"]
+    lo_s, hi_s = jr["bracket"]
+    n, t = jr["tr0_rows"], jr["tr0_nontrivial"]
+    sat = {x: [v["nontrivial_dim"] for v in out["saturation"][str(x)].values()]
+           for x in SAT_SIZES}
+    mean = {x: float(np.mean(v)) for x, v in sat.items()}
+    sd = {x: float(np.std(v, ddof=1)) for x, v in sat.items()}
+    se = {x: sd[x] / math.sqrt(len(v)) for x, v in sat.items()}
+    anchor = out["saturation_anchor"]["nontrivial_dim"]
+
+    # the registered interpolation, recomputed in full from the per-seed records
+    w = (math.log(n) - math.log(lo_s)) / (math.log(hi_s) - math.log(lo_s))
+    ip = lambda a, b: a + w * (b - a)  # noqa: E731
+    m_i, s_i = ip(mean[lo_s], mean[hi_s]), ip(sd[lo_s], sd[hi_s])
+    env = [ip(min(sat[lo_s]), min(sat[hi_s])), ip(max(sat[lo_s]), max(sat[hi_s]))]
+    if not (abs(m_i - jr["interp_mean"]) < 1e-9 and abs(s_i - jr["interp_sd"]) < 1e-9
+            and np.allclose(env, jr["interp_envelope"], rtol=0, atol=1e-9)
+            and abs((t - m_i) / s_i - jr["z"]) < 1e-9
+            and (env[0] <= t <= env[1]) == jr["inside_envelope"]):
+        _refuse("the stored interpolation does not recompute from the per-seed records")
+
+    # the superseding comparator: the matched-size control in the saturation configuration
+    cfg = f"d{SAT_CONFIG[0]}_special_hp{SAT_CONFIG[1]}"
+    ctl = out["control_branch"][cfg]
+    k = len(ctl["subsample_dims"])
+    se_d = ctl["sd"] / math.sqrt(k)
+    rows = sorted({v["counts"]["distinct_pair_bearing"] for v in out["control"][cfg].values()})
+
+    # every number the user's reason quotes must be this artifact's
+    quoted = {"curve_means": [round(mean[x]) for x in SAT_SIZES] + [anchor],
+              "interp_mean_1dp": round(m_i, 1), "tr0_rows": n, "bracket": [lo_s, hi_s],
+              "bracket_ranges": [[min(sat[x]), max(sat[x])] for x in (lo_s, hi_s)],
+              "direct_rows": rows, "direct_mean": round(ctl["mean"]),
+              "direct_sd": round(ctl["sd"])}
+    expected = {"curve_means": [378, 376, 455, 382, 214], "interp_mean_1dp": 442.9,
+                "tr0_rows": 11_955, "bracket": [10_000, 30_000],
+                "bracket_ranges": [[397, 515], [358, 399]], "direct_rows": [11_955],
+                "direct_mean": 468, "direct_sd": 25}
+    if quoted != expected:
+        _refuse(f"the reason quotes {expected}, the artifact has {quoted}")
+
+    def diff(a_mean, a_se, b_mean, b_se):
+        d, s = b_mean - a_mean, math.hypot(a_se, b_se)
+        return {"difference": d, "se": s, "in_se": d / s}
+
+    steps = {f"{a}_to_{b}": diff(mean[a], se[a], mean[b], se[b])
+             for a, b in zip(SAT_SIZES[:-1], SAT_SIZES[1:], strict=True)}
+    l_lo, l_hi = math.log(10_000 / 3_000), math.log(30_000 / 10_000)
+    slope_change = ((mean[30_000] - mean[10_000]) / l_hi
+                    - (mean[10_000] - mean[3_000]) / l_lo)
+    slope_change_se = math.sqrt((se[3_000] / l_lo) ** 2
+                                + (se[10_000] * (1 / l_lo + 1 / l_hi)) ** 2
+                                + (se[30_000] / l_hi) ** 2)
+    se_line = math.hypot((1 - w) * se[lo_s], w * se[hi_s])
+    vs_line = diff(m_i, se_line, ctl["mean"], se_d)
+    vs_lo = diff(mean[lo_s], se[lo_s], ctl["mean"], se_d)
+    rise, fall = steps["3000_to_10000"], steps["10000_to_30000"]
+    if [round(abs(rise["in_se"])), round(abs(fall["in_se"]))] != [5, 5]:
+        _refuse(f"the reason quotes a rise and a fall of about 5 SE, the artifact has "
+                f"{rise['in_se']:+.2f} and {fall['in_se']:+.2f}")
+
+    evidence = {
+        "saturation_seed_dims": {str(x): sat[x] for x in SAT_SIZES},
+        "saturation_seed_means": {str(x): mean[x] for x in SAT_SIZES}
+        | {"anchor_full_population": anchor},
+        "saturation_seed_sds": {str(x): sd[x] for x in SAT_SIZES},
+        "bracket_seed_ranges": {str(x): [min(sat[x]), max(sat[x])] for x in (lo_s, hi_s)},
+        "bracket_seed_range_overlap": [max(min(sat[lo_s]), min(sat[hi_s])),
+                                       min(max(sat[lo_s]), max(sat[hi_s]))],
+        "direct_at_tr0_rows": {"rows_per_subsample": rows, "config": cfg,
+                               "seed_dims": ctl["subsample_dims"], "mean": ctl["mean"],
+                               "sd": ctl["sd"], "n_seeds": k, "range": [ctl["min"], ctl["max"]]},
+        "direct_minus_interpolated": ctl["mean"] - m_i,
+        "direct_minus_10000_mean": ctl["mean"] - mean[lo_s],
+        "independence": "each saturation size draws with SeedSequence([seed, size]) and the "
+                        "matched-size control with SeedSequence([seed, 0]), each a fresh draw "
+                        "without replacement from the same population, so the means are "
+                        "independent estimates",
+    }
+    descriptive = {
+        "status": f"descriptive and unregistered (Claude, {time.strftime('%Y-%m-%d')}); every "
+                  f"SE combines the sampling error of each mean involved",
+        "steps": steps,
+        "slope_change_per_ln_rows_at_10000": {"value": slope_change, "se": slope_change_se,
+                                              "in_se": slope_change / slope_change_se},
+        "direct_minus_10000_mean": vs_lo,
+        "direct_minus_interpolated": vs_line | {"se_direct_mean": se_d,
+                                                "se_interpolated_mean": se_line},
+    }
+    note = (
+        f"Resolved: the seed-mean curve turns over at or near the bracket's lower end. It "
+        f"changes by {rise['difference']:+.1f} from 3k to 10k ({rise['in_se']:+.2f} SE) and by "
+        f"{fall['difference']:+.1f} from 10k to 30k ({fall['in_se']:+.2f} SE); its slope per "
+        f"ln(rows) changes by {slope_change:+.1f} at 10k ({slope_change / slope_change_se:+.2f} "
+        f"SE). Not resolved: where the maximum lies relative to the bracket (the direct point "
+        f"at {n:,} rows exceeds the 10k mean by {vs_lo['difference']:.1f}, "
+        f"{vs_lo['in_se']:.2f} SE), and the direct point's departure from the line "
+        f"({vs_line['difference']:.1f}, {vs_line['in_se']:.2f} SE once the line's own sampling "
+        f"error is included). A curve non-increasing on [10k, 30k] is therefore not rejected; "
+        f"the premise these data leave unsupported is the one linear interpolation needs, "
+        f"approximate linearity in log row count across the bracket, because the slope "
+        f"reverses at its lower end. The supersession needs no interpolation premise: the "
+        f"matched-size control is a direct "
+        f"measurement at exactly {n:,} rows, by the same procedure, configuration and "
+        f"population as the saturation run.")
+    new = {
+        "status": "NOT APPLICABLE",
+        "kind": "registered test invalidated by its own data; not a result",
+        "amendment": AMEND_JOINT_READ_ID,
+        "reason_user": AMEND_JOINT_READ_REASON_USER,
+        "reason_user_provenance": AMEND_JOINT_READ_REASON_PROVENANCE,
+        "premise_registered": False,
+        "premise": "predictions.joint_read states no validity condition; interpolating linearly "
+                   "in log row count presumes the seed-mean curve is approximately linear in log "
+                   "row count across the bracket",
+        "timing": AMEND_JOINT_READ_TIMING,
+        "evidence_from_this_artifact": evidence,
+        "descriptive_unregistered_claude": descriptive,
+        "note_claude": note,
+        "superseded_by": {
+            "comparator": "the matched-size control: Rfam subsamples of exactly TR0+TS0's "
+                          "distinct pair-bearing row count (control_branch)",
+            "registered_rule": "the three-branch range test (predictions.matched_size_control)",
+            "branch": {c: v["branch"] for c, v in out["control_branch"].items()},
+            "no_reading_transferred_claude": "the |z| <= 2 rule was registered for the "
+                                             "interpolated comparator only and is not applied "
+                                             "to the matched-size control's z"},
+        "interpolation_not_used": {
+            **{x: jr[x] for x in ("bracket", "tr0_rows", "tr0_nontrivial", "interp_mean",
+                                  "interp_sd", "interp_envelope", "z", "inside_envelope")},
+            "why_not_used": "linear in log row count across [10k, 30k], while the curve's slope "
+                            "reverses at or near 10k (note_claude), so the straight line is not "
+                            "supported as an estimate of the curve at 11,955 rows; a direct "
+                            "measurement at exactly that row count supersedes it (reason_user)"},
+    }
+    commit_before = subprocess.run(["git", "log", "-1", "--format=%H", "--", rel], cwd=R,
+                                   capture_output=True, text=True).stdout.strip()
+    record = {"id": AMEND_JOINT_READ_ID, "date": time.strftime("%Y-%m-%d %H:%M:%S"),
+              "by": "user (the decision, and reason_user as approved); Claude (the wording of "
+                    "reason_user, evidence, descriptive statistics and notes)",
+              "target": "verdicts.joint_read",
+              "change": "status NOT APPLICABLE; the reading 'row count explains it' is "
+                        "withdrawn; the interpolated numbers are kept under "
+                        "interpolation_not_used",
+              "reason_user": AMEND_JOINT_READ_REASON_USER,
+              "reason_user_provenance": AMEND_JOINT_READ_REASON_PROVENANCE,
+              "reason_user_original": AMEND_JOINT_READ_REASON_USER_ORIGINAL,
+              "timing": AMEND_JOINT_READ_TIMING,
+              "replaced": jr, "artifact_sha256_before": hashlib.sha256(raw).hexdigest(),
+              "artifact_commit_before": commit_before, **prov}
+    if dry_run:
+        print(json.dumps({"gate": gate, "joint_read": new, "amendment": record}, indent=1,
+                         default=str))
+        return 0
+    out["verdicts"]["joint_read"] = new
+    out.setdefault("amendments", []).append(record)
+    write(out)
+    print(f"amendment {AMEND_JOINT_READ_ID} written; commit it")
+    return 0
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    argv = sys.argv[1:]
+    if not argv:
+        sys.exit(main())
+    if sorted(argv) in (["--amend-joint-read"], ["--amend-joint-read", "--dry-run"]):
+        sys.exit(amend_joint_read(dry_run="--dry-run" in argv))
+    raise SystemExit(f"usage: {sys.argv[0]} [--amend-joint-read [--dry-run]]; got {argv}")
