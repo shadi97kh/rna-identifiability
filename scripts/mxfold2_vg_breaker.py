@@ -25,6 +25,14 @@ constrained-DP counts equal the prediction call's counts exactly.
 Then, for all 13 long-run sequences: the reference's longest helix, h.count of the scored
 reference and prediction, and whether the sequence was a breaker.
 
+WHERE THE PAIR GOES (checked per helix, every long helix of the 13): the C_HELIX_E traceback
+records offsets k-2 for k = 2..m-1 with m = max_helix + 1 = 31, i.e. offsets 0-28 from the
+outermost pair, and hands off to the E state at offset m-1 = 30, whose traceback records
+offset 30 inward. Offset 29, the 30th pair, is never recorded. A scored helix of m >= 31
+pairs therefore comes back SPLIT AT THE CAP: an outer run of 29, a one-pair gap, an inner
+run of m - 30. Both are <= 30 for every m <= 60, so a flag reading the returned structure
+cannot fire for any helix of 31-60 pairs (TR0's longest admitted run is 41).
+
 FINDING THAT SHAPED THE SECOND PART (recorded here because it was found while exploring,
 before this script was written): MXfold2's traceback for a helix longer than 30 pairs
 (TBType::C_HELIX_E, vendor/mxfold2/mxfold2/src/fold/zuker.cpp:389) loops k < m where the
@@ -78,6 +86,43 @@ def longest_run(al):
         if not cand.any():
             return k
         run, k = cand, k + 1
+
+
+def helices(p):
+    """Maximal stacked runs of a 1-based partner list: [(i, j, m)] with (i, j) outermost."""
+    out, n = [], len(p) - 1
+    for i in range(1, n + 1):
+        j = p[i]
+        if j <= i or (i > 1 and j < n and p[i - 1] == j + 1):
+            continue
+        m = 0
+        while i + m <= n and p[i + m] == j - m and j - m > i + m:
+            m += 1
+        out.append((i, j, m))
+    return out
+
+
+def split_of(st, ret, cap):
+    """For every helix of the scored structure longer than `cap`: which of its pairs (0-based
+    offset from the outermost) the DP's returned structure lacks, and the runs it returns."""
+    rows = []
+    for i, j, m in helices(st):
+        if m <= cap:
+            continue
+        present = [ret[i + o] == j - o for o in range(m)]
+        runs, cur = [], 0
+        for x in present:
+            if x:
+                cur += 1
+            elif cur:
+                runs.append(cur)
+                cur = 0
+        if cur:
+            runs.append(cur)
+        rows.append({"outer_pair": [i, j], "m": m,
+                     "missing_offsets": [o for o, x in enumerate(present) if not x],
+                     "returned_runs": runs})
+    return rows
 
 
 def restore_dropped_pairs(ret):
@@ -175,6 +220,8 @@ def main():
                       "longest_helix_scored_structure": _longest_helix(st),
                       "longest_helix_returned_by_DP": _longest_helix(pred_ret if key == "pred"
                                                                      else ret),
+                      "long_helix_split_in_DP_return": split_of(
+                          st, pred_ret if key == "pred" else ret, MAX_HELIX),
                       "pairs_missing_from_DP_return": [
                           [i, st[i]] for i in range(1, len(st))
                           if st[i] > i and ret[i] != st[i]]}
@@ -219,6 +266,14 @@ def main():
         "breaker_iff_h_dot_count_nonzero":
             all((abs(a13[n]["pred"]["h_dot_count"]) + abs(a13[n]["ref"]["h_dot_count"]) > 0)
                 == a13[n]["breaker"] for n in a13),
+        "every_long_helix_split_at_offset_29_into_29_and_m_minus_30": all(
+            h["missing_offsets"] == [29] and h["returned_runs"] == [29, h["m"] - 30]
+            for v in a13.values() for key in ("pred", "ref")
+            for h in v[key]["long_helix_split_in_DP_return"]),
+        "long_helix_lengths_seen": sorted({h["m"] for v in a13.values() for key in ("pred", "ref")
+                                           for h in v[key]["long_helix_split_in_DP_return"]}),
+        "n_long_helices_checked": sum(len(v[key]["long_helix_split_in_DP_return"])
+                                      for v in a13.values() for key in ("pred", "ref")),
         "hook_flag_could_fire_on_any_of_the_13": any(
             max(v["pred"]["longest_helix_returned_by_DP"],
                 v["ref"]["longest_helix_returned_by_DP"]) > MAX_HELIX for v in a13.values()),
