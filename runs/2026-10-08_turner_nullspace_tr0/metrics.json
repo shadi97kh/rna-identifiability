@@ -1,4 +1,40 @@
 {
+ "amendments": [
+  {
+   "artifact_commit_before": "7c9f9d41d43d94a55141add6fdd4e7c27de96b39",
+   "artifact_sha256_before": "fc2b1d09d976556240c483954ddff02b7e609b26816f293eba8075a4bdba6917",
+   "by": "user (the decision, and reason_user as approved); Claude (the wording of reason_user, evidence, descriptive statistics and notes)",
+   "change": "status NOT APPLICABLE; the reading 'row count explains it' is withdrawn; the interpolated numbers are kept under interpolation_not_used",
+   "date": "2026-10-10 13:32:46",
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "02b20cce78e9b76e637c1af2d7e1f87c3d7c1ea9",
+   "id": "joint_read_not_applicable",
+   "reason_user": "The registered interpolation is linear in log row count between the bracketing saturation sizes, which presumes the curve is approximately linear in log row count between them. The measured curve (378, 376, 455, 382, 214) turns over at or near 10k (the rise from 3k to 10k and the fall from 10k to 30k are each about 5 SE), with the 10k and 30k seed ranges barely overlapping, so its 442.9 is a property of the straight line rather than an estimate of the curve at 11,955 rows. The direct matched-size measurement at exactly 11,955 rows (468 +/- 25) is the valid comparator and supersedes it.",
+   "reason_user_original": "The registered interpolation is linear in log row count between the bracketing saturation sizes. That presumes monotonicity between them. The measured curve (378, 376, 455, 382, 214) has a real peak between 10k and 30k, with the 10k and 30k seed ranges barely overlapping, so the interpolation crosses a hump and its 442.9 is a property of the straight line rather than an estimate of the curve at 11,955 rows. The direct matched-size measurement at exactly 11,955 rows (468 +/- 25) is the valid comparator and supersedes it.",
+   "reason_user_provenance": "worded by Claude from the user's original reason (amendments[].reason_user_original), which named monotonicity as the premise (the operative one is linearity, and a curve non-increasing on [10k, 30k] is not rejected) and placed a peak inside [10k, 30k] (not resolved); approved by the user on 2026-10-10",
+   "replaced": {
+    "bracket": [
+     10000,
+     30000
+    ],
+    "inside_envelope": true,
+    "interp_envelope": [
+     390.6610796360414,
+     496.1457753277129
+    ],
+    "interp_mean": 442.8614266322691,
+    "interp_sd": 36.90099837855355,
+    "reading": "row count explains it",
+    "tr0_nontrivial": 426,
+    "tr0_rows": 11955,
+    "z": -0.45693686819240065
+   },
+   "target": "verdicts.joint_read",
+   "timing": "decided after the run, with the range test (BELOW in all four configurations) and this read ('row count explains it') both known"
+  }
+ ],
  "control": {
   "d0_special_hp0": {
    "20261006": {
@@ -2590,21 +2626,177 @@
    }
   },
   "joint_read": {
-   "bracket": [
-    10000,
-    30000
-   ],
-   "inside_envelope": true,
-   "interp_envelope": [
-    390.6610796360414,
-    496.1457753277129
-   ],
-   "interp_mean": 442.8614266322691,
-   "interp_sd": 36.90099837855355,
-   "reading": "row count explains it",
-   "tr0_nontrivial": 426,
-   "tr0_rows": 11955,
-   "z": -0.45693686819240065
+   "amendment": "joint_read_not_applicable",
+   "descriptive_unregistered_claude": {
+    "direct_minus_10000_mean": {
+     "difference": 13.375,
+     "in_se": 0.7812359920989845,
+     "se": 17.120306969043682
+    },
+    "direct_minus_interpolated": {
+     "difference": 25.138573367730885,
+     "in_se": 1.6589680222853838,
+     "se": 15.153139198608631,
+     "se_direct_mean": 8.860022573334675,
+     "se_interpolated_mean": 12.292990993749628
+    },
+    "slope_change_per_ln_rows_at_10000": {
+     "in_se": -4.962315853556598,
+     "se": 26.477726332420342,
+     "value": -131.39084114550246
+    },
+    "status": "descriptive and unregistered (Claude, 2026-10-10); every SE combines the sampling error of each mean involved",
+    "steps": {
+     "10000_to_30000": {
+      "difference": -72.375,
+      "in_se": -4.696067400164346,
+      "se": 15.411831609884288
+     },
+     "1000_to_3000": {
+      "difference": -2.375,
+      "in_se": -0.17184595633787744,
+      "se": 13.82051722724484
+     },
+     "3000_to_10000": {
+      "difference": 78.875,
+      "in_se": 4.886023084443101,
+      "se": 16.142985539944497
+     }
+    }
+   },
+   "evidence_from_this_artifact": {
+    "bracket_seed_range_overlap": [
+     397,
+     399
+    ],
+    "bracket_seed_ranges": {
+     "10000": [
+      397,
+      515
+     ],
+     "30000": [
+      358,
+      399
+     ]
+    },
+    "direct_at_tr0_rows": {
+     "config": "d0_special_hp0",
+     "mean": 468.0,
+     "n_seeds": 8,
+     "range": [
+      433,
+      513
+     ],
+     "rows_per_subsample": [
+      11955
+     ],
+     "sd": 25.059928172283335,
+     "seed_dims": [
+      472,
+      433,
+      474,
+      486,
+      467,
+      513,
+      443,
+      456
+     ]
+    },
+    "direct_minus_10000_mean": 13.375,
+    "direct_minus_interpolated": 25.138573367730885,
+    "independence": "each saturation size draws with SeedSequence([seed, size]) and the matched-size control with SeedSequence([seed, 0]), each a fresh draw without replacement from the same population, so the means are independent estimates",
+    "saturation_seed_dims": {
+     "1000": [
+      424,
+      397,
+      358,
+      321,
+      370,
+      419,
+      373,
+      363
+     ],
+     "10000": [
+      515,
+      397,
+      417,
+      449,
+      424,
+      494,
+      453,
+      488
+     ],
+     "3000": [
+      353,
+      374,
+      407,
+      397,
+      378,
+      379,
+      354,
+      364
+     ],
+     "30000": [
+      397,
+      369,
+      399,
+      381,
+      358,
+      386,
+      384,
+      384
+     ]
+    },
+    "saturation_seed_means": {
+     "1000": 378.125,
+     "10000": 454.625,
+     "3000": 375.75,
+     "30000": 382.25,
+     "anchor_full_population": 214
+    },
+    "saturation_seed_sds": {
+     "1000": 34.06060774560548,
+     "10000": 41.43475939008559,
+     "3000": 19.181464267061873,
+     "30000": 13.540943204117756
+    }
+   },
+   "interpolation_not_used": {
+    "bracket": [
+     10000,
+     30000
+    ],
+    "inside_envelope": true,
+    "interp_envelope": [
+     390.6610796360414,
+     496.1457753277129
+    ],
+    "interp_mean": 442.8614266322691,
+    "interp_sd": 36.90099837855355,
+    "tr0_nontrivial": 426,
+    "tr0_rows": 11955,
+    "why_not_used": "linear in log row count across [10k, 30k], while the curve's slope reverses at or near 10k (note_claude), so the straight line is not supported as an estimate of the curve at 11,955 rows; a direct measurement at exactly that row count supersedes it (reason_user)",
+    "z": -0.45693686819240065
+   },
+   "kind": "registered test invalidated by its own data; not a result",
+   "note_claude": "Resolved: the seed-mean curve turns over at or near the bracket's lower end. It changes by +78.9 from 3k to 10k (+4.89 SE) and by -72.4 from 10k to 30k (-4.70 SE); its slope per ln(rows) changes by -131.4 at 10k (-4.96 SE). Not resolved: where the maximum lies relative to the bracket (the direct point at 11,955 rows exceeds the 10k mean by 13.4, 0.78 SE), and the direct point's departure from the line (25.1, 1.66 SE once the line's own sampling error is included). A curve non-increasing on [10k, 30k] is therefore not rejected; the premise these data leave unsupported is the one linear interpolation needs, approximate linearity in log row count across the bracket, because the slope reverses at its lower end. The supersession needs no interpolation premise: the matched-size control is a direct measurement at exactly 11,955 rows, by the same procedure, configuration and population as the saturation run.",
+   "premise": "predictions.joint_read states no validity condition; interpolating linearly in log row count presumes the seed-mean curve is approximately linear in log row count across the bracket",
+   "premise_registered": false,
+   "reason_user": "The registered interpolation is linear in log row count between the bracketing saturation sizes, which presumes the curve is approximately linear in log row count between them. The measured curve (378, 376, 455, 382, 214) turns over at or near 10k (the rise from 3k to 10k and the fall from 10k to 30k are each about 5 SE), with the 10k and 30k seed ranges barely overlapping, so its 442.9 is a property of the straight line rather than an estimate of the curve at 11,955 rows. The direct matched-size measurement at exactly 11,955 rows (468 +/- 25) is the valid comparator and supersedes it.",
+   "reason_user_provenance": "worded by Claude from the user's original reason (amendments[].reason_user_original), which named monotonicity as the premise (the operative one is linearity, and a curve non-increasing on [10k, 30k] is not rejected) and placed a peak inside [10k, 30k] (not resolved); approved by the user on 2026-10-10",
+   "status": "NOT APPLICABLE",
+   "superseded_by": {
+    "branch": {
+     "d0_special_hp0": "BELOW",
+     "d0_special_hp1": "BELOW",
+     "d2_special_hp0": "BELOW",
+     "d2_special_hp1": "BELOW"
+    },
+    "comparator": "the matched-size control: Rfam subsamples of exactly TR0+TS0's distinct pair-bearing row count (control_branch)",
+    "no_reading_transferred_claude": "the |z| <= 2 rule was registered for the interpolated comparator only and is not applied to the matched-size control's z",
+    "registered_rule": "the three-branch range test (predictions.matched_size_control)"
+   },
+   "timing": "decided after the run, with the range test (BELOW in all four configurations) and this read ('row count explains it') both known"
   },
   "matched_size_control_branch": {
    "d0_special_hp0": "BELOW",
