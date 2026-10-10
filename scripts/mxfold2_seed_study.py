@@ -82,7 +82,21 @@ per-step overhead and the measured folding factor (MXfold2's unconstrained fold 
 over ViennaRNA MFE time on the same TR0 sequences, the latter measured here on an
 idle pinned core before launch), replacing both guesses in the earlier estimate.
 
+INTERRUPTION AND FRESH RERUN (2026-10-10). The phase-full driver was killed at about
+05:59 on 2026-10-09 with six runs short of epoch 10. PHASE rerun-interrupted records that
+as an event in metrics.json (when it stopped, the six runs, the cause as far as known),
+moves the six partial directories unchanged to interrupted_2026-10-09/, and reruns the six
+FRESH under the registered no-resume policy, in their registered directories and GPUs. It
+refuses unless it is its own session leader, so it must be launched with setsid, and
+unless the artifact still records the interruption (scripts/predecessor.py: status
+RUNNING with no live process is a fault, never completion). Successors wait for the
+recorded status FULL_DONE, never for the processes to disappear.
+
 Run: .venv/bin/python scripts/mxfold2_seed_study.py
+Rerun the interrupted six (detached from every session):
+  setsid nohup .venv/bin/python scripts/mxfold2_seed_study.py --phase rerun-interrupted \\
+      > runs/2026-10-07_mxfold2_seed_study/driver_rerun_interrupted.log 2>&1 < /dev/null &
+  disown
 """
 
 from __future__ import annotations
@@ -168,7 +182,9 @@ def vienna_reference(seqs):
 
 def write(out):
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "metrics.json").write_text(json.dumps(out, indent=1, sort_keys=True, default=str))
+    tmp = OUT / "metrics.json.tmp"  # atomic: a driver killed mid-write leaves the last copy
+    tmp.write_text(json.dumps(out, indent=1, sort_keys=True, default=str))
+    os.replace(tmp, OUT / "metrics.json")
 
 
 def main():
@@ -309,6 +325,7 @@ ALLOC_CONF = "expandable_segments:True"
 MAX_PER_GPU = 3
 DET_SEED_INDEX = 0          # the seed trained twice for the determinism control
 FULL_EPOCHS = 10
+FULL_DONE = "full COMPLETE (training)"  # the completion status successors wait for
 OOM_RETRIES = 1
 
 DETERMINISM_PREREG = {
@@ -571,7 +588,123 @@ def phase_full():
             out.setdefault("determinism_control", {}).setdefault("epoch10_bitwise", {})[
                 f"w{w}"] = compare_checkpoints(o, d)
     ok = all(v["epochs_checkpointed"] == FULL_EPOCHS for v in rec.values())
-    out["status"] = "full COMPLETE (training)" if ok else "full finished with failures"
+    out["status"] = FULL_DONE if ok else "full finished with failures"
+    write(out)
+    return 0 if ok else 1
+
+
+# ----------------------------------------------------------------------------------
+# the runs interrupted on 2026-10-09, rerun fresh
+# ----------------------------------------------------------------------------------
+INTERRUPTED = ("full_seed20261006_w0.125_dup", "full_seed20261006_w1.0_dup",
+               "full_seed20261012_w0.125", "full_seed20261012_w1.0",
+               "full_seed20261013_w0.125", "full_seed20261013_w1.0")
+INTERRUPTED_DIR = OUT / "interrupted_2026-10-09"
+INTERRUPTION_CAUSE = (
+    "As far as known: the phase-full driver ran as a background shell of a Claude Code "
+    "session, and that session's process ended at about 05:59:22 on 2026-10-09 (its "
+    "transcript records a pending question torn down at 09:59:22 UTC), 2 s after the "
+    "driver's last artifact write; a process that ends takes its background shells and their "
+    "children with it. No reboot (the machine has been up since 2026-09-30 15:08), and the "
+    "gauge launcher, started detached with setsid, kept running and passed its gate at "
+    "06:00:04. Not established: which signal ended the processes, or why the session ended. "
+    "The six runs' stdout logs are empty because their block-buffered output was lost when "
+    "they were killed, so the logs hold no evidence either way; their attempts carry no exit "
+    "code because the driver died before it could poll them.")
+RERUN_POLICY = (
+    "The six were rerun FRESH, from initialisation for 10 continuous epochs, with their "
+    "registered seeds, weights and GPUs and in their registered run directories, under the "
+    "registered no-resume policy (full_study.design.why_fresh_not_resumed); they were NOT "
+    "resumed from their partial checkpoints. The partial directories were moved, unchanged, "
+    "to interrupted_2026-10-09/. The rerun driver runs as its own session leader (setsid), "
+    "so no terminal or agent session can end it.")
+
+
+def phase_rerun_interrupted():
+    """Record the 2026-10-09 interruption as an event, then rerun the six runs it cut short.
+
+    Refuses unless this process is its own session leader (launched with setsid), the
+    artifact still records the interruption (status RUNNING phase full with no live
+    seed-study process: a fault by scripts/predecessor.py's rule, read from the recorded
+    status and confirmed by the process scan), and the runs short of epoch 10 are exactly
+    the six recorded in INTERRUPTED."""
+    from scripts.predecessor import processes, state
+
+    if os.getsid(0) != os.getpid():
+        raise SystemExit("refusing: not a session leader. Launch with setsid (see the "
+                         "docstring) so that no terminal or agent session can end this driver")
+    out = read_out()
+    st = state(OUT / "metrics.json", {FULL_DONE},
+               lambda: processes(script="mxfold2_seed_study.py", arg=f"@{OUT / 'arch.conf'}"))
+    if not (st["state"] == "fault" and st["status"] == "RUNNING phase full"):
+        raise SystemExit(f"refusing: the artifact does not record the interruption ({st})")
+    assign = {a["name"]: a for a in out["full_study"]["assignment"]}
+    short = sorted(n for n in assign if not (OUT / "seeds" / n / "checkpoints" /
+                                             f"epoch-{FULL_EPOCHS}").exists())
+    if short != sorted(INTERRUPTED):
+        raise SystemExit(f"refusing: the runs short of epoch {FULL_EPOCHS} are {short}, not "
+                         f"the six recorded")
+    if INTERRUPTED_DIR.exists():
+        raise SystemExit(f"refusing: {INTERRUPTED_DIR.name}/ already exists")
+
+    stamp = lambda t: time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t))  # noqa: E731
+    affected = {}
+    for n in INTERRUPTED:
+        eps = sorted((OUT / "seeds" / n / "checkpoints").glob("epoch-*"),
+                     key=lambda q: int(q.name.split("-")[1]))
+        affected[n] = {**{k: assign[n][k] for k in ("seed", "weight", "gpu", "role")},
+                       "epochs_checkpointed": len(eps),
+                       "last_checkpoint": eps[-1].name if eps else None,
+                       "last_checkpoint_written": stamp(eps[-1].stat().st_mtime) if eps else None,
+                       "attempts_as_recorded": out["phase_full"]["runs"][n]["attempts"],
+                       "moved_to": str((INTERRUPTED_DIR / n).relative_to(OUT))}
+    event = {
+        "event": "interruption of phase full",
+        "stopped": {"last_driver_write": out["phase_full"]["updated"],
+                    "bound": "the driver rewrites the artifact every 30 s, so it stopped "
+                             "within 30 s after its last write",
+                    "status_left_behind": st["status"],
+                    "detected_as": st},
+        "affected_runs": affected,
+        "unaffected": f"the other {len(assign) - len(INTERRUPTED)} runs had reached epoch "
+                      f"{FULL_EPOCHS} and are kept as they are",
+        "cause": INTERRUPTION_CAUSE,
+        "remedy": RERUN_POLICY,
+        "recorded_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "driver": {"pid": os.getpid(), "sid": os.getsid(0), "session_leader": True,
+                   "ppid": os.getppid()},
+        "partial_directories_moved": False,
+    }
+    out.setdefault("events", []).append(event)
+    out["provenance_phase_rerun_interrupted"] = git_provenance(R)
+    write(out)
+    INTERRUPTED_DIR.mkdir()
+    for n in INTERRUPTED:
+        os.rename(OUT / "seeds" / n, INTERRUPTED_DIR / n)
+    event["partial_directories_moved"] = True
+    write(out)
+
+    if not gpu_gate(out, "launch_gate_rerun_interrupted"):
+        return 1
+    runs = [{**{k: assign[n][k] for k in ("name", "seed", "weight", "gpu", "role")},
+             "epochs": FULL_EPOCHS} for n in INTERRUPTED]
+    out["status"] = "RUNNING phase rerun-interrupted"
+    event["rerun"] = {"phase": "rerun-interrupted", "started": time.strftime("%Y-%m-%d %H:%M:%S")}
+    write(out)
+    rec = schedule(runs, out, "phase_rerun_interrupted")
+    seeds = recorded_seeds()
+    for w in WEIGHTS:
+        o = OUT / "seeds" / f"full_seed{seeds[0]}_w{w}" / "checkpoints" / f"epoch-{FULL_EPOCHS}"
+        d = OUT / "seeds" / f"full_seed{seeds[0]}_w{w}_dup" / "checkpoints" / f"epoch-{FULL_EPOCHS}"
+        if o.exists() and d.exists():
+            out.setdefault("determinism_control", {}).setdefault("epoch10_bitwise", {})[
+                f"w{w}"] = compare_checkpoints(o, d)
+    ok = all((OUT / "seeds" / n / "checkpoints" / f"epoch-{FULL_EPOCHS}").exists()
+             for n in assign)
+    event["rerun"].update({"ended": time.strftime("%Y-%m-%d %H:%M:%S"),
+                           "six_reached_epoch_10": all(rec[n]["epochs_checkpointed"] ==
+                                                       FULL_EPOCHS for n in INTERRUPTED)})
+    out["status"] = FULL_DONE if ok else "full finished with failures"
     write(out)
     return 0 if ok else 1
 
@@ -579,5 +712,6 @@ def phase_full():
 if __name__ == "__main__":
     if "--phase" in sys.argv:
         ph = sys.argv[sys.argv.index("--phase") + 1]
-        sys.exit({"rerun-determinism": phase_rerun_determinism, "full": phase_full}[ph]())
+        sys.exit({"rerun-determinism": phase_rerun_determinism, "full": phase_full,
+                  "rerun-interrupted": phase_rerun_interrupted}[ph]())
     sys.exit(main())

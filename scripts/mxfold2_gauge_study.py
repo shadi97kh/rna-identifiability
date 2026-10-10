@@ -5,12 +5,14 @@ Plan approved 2026-10-08 (/home/shadi/.claude/plans/wild-kindling-moth.md). Phas
   preregister  write runs/2026-10-08_mxfold2_gauge_prereg/metrics.json ONCE from PREREG
   phase0       head and runner checks (scripts/mxfold2_head_checks.py), CPU
   pilot        lambda selection (scripts/mxfold2_lambda_pilot.py), CPU
-  runs         GPU runs: wait for the live seed study, smoke test, SGD + regulariser arms
+  runs         GPU runs: wait for the seed study's recorded completion, smoke test, SGD +
+               regulariser arms
 Every phase after preregister refuses to run unless the pre-registration artifact is
 tracked by git and unmodified and the tree is clean outside runs/. Each phase writes
 ONLY its own run directory (path guard in `write`). It never writes the live seed
 study's metrics.json, which its own scheduler owns: from that module only the pure
-functions recorded_seeds, gpus and compare_checkpoints are imported.
+functions recorded_seeds, gpus and compare_checkpoints are imported; its completion
+status is copied as SEED_STUDY_DONE, and a test pins the copy to the original.
 
 Run (in .venv-mxfold2): .venv-mxfold2/bin/python scripts/mxfold2_gauge_study.py --phase X
 """
@@ -29,6 +31,7 @@ R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R))
 
 from scripts.mxfold2_seed_study import compare_checkpoints, gpus, recorded_seeds  # noqa: E402
+from scripts.predecessor import wait as wait_for_predecessor  # noqa: E402
 from scripts.runmeta import git_provenance  # noqa: E402
 
 PREREG_DIR = R / "runs" / "2026-10-08_mxfold2_gauge_prereg"
@@ -37,6 +40,7 @@ PILOT_DIR = R / "runs" / "2026-10-08_mxfold2_gauge_pilot"
 RUNS_DIR = R / "runs" / "2026-10-08_mxfold2_gauge_runs"
 OWN_DIRS = (PREREG_DIR, PHASE0_DIR, PILOT_DIR, RUNS_DIR)
 LIVE = R / "runs" / "2026-10-07_mxfold2_seed_study"
+SEED_STUDY_DONE = "full COMPLETE (training)"  # = mxfold2_seed_study.FULL_DONE (tested)
 DATA = R / ".cache" / "mxfold2-data"
 PY_MX = R / ".venv-mxfold2" / "bin" / "python"
 GAUGE_RUNNER = R / "scripts" / "mxfold2_gauge_train.py"
@@ -152,7 +156,9 @@ PREREG = {
                    "(same initialisation, data order and dropout draws)",
         "settings": "TR0 uncapped, 10 epochs, checkpoints every epoch, "
                     "PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
-        "wait": "start only after no live seed-study process remains",
+        "wait": "start only after the seed study's recorded status is 'full COMPLETE "
+                "(training)'; a status still RUNNING with no live seed-study process is a "
+                "fault: it is recorded and nothing launches (scripts/predecessor.py)",
         "smoke": "first: two concurrent 1-epoch runs on 200 seeded TR0 sequences, one per GPU, "
                  "in the reg configuration (or SGD with lambda = 0 if no lambda* qualified): "
                  "checkpoints bitwise identical and the CPU float64 crosscheck of R <= 1e-9; "
@@ -611,10 +617,23 @@ def phase_runs() -> int:
            "pilot_sha256": sha256(pil), "code_sha256_at_launch": hashes,
            "status": "waiting for the live seed study"}
     write(RUNS_DIR / "metrics.json", out)
-    while live_study_running():
-        out["waiting_since"] = out.get("waiting_since", time.strftime("%Y-%m-%d %H:%M:%S"))
+
+    # completion is the seed study's RECORDED status, never the absence of its processes
+    # (2026-10-09: its driver was killed while it said RUNNING, and the old process-only
+    # wait read that as completion); see scripts/predecessor.py
+    def on_poll(st):
+        out["waiting_since"] = out.get("waiting_since", st["checked"])
+        out["predecessor"] = st
         write(RUNS_DIR / "metrics.json", out)
-        time.sleep(60)
+
+    pre = wait_for_predecessor(LIVE / "metrics.json", {SEED_STUDY_DONE}, live_study_running,
+                               poll_s=60, on_poll=on_poll)
+    out["predecessor"] = pre
+    if pre["state"] != "done":
+        out["status"] = (f"NOT LAUNCHED: seed study fault ({pre.get('detail')}; recorded "
+                         f"status {pre['status']!r})")
+        write(RUNS_DIR / "metrics.json", out)
+        return 1
     # re-check after the wait: registration intact and run code unchanged (the rest of the
     # tree may legitimately be mid-edit, e.g. the evaluator)
     out["provenance_after_wait"] = check_prereg(require_clean_tree=False)
