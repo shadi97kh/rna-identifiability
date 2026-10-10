@@ -19,6 +19,9 @@ registered for Phase 0's P0.2 v-symmetry check):
   the longest run the allowed pairs admit, and the longest helix of each scored structure,
     both from the dataset structure and from the pair list the DP RETURNS (which is what the
     training hook measured).
+The predicted structure is the one the loss-augmented DP SCORED: its returned pair list is
+restored (restore_dropped_pairs) and accepted only if the restored structure's
+constrained-DP counts equal the prediction call's counts exactly.
 Then, for all 13 long-run sequences: the reference's longest helix, h.count of the scored
 reference and prediction, and whether the sequence was a breaker.
 
@@ -77,6 +80,26 @@ def longest_run(al):
         run, k = cand, k + 1
 
 
+def restore_dropped_pairs(ret):
+    """Undo the C_HELIX_E traceback drop: a helix of 31+ pairs comes back as a run of exactly
+    29 stacked pairs (i..i+28), an unpaired pair of positions (i+29, j-29), then (i+30, j-30)
+    paired. The caller accepts the result only if its constrained-DP counts equal the counts
+    of the DP call that produced `ret`."""
+    p, n, added = list(ret), len(ret) - 1, []
+    for i in range(1, n + 1):
+        j = p[i]
+        if j <= i or (i > 1 and j < n and p[i - 1] == j + 1):
+            continue  # not the outermost pair of a helix
+        k = 0
+        while i + k <= n and p[i + k] == j - k and j - k > i + k:
+            k += 1
+        a, b = i + 29, j - 29
+        if k == 29 and a + 1 < b - 1 and p[a] == 0 and p[b] == 0 and p[a + 1] == b - 1:
+            p[a], p[b] = b, a
+            added.append([a, b])
+    return p, added
+
+
 def main():
     import torch
     from mxfold2 import interface
@@ -131,8 +154,14 @@ def main():
         with torch.no_grad():
             a, b = model.make_param([seq])[0], m2.make_param([seq])[0]
         pa, pb = a["positional"], b["positional"]
-        _, pred, _ = dp(model, a, seq, max_internal_length=30, reference=ref,
-                        loss_pos_paired=0.5, loss_neg_paired=0.005)
+        _, pred_ret, c_pred = dp(model, a, seq, max_internal_length=30, reference=ref,
+                                 loss_pos_paired=0.5, loss_neg_paired=0.005)
+        pred, added = restore_dropped_pairs(pred_ret)
+        _, _, c_chk = dp(model, a, seq, max_internal_length=L, constraint=pred)
+        r["pred_restoration"] = {
+            "pairs_restored": added,
+            "validated_counts_equal_the_prediction_call": all(
+                torch.equal(c_chk[k], c_pred[k]) for k in c_pred if k.startswith("count_"))}
         for key, st in (("pred", pred), ("ref", ref)):
             ea, ret, ca = dp(model, a, seq, max_internal_length=L, constraint=st)
             eb, _, _ = dp(m2, b, seq, max_internal_length=L, constraint=st)
@@ -144,7 +173,8 @@ def main():
                       "dE_from_counts_times_actual_dtheta": dth,
                       "n_S_entries_counted": nS, "helix_length_counts": hlc,
                       "longest_helix_scored_structure": _longest_helix(st),
-                      "longest_helix_returned_by_DP": _longest_helix(ret),
+                      "longest_helix_returned_by_DP": _longest_helix(pred_ret if key == "pred"
+                                                                     else ret),
                       "pairs_missing_from_DP_return": [
                           [i, st[i]] for i in range(1, len(st))
                           if st[i] > i and ret[i] != st[i]]}
@@ -181,6 +211,9 @@ def main():
                           v["ref"]["longest_helix_scored_structure"]) > MAX_HELIX
                    for n, v in a13.items()}
     out["summary"] = {
+        "all_pred_restorations_validated": all(
+            v["pred_restoration"]["validated_counts_equal_the_prediction_call"]
+            for v in a13.values()),
         "breaker_iff_a_scored_structure_has_a_helix_over_30":
             all(long_scored[n] == a13[n]["breaker"] for n in a13),
         "breaker_iff_h_dot_count_nonzero":
@@ -193,6 +226,7 @@ def main():
                       "ref_helix": v["ref"]["longest_helix_scored_structure"],
                       "ref_helix_returned": v["ref"]["longest_helix_returned_by_DP"],
                       "pred_helix": v["pred"]["longest_helix_scored_structure"],
+                      "pred_helix_returned": v["pred"]["longest_helix_returned_by_DP"],
                       "h_ref": v["ref"]["h_dot_count"], "h_pred": v["pred"]["h_dot_count"]}
                   for n, v in a13.items()},
     }
