@@ -1,0 +1,18 @@
+chain pid 1126757 sid 1126757 start 2026-10-10 20:06:38
+Traceback (most recent call last):
+  File "/home/shadi/sirna-thermo/scripts/mxfold2_gauge_eval.py", line 804, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/shadi/sirna-thermo/scripts/mxfold2_gauge_eval.py", line 783, in main
+    out = reduce(a.stage)
+          ^^^^^^^^^^^^^^^
+  File "/home/shadi/sirna-thermo/scripts/mxfold2_gauge_eval.py", line 625, in reduce
+    out["provenance"] = check_prereg(require_clean_tree=False)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/shadi/sirna-thermo/scripts/mxfold2_gauge_study.py", line 317, in check_prereg
+    return PREREG_DIR / "metrics.json"
+           ~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+AssertionError: PREREG in code differs from the registration in force
+2a exit 1, recorded status: , 2026-10-10 21:56:07
+2b NOT started
+reduce-only of the 2a shards after the end-of-run registration check failed (amendment 4 committed mid-run): 2026-10-10 21:57:49
