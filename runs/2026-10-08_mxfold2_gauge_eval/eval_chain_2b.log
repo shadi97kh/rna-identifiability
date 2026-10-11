@@ -1,0 +1,59 @@
+chain-2b pid 1144300 sid 1144300 start 2026-10-11 00:34:56; 2a status: complete
+{"stage": "2b", "status": "STOPPED: V1-V3 or C1 failed on some model; no statistic reported", "n_sequences": 1305}
+2b workers+reduce exit 0, status: STOPPED: V1-V3 or C1 failed on some model; no statistic reported, 2026-10-11 04:12:15
+{
+ "recorded_direction0_misses": {
+  "e1orig_seed20261008": 1,
+  "e1live_seed20261010": 2,
+  "e1live_seed20261012": 1
+ },
+ "all_flagged_reproduced": true,
+ "V3_amended_pass": {
+  "e1orig_seed20261008": true,
+  "e1live_seed20261010": true,
+  "e1live_seed20261012": true
+ },
+ "worker_unchanged": true,
+ "pairs": [
+  {
+   "file": "data/bpRNA_dataset-canonicals/TS0/bpRNA_CRW_30906.bpseq",
+   "model": "e1live_seed20261012",
+   "d3": {
+    "0": 0.0007545543575842165,
+    "1": 0.3901710408693287,
+    "2": 0.0454139501785387
+   }
+  },
+  {
+   "file": "data/bpRNA_dataset-canonicals/TS0/bpRNA_CRW_36793.bpseq",
+   "model": "e1live_seed20261010",
+   "d3": {
+    "0": 9.792166887721663e-05,
+    "1": 0.14314540552461477,
+    "2": 0.2020725070742776
+   }
+  },
+  {
+   "file": "data/bpRNA_dataset-canonicals/TS0/bpRNA_SPR_597.bpseq",
+   "model": "e1orig_seed20261008",
+   "d3": {
+    "0": 0.00042009961517692796,
+    "1": 0.8165607932426697,
+    "2": 0.4026889659965656
+   }
+  },
+  {
+   "file": "data/bpRNA_dataset-canonicals/TS0/bpRNA_SPR_597.bpseq",
+   "model": "e1live_seed20261010",
+   "d3": {
+    "0": 0.0002080014328123621,
+    "1": 0.29190726687024454,
+    "2": 0.3796232206319796
+   }
+  }
+ ]
+}
+2b re-draw exit 0, 2026-10-11 04:21:00
+{"stage": "2b", "status": "complete", "n_sequences": 1305}
+2b amended reduce exit 0, status: complete, 2026-10-11 04:21:34
+2b chain done
