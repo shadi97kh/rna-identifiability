@@ -1,0 +1,237 @@
+{
+ "cli": {
+  "exit_code": 0,
+  "output": [
+   ">hairpin35",
+   "GCGCGCGGGGGGCGCCGCGGGGCCGCCCCGCGGGCGAAAGCCCGCGGGGCGGCCCCGCGGCGCCCCCCGCGCGC",
+   "(((((((((((((((((((((((((((((.(((((....))))).))))))))))))))))))))))))))))) (104.0)"
+  ],
+  "structure_matches_api": true
+ },
+ "conf": [
+  "--max-helix-length",
+  "30",
+  "--embed-size",
+  "64",
+  "--num-filters",
+  "64",
+  "--num-filters",
+  "64",
+  "--num-filters",
+  "64",
+  "--num-filters",
+  "64",
+  "--num-filters",
+  "64",
+  "--num-filters",
+  "64",
+  "--num-filters",
+  "64",
+  "--num-filters",
+  "64",
+  "--filter-size",
+  "5",
+  "--filter-size",
+  "3",
+  "--filter-size",
+  "5",
+  "--filter-size",
+  "3",
+  "--filter-size",
+  "5",
+  "--filter-size",
+  "3",
+  "--filter-size",
+  "5",
+  "--filter-size",
+  "3",
+  "--pool-size",
+  "1",
+  "--dilation",
+  "0",
+  "--num-lstm-layers",
+  "2",
+  "--num-lstm-units",
+  "32",
+  "--num-transformer-layers",
+  "0",
+  "--num-transformer-hidden-units",
+  "2048",
+  "--num-transformer-att",
+  "8",
+  "--num-hidden-units",
+  "32",
+  "--num-paired-filters",
+  "64",
+  "--num-paired-filters",
+  "64",
+  "--num-paired-filters",
+  "64",
+  "--num-paired-filters",
+  "64",
+  "--num-paired-filters",
+  "64",
+  "--num-paired-filters",
+  "64",
+  "--num-paired-filters",
+  "64",
+  "--num-paired-filters",
+  "64",
+  "--paired-filter-size",
+  "5",
+  "--paired-filter-size",
+  "3",
+  "--paired-filter-size",
+  "5",
+  "--paired-filter-size",
+  "3",
+  "--paired-filter-size",
+  "5",
+  "--paired-filter-size",
+  "3",
+  "--paired-filter-size",
+  "5",
+  "--paired-filter-size",
+  "3",
+  "--dropout-rate",
+  "0.5",
+  "--fc-dropout-rate",
+  "0.5",
+  "--num-att",
+  "8",
+  "--pair-join",
+  "cat",
+  "--model",
+  "MixC",
+  "--param",
+  "TrainSetAB.pth"
+ ],
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "e662769d767b8ecffc80e2f570907689362b6e82",
+ "hairpins": {
+  "30": {
+   "constrained_score_of_full_helix": 87.3226089477539,
+   "constrained_score_of_printed_structure": 87.3226089477539,
+   "full_helix_pairs_missing_from_prediction": [],
+   "length": 64,
+   "loss_augmentation": {
+    "augmented_minus_plain": 30.0,
+    "expected_if_all": 30,
+    "pairs_unpenalised": 0
+   },
+   "predicted_equals_full_helix": true,
+   "predicted_score": 87.3226089477539,
+   "predicted_structure": "((((((((((((((((((((((((((((((....))))))))))))))))))))))))))))))",
+   "printed_score_minus_printed_structure_score": 0.0,
+   "sequence": "CGGCCCGCGCCGCCCGGCGCGGCGGCGGCGGAAACGCCGCCGCCGCGCCGGGCGGCGCGGGCCG",
+   "stem_pairs": 30
+  },
+  "31": {
+   "constrained_score_of_full_helix": 91.0763168334961,
+   "constrained_score_of_printed_structure": 83.84809112548828,
+   "full_helix_pairs_missing_from_prediction": [
+    [
+     30,
+     37
+    ]
+   ],
+   "length": 66,
+   "loss_augmentation": {
+    "augmented_minus_plain": 30.0,
+    "expected_if_all": 31,
+    "pairs_unpenalised": 1
+   },
+   "predicted_equals_full_helix": false,
+   "predicted_score": 91.0763168334961,
+   "predicted_structure": "(((((((((((((((((((((((((((((.(....).)))))))))))))))))))))))))))))",
+   "printed_score_minus_printed_structure_score": 7.2282257080078125,
+   "sequence": "CGCGGGCCCCCCGCGCGGCGCGGCCGCCGGGGAAACCCGGCGGCCGCGCCGCGCGGGGGGCCCGCG",
+   "stem_pairs": 31
+  },
+  "35": {
+   "constrained_score_of_full_helix": 104.00404357910156,
+   "constrained_score_of_printed_structure": 95.46170043945312,
+   "full_helix_pairs_missing_from_prediction": [
+    [
+     30,
+     45
+    ]
+   ],
+   "length": 74,
+   "loss_augmentation": {
+    "augmented_minus_plain": 34.0,
+    "expected_if_all": 35,
+    "pairs_unpenalised": 1
+   },
+   "predicted_equals_full_helix": false,
+   "predicted_score": 104.00404357910156,
+   "predicted_structure": "(((((((((((((((((((((((((((((.(((((....))))).)))))))))))))))))))))))))))))",
+   "printed_score_minus_printed_structure_score": 8.542343139648438,
+   "sequence": "GCGCGCGGGGGGCGCCGCGGGGCCGCCCCGCGGGCGAAAGCCCGCGGGGCGGCCCCGCGGCGCCCCCCGCGCGC",
+   "stem_pairs": 35
+  },
+  "41": {
+   "constrained_score_of_full_helix": 115.68016052246094,
+   "constrained_score_of_printed_structure": 108.654541015625,
+   "full_helix_pairs_missing_from_prediction": [
+    [
+     30,
+     57
+    ]
+   ],
+   "length": 86,
+   "loss_augmentation": {
+    "augmented_minus_plain": 40.0,
+    "expected_if_all": 41,
+    "pairs_unpenalised": 1
+   },
+   "predicted_equals_full_helix": false,
+   "predicted_score": 115.68016052246094,
+   "predicted_structure": "(((((((((((((((((((((((((((((.(((((((((((....))))))))))).)))))))))))))))))))))))))))))",
+   "printed_score_minus_printed_structure_score": 7.0256195068359375,
+   "sequence": "CCCGGCGGGGGCGGCGGCGGCCCGCGGCGGCGGGGCGGGCCGAAAGGCCCGCCCCGCCGCCGCGGGCCGCCGCCGCCCCCGCCGGG",
+   "stem_pairs": 41
+  }
+ },
+ "mxfold2_commit": "51b2136",
+ "param_sha256": "8ba1283e70c1c073033161adc120f67cdc467176476358d26a12cadaf63262ec",
+ "run_id": "2026-10-10_mxfold2_release_repro",
+ "status": "complete",
+ "summary": {
+  "defect1_long_helix_reported_without_its_30th_pair": {
+   "30": [],
+   "31": [
+    [
+     30,
+     37
+    ]
+   ],
+   "35": [
+    [
+     30,
+     45
+    ]
+   ],
+   "41": [
+    [
+     30,
+     57
+    ]
+   ]
+  },
+  "defect1_printed_score_is_the_full_helix_score": {
+   "30": true,
+   "31": true,
+   "35": true,
+   "41": true
+  },
+  "defect2_pairs_left_unpenalised_by_loss_augmentation": {
+   "30": 0,
+   "31": 1,
+   "35": 1,
+   "41": 1
+  }
+ }
+}
