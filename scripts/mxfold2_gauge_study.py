@@ -186,6 +186,58 @@ PREREG = {
                       "alongside; resamples that draw a single seed are dropped and counted",
         "stage_2a_2b": "2a = live arms when the live study ends; 2b = everything; 2a must "
                        "reproduce bitwise in 2b",
+        "V3_amendment_2026_10_11": {
+            "when": "written 2026-10-11, after stage 2a STOPPED on V3 and BEFORE any statistic "
+                    "had been computed or seen (the stage writes none unless V1-V3 and C1 "
+                    "pass); the evaluator's statistic code is not changed",
+            "decision": "the user's, with these conditions; text by Claude",
+            "rule": "V3 keeps its tolerance, REL_TOL = 1e-3. A (sequence x, model k) pair "
+                    "MISSES only if three independent directions orthogonal to G(x) all fail "
+                    "to change the constrained score of the predicted structure, or of the "
+                    "reference when it is realisable, by more than 1e-3 * max(1, |score|). "
+                    "V3 passes on a model when none of its pairs misses.",
+            "directions": "r = 0 is the registered direction, from the worker's stream "
+                          "np.random.default_rng(np.random.SeedSequence([20261006, x, "
+                          "crc32(model name)])) drawn after V2's random_in_G. r = 1 and r = 2 "
+                          "are FIXED HERE and are not to be redrawn: each from its own stream "
+                          "np.random.default_rng(np.random.SeedSequence([20261006, x, "
+                          "crc32(model name), r])), z = standard_normal(len) per Geometry.theta "
+                          "key in its order (Sin, Sout, Min, Mout, U, Ulow, HL), Sin and Sout "
+                          "multiplied by e_in and e_out, the projection onto G subtracted, "
+                          "exactly as the worker builds direction 0.",
+            "equivalence_proof": "The rule is symmetric in the three directions: a pair misses "
+                                 "if and only if all three fail. A pair whose direction 0 "
+                                 "exceeded the tolerance therefore cannot miss, whatever "
+                                 "directions 1 and 2 give. Drawing directions 1 and 2 only on "
+                                 "the pairs where direction 0 failed gives exactly the verdict "
+                                 "that drawing all three on every pair would give, for every "
+                                 "pair; it is not a selective application.",
+            "procedure": "for each stage, scripts/mxfold2_v3_redraw.py identifies the pairs "
+                         "where direction 0 failed by recomputing direction 0 with the "
+                         "worker's code and stream, checks them against the stage's recorded "
+                         "per-model counts, draws directions 1 and 2 for those pairs only, and "
+                         "writes runs/<date>_mxfold2_v3_redraw_<stage>/metrics.json; the "
+                         "stage's reduction reads its shards plus that artifact. The worker "
+                         "is not changed: reduce() records the shards' evaluator_sha256 (the "
+                         "whole file at the shard commit), the current file's, and the sha256 "
+                         "of worker()'s source at both.",
+            "disclosure": "The registered single-direction result stays reported: stage 2a "
+                          "missed on 4 of 44,370 (sequence, model) pairs, in "
+                          "e1live_seed20261010 (2), e1live_seed20261012 (1) and "
+                          "e1orig_seed20261008 (1), and passed on the other 31 models. "
+                          "runs/2026-10-10_mxfold2_v3_diagnosis found no defect: the four "
+                          "moved by 9.8e-5 to 7.5e-4 relative, not zero, and bpRNA_SPR_597, "
+                          "missed under two models' streams, scores d3 = 0.59 under the "
+                          "third's. The control was strengthened before any statistic "
+                          "existed.",
+            "why": "V3 is a negative control on the decomposition machinery, not a hypothesis "
+                   "test; its failure says nothing about W1, W2, R1, R2, G1, G3 or S2. At the "
+                   "measured single-direction false-miss rate (4 / 44,370, about 9e-5 per "
+                   "pair), 'detected on every pair' across stage 2a's 44,370 pairs (and more "
+                   "in 2b) was underpowered by construction. Three independent directions "
+                   "take a pair's false-miss probability to its cube while a real defect, "
+                   "directions outside G that cannot reach the score, still fails all three: "
+                   "the control is stricter against the defect it exists to catch."},
     },
     "predictions": {
         "G1": {"rule_user": "Without the head, A (AdamW seed 20261006, live) vs B (SGD seed "
