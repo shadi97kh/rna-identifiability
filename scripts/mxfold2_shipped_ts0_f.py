@@ -125,7 +125,9 @@ def main():
     # the released code's defaults, parsed from its argparse lines
     import re
     src = TRAIN_PY.read_text()
-    dflt = {flag: re.search(rf"'--{flag}'[^)]*?default=([^,)]+)", src, re.S).group(1).strip()
+    # the default inside the flag's own add_argument call (choices=(...) may hold parentheses)
+    dflt = {flag: re.search(rf"'--{flag}'(?:(?!add_argument).)*?default=([^,)]+)", src,
+                            re.S).group(1).strip()
             for flag in ("epochs", "optimizer", "score-loss-weight", "l2-weight", "lr")}
     loss_l2 = [i + 1 for i, ln in enumerate(LOSS_PY.read_text().splitlines())
                if "l2_reg" in ln or ("l2_weight > 0.0" in ln)]
