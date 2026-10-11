@@ -598,6 +598,31 @@ def core_stats(stage, seeds, ix, names, cat, acc, exclude=()):
     return res
 
 
+def v3_amended(stage, name, missed):
+    """V3 under amendment 5: a pair misses only if directions 0, 1 and 2 all fail. Directions
+    1 and 2 come from the stage's re-draw artifact (scripts/mxfold2_v3_redraw.py), drawn only
+    where direction 0 missed, which the rule's symmetry makes equivalent to drawing all three
+    everywhere. Fails closed: a model with direction-0 misses passes only if exactly one
+    complete re-draw artifact for the stage reproduces its recorded misses and none of them
+    misses all three directions."""
+    if missed == 0:
+        return {"pass": True, "direction0_misses": 0}
+    arts = sorted(R.glob(f"runs/*_mxfold2_v3_redraw_{stage}/metrics.json"))
+    if len(arts) != 1:
+        return {"pass": False, "direction0_misses": missed,
+                "reason": f"{len(arts)} re-draw artifacts for stage {stage}, need exactly one"}
+    a = json.loads(arts[0].read_text())
+    m = a.get("per_model", {}).get(name)
+    ok = (a.get("status") == "complete" and m is not None
+          and m["recorded_direction0_misses"] == missed and m["reproduces_recorded"]
+          and a.get("provenance_of_shards", {}).get("worker_unchanged") is True)
+    return {"pass": bool(ok and m["amended_misses"] == 0), "direction0_misses": missed,
+            "amended_misses": None if m is None else m["amended_misses"],
+            "redraw_artifact": str(arts[0].relative_to(R)),
+            "redraw_artifact_sha256": hashlib.sha256(arts[0].read_bytes()).hexdigest(),
+            "redraw_consistent": bool(ok)}
+
+
 def reduce(stage, names=None, metas=None, cat=None):
     from scripts.mxfold2_seed_study import recorded_seeds
     seeds = recorded_seeds()
@@ -615,12 +640,21 @@ def reduce(stage, names=None, metas=None, cat=None):
                     agg[k] = max(agg.get(k, -1.0), v)
                 else:
                     agg[k] = agg.get(k, 0) + v
+        # amendment 5 (PREREG analysis.V3_amendment_2026_10_11): the registered
+        # single-direction V3 result is kept; V3 passes under the three-direction rule
+        agg["V3_single_direction_pass"] = bool(agg["V3_detected"] == agg["V3_n"])
+        agg["V3_amended"] = v3_amended(stage, n, agg["V3_n"] - agg["V3_detected"])
         agg["V_pass"] = bool(agg["V1_fail"] == 0 and agg["V2_fail"] == 0 and agg["V1_n"] > 0
-                             and agg["V3_detected"] == agg["V3_n"])
+                             and agg["V3_amended"]["pass"])
         agg["C1_pass"] = bool(not agg["C1_unexplained"] and agg["C1_dE_excess_max"] <= 0.0
                               and agg["C1_dE_ref_excess_max"] <= 0.0)
         val[n] = agg
-    out = {"stage": stage, "n_sequences": X, "models": names, "validity": val}
+    out = {"stage": stage, "n_sequences": X, "models": names, "validity": val,
+           "V3_single_direction_all_pass": all(v["V3_single_direction_pass"]
+                                               for v in val.values()),
+           "evaluator_sha256_shards": sorted({m_["evaluator_sha256"] for m_ in metas}),
+           "evaluator_sha256_reducer": hashlib.sha256(pathlib.Path(__file__).read_bytes())
+           .hexdigest()}
     from scripts.mxfold2_gauge_study import check_prereg
     out["provenance"] = check_prereg(require_clean_tree=False)
     if not all(v["V_pass"] and v["C1_pass"] for v in val.values()):
