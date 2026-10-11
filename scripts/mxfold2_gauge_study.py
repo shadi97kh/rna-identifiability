@@ -268,6 +268,30 @@ PREREG = {
                                "is the diagnosis alone: gauge drift is real and optimiser-"
                                "dependent, harmless to predictions, and it invalidates reading "
                                "learned tables as energies."},
+        "R1_R2_floor_reading": {
+            "registered": "2026-10-10, before stage 2a or 2b reported any statistic (2a "
+                          "running since 20:06; R1 and R2 are computed in stage 2b only)",
+            "rule_user": "R1 and R2 compare an arm whose duplicate floor is 0 against one whose "
+                         "floor is 0.70 of its own between-seed pair distance. The regulariser "
+                         "arm's measured variance is therefore inflated by reproducibility "
+                         "noise that the AdamW arm's is not. Consequences, stated in advance: "
+                         "If the regulariser arm's identifiable variance comes out SMALLER, the "
+                         "result is conservative: the true seed effect differs by at least the "
+                         "measured amount, because the inflation works against the prediction. "
+                         "If it comes out EQUAL OR LARGER, the result is UNINTERPRETABLE rather "
+                         "than a refutation, because the inflation could account for it. R2 is "
+                         "then reported as inconclusive at this floor, not as refuted. Also "
+                         "record that the AdamW arm's floor of 0 is a property of the "
+                         "duplicated seed, not of the arm: seeds 20261007 and 20261008 did not "
+                         "reproduce bitwise at epoch 1.",
+            "note_claude": "(a) The 0.70 is a weight-space variance ratio, D^2/2V "
+                           "(runs/2026-10-10_mxfold2_weight_floor; D over the median "
+                           "between-seed pair distance is 0.82); R1 and R2 are output-space "
+                           "statistics, whose floors are G3's. (b) The first consequence is "
+                           "conservative only if the AdamW w=1.0 arm's own reproducibility "
+                           "inflation is no larger than the regulariser arm's; its floor of 0 "
+                           "is measured on seed 20261006 alone, so that inflation is "
+                           "unmeasured, not zero."},
         "C1": {"prior_claude": "Canonicalised predictions are identical on every evaluated "
                                "model (structures; scores within the P0.4 tolerance)"},
         "F": "TS0 PPV/SEN/F per model and per arm reported with NO prediction",
