@@ -16,3 +16,4 @@ AssertionError: PREREG in code differs from the registration in force
 2a exit 1, recorded status: , 2026-10-10 21:56:07
 2b NOT started
 reduce-only of the 2a shards after the end-of-run registration check failed (amendment 4 committed mid-run): 2026-10-10 21:57:49
+reduce-only of 2a under amendment 5 (re-draw runs/2026-10-11_mxfold2_v3_redraw_2a): status complete, 2026-10-11 00:34:48
