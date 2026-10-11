@@ -1,0 +1,125 @@
+{
+ "V3_amended_pass": {
+  "e1live_seed20261010": true,
+  "e1live_seed20261012": true,
+  "e1orig_seed20261008": true
+ },
+ "all_flagged_reproduced": true,
+ "amendment": "PREREG analysis.V3_amendment_2026_10_11 (amendment 5)",
+ "extra_directions": [
+  1,
+  2
+ ],
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "ae5999ac714baca4c9c2eda19f582e9355fce3bd",
+ "per_model": {
+  "e1live_seed20261010": {
+   "amended_misses": 0,
+   "flagged": 2,
+   "pairs": [
+    {
+     "d3": {
+      "0": 9.792166887721663e-05,
+      "1": 0.14314540552461477,
+      "2": 0.2020725070742776
+     },
+     "file": "data/bpRNA_dataset-canonicals/TS0/bpRNA_CRW_36793.bpseq",
+     "hit": {
+      "0": false,
+      "1": true,
+      "2": true
+     },
+     "misses_under_amendment": false,
+     "model": "e1live_seed20261010",
+     "x": 58
+    },
+    {
+     "d3": {
+      "0": 0.0002080014328123621,
+      "1": 0.29190726687024454,
+      "2": 0.3796232206319796
+     },
+     "file": "data/bpRNA_dataset-canonicals/TS0/bpRNA_SPR_597.bpseq",
+     "hit": {
+      "0": false,
+      "1": true,
+      "2": true
+     },
+     "misses_under_amendment": false,
+     "model": "e1live_seed20261010",
+     "x": 1267
+    }
+   ],
+   "recorded_direction0_misses": 2,
+   "reproduces_recorded": true
+  },
+  "e1live_seed20261012": {
+   "amended_misses": 0,
+   "flagged": 1,
+   "pairs": [
+    {
+     "d3": {
+      "0": 0.0007545543575842165,
+      "1": 0.3901710408693287,
+      "2": 0.0454139501785387
+     },
+     "file": "data/bpRNA_dataset-canonicals/TS0/bpRNA_CRW_30906.bpseq",
+     "hit": {
+      "0": false,
+      "1": true,
+      "2": true
+     },
+     "misses_under_amendment": false,
+     "model": "e1live_seed20261012",
+     "x": 45
+    }
+   ],
+   "recorded_direction0_misses": 1,
+   "reproduces_recorded": true
+  },
+  "e1orig_seed20261008": {
+   "amended_misses": 0,
+   "flagged": 1,
+   "pairs": [
+    {
+     "d3": {
+      "0": 0.00042009961517692796,
+      "1": 0.8165607932426697,
+      "2": 0.4026889659965656
+     },
+     "file": "data/bpRNA_dataset-canonicals/TS0/bpRNA_SPR_597.bpseq",
+     "hit": {
+      "0": false,
+      "1": true,
+      "2": true
+     },
+     "misses_under_amendment": false,
+     "model": "e1orig_seed20261008",
+     "x": 1267
+    }
+   ],
+   "recorded_direction0_misses": 1,
+   "reproduces_recorded": true
+  }
+ },
+ "provenance_of_shards": {
+  "evaluator_sha256_now": "a66e72ff53ffa617592d74b484d85952acd4ea9298e4eb82b509eae083557100",
+  "shard_version_commit": "63e65d4f2e47ccf59498c4f6f5dbe777608e2cb6",
+  "shard_version_found": true,
+  "shards_evaluator_sha256": "bc042550f8bbe10bc9c3af1d41ae271955b4c7b6f37143a6d64927346f27cc7e",
+  "worker_source_sha256_at_shards": "d966418d618cee9355aa64471522da41b28f4b7263338745649648d307f30ec4",
+  "worker_source_sha256_now": "d966418d618cee9355aa64471522da41b28f4b7263338745649648d307f30ec4",
+  "worker_unchanged": true
+ },
+ "recorded_direction0_misses": {
+  "e1live_seed20261010": 2,
+  "e1live_seed20261012": 1,
+  "e1orig_seed20261008": 1
+ },
+ "rel_tol": 0.001,
+ "run_id": "2026-10-11_mxfold2_v3_redraw_2a",
+ "stage": "2a",
+ "status": "complete"
+}
