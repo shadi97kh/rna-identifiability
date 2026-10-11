@@ -1,5 +1,23 @@
 {
  "determinism_control": {
+  "epoch10_bitwise": {
+   "w0.125": {
+    "bitwise_identical": true,
+    "model_max_abs_diff": 0.0,
+    "model_tensors": 130,
+    "model_tensors_bitwise_equal": 130,
+    "optimizer_tensors": 321,
+    "optimizer_tensors_bitwise_equal": 321
+   },
+   "w1.0": {
+    "bitwise_identical": true,
+    "model_max_abs_diff": 0.0,
+    "model_tensors": 130,
+    "model_tensors_bitwise_equal": 130,
+    "optimizer_tensors": 321,
+    "optimizer_tensors_bitwise_equal": 321
+   }
+  },
   "epoch1_bitwise": {
    "detA_vs_detB": {
     "bitwise_identical": true,
@@ -6740,7 +6758,9 @@
    "recorded_at": "2026-10-10 13:54:09",
    "remedy": "The six were rerun FRESH, from initialisation for 10 continuous epochs, with their registered seeds, weights and GPUs and in their registered run directories, under the registered no-resume policy (full_study.design.why_fresh_not_resumed); they were NOT resumed from their partial checkpoints. The partial directories were moved, unchanged, to interrupted_2026-10-09/. The rerun driver runs as its own session leader (setsid), so no terminal or agent session can end it.",
    "rerun": {
+    "ended": "2026-10-10 20:03:16",
     "phase": "rerun-interrupted",
+    "six_reached_epoch_10": true,
     "started": "2026-10-10 13:54:09"
    },
    "stopped": {
@@ -7513,11 +7533,13 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "20:02:15",
+      "exit_code": 0,
       "started": "13:54:09"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "determinism duplicate (other GPU, last wave)",
     "seed": 20261006,
@@ -7527,11 +7549,13 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "18:57:44",
+      "exit_code": 0,
       "started": "13:54:09"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "determinism duplicate (other GPU, last wave)",
     "seed": 20261006,
@@ -7541,11 +7565,13 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "18:58:44",
+      "exit_code": 0,
       "started": "13:54:09"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "study",
     "seed": 20261012,
@@ -7555,11 +7581,13 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "20:02:45",
+      "exit_code": 0,
       "started": "13:54:09"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "study",
     "seed": 20261012,
@@ -7569,11 +7597,13 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "20:02:45",
+      "exit_code": 0,
       "started": "13:54:09"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 0,
     "role": "study",
     "seed": 20261013,
@@ -7583,18 +7613,20 @@
     "attempts": [
      {
       "attempt": 0,
+      "ended": "18:57:44",
+      "exit_code": 0,
       "started": "13:54:09"
      }
     ],
     "epochs": 10,
-    "epochs_checkpointed": 0,
+    "epochs_checkpointed": 10,
     "gpu": 1,
     "role": "study",
     "seed": 20261013,
     "weight": 1.0
    }
   },
-  "updated": "2026-10-10 13:54:39"
+  "updated": "2026-10-10 20:02:45"
  },
  "projection_correction": "Correction recorded 2026-10-08, BEFORE any decomposition is computed. The protocol states that h is orthogonal to every g_p (h.g_p = 1 - 1 = 0). That holds only for pairs where both S_in(i,j) and S_out(j,i) exist. A pair that can stack on one side only, e.g. i = 1 (no outside stack), has h.g_p = +1 or -1. P_G is therefore computed with h replaced by h' = h - sum_p (h.g_p / g_p.g_p) g_p (Gram-Schmidt). The span G(x), every prediction and every other definition are unchanged; this fixes the arithmetic, not the question.",
  "protocol": "DESIGN (fixed before any training; written to metrics.json before any launch)\n\nModel     MixC, the architecture of the released model (vendor/mxfold2 at 51b2136,\n          models/TrainSetAB.conf without its --param line), built in .venv-mxfold2 with\n          torch 2.13.0+cu130 and numpy 2.4.6. MXfold2 pins torch ^1.4 and numpy ^1.18;\n          both pins are overridden, and the one-batch smoke test under these versions\n          passed before this study was written.\nTraining  bpRNA-1m TR0 (canonical-pair version, 10,814 sequences) UNCAPPED, from the\n          registered MXfold2 datasets (data/SOURCES.yaml: mxfold2_datasets). Chosen over\n          TrainSetA+B capped at 400 nt because it is a complete published dataset (no\n          subset to defend), it comes with a published test split for a disjoint fixed\n          evaluation set, and the cap would save only ~13% of its folding time.\nArms      --loss-func hinge_mix (the loss that contains the thermodynamic regulariser\n          sl_weight * (ref - ref2)^2 / L) at --score-loss-weight 1.0 (the code default\n          value) and 0.125 (the paper's C1). The weight is the only difference between\n          arms. (The code's default LOSS is plain hinge, with no regulariser at all.)\nSeeds     the 8 SEEDS of scripts/pooled_alignment.py, read from its source.\nEpochs    10 planned, the code default; the paper does not state an epoch count.\nOther     every other hyperparameter at the code default: AdamW, lr 1e-3, batch 1,\n          loss-pos-paired 0.5 and loss-neg-paired 0.005 (the paper's delta values),\n          l1-weight 0, l2 inactive in the code.\nHardware  4 seeds per GPU on both TITAN RTXs, one CPU thread per process.\n\nEVALUATION SET: all 1,305 sequences of TS0 (canonical-pair version), listed in\nmetrics.json by file name, length and sha256 of the sequence.\n\nDECOMPOSITION (pre-registered; run after training, not in this phase)\n\nFor evaluation sequence x (length N), trained model k (seed) at weight w, theta_k(x) is\nthe vector of MXfold2's positional outputs that some structure of x can use, plus the\nglobal helix_length table:\n  S_in(i,j)  = score_helix_stacking[i][j], i<j, (i,j) and (i+1,j-1) both allowed pairs\n  S_out(j,i) = score_helix_stacking[j][i], (i,j) and (i-1,j+1) both allowed pairs\n  M_in(i,j)  = score_mismatch[i][j], M_out(j,i) = score_mismatch[j][i], (i,j) allowed\n  U(a,b)     = the unpaired-interval score, 1 <= a <= b <= N\n  helix_length[1..30]\nwhere an allowed pair is canonical (AU, UA, GC, CG, GU, UG) with at least 3 unpaired\nnucleotides between, as MXfold2's own constraint builder sets it.\nThe exact gauge subspace G(x) (scripts/mxfold2_nullspace.py, step 2) is spanned by\n  g_p (one per allowed pair p=(i,j)): +1 on S_in(i,j) and M_in(i,j), -1 on S_out(j,i)\n       and M_out(j,i), wherever those entries exist;\n  h: +1 on every S entry, -2(m-1) on helix_length[m].\nThese are mutually orthogonal (disjoint supports; h.g_p = 1 - 1 = 0), so the projection\nP_G is closed-form. With Delta_k = theta_k(x) - mean over the 8 seeds:\n  V_G(x,w)   = (1/7) sum_k ||P_G Delta_k||^2      seed variance in the exact gauge\n  V_tot(x,w) = (1/7) sum_k ||Delta_k||^2\n  f_G(x,w)   = V_G / V_tot\nV_G is a LOWER BOUND on null-space seed variance: step 2 found null directions beyond\nG that it could not characterise. The trainable Turner half of MixC is global; its\nseed variance is reported separately and not decomposed (that needs MXfold2's own\nTurner counting rule, which has not been derived).\n\nValidity checks, required before any statistic is reported:\n  V1  the counting rule above, applied to the extracted tables, reproduces MXfold2's\n      own positional score (MixC constrained score minus the Turner-only constrained\n      score) of each evaluation sequence's reference structure to within\n      1e-3 * max(1, |score|);\n  V2  adding a random g in G(x) to a trained model's tables changes MXfold2's score of\n      the reference and of the predicted structure by less than that tolerance;\n  V3  a random direction orthogonal to G(x) changes at least one of them by more.\n\nPRE-REGISTERED PREDICTIONS\n  W1 (user). Null-space seed variance is the same at both weights, because step 2\n     found the regulariser gauge-invariant. Test: r(x) = V_G(x,0.125) / V_G(x,1.0);\n     \"the same\" means the 95% bootstrap interval (10,000 resamples over evaluation\n     sequences, seed 20261006) of the median of log r lies inside [log 0.8, log 1.25].\n  W2 (added by Claude, secondary). The per-sequence constant shift c_x (+(b-a+1) on\n     U(a,b), +1 on every S and M entry; it moves every structure of x by exactly N) is\n     invisible to the hinge loss and pinned only by the regulariser, so its seed\n     variance is LARGER at 0.125 than at 1.0: median over x of the ratio > 1.\n\nPHASE epoch1 (this file): weight 1.0 only, one epoch, then stop. Records the measured\nper-step overhead and the measured folding factor (MXfold2's unconstrained fold time\nover ViennaRNA MFE time on the same TR0 sequences, the latter measured here on an\nidle pinned core before launch), replacing both guesses in the earlier estimate.\n\n",
@@ -7621,7 +7653,7 @@
   20261012,
   20261013
  ],
- "status": "RUNNING phase rerun-interrupted",
+ "status": "full COMPLETE (training)",
  "training_set": "TR0-canonicals.lst (mxfold2_datasets), uncapped",
  "vienna_reference": {
   "core": 15,
