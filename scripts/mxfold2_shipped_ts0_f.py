@@ -39,6 +39,23 @@ OUT = R / "runs" / RUN_ID
 PARAM = R / "vendor" / "mxfold2" / "mxfold2" / "models" / "TrainSetAB.pth"
 INFER = R / "runs" / "2026-10-07_mxfold2_ts0_inference"
 EVAL = R / "runs" / "2026-10-08_mxfold2_gauge_eval" / "metrics.json"
+TRAIN_PY = R / "vendor" / "mxfold2" / "mxfold2" / "train.py"
+LOSS_PY = R / "vendor" / "mxfold2" / "mxfold2" / "loss.py"
+# The paper's stated training, read 2026-10-11 from the open-access full text (Europe PMC
+# PMC7878809; the journal page refuses unauthenticated clients). Quoted, not paraphrased.
+PAPER = {
+    "source": "Sato, Akiyama & Sakakibara 2021, Nat Commun 12:941, Europe PMC PMC7878809 "
+              "full text, retrieved 2026-10-11",
+    "table2_TS0_TR0_trained": {"PPV": 0.520, "SEN": 0.682, "F": 0.575,
+                               "caption": "Comparison of the accuracy of secondary structure "
+                                          "prediction among MXfold2, SPOT-RNA, TORNADO, "
+                                          "ContextFold, and RNAfold."},
+    "C1_C2": "We used C1 = 0.125 and C2 = 0.01 by default.",
+    "C1_term": "C1 multiplies [f(x,y) - f_T(x,y)]^2, 'our proposed thermodynamic regularization'",
+    "C2_term": "C2 multiplies the l2 norm of the network parameters, 'the l2 regularization term'",
+    "optimizer": "To minimize the objective function (2), we employ the Adam optimizer.",
+    "epochs": "not stated in the article",
+}
 
 
 def write(out):
@@ -105,8 +122,36 @@ def main():
         out["arms_F_mean_per_sequence"].items()} | {
         f"shipped_minus_{a}": shipped - v["mean"] for a, v in
         out["arms_F_mean_per_sequence"].items()}
+    # the released code's defaults, parsed from its argparse lines
+    import re
+    src = TRAIN_PY.read_text()
+    dflt = {flag: re.search(rf"'--{flag}'[^)]*?default=([^,)]+)", src, re.S).group(1).strip()
+            for flag in ("epochs", "optimizer", "score-loss-weight", "l2-weight", "lr")}
+    loss_l2 = [i + 1 for i, ln in enumerate(LOSS_PY.read_text().splitlines())
+               if "l2_reg" in ln or ("l2_weight > 0.0" in ln)]
+    out["paper_training"] = PAPER
+    out["code_defaults_51b2136"] = {"train_py_defaults": dflt,
+                                    "loss_py_l2_term_lines_commented_out": loss_l2,
+                                    "note": "the paper's l2 loss term survives only as commented "
+                                            "lines in loss.py; --l2-weight acts as the optimiser's "
+                                            "weight_decay (train.py build_optimizer)"}
+    out["arm_settings_vs_paper"] = {
+        "adamw_w1.0": "code defaults: AdamW, 10 epochs, score-loss weight 1.0, l2 0",
+        "adamw_w0.125": "code defaults with the paper's C1 = 0.125; l2 0, AdamW, 10 epochs",
+        "reg": "adamw_w1.0 plus lambda* R",
+        "paper": "C1 = 0.125, C2 = 0.01 (l2), Adam, epochs not stated"}
+    g = out["gaps_F_mean_per_sequence"]
+    out["gap_attribution"] = {
+        "published_minus_code_default_arm": g["published_minus_adamw_w1.0"],
+        "recovered_by_the_paper_C1": (out["arms_F_mean_per_sequence"]["adamw_w0.125"]["mean"]
+                                      - out["arms_F_mean_per_sequence"]["adamw_w1.0"]["mean"]),
+        "remaining_after_C1": g["published_minus_adamw_w0.125"],
+        "remaining_is_not_attributed": "between l2 = 0.01 (absent), Adam vs AdamW, and the "
+                                       "epoch budget; no run separates them"}
     out["status"] = "complete"
     write(out)
+    print(json.dumps({"code_defaults": dflt, "gap_attribution": out["gap_attribution"]},
+                     indent=1))
     print(json.dumps({k: out[k] for k in ("shipped_same_scorer_as_arms",
                                           "command_line_structures_identical",
                                           "arms_F_mean_per_sequence", "gaps_F_mean_per_sequence")},
