@@ -183,6 +183,16 @@
       "intrinsic": 2.396401124865049,
       "nontrivial": 14.114230407376631
      },
+     "post_hoc_intrinsic": {
+      "control_a_mean_fraction_approx": 0.012595317553449366,
+      "control_a_q99_fraction": 0.027026330678716293,
+      "control_c_percentile_rank": 99.5,
+      "control_c_q99_fraction": 0.018627293540666473,
+      "exceeds_control_a_q99": false,
+      "exceeds_control_c_q99": true,
+      "fraction": 0.02055041489258847,
+      "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; not registered, same two controls as the nontrivial fraction"
+     },
      "squared_fraction": {
       "coverage": 0.3948281831214532,
       "identified": 0.5900995330870149,
@@ -266,6 +276,16 @@
       "intrinsic": 2.396401124865049,
       "nontrivial": 21.032267714689354
      },
+     "post_hoc_intrinsic": {
+      "control_a_mean_fraction_approx": 0.012595317553449366,
+      "control_a_q99_fraction": 0.027026330678716293,
+      "control_c_percentile_rank": 99.2,
+      "control_c_q99_fraction": 0.01976489761466267,
+      "exceeds_control_a_q99": false,
+      "exceeds_control_c_q99": true,
+      "fraction": 0.02055041489258847,
+      "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; not registered, same two controls as the nontrivial fraction"
+     },
      "squared_fraction": {
       "coverage": 0.6492919688310879,
       "identified": 0.3177549402517007,
@@ -348,6 +368,16 @@
       "intrinsic": 3.8048749192139653,
       "nontrivial": 4.321102668650303
      },
+     "post_hoc_intrinsic": {
+      "control_a_mean_fraction_approx": 0.012595317553449366,
+      "control_a_q99_fraction": 0.027026330678716293,
+      "control_c_percentile_rank": 100.0,
+      "control_c_q99_fraction": 0.059106107478073995,
+      "exceeds_control_a_q99": true,
+      "exceeds_control_c_q99": true,
+      "fraction": 0.08677841794401842,
+      "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; not registered, same two controls as the nontrivial fraction"
+     },
      "squared_fraction": {
       "coverage": 0.2376954527012265,
       "identified": 0.7450615350000088,
@@ -427,6 +457,16 @@
       "identified": 32.56523575061559,
       "intrinsic": 3.8048749192139653,
       "nontrivial": 5.4247900748291285
+     },
+     "post_hoc_intrinsic": {
+      "control_a_mean_fraction_approx": 0.012595317553449366,
+      "control_a_q99_fraction": 0.027026330678716293,
+      "control_c_percentile_rank": 100.0,
+      "control_c_q99_fraction": 0.06044079958749363,
+      "exceeds_control_a_q99": true,
+      "exceeds_control_c_q99": true,
+      "fraction": 0.08677841794401842,
+      "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; not registered, same two controls as the nontrivial fraction"
      },
      "squared_fraction": {
       "coverage": 0.4255277092891396,
@@ -510,6 +550,16 @@
       "intrinsic": 1.485419634003937,
       "nontrivial": 16.17863504634813
      },
+     "post_hoc_intrinsic": {
+      "control_a_mean_fraction_approx": 0.012595317553449366,
+      "control_a_q99_fraction": 0.027026330678716293,
+      "control_c_percentile_rank": 99.6,
+      "control_c_q99_fraction": 0.009787472413192139,
+      "exceeds_control_a_q99": false,
+      "exceeds_control_c_q99": true,
+      "fraction": 0.011191464371486753,
+      "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; not registered, same two controls as the nontrivial fraction"
+     },
      "squared_fraction": {
       "coverage": 0.4281733378954442,
       "identified": 0.5568434503280405,
@@ -589,6 +639,16 @@
       "identified": 70.5877711224939,
       "intrinsic": 1.485419634003937,
       "nontrivial": 24.383133442388665
+     },
+     "post_hoc_intrinsic": {
+      "control_a_mean_fraction_approx": 0.012595317553449366,
+      "control_a_q99_fraction": 0.027026330678716293,
+      "control_c_percentile_rank": 99.7,
+      "control_c_q99_fraction": 0.00959171206207809,
+      "exceeds_control_a_q99": false,
+      "exceeds_control_c_q99": true,
+      "fraction": 0.011191464371486753,
+      "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; not registered, same two controls as the nontrivial fraction"
      },
      "squared_fraction": {
       "coverage": 0.6832903995380614,
@@ -1909,6 +1969,54 @@
     "reachable_sentinel_INF": [],
     "shared_support": 12607
    }
+  },
+  "verdict": {
+   "by_set_and_basis": {
+    "Andronescu2007/rfam": {
+     "control_a_failed_as_required": false,
+     "control_a_mean": 0.1302869778493944,
+     "control_a_q99": 0.14485425863437631,
+     "control_c_percentile_rank": 25.6,
+     "nontrivial_fraction": 0.12103703664281656
+    },
+    "Andronescu2007/tr0ts0": {
+     "control_a_failed_as_required": false,
+     "control_a_mean": 0.18382260788593152,
+     "control_a_q99": 0.19824403286892345,
+     "control_c_percentile_rank": 3.2,
+     "nontrivial_fraction": 0.1803628879923848
+    },
+    "Langdon2018/rfam": {
+     "control_a_failed_as_required": false,
+     "control_a_mean": 0.1302869778493944,
+     "control_a_q99": 0.14485425863437631,
+     "control_c_percentile_rank": 72.2,
+     "nontrivial_fraction": 0.0985521104690124
+    },
+    "Langdon2018/tr0ts0": {
+     "control_a_failed_as_required": false,
+     "control_a_mean": 0.18382260788593152,
+     "control_a_q99": 0.19824403286892345,
+     "control_c_percentile_rank": 3.2,
+     "nontrivial_fraction": 0.12372409352929176
+    },
+    "Turner1999/rfam": {
+     "control_a_failed_as_required": false,
+     "control_a_mean": 0.1302869778493944,
+     "control_a_q99": 0.14485425863437631,
+     "control_c_percentile_rank": 45.2,
+     "nontrivial_fraction": 0.12189324387239932
+    },
+    "Turner1999/tr0ts0": {
+     "control_a_failed_as_required": false,
+     "control_a_mean": 0.18382260788593152,
+     "control_a_q99": 0.19824403286892345,
+     "control_c_percentile_rank": 21.6,
+     "nontrivial_fraction": 0.18370766276338085
+    }
+   },
+   "control_a_failed_as_required_in": [],
+   "reading": "REGISTERED CONTROL (a) DID NOT FAIL in any set or basis: every nontrivial fraction lies at or below a uniformly random subspace of the same dimension (squared fractions track dim/n for every component). By the registered rule the fraction is dimension counting, and 'differs by X% in directions none of the references can distinguish' is not supported as a property of these tables. Control (c), stated as a finding: see control_c_percentile_rank; a rank below 50 means the published difference is not enriched in the unidentified directions even within the tables it occupies. Per the user's registered ruling, Type B's claim rests on Experiment 2."
   }
  },
  "experiment_2_grid": {
@@ -2007,7 +2115,7 @@
   "git_dirty": true,
   "git_dirty_excluding_runs": false,
   "git_dirty_paths_outside_runs": [],
-  "git_sha": "b7652241f12d68280b9016df4df4106b0c77d8e0"
+  "git_sha": "62df3de42bc86ef50a8ed545d0d013f59645a31e"
  },
  "run_id": "2026-10-12_turner_typeb",
  "status": "projection complete",
