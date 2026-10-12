@@ -510,6 +510,68 @@
    "sigma_LR": 0.016216041821905648,
    "times_conventional": 13.148000618489652
   },
+  "arm_c_sigma_LR_by_epoch": [
+   {
+    "epoch": 1,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.025193086798465717,
+    "sigma_LR_b1000": 0.023406053010415998
+   },
+   {
+    "epoch": 2,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.02565352233725009,
+    "sigma_LR_b1000": 0.02574917715138503
+   },
+   {
+    "epoch": 3,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.02229991833271675,
+    "sigma_LR_b1000": 0.02414186732434907
+   },
+   {
+    "epoch": 4,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.02116655524900342,
+    "sigma_LR_b1000": 0.02665209752708204
+   },
+   {
+    "epoch": 5,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.02530142697558476,
+    "sigma_LR_b1000": 0.021936175904121516
+   },
+   {
+    "epoch": 6,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.023845980923820193,
+    "sigma_LR_b1000": 0.020242454581564293
+   },
+   {
+    "epoch": 7,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.02124040105950502,
+    "sigma_LR_b1000": 0.017890199463234367
+   },
+   {
+    "epoch": 8,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.021465475215057372,
+    "sigma_LR_b1000": 0.021195554988408822
+   },
+   {
+    "epoch": 9,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.025885544684055805,
+    "sigma_LR_b1000": 0.02275710109966274
+   },
+   {
+    "epoch": 10,
+    "n_steps": 10814,
+    "sigma_LR_b100": 0.023341981250291997,
+    "sigma_LR_b1000": 0.021298321589591454
+   }
+  ],
   "arm_c_ten_epochs_b100": {
    "lambda": 0.28699644592969686,
    "lambda_exact": 0.28703764123350073,
@@ -526,6 +588,7 @@
   "eta": 0.001,
   "formula": "lambda = sigma_LR^2 / (2 eta width^2); exact AR(1): eta lambda = 1 - sqrt(1 - sigma_LR^2 / width^2)",
   "lambda_conventional": 0.01,
+  "reading": "A LINEARISED ESTIMATE. lambda ~ 0.26 holds the stationary width to 1.0 only if sigma_LR is unchanged by lambda; no run tests that, and at 26x the conventional decay the weights, and therefore the increments, would almost certainly differ. Arm (c)'s value (ten epochs, the registered estimator) is the one quoted; arm (a)'s epoch-1 value is reported beside it. The two differ in score-loss weight as well as horizon, so the difference between them is not by itself a horizon effect; arm_c_sigma_LR_by_epoch holds the weight fixed.",
   "width": 1.0
  },
  "launch_gate_arm c": {
