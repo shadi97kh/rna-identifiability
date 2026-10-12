@@ -109,6 +109,271 @@
    "time_constant_steps": 99999.99999999999
   }
  },
+ "analysis_c": {
+  "AR1": {
+   "long_run": {
+    "100": {
+     "batch": 100,
+     "n_batches": 1081,
+     "sigma_LR": 0.023958148756934323
+    },
+    "1000": {
+     "batch": 1000,
+     "n_batches": 108,
+     "sigma_LR": 0.022675216148910934
+    }
+   },
+   "mu": -2.6960856537586893e-05,
+   "n_steps": 108140,
+   "sigma": 0.006347080738453633,
+   "sigma_LR_ratio_1000_over_100": 0.9464510959907926,
+   "stationary_mean": -2.696085653758689,
+   "stationary_sd_long_run_b100": 5.357204923555723,
+   "stationary_sd_long_run_b1000": 5.070332471346584,
+   "stationary_sd_naive": 1.4192503989861887,
+   "width_is": "ESTIMATE"
+  },
+  "AR1_arm_a_epoch1": {
+   "long_run": {
+    "100": {
+     "batch": 100,
+     "n_batches": 108,
+     "sigma_LR": 0.019212600115964294
+    },
+    "1000": {
+     "batch": 1000,
+     "n_batches": 10,
+     "sigma_LR": 0.016216041821905648
+    }
+   },
+   "mu": 0.0001910507784389066,
+   "n_steps": 10814,
+   "sigma": 0.005602918095860461,
+   "sigma_LR_ratio_1000_over_100": 0.844031610715266,
+   "stationary_mean": 19.10507784389066,
+   "stationary_sd_long_run_b100": 4.29606798838165,
+   "stationary_sd_long_run_b1000": 3.6260171839760567,
+   "stationary_sd_naive": 1.2528505734707673,
+   "width_is": "ESTIMATE"
+  },
+  "AR1_validation": {
+   "n_epochs_inside_2sd": 10,
+   "path": [
+    {
+     "epoch": 1,
+     "inside_2sd": true,
+     "observed": -0.37004120694473386,
+     "predicted_mean": -1.2349636941334752,
+     "predicted_sd": 2.2360805210837147,
+     "t_steps": 10814,
+     "z": 0.386802925491054
+    },
+    {
+     "epoch": 2,
+     "inside_2sd": true,
+     "observed": 0.29344544862397015,
+     "predicted_mean": -1.3847265733271634,
+     "predicted_sd": 3.0046040613790415,
+     "t_steps": 21628,
+     "z": 0.5585334998119162
+    },
+    {
+     "epoch": 3,
+     "inside_2sd": true,
+     "observed": -0.2288873177021742,
+     "predicted_mean": -1.5191389748713773,
+     "predicted_sd": 3.5031278242651527,
+     "t_steps": 32442,
+     "z": 0.3683141814672029
+    },
+    {
+     "epoch": 4,
+     "inside_2sd": true,
+     "observed": -1.3368242289870977,
+     "predicted_mean": -1.6397743004350458,
+     "predicted_sd": 3.8581321776607274,
+     "t_steps": 43256,
+     "z": 0.07852247084796185
+    },
+    {
+     "epoch": 5,
+     "inside_2sd": true,
+     "observed": -0.6807326674461365,
+     "predicted_mean": -1.7480446803007408,
+     "predicted_sd": 4.121917461439053,
+     "t_steps": 54070,
+     "z": 0.2589358042317475
+    },
+    {
+     "epoch": 6,
+     "inside_2sd": true,
+     "observed": -1.8912630379199982,
+     "predicted_mean": -1.8452175034475973,
+     "predicted_sd": 4.322709282037377,
+     "t_steps": 64884,
+     "z": -0.01065200814307335
+    },
+    {
+     "epoch": 7,
+     "inside_2sd": true,
+     "observed": -1.9203945472836494,
+     "predicted_mean": -1.932430253324742,
+     "predicted_sd": 4.477906430748146,
+     "t_steps": 75698,
+     "z": 0.0026877975739840617
+    },
+    {
+     "epoch": 8,
+     "inside_2sd": true,
+     "observed": -2.8372385185211897,
+     "predicted_mean": -2.0107038229794836,
+     "predicted_sd": 4.599112364247696,
+     "t_steps": 86512,
+     "z": -0.1797161343495262
+    },
+    {
+     "epoch": 9,
+     "inside_2sd": true,
+     "observed": -2.4222184596583247,
+     "predicted_mean": -2.080954465404202,
+     "predicted_sd": 4.694469740970265,
+     "t_steps": 97326,
+     "z": -0.07269489699247467
+    },
+    {
+     "epoch": 10,
+     "inside_2sd": true,
+     "observed": -2.595725043967832,
+     "predicted_mean": -2.1440045189900325,
+     "predicted_sd": 4.769894909679876,
+     "t_steps": 108140,
+     "z": -0.09470240613919853
+    }
+   ],
+   "stationary_width_is": "ESTIMATE",
+   "stationary_width_quoted": 5.070332471346584,
+   "tracks": true
+  },
+  "N_update_steps": 108140,
+  "TS0": {
+   "code_default_arm_mean": 0.5224669151028711,
+   "note": "reported with no prediction; n = 1; decay is decoupled AdamW weight decay, not the paper's l2 loss term",
+   "paper_like_epoch10": {
+    "F_mean_per_sequence": 0.5574025719338815,
+    "F_pooled": 0.550961583896423,
+    "PPV_pooled": 0.47515230546669657,
+    "SEN_pooled": 0.6555533691282714,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "paper_like_minus_w0.125_seed06": 0.011919894915910723,
+   "published_TR0_model": 0.575,
+   "published_minus_paper_like": 0.017597428066118415,
+   "shipped": 0.5701344180625911,
+   "w0.125_arm_mean": 0.550189147306392,
+   "w0.125_seed06_like_for_like": 0.5454826770179708
+  },
+  "between_steps_max_abs_change": 0.0,
+  "endpoints_match_epoch_records": true,
+  "sum_delta_decay": 1.387919228351949,
+  "sum_delta_precond": -2.9155470259746465,
+  "trajectory_vs_wd0": {
+   "adamw_w0.125_seed06": {
+    "0": -1.0680972463451326,
+    "1": -0.4145333096385002,
+    "10": -1.324279312044382,
+    "2": 0.7249652231112123,
+    "3": 0.8071827301755548,
+    "4": -0.10245436802506447,
+    "5": 0.7332575430627912,
+    "6": -0.27797723934054375,
+    "7": -0.3289206672634464,
+    "8": -1.0472336634993553,
+    "9": -1.087208254262805
+   },
+   "adamw_w1.0_seed06": {
+    "0": -1.0680972463451326,
+    "1": 1.4605856398120522,
+    "10": 5.802583530312404,
+    "2": 3.997937702573836,
+    "3": 5.3220066502690315,
+    "4": 4.7035264587029815,
+    "5": 5.429579671472311,
+    "6": 5.5382079519331455,
+    "7": 5.809217888861895,
+    "8": 4.368207381223328,
+    "9": 5.9077803692780435
+   }
+  },
+  "unregularised_epoch10_spread": {
+   "adamw_w0.125": {
+    "max_epoch10": 0.43693194910883904,
+    "min_epoch10": -13.488006947562099,
+    "seed_sd_epoch10": 4.587692760477313
+   },
+   "adamw_w1.0": {
+    "max_epoch10": 8.003472935408354,
+    "min_epoch10": -6.960947385523468,
+    "seed_sd_epoch10": 4.965019268995494
+   }
+  },
+  "v_w_by_epoch": [
+   -0.37004120694473386,
+   0.29344544862397015,
+   -0.2288873177021742,
+   -1.3368242289870977,
+   -0.6807326674461365,
+   -1.8912630379199982,
+   -1.9203945472836494,
+   -2.8372385185211897,
+   -2.4222184596583247,
+   -2.595725043967832
+  ],
+  "v_w_epoch0": -1.0680972463451326,
+  "void": false,
+  "void_by_epoch": [
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   },
+   {
+    "finite_loss_and_vw": true,
+    "void": false
+   }
+  ]
+ },
  "arms": {
   "adamw_wd0.01": {
    "epochs": 1,
@@ -133,6 +398,15 @@
  "git_dirty_excluding_runs": false,
  "git_dirty_paths_outside_runs": [],
  "git_sha": "1b9cf9e8824b77353b92b0854894b28403cc44cb",
+ "launch_gate_arm c": {
+  "checked": "2026-10-11 20:37:07",
+  "device": 1,
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "27e171d8b00947c66cae327af75702a429ca552b",
+  "make_gpu_tail": "./gpucheck.sh\nindex, name, memory.used [MiB], memory.total [MiB], utilization.gpu [%]\n0, NVIDIA TITAN RTX, 58 MiB, 24576 MiB, 0 %\n1, NVIDIA TITAN RTX, 7 MiB, 24576 MiB, 0 %\npid, process_name, used_gpu_memory [MiB]\ngpu 0 free MiB: 23957\ngpu 1 free MiB: 24016\nfree MiB: 24016 (gpu 1)\nOK to launch: CUDA_VISIBLE_DEVICES=1\n"
+ },
  "launch_gate_arms a,b": {
   "checked": "2026-10-11 20:12:09",
   "device": 1,
@@ -214,6 +488,46 @@
    "exit_code": 0,
    "started": "2026-10-11 20:12:09"
   },
+  "paper_like": {
+   "cmd": [
+    "/home/shadi/sirna-thermo/.venv-mxfold2/bin/python",
+    "/home/shadi/sirna-thermo/scripts/mxfold2_wd_ablation_train.py",
+    "train",
+    "@/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/arch.conf",
+    "--param",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/paper_like/param.pth",
+    "--save-config",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/paper_like/model.conf",
+    "--log-dir",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/paper_like/checkpoints",
+    "--epochs",
+    "10",
+    "--gpu",
+    "0",
+    "--seed",
+    "20261006",
+    "--loss-func",
+    "hinge_mix",
+    "--score-loss-weight",
+    "0.125",
+    "--optimizer",
+    "AdamW",
+    "--l2-weight",
+    "0.01",
+    "--disable-progress-bar",
+    "data/TR0-canonicals.lst"
+   ],
+   "ended": "2026-10-11 23:20:22",
+   "env": {
+    "CUDA_VISIBLE_DEVICES": "1",
+    "MXF_GAUGE_LAMBDA": "0",
+    "MXF_GAUGE_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/paper_like/gauge",
+    "MXF_TIMING_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/paper_like/timing.json",
+    "MXF_VW_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/paper_like/gauge"
+   },
+   "exit_code": 0,
+   "started": "2026-10-11 20:37:07"
+  },
   "sgd_m0_wd0.01": {
    "cmd": [
     "/home/shadi/sirna-thermo/.venv-mxfold2/bin/python",
@@ -257,7 +571,7 @@
   }
  },
  "seed": 20261006,
- "status": "arms a,b analysed",
+ "status": "arm c analysed",
  "weight_decay": 0.01,
  "written_at": "2026-10-11 20:11:39"
 }
