@@ -472,7 +472,10 @@ def bound_wd0():
                     "epoch1_stationary_mean": float(d[0] / n / ETA_LAMBDA),
                     "epochs4to10_mean_delta": float(late.mean()),
                     "epochs4to10_mu": float(late.mean() / n),
-                    "epochs4to10_stationary_mean": float(late.mean() / n / ETA_LAMBDA)}
+                    "epochs4to10_stationary_mean": float(late.mean() / n / ETA_LAMBDA),
+                    # SE across the 7 epoch deltas, treating them as independent
+                    "epochs4to10_stationary_mean_se": float(late.std(ddof=1) / np.sqrt(len(late))
+                                                            / n / ETA_LAMBDA)}
     res["arm_a_epoch1_stationary_mean_with_decay"] = out["analysis_ab"]["arm_a"]["AR1"][
         "stationary_mean"]
     if "analysis_c" in out:
