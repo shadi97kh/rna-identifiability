@@ -1,0 +1,61 @@
+{
+ "arms": {
+  "adamw_wd0.01": {
+   "epochs": 1,
+   "optimizer": "AdamW",
+   "sl": "1.0",
+   "wd_opt": null
+  },
+  "paper_like": {
+   "epochs": 10,
+   "optimizer": "AdamW",
+   "sl": "0.125",
+   "wd_opt": null
+  },
+  "sgd_m0_wd0.01": {
+   "epochs": 1,
+   "optimizer": "SGD",
+   "sl": "1.0",
+   "wd_opt": "sgd_m0"
+  }
+ },
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "1b9cf9e8824b77353b92b0854894b28403cc44cb",
+ "lr": 0.001,
+ "predictions": {
+  "A1": {
+   "operational": "every update step satisfies vw_post = (1 - lr*wd)*vw_pre - lr*v.g (logged v.g); over the epoch the recurrence r(N) = (1 - lr*wd)^N v.w(0) - lr sum_t (1 - lr*wd)^(N-1-t) v.g_t matches the observed v.w(1) within 1e-3 (S1 criterion (i)'s bar). Reported alongside: the pure closed form (1 - lr*wd)^N v.w(0), its miss, and the breaker term that accounts for it (the 11 long-helix TR0 sequences move v.w even without momentum, about lr * sum(v.g) ~ 1e-4 per epoch)",
+   "rule_user": "In arm (b), v.w after one epoch equals (1 - lr*wd)^N times its epoch-0 value, N the number of update steps, to within the reconstruction residual."
+  },
+  "A2": {
+   "operational": "per step, delta = delta_decay + delta_precond with delta_decay = -lr*wd*vw_pre exactly (decoupled decay); reported: the two sums and their ratio, and arm (a)'s v.w(1) against the wd = 0 AdamW seed-06 run's epoch-1 value (stage 2a S2 trace); 'both present and separable' = both sums exceed 1e-3 in magnitude",
+   "rule_user": "In arm (a), decay and the preconditioner are separable and both present.",
+   "why_not_the_v_g_reconstruction": "reconstruction from logged v.g is SGD's update rule; AdamW's step along v is the preconditioned step, not v.g"
+  },
+  "AR1_confinement": {
+   "caveat": "epoch-1 increments are early training: an extrapolation",
+   "compared_against": "AdamW's unregularised epoch-10 spread across the 8 seeds, read from runs/2026-10-08_mxfold2_gauge_eval S2 traces (w = 1.0: SD 4.97, -6.96 to +8.00; w = 0.125: SD 4.59); the 3.2 quoted with the request is the epoch-1 SD",
+   "floor_rule_user": "if sigma_LR(1000) exceeds sigma_LR(100) by more than 20%, the series has not decorrelated at b = 1000, both are lower bounds and the stationary width is a FLOOR; otherwise an ESTIMATE. A floor supports 'decay does not confine below the observed spread', never the converse",
+   "formula": "from arm (a)'s per-step delta_precond: mean mu, SD sigma; under v.w <- (1 - eta*lambda) v.w + delta_precond the stationary mean is mu/(eta*lambda) and the stationary SD sigma/sqrt(2*eta*lambda) (factors 1e5 and 223.6 at eta 1e-3, lambda 0.01)",
+   "long_run_claude": "increments along v are autocorrelated (beta1 = 0.9, slower drift): also reported, sigma_LR from non-overlapping batch means of 100 and 1,000 steps, stationary SD sigma_LR/sqrt(2*eta*lambda)",
+   "status": "REPORTED quantity, formula fixed in advance; not a prediction (user)"
+  },
+  "NC1_must_fail": "arm (b)'s recurrence with the decay term omitted misses the observed v.w(1) by ~0.1*|v.w(0)| ~ 0.11, far above 1e-3",
+  "NC2_must_hold": "the analysis recurrence (torch SGD's rule in v-coordinates), run with the registered S1 parameters (wd 0, Nesterov 0.9) on the existing SGD seed-06 epoch-1 logs, reproduces the evaluator's registered S1 reconstruction at epoch 1 to 1e-12",
+  "arm_c": {
+   "AR1_validation_note_claude": "the recursion is exact by construction for decoupled decay; with mu fitted from the same run the test checks that the increment mean holds steady over training",
+   "AR1_validation_user": "recompute mu, sigma and sigma_LR (batches 100, 1000; same floor rule) from arm (c)'s ten epochs of delta_precond, beside arm (a)'s; predicted mean path v.w(t) = (1 - eta*lambda)^t v.w(0) + (mu/(eta*lambda)) (1 - (1 - eta*lambda)^t) with arm (c)'s own mu; SD(t) = sigma_LR(1000) sqrt((1 - phi^(2t)) / (1 - phi^2)), phi = 1 - eta*lambda; TRACKS iff the observed v.w at every one of the 10 epoch ends lies within the predicted mean +- 2 SD(t); if it tracks, the stationary width is a validated extrapolation (still under the floor rule); if not, it is not quoted, only the measured trajectory",
+   "decay_note": "decoupled AdamW weight decay, not the paper's l2 loss term (commented out at loss.py:42-46 and 97-101): the closest reachable configuration",
+   "reported_no_prediction": "TS0 F of the epoch-10 checkpoint with the arms' scorer, against the published 0.575, the shipped 0.5701, the code-default arm 0.5225, the w = 0.125 arm mean 0.5502 and its seed-20261006 model (like-for-like: same seed and C1, wd 0 vs 0.01, n = 1 each); and its v.w trajectory against the wd = 0 seed-06 traces"
+  },
+  "prior_claude": "A1 confirmed (recurrence residual ~1e-5; the pure closed form misses by ~1e-4 from the breaker steps). A2: the preconditioner dominates, roughly 2.5 against at most 0.1 in magnitude; at this rate decay does not fix the gauge within an epoch, it contracts v.w toward 0 by ~10% per epoch, time constant 1/(lr*wd) = 1e5 steps (about 9.2 epochs).",
+  "void_rule": "a NaN loss or a non-finite v.w in an arm voids that arm; no rerun without asking"
+ },
+ "run_id": "2026-10-11_mxfold2_weight_decay_ablation",
+ "seed": 20261006,
+ "status": "PRE-REGISTERED, not yet run",
+ "weight_decay": 0.01,
+ "written_at": "2026-10-11 20:11:39"
+}
