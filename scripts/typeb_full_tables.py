@@ -72,6 +72,8 @@ def worker(w, W, dst):
 
 def run():
     out = read_out()
+    if str(out.get("status", "")).startswith("FAILED"):
+        out.setdefault("failed_attempts", []).append({"status": out["status"], **out["run"]})
     out.update({"status": f"{RUNNING_PREFIX}: E3 full-table folds",
                 "label": "DESCRIPTIVE (E3, the user's; no prediction)",
                 "run": {"started": time.strftime("%Y-%m-%dT%H:%M:%S"),

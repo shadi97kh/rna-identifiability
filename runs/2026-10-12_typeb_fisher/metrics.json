@@ -24,6 +24,49 @@
   "spectrum_user": "eigenvalues of N_nt^T F N_nt (426 x 426); split-half noise floor = largest |eigenvalue| of (F_A - F_B)/2, halves = first and second K/2 samples; report how many eigenvalues fall below 1% of the median contrast information, and how many below the noise floor",
   "theory_user": "for P(s|x) proportional to exp(-c(s).theta/kT), the Hessian of -log P(ref|x) is Cov_P[c(s)]/(kT)^2, independent of the reference; I(v) = sum over sequences of Var_{s~P(.|x)}[c(s).v]/(kT)^2 at Turner 2004, d0, special_hp 0, 37 C"
  },
+ "run": {
+  "driver_pid": 1311905,
+  "finished": "2026-10-12T16:40:11",
+  "load_at_start": [
+   1.73388671875,
+   0.640625,
+   0.31640625
+  ],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": true,
+   "git_dirty_paths_outside_runs": [
+    "paper/recomb2027/figs/learned_gauge.pdf",
+    "paper/recomb2027/figs/learned_gauge.png",
+    "paper/recomb2027/figs/overview_nullspace.pdf",
+    "paper/recomb2027/figs/overview_nullspace.png",
+    "scripts/fig_learned_gauge.py",
+    "scripts/fig_overview_nullspace.py"
+   ],
+   "git_sha": "c32881551e52f3cfa8cc02623339b2e832840ff1"
+  },
+  "shards_sha256": {
+   "shard0.npz": "4726081d39d76533885540e8dcd8c77c02d061470213da30a85807d132c09fd3",
+   "shard1.npz": "210f3118c0c317a6e100c2e25cea48b377462caec493f358055cf9512b5ec608",
+   "shard2.npz": "3bfa2bb82afe8eb20e825a39b835f5e31670e28c5302f1e8a46293dfe8e8ad4a",
+   "shard3.npz": "332376794577d50bf42cde5871db2228bce1d229384dd038e25f56ef1026b941",
+   "shard4.npz": "6d20523420e5ce7371d9d0408c29ad25668181e18c951c27e02bb14586a6d3a3",
+   "shard5.npz": "8db5a055d7303b1b71a9a774c12352c1dafb401c941c91568b24106b5dd6847f",
+   "shard6.npz": "fc56cd41d5666348e706430fb0d9f81045c2708dca17eba0272b2c260b5c21c2",
+   "shard7.npz": "12204d8afa1526fcfe600c9067ec7ca7d2b2f124e5b659bdb52a1611887b4dab"
+  },
+  "started": "2026-10-12T16:32:23",
+  "workers_exit": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
  "run_id": "2026-10-12_typeb_fisher",
- "status": "PRE-REGISTERED, nothing sampled"
+ "status": "sampled (workers)"
 }
