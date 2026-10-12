@@ -231,6 +231,106 @@ PRED = {
     },
 }
 
+AMEND_ID = "amendments_2026_10_12"
+BOOT_DRAWS = 2000
+PRED[AMEND_ID] = {
+    "timing": "written 2026-10-12 after Experiment 1 and the fold smoke test were seen, before "
+              "the full fold was launched; written into the artifact by --phase amend",
+    "experiment_1_outcome": {
+        "priors_failed": [
+            "every table's nontrivial fraction clears control (a)'s 99th percentile: FAILED, "
+            "no table clears it in either basis",
+            "Andronescu 2007's nontrivial fraction exceeds Turner 1999's: FAILED (0.180 vs "
+            "0.184, TR0+TS0 basis)"],
+        "attribution": "registered under prior_claude; the user records them as their guesses "
+                       "too",
+        "why_none_was_expected_user": "TR0+TS0's null space comes from TR0+TS0 and none of "
+                                      "these tables was fitted to it; enrichment would be "
+                                      "expected only against each table's own training null "
+                                      "space, which cannot be rebuilt; not pursued before the "
+                                      "scope freeze",
+        "what_survives_user": "calibration: Andronescu's P_nt delta is 21.0 kcal/mol of real "
+                              "difference between published tables, all of it in directions "
+                              "no TR0+TS0 reference can see. Experiment 2 asks whether moving "
+                              "that far changes predictions; if it does: 'two tables that "
+                              "agree on all 11,955 reference energies disagree on X% of "
+                              "predicted MFEs, at a distance the size of what separates "
+                              "published tables'. No enrichment is needed for it.",
+    },
+    "amendment_1_less_reading_user": {
+        "reason": "the smoke test hinted that null directions may move predictions much less "
+                  "than contrast at equal norm (0/50 vs 2/50 changed MFEs; mean D_bpp 0.00036 "
+                  "vs 0.0025; one direction each, 50 sequences: a reason to register the "
+                  "branch, not evidence)",
+        "rule_user": "'less': the null-minus-contrast difference in genuine changed-MFE "
+                     "fraction has a 95% CI below 0, bootstrapped over sequences and directions",
+        "reading_if_it_fires_user": "the references' blindness to these directions largely "
+                                    "carries over to competing structures on the same "
+                                    "sequences",
+        "effect_on_expectation_user": "the user's 'comparable' expectation is then simply "
+                                      "wrong, and the artifact says so",
+        "effect_on_main_claim_user": "none: the claim at the published points stands or falls "
+                                     "on its own CI either way",
+        "operational_note_claude": f"{BOOT_DRAWS} bootstrap draws; each resamples sequences "
+                                   f"with replacement (one resample shared by both arms: the "
+                                   f"arms fold the same sequences) and, independently, the 8 "
+                                   f"directions of each arm with replacement; the statistic is "
+                                   f"mean genuine changed-MFE fraction (null) minus (contrast); "
+                                   f"95% percentile CI. Evaluated at every grid scale at or "
+                                   f"above the floor with at least one changed MFE in either "
+                                   f"arm. Overall: 'less' if the CI is below 0 at every such "
+                                   f"scale, 'more' if above 0 at every such scale, "
+                                   f"'comparable' if it contains 0 at every such scale, "
+                                   f"otherwise 'mixed', with the per-scale results reported.",
+    },
+    "amendment_2_langdon_intrinsic_control_user": {
+        "status": "registered after seeing Experiment 1; EXPLORATORY whatever it returns",
+        "why_user": "if it holds, the paper's most concrete Type A example: a published table "
+                    "sitting 3.8 kcal/mol along an exact gauge direction; and the natural test "
+                    "of the canonicaliser",
+        "structure_note_claude": "the 2 intrinsic directions are per-table constant shifts (N1: "
+                                 "+1 on every mismatchH entry, -1 on every hairpin[3..30]; N2: "
+                                 "+1 on every mismatchI, mismatch1nI, mismatch23I entry, -2 on "
+                                 "every internal_loop[4..30]), so delta's intrinsic component "
+                                 "is set entirely by delta's per-table means over those six "
+                                 "tables. Any revision that shifts those tables by constants "
+                                 "projects onto them, whether or not the shifts satisfy the "
+                                 "gauge relations.",
+        "control": "per-table constant-shift control: keep each of the six tables' |mean "
+                   "shift|, flip the signs; all 2^6 = 64 sign patterns enumerated exactly; the "
+                   "statistic is the intrinsic fraction of the per-table-constant part of "
+                   "delta; report the true pattern's rank among the 64 and the per-table mean "
+                   "shifts themselves (kcal/mol)",
+        "basis_note_claude": "the MODEL-level intrinsic directions (analytic_directions over all "
+                             "reachable columns, not the TR0+TS0-restricted ones), restricted "
+                             "to each table's shared support and orthonormalised; their "
+                             "exactness is checked on the 23,741 generating-set rows (max "
+                             "|G g| <= 1e-9 before restriction)",
+        "canonicaliser_user": "canonicalise toward Turner 2004 along the 2 intrinsic "
+                              "directions: g* = argmin ||delta + g|| over their span on the "
+                              "shared support; report ||delta|| vs ||delta + g*||, and per "
+                              "table the rms per-entry difference before and after for the "
+                              "six tables: how much of the apparent per-entry difference goes "
+                              "away. Langdon is the case of interest; Andronescu and Turner "
+                              "1999 alongside.",
+        "execution": "scripts/turner_typeb_langdon_gauge.py, its own artifact "
+                     "(runs/2026-10-12_turner_typeb_langdon_gauge), one core, while the fold "
+                     "runs; it never writes the Type B artifact",
+    },
+    "experiment_1_control_c_correction": "control (c) for Langdon 2018 rotated delta into 359 "
+                                         "used columns where delta is undefined (INF in "
+                                         "Langdon); restricted to the shared support before "
+                                         "the fold, the superseded values kept in "
+                                         "experiment_1.corrections",
+    "null_arm_leak_assertion_user": "for every null-kind point, A.(theta_r - theta0) must equal "
+                                    "A.r: |A.delta| <= 1e-9 kcal/mol per kcal/mol of ||delta|| "
+                                    "on all 11,955 references, asserted when the points are "
+                                    "built (the reference-energy identity in the worker holds "
+                                    "for any theta_r, so it cannot stop a non-null 'null' "
+                                    "direction)",
+    "pred_recheck": "fold-analyse refuses unless the artifact's predictions equal this PRED",
+}
+
 
 # ----------------------------------------------------------------------------------
 # artifact
@@ -255,6 +355,27 @@ def preregister():
         raise SystemExit(f"{OUT / 'metrics.json'} exists; the registration is not rewritten")
     write({"run_id": RUN_ID, "status": "PRE-REGISTERED, nothing computed", "predictions": PRED,
            "viennarna_version": RNA.__version__, **git_provenance(R)})
+    return 0
+
+
+def amend():
+    """Write PRED's amendment block into the artifact. Refused once a fold has started, and
+    refused unless everything registered before is unchanged."""
+    out = read_out()
+    if "fold" in out:
+        raise SystemExit("a fold has started; PRED is not amended while it runs")
+    reg = out["predictions"]
+    if AMEND_ID in reg:
+        raise SystemExit(f"{AMEND_ID} is already in the artifact")
+    new = json.loads(json.dumps(PRED, default=str))
+    if {k: v for k, v in new.items() if k != AMEND_ID} != reg:
+        raise SystemExit("PRED differs from the registration outside the amendment block")
+    out["predictions"] = new
+    out.setdefault("amendment_log", []).append(
+        {"id": AMEND_ID, "written": time.strftime("%Y-%m-%dT%H:%M:%S"),
+         "status_when_written": out["status"], **git_provenance(R)})
+    write(out)
+    print(f"{AMEND_ID} written; status {out['status']}")
     return 0
 
 
@@ -394,8 +515,17 @@ def by_table(keys):
     return dict(sorted(out.items()))
 
 
-def decompose(delta, B, rng):
-    """Orthogonal split of delta (kcal/mol over B['cols']) against structure set B."""
+def decompose(delta, B, rng, support=None):
+    """Orthogonal split of delta (kcal/mol over B['cols']) against structure set B.
+
+    `support` (bool over cols; default all) is where delta is defined. delta must be zero
+    off it. Control (c) rotates delta only within each table's used columns ON the support:
+    rotating into columns where delta is undefined would let the draws reach directions the
+    true delta cannot (corrected 2026-10-12 for Langdon 2018, whose 1,266 INF columns include
+    359 used ones carrying 9.3% of the nontrivial basis's mass)."""
+    if support is None:
+        support = np.ones(len(B["cols"]), dtype=bool)
+    assert not np.any(delta[~support]), "delta is nonzero off its support"
     cols, used, unused, NI, NT = B["cols"], B["used"], B["unused"], B["I"], B["NT"]
     du, dc = delta[used], delta[unused]
     pI, pNT = NI @ (NI.T @ du), NT @ (NT.T @ du)
@@ -412,7 +542,8 @@ def decompose(delta, B, rng):
     q99b = float(np.sqrt(stats.beta.ppf(0.99, k / 2, (nu - k) / 2)) * np.linalg.norm(du) / nd)
     blocks = {}
     for i, key in enumerate(ucols):
-        blocks.setdefault(key[0], []).append(i)
+        if support[used[i]]:
+            blocks.setdefault(key[0], []).append(i)
     blocks = {t: np.array(ix) for t, ix in blocks.items()}
     norms = {t: float(np.linalg.norm(du[ix])) for t, ix in blocks.items()}
     draws, draws_i = np.empty(CONTROL_C_DRAWS), np.empty(CONTROL_C_DRAWS)
@@ -488,7 +619,8 @@ def set_delta(X, cols, theta0):
            "reachable_sentinel_INF": [repr(k) for k in sentinel],
            "shared_support": len(cols) - len(drop)}
     delta = np.array([0.0 if k in drop else (th[k] - theta0[k]) / 100.0 for k in cols])
-    return delta, rec
+    support = np.array([k not in drop for k in cols])
+    return delta, rec, support
 
 
 def project():
@@ -501,14 +633,27 @@ def project():
     Bs = {name: load_basis(name) for name in REGISTERED}
     cols = Bs["tr0ts0"]["cols"]
     assert cols == Bs["rfam"]["cols"]
-    res = {"sets": {}, "per_set": {}}
+    prev = out.get("experiment_1")
+    res = {"sets": {}, "per_set": {}, "corrections": (prev or {}).get("corrections", [])}
     for X in SETS:
-        delta, res["sets"][X] = set_delta(X, cols, theta0)
+        delta, res["sets"][X], support = set_delta(X, cols, theta0)
         res["per_set"][X] = {}
         for name, B in Bs.items():
             rng = np.random.default_rng(np.random.SeedSequence(
                 [SEED, 3, list(SETS).index(X), list(REGISTERED).index(name)]))
-            res["per_set"][X][name] = decompose(delta, B, rng)
+            res["per_set"][X][name] = decompose(delta, B, rng, support)
+            old = (prev or {}).get("per_set", {}).get(X, {}).get(name)
+            if old is not None and not support.all() and not any(
+                    c["set"] == X and c["basis"] == name for c in res["corrections"]):
+                res["corrections"].append({
+                    "date": "2026-10-12", "set": X, "basis": name,
+                    "what": "control (c) and the post-hoc intrinsic control (c) rotated delta "
+                            "into used columns off the shared support, where delta is "
+                            "undefined; now restricted to the support. The projection, its "
+                            "fraction, controls (a) and (b) and P_nt delta were valid and "
+                            "are unchanged.",
+                    "superseded": {"control_c_table_matched": old["control_c_table_matched"],
+                                   "post_hoc_intrinsic": old.get("post_hoc_intrinsic")}})
         out["experiment_1"] = res
         write(out)
     # the Experiment 2 grid, by the registered rule, before any fold
@@ -595,7 +740,7 @@ def build_points(out, B):
         dirs.append(("null", str(i), v / np.linalg.norm(v)))
     own = {}
     for X in SETS:
-        d, _ = set_delta(X, cols, theta0)
+        d, _, _ = set_delta(X, cols, theta0)
         v = NT @ (NT.T @ d[used])
         own[X] = float(np.linalg.norm(v))
         dirs.append(("published", X, v / own[X]))
@@ -633,10 +778,18 @@ def build_points(out, B):
         if ch[top[0]] == 0:
             raise GuardFailure(f"point {p}: no generating-set row sees the written change")
         ref_change = A @ (th - t0)[used]
+        # the null arm's leak must be the rounding residual's alone: A.(theta_r - theta0) =
+        # A.r + A.delta with |A.delta| <= TOL kcal/mol per kcal/mol of ||delta|| (the
+        # registered C2 bar, scaled), on all 11,955 references; asserted, not only reported
+        null_check = float(np.abs(A @ (dl[used] / 100.0)).max())
+        if kind != "contrast" and null_check > TOL * s:
+            raise GuardFailure(f"point {p}: {kind} {name} is not null on the references "
+                               f"(max |A delta| = {null_check:.3g} kcal/mol at ||delta|| = {s})")
         meta.append({"p": p, "kind": kind, "name": name, "norm_kcal": s,
                      "contrast_max_overlap_with_null_basis": (
                          contrast_overlap[int(name)] if kind == "contrast" else None),
-                     "max_abs_null_check_kcal": float(np.abs(A @ (dl[used] / 100.0)).max()),
+                     "max_abs_null_check_kcal": null_check,
+                     "null_check_bar_kcal": TOL * s if kind != "contrast" else None,
                      "written_rel_error": float(np.linalg.norm(th - t0 - dl) / np.linalg.norm(dl)),
                      "n_entries_changed": int((th != t0).sum()),
                      "reference_change_dcal_max_abs": int(np.abs(ref_change).max()),
@@ -927,12 +1080,16 @@ def _boot_mean(x, rng, n=1000):
     return [float(np.percentile(b, 2.5)), float(np.percentile(b, 97.5))]
 
 
-def fold_analyse():
+def fold_analyse(src=None, n_workers=N_WORKERS, record=True):
     out = read_out()
-    assert out["status"] == "fold complete (workers)", out["status"]
+    if record:
+        assert out["status"] == "fold complete (workers)", out["status"]
+    if json.loads(json.dumps(PRED, default=str)) != out["predictions"]:
+        raise SystemExit("the artifact's predictions differ from PRED; nothing is analysed")
+    src = FOLD / "full" if src is None else src
     meta = json.loads((FOLD / "points.json").read_text())
-    shards = [[json.loads(ln) for ln in (FOLD / "full" / f"shard{w}.jsonl").read_text()
-               .splitlines()] for w in range(N_WORKERS)]
+    shards = [[json.loads(ln) for ln in (src / f"shard{w}.jsonl").read_text()
+               .splitlines()] for w in range(n_workers)]
     base = [b for s in shards for b in s[0]["baseline"]]
     L = np.array([b["len"] for b in base])
     terc = np.digitize(L, np.percentile(L, [100 / 3, 200 / 3]))
@@ -1011,11 +1168,69 @@ def fold_analyse():
                 - arm["contrast"][m]["mean_over_directions"]
                 for m in ("genuine_fraction", "f1_base_mean", "dbpp_mean")}})
     res["comparison_null_vs_contrast"] = comp
+    # amendment 1: null minus contrast, genuine changed-MFE fraction, bootstrapped over
+    # sequences (shared by both arms) and directions (within each arm)
+    rng_b = np.random.default_rng(np.random.SeedSequence([SEED, 5]))
+    a1 = []
+    for s in grid:
+        Gn = np.stack([per[m["p"]][2] for m in meta if m["kind"] == "null"
+                       and m["norm_kcal"] == s]).astype(float)
+        Gc = np.stack([per[m["p"]][2] for m in meta if m["kind"] == "contrast"
+                       and m["norm_kcal"] == s]).astype(float)
+        nseq = Gn.shape[1]
+        diffs = np.empty(BOOT_DRAWS)
+        for b in range(BOOT_DRAWS):
+            si = rng_b.integers(0, nseq, nseq)
+            dn = rng_b.integers(0, len(Gn), len(Gn))
+            dc = rng_b.integers(0, len(Gc), len(Gc))
+            diffs[b] = Gn[dn][:, si].mean() - Gc[dc][:, si].mean()
+        ci = [float(np.percentile(diffs, 2.5)), float(np.percentile(diffs, 97.5))]
+        chg = int(sum(per[m["p"]][1].sum() for m in meta if m["kind"] in ("null", "contrast")
+                      and m["norm_kcal"] == s))
+        a1.append({"norm_kcal": s, "difference": float(Gn.mean() - Gc.mean()), "ci95": ci,
+                   "changed_in_either_arm": chg,
+                   "eligible": floor is not None and s >= floor and chg > 0,
+                   "side": "below" if ci[1] < 0 else "above" if ci[0] > 0 else "contains_0"})
+    el = [x["side"] for x in a1 if x["eligible"]]
+    overall = ("no eligible scale" if not el else "less" if all(x == "below" for x in el)
+               else "more" if all(x == "above" for x in el)
+               else "comparable" if all(x == "contains_0" for x in el) else "mixed")
+    res["amendment_1_null_vs_contrast"] = {
+        "rule": PRED[AMEND_ID]["amendment_1_less_reading_user"], "by_scale": a1,
+        "overall": overall,
+        "reading": (PRED[AMEND_ID]["amendment_1_less_reading_user"]["reading_if_it_fires_user"]
+                    + "; the user's 'comparable' expectation is wrong") if overall == "less"
+        else f"overall: {overall}; see by_scale"}
+    if not record:
+        return res
     out["experiment_2"] = res | {"provenance": git_provenance(R)}
     out["status"] = "fold analysed"
     write(out)
     print(json.dumps({"floor": res["floor"]["floor_kcal"], "claim": claim,
                       "gap": res["gap_kcal"]}, indent=1))
+    return 0
+
+
+def fold_mini():
+    """Every point on 12 sequences with 2 workers, then the analysis as a dry run (nothing
+    recorded): exercises build_points' assertions, every point's guards, and fold_analyse."""
+    out = read_out()
+    assert out["status"] == "projection complete", out["status"]
+    meta = build_points(out, load_basis("tr0ts0"))
+    mini = FOLD / "mini"
+    mini.mkdir(parents=True, exist_ok=True)
+    dsts = [mini / f"shard{w}.jsonl" for w in range(2)]
+    rc = [p.wait() for p in _launch_workers(2, dsts, ["--limit", "12"])]
+    if rc != [0, 0]:
+        raise SystemExit(f"mini run workers exited {rc}")
+    res = fold_analyse(src=mini, n_workers=2, record=False)
+    print(json.dumps({"n_points": len(meta), "workers_exit": rc,
+                      "floor": res["floor"]["floor_kcal"],
+                      "amendment_1": res["amendment_1_null_vs_contrast"]["overall"],
+                      "claim": res["claim"], "n_points_analysed": len(res["points"]),
+                      "null_check_max_over_null_points": max(
+                          m["max_abs_null_check_kcal"] / m["norm_kcal"] for m in meta
+                          if m["kind"] != "contrast")}, indent=1))
     return 0
 
 
@@ -1029,8 +1244,9 @@ def fold_worker_cli(argv):
                   stale_boltzmann="--stale-boltzmann" in rest)
 
 
-PHASES = {"preregister": preregister, "bases": bases, "project": project,
-          "fold-smoke": fold_smoke, "fold-run": fold_run, "fold-analyse": fold_analyse}
+PHASES = {"preregister": preregister, "amend": amend, "bases": bases, "project": project,
+          "fold-smoke": fold_smoke, "fold-mini": fold_mini, "fold-run": fold_run,
+          "fold-analyse": fold_analyse}
 
 if __name__ == "__main__":
     if sys.argv[1:3] == ["--phase", "fold-worker"]:
