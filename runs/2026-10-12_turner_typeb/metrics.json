@@ -105,6 +105,62 @@
  },
  "bases_seconds": 392.8,
  "experiment_1": {
+  "corrections": [
+   {
+    "basis": "tr0ts0",
+    "date": "2026-10-12",
+    "set": "Langdon2018",
+    "superseded": {
+     "control_c_table_matched": {
+      "draws": 1000,
+      "finding": "the overlap is explained by both objects living in the internal-loop tables",
+      "max_fraction": 0.16834698066928167,
+      "q50_fraction": 0.13596444619829623,
+      "q99_fraction": 0.15446989686914242,
+      "true_exceeds_q99": false,
+      "true_percentile_rank": 3.2
+     },
+     "post_hoc_intrinsic": {
+      "control_a_mean_fraction_approx": 0.012595317553449366,
+      "control_a_q99_fraction": 0.027026330678716293,
+      "control_c_percentile_rank": 100.0,
+      "control_c_q99_fraction": 0.06044079958749363,
+      "exceeds_control_a_q99": true,
+      "exceeds_control_c_q99": true,
+      "fraction": 0.08677841794401842,
+      "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; not registered, same two controls as the nontrivial fraction"
+     }
+    },
+    "what": "control (c) and the post-hoc intrinsic control (c) rotated delta into used columns off the shared support, where delta is undefined; now restricted to the support. The projection, its fraction, controls (a) and (b) and P_nt delta were valid and are unchanged."
+   },
+   {
+    "basis": "rfam",
+    "date": "2026-10-12",
+    "set": "Langdon2018",
+    "superseded": {
+     "control_c_table_matched": {
+      "draws": 1000,
+      "finding": "the overlap is explained by both objects living in the internal-loop tables",
+      "max_fraction": 0.10949337312074003,
+      "q50_fraction": 0.0960507352429561,
+      "q99_fraction": 0.1068223941547568,
+      "true_exceeds_q99": false,
+      "true_percentile_rank": 72.2
+     },
+     "post_hoc_intrinsic": {
+      "control_a_mean_fraction_approx": 0.012595317553449366,
+      "control_a_q99_fraction": 0.027026330678716293,
+      "control_c_percentile_rank": 100.0,
+      "control_c_q99_fraction": 0.059106107478073995,
+      "exceeds_control_a_q99": true,
+      "exceeds_control_c_q99": true,
+      "fraction": 0.08677841794401842,
+      "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; not registered, same two controls as the nontrivial fraction"
+     }
+    },
+    "what": "control (c) and the post-hoc intrinsic control (c) rotated delta into used columns off the shared support, where delta is undefined; now restricted to the support. The projection, its fraction, controls (a) and (b) and P_nt delta were valid and are unchanged."
+   }
+  ],
   "per_set": {
    "Andronescu2007": {
     "rfam": {
@@ -312,11 +368,11 @@
      "control_c_table_matched": {
       "draws": 1000,
       "finding": "the overlap is explained by both objects living in the internal-loop tables",
-      "max_fraction": 0.10949337312074003,
-      "q50_fraction": 0.0960507352429561,
-      "q99_fraction": 0.1068223941547568,
+      "max_fraction": 0.11199783069018639,
+      "q50_fraction": 0.09635227398092455,
+      "q99_fraction": 0.10715602440367061,
       "true_exceeds_q99": false,
-      "true_percentile_rank": 72.2
+      "true_percentile_rank": 69.5
      },
      "delta_by_table_squared_share": {
       "ML_ci": 0.0,
@@ -372,7 +428,7 @@
       "control_a_mean_fraction_approx": 0.012595317553449366,
       "control_a_q99_fraction": 0.027026330678716293,
       "control_c_percentile_rank": 100.0,
-      "control_c_q99_fraction": 0.059106107478073995,
+      "control_c_q99_fraction": 0.05905142655487193,
       "exceeds_control_a_q99": true,
       "exceeds_control_c_q99": true,
       "fraction": 0.08677841794401842,
@@ -402,11 +458,11 @@
      "control_c_table_matched": {
       "draws": 1000,
       "finding": "the overlap is explained by both objects living in the internal-loop tables",
-      "max_fraction": 0.16834698066928167,
-      "q50_fraction": 0.13596444619829623,
-      "q99_fraction": 0.15446989686914242,
+      "max_fraction": 0.1661486309511253,
+      "q50_fraction": 0.1357234601783679,
+      "q99_fraction": 0.15564662717032854,
       "true_exceeds_q99": false,
-      "true_percentile_rank": 3.2
+      "true_percentile_rank": 3.8
      },
      "delta_by_table_squared_share": {
       "ML_ci": 0.0,
@@ -462,7 +518,7 @@
       "control_a_mean_fraction_approx": 0.012595317553449366,
       "control_a_q99_fraction": 0.027026330678716293,
       "control_c_percentile_rank": 100.0,
-      "control_c_q99_fraction": 0.06044079958749363,
+      "control_c_q99_fraction": 0.05748129131135479,
       "exceeds_control_a_q99": true,
       "exceeds_control_c_q99": true,
       "fraction": 0.08677841794401842,
@@ -1990,14 +2046,14 @@
      "control_a_failed_as_required": false,
      "control_a_mean": 0.1302869778493944,
      "control_a_q99": 0.14485425863437631,
-     "control_c_percentile_rank": 72.2,
+     "control_c_percentile_rank": 69.5,
      "nontrivial_fraction": 0.0985521104690124
     },
     "Langdon2018/tr0ts0": {
      "control_a_failed_as_required": false,
      "control_a_mean": 0.18382260788593152,
      "control_a_q99": 0.19824403286892345,
-     "control_c_percentile_rank": 3.2,
+     "control_c_percentile_rank": 3.8,
      "nontrivial_fraction": 0.12372409352929176
     },
     "Turner1999/rfam": {
@@ -2170,7 +2226,7 @@
   "git_dirty": true,
   "git_dirty_excluding_runs": false,
   "git_dirty_paths_outside_runs": [],
-  "git_sha": "62df3de42bc86ef50a8ed545d0d013f59645a31e"
+  "git_sha": "02f97e4dcd498507d890a6a8eb59156c03fee31b"
  },
  "run_id": "2026-10-12_turner_typeb",
  "status": "projection complete",
