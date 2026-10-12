@@ -1234,6 +1234,89 @@ def fold_mini():
     return 0
 
 
+CORRECTION_ID = "experiment_1_verdict_reading_2026_10_12"
+
+
+def record_outcomes():
+    """After the fold: (1) correct experiment_1.verdict.reading, whose parenthesis 'squared
+    fractions track dim/n for every component' is false (Turner 1999's coverage fraction lies
+    above a random subspace's 99th percentile; Langdon 2018's components lie far below), as a
+    dated corrections entry keeping the old text verbatim, with the evidence computed here
+    from the exact Beta law; (2) record the registered priors' outcomes. Both outside PRED,
+    so fold-analyse's PRED re-check is untouched."""
+    out = read_out()
+    assert out["status"] == "fold analysed", out["status"]
+    e1, e2 = out["experiment_1"], out["experiment_2"]
+    if any(c.get("id") == CORRECTION_ID for c in e1["corrections"]):
+        raise SystemExit(f"{CORRECTION_ID} already recorded")
+    ev = {}
+    for X, per in e1["per_set"].items():
+        ev[X] = {}
+        for name, r in per.items():
+            B = load_basis(name)
+            n = len(B["cols"])
+            dims = {"coverage": len(B["unused"]), "intrinsic": B["I"].shape[1],
+                    "nontrivial": B["NT"].shape[1]}
+            ev[X][name] = {}
+            for comp, k in dims.items():
+                f = r["fraction"][comp]
+                ev[X][name][comp] = {
+                    "fraction": f, "squared": f * f, "random_mean_squared": k / n,
+                    "random_q99_fraction": float(np.sqrt(stats.beta.ppf(0.99, k / 2,
+                                                                       (n - k) / 2))),
+                    "random_cdf": float(stats.beta.cdf(f * f, k / 2, (n - k) / 2))}
+    old = e1["verdict"]["reading"]
+    new = ("REGISTERED CONTROL (a) DID NOT FAIL in any set or basis: no nontrivial fraction "
+           "exceeds the 99th percentile of a uniformly random subspace of the same dimension "
+           "(Turner 1999 and Andronescu 2007 lie near its mean; Langdon 2018, compared on its "
+           "11,341 shared columns, lies below it; not interpreted). By the registered rule "
+           "the published tables are not enriched in the nontrivial directions, and the "
+           "fraction is not a finding about them. Control (c), stated as a finding: ranks "
+           "3.2 to 69.5 across sets and bases; on TR0+TS0 they are low and stay low with "
+           "per-table means removed (runs/2026-10-12_turner_typeb_c_check); not interpreted. "
+           "The other components have no registered control and carry no claim; their "
+           "position against a random subspace is in corrections[" + CORRECTION_ID
+           + "].evidence (Turner 1999's coverage fraction lies above its 99th percentile). "
+           "Per the user's registered ruling, Type B's claim rests on Experiment 2.")
+    e1["corrections"].append({
+        "id": CORRECTION_ID, "date": "2026-10-12", "after": "the full fold and its analysis",
+        "what": "experiment_1.verdict.reading said 'squared fractions track dim/n for every "
+                "component'. False: by the exact Beta law, Turner 1999's coverage fraction is "
+                "above a random subspace's 99th percentile and Langdon 2018's components are "
+                "far below. The registered verdict (control (a) did not fail) is unchanged; "
+                "only the reading's text is corrected.",
+        "superseded_text": old, "replacement_text": new, "evidence": ev})
+    e1["verdict"]["reading"] = new
+    e1["verdict"]["reading_corrected"] = CORRECTION_ID
+    reg = out["predictions"]
+    pts = {r["name"]: r for r in e2["points"] if r["kind"] == "published_own"}
+    a1 = e2["amendment_1_null_vs_contrast"]
+    share0 = e2["floor"]["by_scale"][0]["rounding_share"]
+    e2["priors_outcome"] = {
+        "recorded": "2026-10-12, after fold-analyse; outside PRED",
+        "floor_prior_claude": {
+            "registered": reg["experiment_2_fold"]["prior_claude"],
+            "outcome": f"FAILED: the floor is {e2['floor']['floor_kcal']} kcal/mol, the grid's "
+                       f"lowest point (rounding share {share0} there), so it lies at or below "
+                       f"0.125, not in 0.5-2"},
+        "andronescu_genuine_prior_claude": {
+            "outcome": f"HELD: genuine changed-MFE fraction "
+                       f"{pts['Andronescu2007']['genuine_fraction']:.4f}, CI "
+                       f"{[round(x, 4) for x in pts['Andronescu2007']['genuine_fraction_ci']]}"},
+        "comparable_expectation_user": {
+            "registered": reg["experiment_2_fold"]["comparison_of_interest_user"],
+            "outcome": f"FAILED: registered overall verdict '{a1['overall']}'; the CI is below 0 "
+                       f"at every scale from 0.25 up and contains 0 at 0.125",
+            "by_scale_sides": {str(x["norm_kcal"]): x["side"] for x in a1["by_scale"]}},
+        "experiment_1_priors": "recorded before the fold in "
+                               "predictions.amendments_2026_10_12.experiment_1_outcome"}
+    write(out)
+    print(json.dumps({"correction": CORRECTION_ID, "priors_outcome": {
+        k: v["outcome"] for k, v in e2["priors_outcome"].items() if isinstance(v, dict)}},
+        indent=1))
+    return 0
+
+
 def fold_worker_cli(argv):
     w, W, dst = int(argv[0]), int(argv[1]), argv[2]
     rest = argv[3:]
@@ -1246,7 +1329,7 @@ def fold_worker_cli(argv):
 
 PHASES = {"preregister": preregister, "amend": amend, "bases": bases, "project": project,
           "fold-smoke": fold_smoke, "fold-mini": fold_mini, "fold-run": fold_run,
-          "fold-analyse": fold_analyse}
+          "fold-analyse": fold_analyse, "record-outcomes": record_outcomes}
 
 if __name__ == "__main__":
     if sys.argv[1:3] == ["--phase", "fold-worker"]:
