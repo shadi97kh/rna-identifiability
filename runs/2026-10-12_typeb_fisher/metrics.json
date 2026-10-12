@@ -1,0 +1,29 @@
+{
+ "git_dirty": true,
+ "git_dirty_excluding_runs": true,
+ "git_dirty_paths_outside_runs": [
+  "paper/recomb2027/figs/learned_gauge.pdf",
+  "paper/recomb2027/figs/learned_gauge.png",
+  "paper/recomb2027/figs/overview_nullspace.pdf",
+  "paper/recomb2027/figs/overview_nullspace.png",
+  "scripts/fig_learned_gauge.py",
+  "scripts/fig_overview_nullspace.py"
+ ],
+ "git_sha": "fcfbc236a58ccfb9becb8302031dae7ad3ef9621",
+ "predictions": {
+  "directions": "intrinsic N1, N2 (analytic, normalised); the fold's 8 null, 3 published, 8 contrast unit directions (delta/||delta|| at 1.0 kcal/mol, re-checked on read: |M v| <= 1e-9 for null/published, contrast orthogonal to the null bases and inside int22/int21/int11/bulge); exploratory: 8 random unit directions on the coverage columns, SeedSequence([20261012, 10, j])",
+  "estimate": "all 11,970 TR0+TS0 sequences, K = 2000 pbacktrack samples each (md.uniq_ML = 1), 8 workers; per-sequence sample variances (ddof 1); intervals by bootstrap over sequences, 2000 draws",
+  "exploratory_user": "Spearman correlation between I(v) and the fold's genuine changed-MFE fraction at matched norm (1 and 16 kcal/mol), across all 19 fold directions AND within the null group (8 random + 3 published = 11); the across-19 value mostly measures the gap between the groups",
+  "must_hold": "c(s).N1 = c(s).N2 = 0 exactly (integers) for every sampled structure; exact reconstruction c(s).theta_0 + o(s) = eval_structure on a subsample (the first sample of every 4th sequence per shard)",
+  "question_user": "how much information does likelihood training on TR0+TS0 carry about each direction class?",
+  "registered": "2026-10-12, before any sampling",
+  "registered_test_user": "the contrast/null ratio of mean I (8 contrast vs 8 random null directions) exceeds 1: bootstrap 95% CI lower bound > 1. No magnitude predicted. THE ONLY REGISTERED TEST.",
+  "report_user": "every I(v) also as the Cramer-Rao standard error 1/sqrt(I(v)) in kcal/mol",
+  "reported_check_not_a_prediction_user": "I(v) > 0 for every random null direction (bootstrap lower bound). It cannot fail: a sum of variances is positive for any direction some competing structure uses. Reported beside the exact zero for N1 and N2, because 'Type A exactly 0, Type B above 0' is the taxonomy's central point.",
+  "scope_user": "E1 measures likelihood training only. Margin training, which is MXfold2's loss, sees competing structures only through the highest-scoring one, and E1 does not measure it.",
+  "spectrum_user": "eigenvalues of N_nt^T F N_nt (426 x 426); split-half noise floor = largest |eigenvalue| of (F_A - F_B)/2, halves = first and second K/2 samples; report how many eigenvalues fall below 1% of the median contrast information, and how many below the noise floor",
+  "theory_user": "for P(s|x) proportional to exp(-c(s).theta/kT), the Hessian of -log P(ref|x) is Cov_P[c(s)]/(kT)^2, independent of the reference; I(v) = sum over sequences of Var_{s~P(.|x)}[c(s).v]/(kT)^2 at Turner 2004, d0, special_hp 0, 37 C"
+ },
+ "run_id": "2026-10-12_typeb_fisher",
+ "status": "PRE-REGISTERED, nothing sampled"
+}
