@@ -497,6 +497,37 @@
  "git_dirty_excluding_runs": false,
  "git_dirty_paths_outside_runs": [],
  "git_sha": "1b9cf9e8824b77353b92b0854894b28403cc44cb",
+ "lambda_required_for_width": {
+  "arm_a_epoch1_b100": {
+   "lambda": 0.1845620016079756,
+   "lambda_exact": 0.18457903631829975,
+   "sigma_LR": 0.019212600115964294,
+   "times_conventional": 18.456200160797557
+  },
+  "arm_a_epoch1_b1000": {
+   "lambda": 0.13148000618489653,
+   "lambda_exact": 0.13148865081757943,
+   "sigma_LR": 0.016216041821905648,
+   "times_conventional": 13.148000618489652
+  },
+  "arm_c_ten_epochs_b100": {
+   "lambda": 0.28699644592969686,
+   "lambda_exact": 0.28703764123350073,
+   "sigma_LR": 0.023958148756934323,
+   "times_conventional": 28.699644592969687
+  },
+  "arm_c_ten_epochs_b1000": {
+   "lambda": 0.2570827136999156,
+   "lambda_exact": 0.25711576795894864,
+   "sigma_LR": 0.022675216148910934,
+   "times_conventional": 25.708271369991557
+  },
+  "assumption_untested": "sigma_LR measured at lambda = 0.01 holds at the larger lambda; decoupled decay shrinks every parameter, identifiable or not, by (1 - eta lambda) per step",
+  "eta": 0.001,
+  "formula": "lambda = sigma_LR^2 / (2 eta width^2); exact AR(1): eta lambda = 1 - sqrt(1 - sigma_LR^2 / width^2)",
+  "lambda_conventional": 0.01,
+  "width": 1.0
+ },
  "launch_gate_arm c": {
   "checked": "2026-10-11 20:37:07",
   "device": 1,
