@@ -1,4 +1,114 @@
 {
+ "analysis_ab": {
+  "NC2": {
+   "abs_diff": 0.0,
+   "ours": -1.0697683258656254,
+   "passes": true,
+   "registered": -1.0697683258656254
+  },
+  "arm_a": {
+   "AR1": {
+    "long_run": {
+     "100": {
+      "batch": 100,
+      "n_batches": 108,
+      "sigma_LR": 0.019212600115964294
+     },
+     "1000": {
+      "batch": 1000,
+      "n_batches": 10,
+      "sigma_LR": 0.016216041821905648
+     }
+    },
+    "mu": 0.0001910507784389066,
+    "n_steps": 10814,
+    "sigma": 0.005602918095860461,
+    "sigma_LR_ratio_1000_over_100": 0.844031610715266,
+    "stationary_mean": 19.10507784389066,
+    "stationary_sd_long_run_b100": 4.29606798838165,
+    "stationary_sd_long_run_b1000": 3.6260171839760567,
+    "stationary_sd_naive": 1.2528505734707673,
+    "width_is": "ESTIMATE"
+   },
+   "N_update_steps": 10814,
+   "between_steps_max_abs_change": 0.0,
+   "both_present_and_separable": true,
+   "endpoints_match_epoch_record": true,
+   "finite_loss_and_vw": true,
+   "ratio_precond_over_decay": 33.411564424012354,
+   "sum_delta_decay": 0.061835569619527256,
+   "sum_delta_precond": 2.066023118038336,
+   "unregularised_epoch10_spread": {
+    "adamw_w0.125": {
+     "max_epoch10": 0.43693194910883904,
+     "min_epoch10": -13.488006947562099,
+     "seed06_trace": {
+      "0": -1.0680972463451326,
+      "1": -0.4145333096385002,
+      "10": -1.324279312044382,
+      "2": 0.7249652231112123,
+      "3": 0.8071827301755548,
+      "4": -0.10245436802506447,
+      "5": 0.7332575430627912,
+      "6": -0.27797723934054375,
+      "7": -0.3289206672634464,
+      "8": -1.0472336634993553,
+      "9": -1.087208254262805
+     },
+     "seed_sd_epoch10": 4.587692760477313
+    },
+    "adamw_w1.0": {
+     "max_epoch10": 8.003472935408354,
+     "min_epoch10": -6.960947385523468,
+     "seed06_trace": {
+      "0": -1.0680972463451326,
+      "1": 1.4605856398120522,
+      "10": 5.802583530312404,
+      "2": 3.997937702573836,
+      "3": 5.3220066502690315,
+      "4": 4.7035264587029815,
+      "5": 5.429579671472311,
+      "6": 5.5382079519331455,
+      "7": 5.809217888861895,
+      "8": 4.368207381223328,
+      "9": 5.9077803692780435
+     },
+     "seed_sd_epoch10": 4.965019268995494
+    }
+   },
+   "v_w_epoch0": -1.0680972463451326,
+   "v_w_epoch1": 1.0597614413127303,
+   "v_w_epoch1_minus_wd0": -0.40082419849932194,
+   "void": false,
+   "wd0_adamw_seed06_epoch1": 1.4605856398120522
+  },
+  "arm_b": {
+   "A1_passes": true,
+   "A1_recurrence": -0.9588160238051935,
+   "A1_residual": -7.201655753075187e-06,
+   "NC1_fails_as_required": true,
+   "NC1_miss": 0.1094754534256639,
+   "NC1_no_decay_recurrence": -1.0682986788866105,
+   "N_update_steps": 10814,
+   "breaker_term": -0.0001971942463833143,
+   "finite_loss_and_vw": true,
+   "n_logged_post": 10814,
+   "n_logged_pre": 10814,
+   "note": "momentum 0 here; the registered SGD arm used Nesterov 0.9",
+   "per_step_identity_max_abs_residual": 8.393024564234963e-08,
+   "pure_closed_form": -0.9586188295588102,
+   "pure_closed_form_miss": -0.00020439590213638947,
+   "pure_factor": 0.8975014520813147,
+   "v_w_epoch0": -1.0680972463451326,
+   "v_w_epoch1": -0.9588232254609466,
+   "void": false
+  },
+  "rate": {
+   "per_epoch_contraction_N10814": 0.8975014520813147,
+   "time_constant_epochs_at_10814": 9.24727205474385,
+   "time_constant_steps": 99999.99999999999
+  }
+ },
  "arms": {
   "adamw_wd0.01": {
    "epochs": 1,
@@ -23,6 +133,15 @@
  "git_dirty_excluding_runs": false,
  "git_dirty_paths_outside_runs": [],
  "git_sha": "1b9cf9e8824b77353b92b0854894b28403cc44cb",
+ "launch_gate_arms a,b": {
+  "checked": "2026-10-11 20:12:09",
+  "device": 1,
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "09a32a469a4062b8f4f3a6e759fa285949840d61",
+  "make_gpu_tail": "./gpucheck.sh\nindex, name, memory.used [MiB], memory.total [MiB], utilization.gpu [%]\n0, NVIDIA TITAN RTX, 58 MiB, 24576 MiB, 0 %\n1, NVIDIA TITAN RTX, 7 MiB, 24576 MiB, 0 %\npid, process_name, used_gpu_memory [MiB]\ngpu 0 free MiB: 23957\ngpu 1 free MiB: 24016\nfree MiB: 24016 (gpu 1)\nOK to launch: CUDA_VISIBLE_DEVICES=1\n"
+ },
  "lr": 0.001,
  "predictions": {
   "A1": {
@@ -54,8 +173,91 @@
   "void_rule": "a NaN loss or a non-finite v.w in an arm voids that arm; no rerun without asking"
  },
  "run_id": "2026-10-11_mxfold2_weight_decay_ablation",
+ "runs": {
+  "adamw_wd0.01": {
+   "cmd": [
+    "/home/shadi/sirna-thermo/.venv-mxfold2/bin/python",
+    "/home/shadi/sirna-thermo/scripts/mxfold2_wd_ablation_train.py",
+    "train",
+    "@/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/arch.conf",
+    "--param",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/adamw_wd0.01/param.pth",
+    "--save-config",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/adamw_wd0.01/model.conf",
+    "--log-dir",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/adamw_wd0.01/checkpoints",
+    "--epochs",
+    "1",
+    "--gpu",
+    "0",
+    "--seed",
+    "20261006",
+    "--loss-func",
+    "hinge_mix",
+    "--score-loss-weight",
+    "1.0",
+    "--optimizer",
+    "AdamW",
+    "--l2-weight",
+    "0.01",
+    "--disable-progress-bar",
+    "data/TR0-canonicals.lst"
+   ],
+   "ended": "2026-10-11 20:35:31",
+   "env": {
+    "CUDA_VISIBLE_DEVICES": "1",
+    "MXF_GAUGE_LAMBDA": "0",
+    "MXF_GAUGE_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/adamw_wd0.01/gauge",
+    "MXF_TIMING_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/adamw_wd0.01/timing.json",
+    "MXF_VW_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/adamw_wd0.01/gauge"
+   },
+   "exit_code": 0,
+   "started": "2026-10-11 20:12:09"
+  },
+  "sgd_m0_wd0.01": {
+   "cmd": [
+    "/home/shadi/sirna-thermo/.venv-mxfold2/bin/python",
+    "/home/shadi/sirna-thermo/scripts/mxfold2_wd_ablation_train.py",
+    "train",
+    "@/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/arch.conf",
+    "--param",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/sgd_m0_wd0.01/param.pth",
+    "--save-config",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/sgd_m0_wd0.01/model.conf",
+    "--log-dir",
+    "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/sgd_m0_wd0.01/checkpoints",
+    "--epochs",
+    "1",
+    "--gpu",
+    "0",
+    "--seed",
+    "20261006",
+    "--loss-func",
+    "hinge_mix",
+    "--score-loss-weight",
+    "1.0",
+    "--optimizer",
+    "SGD",
+    "--l2-weight",
+    "0.01",
+    "--disable-progress-bar",
+    "data/TR0-canonicals.lst"
+   ],
+   "ended": "2026-10-11 20:35:31",
+   "env": {
+    "CUDA_VISIBLE_DEVICES": "1",
+    "MXF_GAUGE_LAMBDA": "0",
+    "MXF_GAUGE_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/sgd_m0_wd0.01/gauge",
+    "MXF_TIMING_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/sgd_m0_wd0.01/timing.json",
+    "MXF_VW_OUT": "/home/shadi/sirna-thermo/runs/2026-10-11_mxfold2_weight_decay_ablation/seeds/sgd_m0_wd0.01/gauge",
+    "MXF_WD_OPT": "sgd_m0"
+   },
+   "exit_code": 0,
+   "started": "2026-10-11 20:12:09"
+  }
+ },
  "seed": 20261006,
- "status": "PRE-REGISTERED, not yet run",
+ "status": "arms a,b analysed",
  "weight_decay": 0.01,
  "written_at": "2026-10-11 20:11:39"
 }
