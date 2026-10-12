@@ -37,7 +37,7 @@ tetraloops, triloops and hexaloops. On a UUCG tetraloop that is worth
 0.89 kcal/mol. A first-pass DP will not have those tables, so the reference is
 pinned to 0. Flip it to 1 here, not at the call site, once the DP grows them.
 
-Three process-global hazards this module actively defends against:
+Four process-global hazards this module actively defends against:
 
 1. `RNA.pf_fold(seq)` ignores any `md` you construct -- it reads the global
    `RNA.cvar` settings instead. It can only ever produce the default dangles=2
@@ -55,6 +55,16 @@ Three process-global hazards this module actively defends against:
    fingerprints `fold_compound.params`, which is a faithful witness of what that
    specific compound computed with, and refuses to return a number if it is not
    Turner 2004.
+
+4. The Boltzmann factors the partition function uses are a SEPARATE table with its
+   own last-model cache (measured on 2.7.2, runs/2026-10-12_turner_par_writer V3):
+   a fold compound built with the same model details as an earlier one reuses that
+   one's Boltzmann table even after a parameter load, while its energy table may be
+   rebuilt. Fingerprinting `fold_compound.params` cannot see this: the energy table
+   is right and pf() is not. So `ensemble_free_energy` also checks the Boltzmann
+   table (`assert_turner2004_boltzmann`): two factors inverted back to energies, and
+   a partition function constrained to one fixed probe structure, whose free energy
+   must equal that structure's Turner 2004 energy exactly.
 """
 
 from __future__ import annotations
@@ -69,6 +79,7 @@ __all__ = [
     "reference_md",
     "assert_model_fields_classified",
     "assert_turner2004_params",
+    "assert_turner2004_boltzmann",
     "ensemble_free_energy",
 ]
 
@@ -140,6 +151,17 @@ _TURNER_2004_FINGERPRINT: dict[str, int] = {
     "MLbase": 0,
     "MLintern[1]": -90,
 }
+
+
+# A fixed structure for the Boltzmann check: stacks, two hairpins, a bulge, 1x1, 2x2
+# and 2x3 interior loops, a multiloop and the exterior loop. Under Turner 2004 its
+# energy is -18.90 kcal/mol (-1890 dacal/mol); Andronescu 2007, Turner 1999 and
+# Langdon 2018 give -108, -310 and +40 dacal/mol different (measured 2026-10-12).
+_BOLTZMANN_PROBE = (
+    "GGGACAACGAGCUAGCGACACGAAAGUGGCGCAGCAACAGAAUCCUUCGGGAGACUGACGAAAGUCCC",
+    "(((((..((.(((.(((.(((....))).))))))..(((..(((....)))..))).))...)))))",
+)
+_BOLTZMANN_PROBE_DACAL = -1890
 
 
 class ModelNotPinned(RuntimeError):
@@ -252,6 +274,47 @@ def assert_turner2004_params(fold_compound) -> None:
         )
 
 
+def assert_turner2004_boltzmann(fold_compound) -> None:
+    """Fail if the Boltzmann factors behind pf() are not Turner 2004 at the pinned model.
+
+    Call after pf(). Two checks. (1) TerminalAU and MLclosing, recovered from the
+    compound's own Boltzmann factors as -kT ln(x), must equal the fingerprint.
+    (2) A partition function constrained to the one probe structure, on a compound
+    built with the same model details (so it reads the same cached Boltzmann
+    table), must return exactly the probe's Turner 2004 energy.
+    """
+    import math
+
+    ep = fold_compound.exp_params
+    got = {"TerminalAU": -math.log(ep.expTermAU) * ep.kT / 10,
+           "MLclosing": -math.log(ep.expMLclosing) * ep.kT / 10}
+    off = {t: (_TURNER_2004_FINGERPRINT[t], round(v, 6)) for t, v in got.items()
+           if abs(v - _TURNER_2004_FINGERPRINT[t]) > 1e-6}
+    if off:
+        detail = ", ".join(f"{t}: expected {w}, got {g}" for t, (w, g) in off.items())
+        raise ModelNotPinned(
+            f"the partition function's Boltzmann factors are not Turner 2004 -- {detail}. "
+            f"ViennaRNA caches them separately from the energy table, so the energy "
+            f"fingerprint passed while pf() used another table."
+        )
+
+    sequence, structure = _BOLTZMANN_PROBE
+    probe = RNA.fold_compound(sequence, reference_md())
+    assert_turner2004_params(probe)
+    probe.hc_add_from_db(structure.replace(".", "x"),
+                         RNA.CONSTRAINT_DB_DEFAULT | RNA.CONSTRAINT_DB_ENFORCE_BP)
+    energy = round(probe.eval_structure(structure) * 100)
+    probe.exp_params_rescale(energy / 100)
+    _ensemble, free_energy = probe.pf()
+    if energy != _BOLTZMANN_PROBE_DACAL or round(free_energy * 100) != energy:
+        raise ModelNotPinned(
+            f"the Boltzmann probe gives {free_energy:.2f} kcal/mol constrained to its one "
+            f"structure, whose Turner 2004 energy is {_BOLTZMANN_PROBE_DACAL / 100:.2f} "
+            f"(evaluated {energy / 100:.2f}): pf() is not using Turner 2004's Boltzmann "
+            f"factors."
+        )
+
+
 def ensemble_free_energy(sequence: str) -> float:
     """Reference ensemble free energy G = -RT ln Z in kcal/mol, in the pinned model.
 
@@ -269,4 +332,5 @@ def ensemble_free_energy(sequence: str) -> float:
     fc = RNA.fold_compound(sequence, reference_md())
     assert_turner2004_params(fc)
     _structure, free_energy = fc.pf()
+    assert_turner2004_boltzmann(fc)
     return free_energy
