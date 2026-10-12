@@ -43,6 +43,14 @@ after every load and after the restore, and every measurement checks the table i
 compound actually carries against the theta it is meant to carry (params_match). The
 rebuild is the remedy; the per-configuration check is the guard.
 
+The Boltzmann-factor table used by the partition function has a SECOND, separate last-model
+cache (recorded by --check as V3, found 2026-10-12 by the Type B smoke test: two changed
+MFEs with an exactly unchanged base-pair-probability matrix). A compound that only computes
+an MFE refreshes the energy table but not the Boltzmann factors, so _rebuild also runs a
+partition function on the sentinel compound. params_match reads only the energy table; a
+caller that uses pf() must check the Boltzmann factors separately (Type B constrains a pf to
+one structure and compares its free energy with counts . theta).
+
 A NONLINEARITY OF THE MODEL: d2 CLIPS FOUR TABLES AT ZERO
 
 With dangles = 2, ViennaRNA's scaled table holds min(x, 0) for every entry of
@@ -83,6 +91,9 @@ CHECKS (--check; writes runs/<RUN_ID>/metrics.json)
   V2  the clip, measured: the labelled theta with the four d2 tables POSITIVE; in both d2
       configurations eval_structure equals counts . clip(theta) on every row, and differs
       from counts . theta on the rows that use those tables.
+  V3  the Boltzmann-factor cache, measured: after a load and an MFE-only sentinel, a
+      model-A partition function still returns the Turner 2004 free energy while its MFE is
+      the file's; after the full _rebuild both are the file's. Recorded as found.
 
 Run: .venv/bin/python scripts/turner_par.py --check
 """
@@ -234,11 +245,14 @@ D2_CLIPPED = ("mismatchExt", "mismatchM", "dangle5", "dangle3")
 
 
 def _rebuild():
-    """Defeat ViennaRNA's last-model table cache: a compound with a sentinel model (25 C,
-    never used for a measurement) makes the next measured compound rebuild its table."""
+    """Defeat ViennaRNA's two last-model caches (energies and Boltzmann factors): a compound
+    with a sentinel model (25 C, never used for a measurement), with an MFE and a partition
+    function computed on it, makes the next measured compound rebuild both tables."""
     md = reference_md()
     md.temperature = 25.0
-    RNA.fold_compound("GGGGAAACCCC", md)
+    fc = RNA.fold_compound("GGGGAAACCCC", md)
+    fc.mfe()
+    fc.pf()
 
 
 def params_match(fc, theta: dict, dangles: int, special_hp: int) -> dict:
@@ -330,6 +344,38 @@ def cache_probe(path: pathlib.Path) -> dict:
             "stale_on_same_model": same == before, "fresh_on_other_model": other != before}
 
 
+def pf_cache_probe(path: pathlib.Path) -> dict:
+    """V3: after a load, does a model-A partition function see the file when only an MFE
+    compound with other model details was built in between (the old _rebuild), and when the
+    sentinel also ran a partition function (the current _rebuild)?"""
+    seq = "GGGAAACCCAGCUUCGGCUGGGAAACCC"
+    a = _md(0, 0)
+    sent = reference_md()
+    sent.temperature = 25.0
+
+    def g():
+        fc = RNA.fold_compound(seq, a)
+        _, e = fc.mfe()
+        fc.exp_params_rescale(e)
+        return round(e, 2), round(fc.pf()[1], 2)
+
+    RNA.params_load_RNA_Turner2004()
+    _rebuild()
+    turner = g()
+    RNA.params_load(str(path))
+    RNA.fold_compound("GGGGAAACCCC", sent)  # MFE-only sentinel: the old _rebuild
+    old = g()
+    _rebuild()
+    new = g()
+    RNA.params_load_RNA_Turner2004()
+    _rebuild()
+    assert_turner2004_params(RNA.fold_compound("GGGGAAACCCC", reference_md()))
+    return {"sequence": seq, "turner_mfe_and_G": turner,
+            "after_load_mfe_only_rebuild": old, "after_load_full_rebuild": new,
+            "boltzmann_stale_after_mfe_only_rebuild": old[1] == turner[1] and old[0] != turner[0],
+            "fresh_after_full_rebuild": new[1] != turner[1]}
+
+
 def write(out):
     OUT.mkdir(parents=True, exist_ok=True)
     tmp = OUT / "metrics.json.tmp"
@@ -415,6 +461,7 @@ def check() -> int:
                          and v["mismatch_vs_linear_model"] == v["n_rows_using_clipped_tables"]
                          > 0 for v in v2.values())}
         out["V1_table_cache_survives_params_load"] = cache_probe(lab_path)
+        out["V3_boltzmann_cache_separate"] = pf_cache_probe(lab_path)
         write(out)
 
         # C1: a writer with two positions swapped must fail W4 on exactly the rows whose
@@ -448,6 +495,7 @@ def check() -> int:
     print(json.dumps({k: out[k] for k in ("W1_identity", "W2_round_trip",
                                           "W3_written_turner2004_reproduces_stock",
                                           "V1_table_cache_survives_params_load",
+                                          "V3_boltzmann_cache_separate",
                                           "V2_d2_clips_four_tables_at_zero",
                                           "C1_planted_swap_detected", "all_pass")}
                      | {"W4": {k: {kk: v[kk] for kk in ("n_mismatch", "n_reachable",
