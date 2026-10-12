@@ -1,0 +1,75 @@
+{
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "0e3746b2cae85409d1f8bc1caa27fa2b112d93fd",
+ "predictions": {
+  "bases": {
+   "C2": "max |A N| <= 1e-9 for the intrinsic and the nontrivial bases",
+   "basis_invariance": "every random direction is drawn as P g = N N^T g with g Gaussian on the used columns, so no number depends on the basis's rotation",
+   "registered_dimensions": {
+    "rfam": {
+     "coverage": 4796,
+     "nontrivial": 214,
+     "null_within_used": 216,
+     "source": "runs/2026-10-07_turner_nullspace_rfam_r2 configs.d0_special_hp0"
+    },
+    "tr0ts0": {
+     "coverage": 8046,
+     "nontrivial": 426,
+     "null_within_used": 428,
+     "source": "runs/2026-10-08_turner_nullspace_tr0 tr0_results.d0_special_hp0"
+    }
+   },
+   "rule": "recompute with the registered functions (Extractor with exact reconstruction against eval_structure, build_matrix over the reachable columns, qr_null on the used columns, analytic_directions removed as in turner_nullspace_rfam.analyse); the dimensions must equal the registered ones exactly, or the run stops"
+  },
+  "experiment_1_projection": {
+   "also_reported_claude": "the full orthogonal split (coverage, intrinsic, nontrivial, identified) with squared fractions summing to 1; the full-null fraction; the per-table distribution of delta itself; the metric-free rms of A delta",
+   "control_a_user": "MUST FAIL: a uniformly random subspace of R^n of the same dimension. Its squared fraction is Beta(k/2, (n-k)/2) exactly, so quantiles are computed, not sampled. The true fraction must exceed the control's 99th percentile, or the number is dimension counting.",
+   "control_b_claude": "reported: uniform within the used columns (where the null space lives), the same exact Beta, scaled by ||delta_used|| / ||delta||",
+   "control_c_claude": "reported AS A STATED FINDING whatever it returns (user's ruling): table-matched, 1000 draws. A random rotation inside each table's block of used columns, applied to the basis, keeps every vector's per-table loading; equivalently delta's per-table blocks are rotated at random and projected on the true basis. If the true fraction does not clear the 99th percentile the finding is: 'the overlap is explained by both objects living in the internal-loop tables', and Type B's claim rests on Experiment 2.",
+   "prior_claude": "every set's nontrivial fraction clears control (a)'s 99th percentile; uncertain against (c); Andronescu 2007's fraction exceeds Turner 1999's (fitted, not revised)",
+   "rule_user": "for each shipped full RNA set other than Turner 2004, delta = theta_X - theta_2004 on the shared columns; project onto the nontrivial null space of TR0+TS0 and of Rfam; report ||P_N delta|| (kcal/mol), ||P_N delta|| / ||delta||, and the per-table breakdown of the null component. Assert first that the column sets are identical; if not, restrict to the shared support and say so.",
+   "sentences_user": "Andronescu 2007: 'a published machine-learned parameter table differs from Turner 2004 by X% in directions that none of the 11,955 bpRNA reference structures can distinguish'; Turner 1999: the companion sentence on successive revisions of the same model",
+   "sets": {
+    "Andronescu2007": "params_load_RNA_Andronescu2007",
+    "Langdon2018": "params_load_RNA_Langdon2018",
+    "Turner1999": "params_load_RNA_Turner1999"
+   }
+  },
+  "experiment_2_fold": {
+   "A": "TR0+TS0 (user's choice 2026-10-12): every reference structure in the corpus keeps exactly its energy, so no train/test framing; all 11,970 TR0+TS0 sequences kept by the loader are folded",
+   "attribution_user_and_claude": "for every sequence whose MFE changed (s0 -> s1): exact unrounded E(s) = c(s).(theta0 + delta) + offset(s); genuine if E(s1) <= E(s0), rounding-caused otherwise. Reported at EVERY point: the number changed and the genuine share",
+   "claim_rule": "at the three published-component points, if above the floor: the genuine changed-MFE fraction's bootstrap 95% CI excludes 0",
+   "claim_user": "we perturb along a direction invisible to every one of the 11,955 observed reference structures, and the predictions change anyway, because folding a sequence evaluates structures nobody observed",
+   "comparison_of_interest_user": "genuine changed-MFE fraction (and F1, D_bpp), null vs contrast, at matched ||delta||, every grid point. Comparable movement is the expected outcome and not a failure: the claim is that these directions are invisible to the fitting data (the leak check) while visible to the predictor (this comparison). If comparable, the reading is 'they move predictions as much as any int-table perturbation of that size while no reference sees them', not 'unidentified directions are special'. Expectation, user's: comparable.",
+   "directions": {
+    "amendment_user_2026_10_12": "contrast raised from 4 to 8 directions: null vs contrast is a registered comparison of interest, so the arm doing the interpretive work needs the same number of draws as the null arm. If the box is busy, drop the lowest one or two grid points (below the expected floor, hatched anyway) to buy back the cost.",
+    "contrast": "8 random unit directions in the identified complement restricted to ['int22', 'int21', 'int11', 'bulge'] (g Gaussian on those used columns, nontrivial component removed; the intrinsic directions have no support there), seeds SeedSequence([20261012, 2, j])",
+    "excluded_by_design": "coverage directions (columns A never uses) are also invisible to A but are excluded: entries never observed are a weaker object",
+    "null": "8 random unit directions in the TR0+TS0 nontrivial null space, seeds SeedSequence([20261012, 1, i])",
+    "published": "unit(P_nt delta_X) for the three shipped sets, TR0+TS0 basis"
+   },
+   "execution": "12 workers sharded by sequence, each computing its baseline once; driver under setsid, completion read from recorded status; uptime checked before launch; full run only on the user's go",
+   "floor_rule": "the smallest grid ||delta|| at which the rounding-caused share of changed MFEs, pooled over the null directions, is <= 5%; points below it are drawn hatched and not interpreted",
+   "gap_user": "once under theta0: the gap from the MFE to the best other structure (Wuchty subopt, delta 0, 1, 2, 5, 10, 20, 50, 100 dcal until a second structure appears); its distribution and the degenerate fraction (gap 0)",
+   "grid_rule": "||delta|| = 0.125 * 2^k kcal/mol, k = 0, 1, ..., up to the first value >= 2 * max_X ||P_nt delta_X|| (TR0+TS0 basis); fixed by the project phase before any fold; each published component is also run at its own norm (the headline points)",
+   "guards_user_and_claude": "per worker, per loaded file: turner_par.loaded() forces a table rebuild; params_match on the first compound; a CARRY CHECK: the 5 generating-set rows with the largest |c(s).(theta_r - theta0)| evaluate to c(s).theta_r exactly and that change is nonzero (params_match's entries do not include int22/int21/int11, so it alone cannot see a stale table here). Any failure stops the run; nothing is repaired.",
+   "leak_scaling_note_claude": "the per-entry rounding residual is <= 0.5 dcal at every scale, so the leak saturates rather than grows with ||delta||; the floor is defined by attribution instead of a leak-gap crossing (accepted by the user)",
+   "leak_user": "at every point: eval_structure of all 11,955 references under the loaded file must equal c(s).theta_r exactly (integer dcal; must hold); the leak c(s).(theta_r - theta0) reported as median, 95th percentile and max in kcal/mol beside every divergence value",
+   "metrics": "per sequence against the unperturbed fold: MFE base-pair F1 (1 if both empty), MFE changed, D_bpp = (1/L) sum_{i<j} |p_ij - p'_ij|; F1 against the reference, baseline and perturbed (reported, no prediction); means with bootstrap 95% CIs over sequences and by length tercile",
+   "per_point": "theta_r = round(theta0 + delta) written by scripts/turner_par.write_par; the rounding residual and ||theta_r - theta0 - delta|| / ||delta|| recorded",
+   "prior_claude": "floor between 0.5 and 2 kcal/mol; genuine changed-MFE fraction at the Andronescu point well above 0"
+  },
+  "registered": "2026-10-12, before bases, projection or any fold were computed",
+  "scope": {
+   "d2_out_of_scope": "with dangles 2 ViennaRNA stores min(x, 0) for mismatchExt, mismatchM, dangle5, dangle3 (runs/2026-10-12_turner_par_writer V2): the model is not linear in theta there and the null-space analysis does not transfer",
+   "metric_note_claude": "the null space is metric-free; an orthogonal projection and its fraction are not. Metric: Euclidean in raw parameter-file coordinates, kcal/mol. Reported beside it, metric-free: the rms change of A's reference energies, A delta.",
+   "model": "ViennaRNA 2.7.2 Turner 2004, dangles 0, special_hp 0, 37 C",
+   "wording_rule_claude": "the 426 (214) are directions that THESE reference structures cannot distinguish; only the 2 intrinsic directions are invisible to every possible structure. Sentences say 'none of the 11,955 bpRNA reference structures can distinguish', never 'no structure data can distinguish'."
+  }
+ },
+ "run_id": "2026-10-12_turner_typeb",
+ "status": "PRE-REGISTERED, nothing computed",
+ "viennarna_version": "2.7.2"
+}
