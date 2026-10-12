@@ -256,7 +256,7 @@ def _rebuild():
 
 
 def params_match(fc, theta: dict, dangles: int, special_hp: int) -> dict:
-    """Mismatches between the table `fc` carries and `theta` (empty if none): eleven
+    """Mismatches between the table `fc` carries and `theta` (empty if none): twelve
     entries spanning the 1-D and 2-D tables, plus the model details that select the
     tables. (SWIG does not expose the 3-D tables for indexing; W4 covers those.)"""
     P = fc.params
