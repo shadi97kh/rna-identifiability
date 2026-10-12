@@ -1,0 +1,63 @@
+{
+ "dna_check": {
+  "counts_null_on_generating_set": {
+   "N1": true,
+   "N2": true
+  },
+  "gauge_check": {
+   "N1": {
+    "null_for_dna": true,
+    "rows": 23741,
+    "rows_changed": 0
+   },
+   "N2": {
+    "null_for_dna": true,
+    "rows": 23741,
+    "rows_changed": 0
+   }
+  },
+  "intrinsic_directions_null_for_dna": true,
+  "loader": "params_load_DNA_Mathews2004",
+  "lookup_check": {
+   "mismatch_values_dcal": {
+    "-20": 209,
+    "-60": 979
+   },
+   "mismatched_by_construction_and_ninio_max_counted": {
+    "il_inner|ninio_max=True": 576,
+    "il_outer|ninio_max=True": 576,
+    "il_size|ninio_max=True": 36
+   },
+   "reading": "every mismatch is an internal loop whose counts take the Ninio cap: the count model linearises MIN2(max, asym*m) at Turner 2004's m; DNA's smaller m moves the cap to a larger asymmetry. Not a different lookup structure.",
+   "rows": 23741,
+   "rows_mismatched": 1188
+  },
+  "ninio_dna": [
+   40,
+   300
+  ],
+  "ninio_rna": [
+   60,
+   300
+  ],
+  "par_sha256": "68e912df500b78bffc6c9fe2c6c81f5c10b0335c848512c9acb6ce14f9728beb",
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": true,
+   "git_dirty_paths_outside_runs": [
+    "paper/recomb2027/figs/learned_gauge.pdf",
+    "paper/recomb2027/figs/learned_gauge.png",
+    "paper/recomb2027/figs/overview_nullspace.pdf",
+    "paper/recomb2027/figs/overview_nullspace.png",
+    "scripts/fig_learned_gauge.py",
+    "scripts/fig_overview_nullspace.py"
+   ],
+   "git_sha": "5f1dea72b3a03c56d06d918917c42a341cdb6f39"
+  },
+  "reachable_columns": 12607,
+  "reachable_inf": 0,
+  "reachable_missing": [],
+  "table_in_effect": true
+ },
+ "run_id": "2026-10-12_typeb_full_tables"
+}
