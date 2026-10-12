@@ -113,6 +113,50 @@ def _carry(table, gen_counts, cols, theta0):
     return [(int(r), int(G[r].dot(th)[0])) for r in top]
 
 
+def ninio_correction(db: str, m: int, cap: int) -> int:
+    """Exact Ninio term minus the count model's linearisation, summed over a structure's
+    interior loops (dcal/mol).
+
+    ViennaRNA adds MIN2(cap, asym * m) to every interior loop except bulges and the 1x1, 1x2
+    and 2x2 table loops. The count model (turner_nullspace.Extractor) linearises the term at
+    Turner 2004's m = 60, cap = 300: asym * m for asymmetry up to 5, the cap from 6. That is
+    exact for Turner 2004. For a table whose cap binds at another asymmetry (DNA m = 40;
+    Langdon 2018 m = 80) the difference is this correction."""
+    n = len(db)
+    pt = [0] * (n + 2)
+    st = []
+    for i, c in enumerate(db, start=1):
+        if c == "(":
+            st.append(i)
+        elif c == ")":
+            j = st.pop()
+            pt[i], pt[j] = j, i
+    corr = 0
+    for i in range(1, n + 1):
+        j = pt[i]
+        if j <= i:
+            continue
+        inner, k = [], i + 1
+        while k < j:
+            if pt[k] > k:
+                inner.append((k, pt[k]))
+                k = pt[k] + 1
+            else:
+                k += 1
+        if len(inner) != 1:
+            continue
+        k, l_ = inner[0]
+        ul, ur = k - i - 1, j - l_ - 1
+        if ul == 0 or ur == 0:
+            continue  # stack or bulge
+        ns, nl = min(ul, ur), max(ul, ur)
+        if (ns, nl) in ((1, 1), (1, 2), (2, 2)):
+            continue
+        asym = nl - ns
+        corr += min(cap, asym * m) - (asym * m if asym <= 5 else cap)
+    return corr
+
+
 def fold_rows_under_tables(rows, tables, dst, w, W):
     """Shard w of W of `rows` [(group, name, seq, db)]: the Turner 2004 baseline, then every
     table, each loaded with the fold's guards. JSON lines to dst: one baseline record, then one
@@ -177,6 +221,7 @@ def fold_rows_under_tables(rows, tables, dst, w, W):
             thv = np.array([th[k] for k in cols], dtype=np.int64)
             t0v = np.array([theta0[k] for k in cols], dtype=np.int64)
             ex = Extractor(special, 0, 0, lxc=tb["lxc"])
+            nm, ncap = th[("ninio_m",)], th[("ninio_max",)]
             carry = _carry(tb, G, cols, theta0)
             ctx = (loaded(write_par(th, pathlib.Path(t) / "x.par")) if tb["kind"] == "point"
                    else named(tb["loader"]))
@@ -200,12 +245,14 @@ def fold_rows_under_tables(rows, tables, dst, w, W):
                     eref = int(round(RNA.fold_compound(seq, md).eval_structure(db) * 100))
                     # the reference energy under this table, exactly from counts (with the
                     # table's lxc); a reference using an INF entry is a forbidden motif there
-                    if not forbidden and eref != int(qv @ thv[qi]) + qoff:
+                    if not forbidden and eref != (int(qv @ thv[qi]) + qoff
+                                                  + ninio_correction(db, nm, ncap)):
                         raise SystemExit(f"{tb['id']}: {b['name']} reference-energy identity")
                     rec["n_reference_forbidden"] += forbidden
                     s1, e1 = RNA.fold_compound(seq, md).mfe()
                     (si, sv), soff = counts(ex, seq, s1)
-                    if int(sv @ thv[si]) + soff != int(round(e1 * 100)):
+                    if (int(sv @ thv[si]) + soff + ninio_correction(s1, nm, ncap)
+                            != int(round(e1 * 100))):
                         raise SystemExit(f"{tb['id']}: {b['name']} MFE-energy identity")
                     rec["changed"].append(s1 != b["s0"])
                     rec["f1_ref"].append(round(f1(s1, db), 6))
