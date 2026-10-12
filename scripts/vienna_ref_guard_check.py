@@ -58,7 +58,7 @@ def values():
     return seqs, vals, round(time.time() - t0, 1), hasattr(vr, "assert_turner2004_boltzmann")
 
 
-GUARD_COMMIT = "d5bedbe"  # the commit that added assert_turner2004_boltzmann
+GUARD_COMMIT = "87d4b2e"  # the commit that added assert_turner2004_boltzmann
 PLANT = """
 import RNA
 from thermo.vienna_ref import ModelNotPinned, ensemble_free_energy, reference_md
