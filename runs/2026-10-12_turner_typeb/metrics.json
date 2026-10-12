@@ -1,4 +1,109 @@
 {
+ "bases": {
+  "rfam": {
+   "C2_max_abs": {
+    "intrinsic": 4.718447854656915e-15,
+    "nontrivial": 9.761407989550017e-14
+   },
+   "C2_passes": true,
+   "dims": {
+    "coverage": 4796,
+    "nontrivial": 214,
+    "null_within_used": 216
+   },
+   "dims_match_registered": true,
+   "files": {
+    "A_rfam.npz": "328f5b8899ec5a03260022b19e0856e9a83766176d78479aab92aad7cac00428",
+    "bases_rfam.npz": "36e07dbae8bb62be2b832522659caa6c6c3c9c9d6210e38ba8fb439c223c2388"
+   },
+   "intrinsic_orthogonal_to_nontrivial": 3.9274126918531056e-17,
+   "n_rows": 94142,
+   "nontrivial_weight_by_table": {
+    "ML_cc": 0.0,
+    "ML_ci": 0.0,
+    "ML_cu": 0.0,
+    "TerminalAU": 0.0,
+    "bulge": 0.0,
+    "hairpin": 0.0,
+    "int11": 0.0,
+    "int21": 0.1441,
+    "int22": 0.8559,
+    "internal_loop": 0.0,
+    "mismatch1nI": 0.0,
+    "mismatch23I": 0.0,
+    "mismatchH": 0.0,
+    "mismatchI": 0.0,
+    "ninio_m": 0.0,
+    "ninio_max": 0.0,
+    "stack": 0.0
+   },
+   "qr": {
+    "largest_null_sv": 4.540945794271749e-12,
+    "smallest_nonnull_sv": 0.17463203173890776,
+    "sv_tol": 2.1374684551339253e-07
+   },
+   "registered": {
+    "coverage": 4796,
+    "nontrivial": 214,
+    "null_within_used": 216,
+    "source": "runs/2026-10-07_turner_nullspace_rfam_r2 configs.d0_special_hp0"
+   },
+   "seconds": 352.3,
+   "used_columns": 7811
+  },
+  "tr0ts0": {
+   "C2_max_abs": {
+    "intrinsic": 7.771561172376096e-16,
+    "nontrivial": 7.410685967902154e-14
+   },
+   "C2_passes": true,
+   "dims": {
+    "coverage": 8046,
+    "nontrivial": 426,
+    "null_within_used": 428
+   },
+   "dims_match_registered": true,
+   "files": {
+    "A_tr0ts0.npz": "209c3475552c9b2f958aad46a036a47df9e7bf24ce41e8048c7e452b2daaecd6",
+    "bases_tr0ts0.npz": "1fad4ee65c8fe086bebb8a623b66c458dba04264f4b74da0419374cd35093ccb"
+   },
+   "intrinsic_orthogonal_to_nontrivial": 3.6170892032996603e-17,
+   "n_rows": 11955,
+   "nontrivial_weight_by_table": {
+    "ML_cc": 0.0,
+    "ML_ci": 0.0,
+    "ML_cu": 0.0,
+    "TerminalAU": 0.0,
+    "bulge": 0.0015,
+    "hairpin": 0.0,
+    "int11": 0.0161,
+    "int21": 0.2773,
+    "int22": 0.7051,
+    "internal_loop": 0.0,
+    "mismatch1nI": 0.0,
+    "mismatch23I": 0.0,
+    "mismatchH": 0.0,
+    "mismatchI": 0.0,
+    "ninio_m": 0.0,
+    "ninio_max": 0.0,
+    "stack": 0.0
+   },
+   "qr": {
+    "largest_null_sv": 1.2287700292508624e-12,
+    "smallest_nonnull_sv": 0.14560916841965751,
+    "sv_tol": 7.344822647760298e-09
+   },
+   "registered": {
+    "coverage": 8046,
+    "nontrivial": 426,
+    "null_within_used": 428,
+    "source": "runs/2026-10-08_turner_nullspace_tr0 tr0_results.d0_special_hp0"
+   },
+   "seconds": 34.7,
+   "used_columns": 4561
+  }
+ },
+ "bases_seconds": 392.8,
  "git_dirty": true,
  "git_dirty_excluding_runs": false,
  "git_dirty_paths_outside_runs": [],
@@ -70,6 +175,6 @@
   }
  },
  "run_id": "2026-10-12_turner_typeb",
- "status": "PRE-REGISTERED, nothing computed",
+ "status": "bases complete",
  "viennarna_version": "2.7.2"
 }

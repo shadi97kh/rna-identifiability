@@ -798,6 +798,139 @@ def fold_smoke():
     return 0 if res["passes"] else 1
 
 
+def fold_run():
+    """The full Experiment 2 run. Launch only on the user's go, under setsid; completion is
+    the recorded status, never process presence."""
+    out = read_out()
+    assert out["status"] == "projection complete", out["status"]
+    assert out.get("fold_smoke", {}).get("passes"), "the smoke test has not passed"
+    if os.getsid(0) != os.getpid():
+        raise SystemExit("launch under setsid: the driver must survive the session")
+    B = load_basis("tr0ts0")
+    meta = build_points(out, B)
+    full = FOLD / "full"
+    full.mkdir(parents=True, exist_ok=True)
+    dsts = [full / f"shard{w}.jsonl" for w in range(N_WORKERS)]
+    procs = _launch_workers(N_WORKERS, dsts)
+    out["fold"] = {"provenance": git_provenance(R), "n_points": len(meta),
+                   "n_workers": N_WORKERS, "started": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                   "load_at_start": os.getloadavg(), "driver_pid": os.getpid(),
+                   "worker_pids": [p.pid for p in procs],
+                   "points_sha256": {f: sha256(FOLD / f) for f in ("points.npz", "points.json")}}
+    out["status"] = "fold RUNNING"
+    write(out)
+    rc = [p.wait() for p in procs]
+    done = [d.read_text().rstrip().endswith('{"done": true}') for d in dsts]
+    out = read_out()
+    out["fold"].update({"workers_exit": rc, "shards_done": done,
+                        "finished": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                        "shards_sha256": {d.name: sha256(d) for d in dsts}})
+    out["status"] = ("fold complete (workers)" if rc == [0] * N_WORKERS and all(done)
+                     else f"fold FAILED: exits {rc}")
+    write(out)
+    return 0 if out["status"].startswith("fold complete") else 1
+
+
+def _boot_mean(x, rng, n=1000):
+    x = np.asarray(x, dtype=float)
+    if len(x) == 0:
+        return [None, None]
+    b = x[rng.integers(0, len(x), (n, len(x)))].mean(axis=1)
+    return [float(np.percentile(b, 2.5)), float(np.percentile(b, 97.5))]
+
+
+def fold_analyse():
+    out = read_out()
+    assert out["status"] == "fold complete (workers)", out["status"]
+    meta = json.loads((FOLD / "points.json").read_text())
+    shards = [[json.loads(ln) for ln in (FOLD / "full" / f"shard{w}.jsonl").read_text()
+               .splitlines()] for w in range(N_WORKERS)]
+    base = [b for s in shards for b in s[0]["baseline"]]
+    L = np.array([b["len"] for b in base])
+    terc = np.digitize(L, np.percentile(L, [100 / 3, 200 / 3]))
+    pb = np.array([b["ref_pairs"] > 0 for b in base])
+    gaps = [b["gap"] for b in base]
+    gk = np.array([g for g in gaps if g is not None]) / 100.0
+    res = {"n_sequences": len(base),
+           "baseline_f1_ref_mean": float(np.mean([b["f1_ref"] for b in base])),
+           "gap_kcal": {"median": float(np.median(gk)), "p25": float(np.percentile(gk, 25)),
+                        "p75": float(np.percentile(gk, 75)),
+                        "fraction_degenerate_gap0": float(np.mean([g == 0 for g in gaps])),
+                        "fraction_above_1kcal": float(np.mean([g is None for g in gaps]))},
+           "points": []}
+    per = {}
+    for pm in meta:
+        p = pm["p"]
+        rs = [next(r for r in s if r.get("p") == p) for s in shards]
+        cat = {k: [x for r in rs for x in r[k]] for k in ("changed", "genuine", "f1_base",
+                                                          "dbpp", "f1_ref", "leak")}
+        rng = np.random.default_rng(np.random.SeedSequence([SEED, 4, p]))
+        ch = np.array(cat["changed"])
+        gen = np.array([g is True for g in cat["genuine"]])
+        leak = np.abs(np.array(cat["leak"])[pb]) / 100.0
+        row = {k: pm[k] for k in ("p", "kind", "name", "norm_kcal", "written_rel_error",
+                                  "n_entries_changed", "reference_change_dcal_max_abs")} | {
+            "n_changed": int(ch.sum()), "n_genuine": int(gen.sum()),
+            "genuine_share_of_changed": float(gen.sum() / ch.sum()) if ch.sum() else None,
+            "changed_fraction": float(ch.mean()),
+            "genuine_fraction": float(gen.mean()), "genuine_fraction_ci": _boot_mean(gen, rng),
+            "f1_base_mean": float(np.mean(cat["f1_base"])),
+            "f1_base_ci": _boot_mean(cat["f1_base"], rng),
+            "dbpp_mean": float(np.mean(cat["dbpp"])), "dbpp_ci": _boot_mean(cat["dbpp"], rng),
+            "f1_ref_mean": float(np.mean(cat["f1_ref"])),
+            "leak_kcal": {"median": float(np.median(leak)), "p95": float(np.percentile(leak, 95)),
+                          "max": float(leak.max())},
+            "by_length_tercile": {str(t): {"changed_fraction": float(ch[terc == t].mean()),
+                                           "dbpp_mean": float(np.array(cat["dbpp"])[terc == t]
+                                                              .mean())} for t in range(3)}}
+        res["points"].append(row)
+        per[p] = (row, ch, gen)
+    # floor: pooled over the null directions, per grid scale
+    grid = out["experiment_2_grid"]["grid_kcal"]
+    fl = []
+    for s in grid:
+        ps = [m["p"] for m in meta if m["kind"] == "null" and m["norm_kcal"] == s]
+        c = sum(int(per[p][1].sum()) for p in ps)
+        g = sum(int(per[p][2].sum()) for p in ps)
+        fl.append({"norm_kcal": s, "changed": c, "genuine": g,
+                   "rounding_share": (c - g) / c if c else None})
+    floor = next((f["norm_kcal"] for f in fl if f["rounding_share"] is not None
+                  and f["rounding_share"] <= FLOOR_SHARE), None)
+    res["floor"] = {"rule": PRED["experiment_2_fold"]["floor_rule"], "by_scale": fl,
+                    "floor_kcal": floor}
+    claim = {}
+    for row in res["points"]:
+        if row["kind"] == "published_own":
+            above = floor is not None and row["norm_kcal"] >= floor
+            lo = row["genuine_fraction_ci"][0]
+            claim[row["name"]] = {"norm_kcal": row["norm_kcal"], "above_floor": above,
+                                  "genuine_fraction": row["genuine_fraction"],
+                                  "ci": row["genuine_fraction_ci"],
+                                  "claim_holds": bool(above and lo is not None and lo > 0)}
+    res["claim"] = claim
+    comp = []
+    for s in grid:
+        arm = {}
+        for kind in ("null", "contrast"):
+            rows = [r for r in res["points"] if r["kind"] == kind and r["norm_kcal"] == s]
+            arm[kind] = {m: {"mean_over_directions": float(np.mean([r[m] for r in rows])),
+                             "sd_over_directions": float(np.std([r[m] for r in rows], ddof=1)),
+                             "n_directions": len(rows)}
+                         for m in ("genuine_fraction", "f1_base_mean", "dbpp_mean")}
+        comp.append({"norm_kcal": s} | arm | {
+            "difference_null_minus_contrast": {
+                m: arm["null"][m]["mean_over_directions"]
+                - arm["contrast"][m]["mean_over_directions"]
+                for m in ("genuine_fraction", "f1_base_mean", "dbpp_mean")}})
+    res["comparison_null_vs_contrast"] = comp
+    out["experiment_2"] = res | {"provenance": git_provenance(R)}
+    out["status"] = "fold analysed"
+    write(out)
+    print(json.dumps({"floor": res["floor"]["floor_kcal"], "claim": claim,
+                      "gap": res["gap_kcal"]}, indent=1))
+    return 0
+
+
 def fold_worker_cli(argv):
     w, W, dst = int(argv[0]), int(argv[1]), argv[2]
     rest = argv[3:]
@@ -808,7 +941,7 @@ def fold_worker_cli(argv):
 
 
 PHASES = {"preregister": preregister, "bases": bases, "project": project,
-          "fold-smoke": fold_smoke}
+          "fold-smoke": fold_smoke, "fold-run": fold_run, "fold-analyse": fold_analyse}
 
 if __name__ == "__main__":
     if sys.argv[1:3] == ["--phase", "fold-worker"]:
