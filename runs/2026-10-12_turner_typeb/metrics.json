@@ -170,6 +170,160 @@
      }
     },
     "what": "control (c) and the post-hoc intrinsic control (c) rotated delta into used columns off the shared support, where delta is undefined; now restricted to the support. The projection, its fraction, controls (a) and (b) and P_nt delta were valid and are unchanged."
+   },
+   {
+    "after": "the full fold and its analysis",
+    "date": "2026-10-12",
+    "evidence": {
+     "Andronescu2007": {
+      "rfam": {
+       "coverage": {
+        "fraction": 0.6283535494619674,
+        "random_cdf": 0.990531140541976,
+        "random_mean_squared": 0.3804235742048069,
+        "random_q99_fraction": 0.6282533457871227,
+        "squared": 0.3948281831214531
+       },
+       "intrinsic": {
+        "fraction": 0.02055041489258847,
+        "random_cdf": 0.9302076709198518,
+        "random_mean_squared": 0.00015864202427222972,
+        "random_q99_fraction": 0.027026330678716293,
+        "squared": 0.00042231955225752204
+       },
+       "nontrivial": {
+        "fraction": 0.12103703664281656,
+        "random_cdf": 0.07121588831441439,
+        "random_mean_squared": 0.01697469659712858,
+        "random_q99_fraction": 0.14485425863437631,
+        "squared": 0.01464996423927452
+       }
+      },
+      "tr0ts0": {
+       "coverage": {
+        "fraction": 0.8057865528979047,
+        "random_cdf": 0.9668078819259811,
+        "random_mean_squared": 0.6382168636471801,
+        "random_q99_fraction": 0.8076072912564497,
+        "squared": 0.6492919688310878
+       },
+       "intrinsic": {
+        "fraction": 0.02055041489258847,
+        "random_cdf": 0.9302076709198518,
+        "random_mean_squared": 0.00015864202427222972,
+        "random_q99_fraction": 0.027026330678716293,
+        "squared": 0.00042231955225752204
+       },
+       "nontrivial": {
+        "fraction": 0.1803628879923848,
+        "random_cdf": 0.29505895646554814,
+        "random_mean_squared": 0.03379075116998493,
+        "random_q99_fraction": 0.19824403286892345,
+        "squared": 0.03253077136495355
+       }
+      }
+     },
+     "Langdon2018": {
+      "rfam": {
+       "coverage": {
+        "fraction": 0.4875402062407023,
+        "random_cdf": 1.1892237030749086e-140,
+        "random_mean_squared": 0.3804235742048069,
+        "random_q99_fraction": 0.6282533457871227,
+        "squared": 0.23769545270122655
+       },
+       "intrinsic": {
+        "fraction": 0.08677841794401842,
+        "random_cdf": 1.0,
+        "random_mean_squared": 0.00015864202427222972,
+        "random_q99_fraction": 0.027026330678716293,
+        "squared": 0.0075304938208667375
+       },
+       "nontrivial": {
+        "fraction": 0.0985521104690124,
+        "random_cdf": 6.349222618668848e-08,
+        "random_mean_squared": 0.01697469659712858,
+        "random_q99_fraction": 0.14485425863437631,
+        "squared": 0.009712518477896424
+       }
+      },
+      "tr0ts0": {
+       "coverage": {
+        "fraction": 0.6523248495106864,
+        "random_cdf": 6.5433387428634e-253,
+        "random_mean_squared": 0.6382168636471801,
+        "random_q99_fraction": 0.8076072912564497,
+        "squared": 0.42552770928913963
+       },
+       "intrinsic": {
+        "fraction": 0.08677841794401842,
+        "random_cdf": 1.0,
+        "random_mean_squared": 0.00015864202427222972,
+        "random_q99_fraction": 0.027026330678716293,
+        "squared": 0.0075304938208667375
+       },
+       "nontrivial": {
+        "fraction": 0.12372409352929176,
+        "random_cdf": 3.6368251242606643e-25,
+        "random_mean_squared": 0.03379075116998493,
+        "random_q99_fraction": 0.19824403286892345,
+        "squared": 0.015307651319644934
+       }
+      }
+     },
+     "Turner1999": {
+      "rfam": {
+       "coverage": {
+        "fraction": 0.6543495532935314,
+        "random_cdf": 0.9999999999999934,
+        "random_mean_squared": 0.3804235742048069,
+        "random_q99_fraction": 0.6282533457871227,
+        "squared": 0.4281733378954441
+       },
+       "intrinsic": {
+        "fraction": 0.011191464371486753,
+        "random_cdf": 0.5458966537624458,
+        "random_mean_squared": 0.00015864202427222972,
+        "random_q99_fraction": 0.027026330678716293,
+        "squared": 0.00012524887477825738
+       },
+       "nontrivial": {
+        "fraction": 0.12189324387239932,
+        "random_cdf": 0.09232052757813274,
+        "random_mean_squared": 0.01697469659712858,
+        "random_q99_fraction": 0.14485425863437631,
+        "squared": 0.014857962901736214
+       }
+      },
+      "tr0ts0": {
+       "coverage": {
+        "fraction": 0.8266138152354224,
+        "random_cdf": 0.9999999999999852,
+        "random_mean_squared": 0.6382168636471801,
+        "random_q99_fraction": 0.8076072912564497,
+        "squared": 0.6832903995380611
+       },
+       "intrinsic": {
+        "fraction": 0.011191464371486753,
+        "random_cdf": 0.5458966537624458,
+        "random_mean_squared": 0.00015864202427222972,
+        "random_q99_fraction": 0.027026330678716293,
+        "squared": 0.00012524887477825738
+       },
+       "nontrivial": {
+        "fraction": 0.18370766276338085,
+        "random_cdf": 0.5012370305420955,
+        "random_mean_squared": 0.03379075116998493,
+        "random_q99_fraction": 0.19824403286892345,
+        "squared": 0.03374850535798407
+       }
+      }
+     }
+    },
+    "id": "experiment_1_verdict_reading_2026_10_12",
+    "replacement_text": "REGISTERED CONTROL (a) DID NOT FAIL in any set or basis: no nontrivial fraction exceeds the 99th percentile of a uniformly random subspace of the same dimension (Turner 1999 and Andronescu 2007 lie near its mean; Langdon 2018, compared on its 11,341 shared columns, lies below it; not interpreted). By the registered rule the published tables are not enriched in the nontrivial directions, and the fraction is not a finding about them. Control (c), stated as a finding: ranks 3.2 to 69.5 across sets and bases; on TR0+TS0 they are low and stay low with per-table means removed (runs/2026-10-12_turner_typeb_c_check); not interpreted. The other components have no registered control and carry no claim; their position against a random subspace is in corrections[experiment_1_verdict_reading_2026_10_12].evidence (Turner 1999's coverage fraction lies above its 99th percentile). Per the user's registered ruling, Type B's claim rests on Experiment 2.",
+    "superseded_text": "REGISTERED CONTROL (a) DID NOT FAIL in any set or basis: every nontrivial fraction lies at or below a uniformly random subspace of the same dimension (squared fractions track dim/n for every component). By the registered rule the fraction is dimension counting, and 'differs by X% in directions none of the references can distinguish' is not supported as a property of these tables. Control (c), stated as a finding: see control_c_percentile_rank; a rank below 50 means the published difference is not enriched in the unidentified directions even within the tables it occupies. Per the user's registered ruling, Type B's claim rests on Experiment 2.",
+    "what": "experiment_1.verdict.reading said 'squared fractions track dim/n for every component'. False: by the exact Beta law, Turner 1999's coverage fraction is above a random subspace's 99th percentile and Langdon 2018's components are far below. The registered verdict (control (a) did not fail) is unchanged; only the reading's text is corrected."
    }
   ],
   "per_set": {
@@ -2083,7 +2237,8 @@
     }
    },
    "control_a_failed_as_required_in": [],
-   "reading": "REGISTERED CONTROL (a) DID NOT FAIL in any set or basis: every nontrivial fraction lies at or below a uniformly random subspace of the same dimension (squared fractions track dim/n for every component). By the registered rule the fraction is dimension counting, and 'differs by X% in directions none of the references can distinguish' is not supported as a property of these tables. Control (c), stated as a finding: see control_c_percentile_rank; a rank below 50 means the published difference is not enriched in the unidentified directions even within the tables it occupies. Per the user's registered ruling, Type B's claim rests on Experiment 2."
+   "reading": "REGISTERED CONTROL (a) DID NOT FAIL in any set or basis: no nontrivial fraction exceeds the 99th percentile of a uniformly random subspace of the same dimension (Turner 1999 and Andronescu 2007 lie near its mean; Langdon 2018, compared on its 11,341 shared columns, lies below it; not interpreted). By the registered rule the published tables are not enriched in the nontrivial directions, and the fraction is not a finding about them. Control (c), stated as a finding: ranks 3.2 to 69.5 across sets and bases; on TR0+TS0 they are low and stay low with per-table means removed (runs/2026-10-12_turner_typeb_c_check); not interpreted. The other components have no registered control and carry no claim; their position against a random subspace is in corrections[experiment_1_verdict_reading_2026_10_12].evidence (Turner 1999's coverage fraction lies above its 99th percentile). Per the user's registered ruling, Type B's claim rests on Experiment 2.",
+   "reading_corrected": "experiment_1_verdict_reading_2026_10_12"
   }
  },
  "experiment_2": {
@@ -12006,6 +12161,33 @@
     "written_rel_error": 0.010467293824798525
    }
   ],
+  "priors_outcome": {
+   "andronescu_genuine_prior_claude": {
+    "outcome": "HELD: genuine changed-MFE fraction 0.0429, CI [0.0393, 0.0466]"
+   },
+   "comparable_expectation_user": {
+    "by_scale_sides": {
+     "0.125": "contains_0",
+     "0.25": "below",
+     "0.5": "below",
+     "1.0": "below",
+     "16.0": "below",
+     "2.0": "below",
+     "32.0": "below",
+     "4.0": "below",
+     "64.0": "below",
+     "8.0": "below"
+    },
+    "outcome": "FAILED: registered overall verdict 'mixed'; the CI is below 0 at every scale from 0.25 up and contains 0 at 0.125",
+    "registered": "genuine changed-MFE fraction (and F1, D_bpp), null vs contrast, at matched ||delta||, every grid point. Comparable movement is the expected outcome and not a failure: the claim is that these directions are invisible to the fitting data (the leak check) while visible to the predictor (this comparison). If comparable, the reading is 'they move predictions as much as any int-table perturbation of that size while no reference sees them', not 'unidentified directions are special'. Expectation, user's: comparable."
+   },
+   "experiment_1_priors": "recorded before the fold in predictions.amendments_2026_10_12.experiment_1_outcome",
+   "floor_prior_claude": {
+    "outcome": "FAILED: the floor is 0.125 kcal/mol, the grid's lowest point (rounding share 0.0 there), so it lies at or below 0.125, not in 0.5-2",
+    "registered": "floor between 0.5 and 2 kcal/mol; genuine changed-MFE fraction at the Andronescu point well above 0"
+   },
+   "recorded": "2026-10-12, after fold-analyse; outside PRED"
+  },
   "provenance": {
    "git_dirty": true,
    "git_dirty_excluding_runs": false,
