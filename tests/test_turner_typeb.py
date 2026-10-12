@@ -86,3 +86,21 @@ def test_table_matched_control_keeps_table_norms():
     r = decompose(delta, B, np.random.default_rng(6))
     c = r["control_c_table_matched"]
     assert c["max_fraction"] == 0.0 and r["fraction"]["nontrivial"] == 0.0
+
+
+def test_fold_driver_status_is_read_as_running_by_the_standard_waiter(tmp_path):
+    """The 2026-10-12 driver wrote 'fold RUNNING', which scripts/predecessor.py reads as a
+    fault; the status must start with RUNNING_PREFIX."""
+    import json
+
+    from scripts.predecessor import RUNNING_PREFIX, state
+    from scripts.turner_typeb import FOLD_RUNNING
+
+    assert FOLD_RUNNING.startswith(RUNNING_PREFIX)
+    art = tmp_path / "metrics.json"
+    art.write_text(json.dumps({"status": FOLD_RUNNING}))
+    done = {"fold complete (workers)"}
+    assert state(art, done, lambda: [12345])["state"] == "running"
+    assert state(art, done, lambda: [])["state"] == "fault"
+    art.write_text(json.dumps({"status": "fold complete (workers)"}))
+    assert state(art, done, lambda: [])["state"] == "done"
