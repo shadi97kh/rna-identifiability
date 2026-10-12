@@ -415,7 +415,7 @@ def decompose(delta, B, rng):
         blocks.setdefault(key[0], []).append(i)
     blocks = {t: np.array(ix) for t, ix in blocks.items()}
     norms = {t: float(np.linalg.norm(du[ix])) for t, ix in blocks.items()}
-    draws = np.empty(CONTROL_C_DRAWS)
+    draws, draws_i = np.empty(CONTROL_C_DRAWS), np.empty(CONTROL_C_DRAWS)
     for d in range(CONTROL_C_DRAWS):
         dp = np.zeros(nu)
         for t, ix in blocks.items():
@@ -423,13 +423,26 @@ def decompose(delta, B, rng):
                 g = rng.standard_normal(len(ix))
                 dp[ix] = norms[t] * g / np.linalg.norm(g)
         draws[d] = np.linalg.norm(NT.T @ dp) / nd
+        draws_i[d] = np.linalg.norm(NI.T @ dp) / nd
     q99c = float(np.percentile(draws, 99))
     clears_c = frac > q99c
     Adu = B["A"] @ du
     delta_by_table = {}
     for i, key in enumerate(cols):
         delta_by_table[key[0]] = delta_by_table.get(key[0], 0.0) + float(delta[i] ** 2)
+    fi, ki = float(np.sqrt(parts["intrinsic"]) / nd), NI.shape[1]
+    q99ai = float(np.sqrt(stats.beta.ppf(0.99, ki / 2, (n - ki) / 2)))
+    post_hoc_intrinsic = {
+        "label": "POST HOC: added 2026-10-12 after Experiment 1's registered results were seen; "
+                 "not registered, same two controls as the nontrivial fraction",
+        "fraction": fi, "control_a_q99_fraction": q99ai,
+        "control_a_mean_fraction_approx": float(np.sqrt(ki / n)),
+        "exceeds_control_a_q99": fi > q99ai,
+        "control_c_q99_fraction": float(np.percentile(draws_i, 99)),
+        "control_c_percentile_rank": float((draws_i < fi).mean() * 100),
+        "exceeds_control_c_q99": fi > float(np.percentile(draws_i, 99))}
     return {
+        "post_hoc_intrinsic": post_hoc_intrinsic,
         "norm_delta_kcal": nd,
         "norm_kcal": {p: float(np.sqrt(v)) for p, v in parts.items()},
         "fraction": {p: float(np.sqrt(v) / nd) for p, v in parts.items()},
@@ -480,7 +493,8 @@ def set_delta(X, cols, theta0):
 
 def project():
     out = read_out()
-    assert out["status"] == "bases complete", out["status"]
+    assert out["status"] in ("bases complete", "projection complete"), out["status"]
+    assert "fold" not in out, "a fold has started; the projection is not re-run"
     out["provenance_project_phase"] = git_provenance(R)
     T = template()
     theta0 = T["theta"]
@@ -511,6 +525,28 @@ def project():
         "published_points_kcal": {X: res["per_set"][X]["tr0ts0"]["norm_kcal"]["nontrivial"]
                                   for X in SETS},
         "fixed": "by the project phase, before any fold"}
+    v = {f"{X}/{name}": {
+        "nontrivial_fraction": d["fraction"]["nontrivial"],
+        "control_a_mean": d["control_a_uniform_subspace"]["mean_fraction_approx"],
+        "control_a_q99": d["control_a_uniform_subspace"]["q99_fraction"],
+        "control_a_failed_as_required": d["control_a_uniform_subspace"]["true_exceeds_q99"],
+        "control_c_percentile_rank": d["control_c_table_matched"]["true_percentile_rank"]}
+        for X in SETS for name, d in res["per_set"][X].items()}
+    ok = [k for k, x in v.items() if x["control_a_failed_as_required"]]
+    res["verdict"] = {
+        "by_set_and_basis": v, "control_a_failed_as_required_in": ok,
+        "reading": (
+            "REGISTERED CONTROL (a) DID NOT FAIL in any set or basis: every nontrivial "
+            "fraction lies at or below a uniformly random subspace of the same dimension "
+            "(squared fractions track dim/n for every component). By the registered rule the "
+            "fraction is dimension counting, and 'differs by X% in directions none of the "
+            "references can distinguish' is not supported as a property of these tables. "
+            "Control (c), stated as a finding: see control_c_percentile_rank; a rank below 50 "
+            "means the published difference is not enriched in the unidentified directions "
+            "even within the tables it occupies. Per the user's registered ruling, Type B's "
+            "claim rests on Experiment 2.") if not ok else
+        f"control (a) failed as required in {ok}; see by_set_and_basis for the rest"}
+    out["experiment_1"] = res
     out["status"] = "projection complete"
     write(out)
     print(json.dumps({X: {"keys_identical": res["sets"][X]["keys_identical"],
