@@ -306,6 +306,8 @@ def table_weights(V, keys):
     for i, k in enumerate(keys):
         w[k[0]] = w.get(k[0], 0.0) + float((V[i] ** 2).sum())
     tot = sum(w.values())
+    if tot == 0:
+        return {}
     return {t: round(x / tot, 4) for t, x in sorted(w.items(), key=lambda z: -z[1])}
 
 
@@ -457,6 +459,7 @@ def decompose(delta, B, rng):
 def project():
     out = read_out()
     assert out["status"] == "bases complete", out["status"]
+    out["provenance_project_phase"] = git_provenance(R)
     T = template()
     theta0 = T["theta"]
     Bs = {name: load_basis(name) for name in REGISTERED}
