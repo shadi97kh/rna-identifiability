@@ -430,10 +430,149 @@ def analyse():
     return 0
 
 
+# ----------------------------------------------------------------------------------
+# exploratory: how many of TR0+TS0's 426 nontrivial directions the held-out set also misses
+# ----------------------------------------------------------------------------------
+OVERLAP = {
+    "label": "EXPLORATORY, not registered. Asked by the user on 2026-10-12 after E2 was "
+             "analysed (its registered test failed because held-out reference energies barely "
+             "move along these directions); recorded with that timing. PRED is unchanged.",
+    "question_user": "how many of the 426 TR0+TS0 nontrivial directions are also invisible to "
+                     "the 46,130 held-out structures: the null space of the two count matrices "
+                     "stacked, with the phase-0 code",
+    "method": "held-out counts M_h by the registered Extractor, exact reconstruction on every "
+              "row (any failure stops); on TR0+TS0's used columns, S = [A_TR0+TS0; M_h] and its "
+              "null dimension by streamed QR + SVD, by the Gram eigenproblem after exact "
+              "singleton elimination, and exactly (rank mod two primes after singleton "
+              "elimination), minus the 2 intrinsic directions (asserted null for M_h); "
+              "independently, 426 - rank(M_h N_nt). All must agree.",
+}
+
+
+def overlap():
+    import RNA
+    import scipy.sparse as sp
+
+    from scripts.turner_nullspace import Extractor, build_matrix
+    from scripts.turner_nullspace_rfam import (
+        PRIMES,
+        gram_null,
+        projected_rank_mod_p,
+        qr_null,
+        reduced_null,
+    )
+    from scripts.turner_par import _rebuild, template
+    from scripts.turner_typeb import TOL, load_basis, table_weights
+    from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+    out = read_out()
+    assert out["status"] == "analysed", out["status"]
+    assert out["predictions"] == json.loads(json.dumps(PRED)), "PRED changed since registration"
+    rows = heldout_rows()
+    T = template()
+    B = load_basis("tr0ts0")
+    cols, used, A, NT, Qa = B["cols"], B["used"], B["A"], B["NT"], B["I"]
+    md = reference_md()
+    ex = Extractor(T["special"], 0, 0, lxc=T["lxc"])
+    _rebuild()
+    t0 = time.time()
+    cnts, fails = [], []
+    for n, (_, name, seq, db) in enumerate(rows):
+        fc = RNA.fold_compound(seq, md)
+        if n == 0:
+            assert_turner2004_params(fc)
+        e = int(round(fc.eval_structure(db) * 100))
+        c = ex.counts(seq, db)
+        off = c.pop(("_offset",), 0)
+        if sum(T["theta"][k] * v for k, v in c.items()) + off != e:
+            fails.append(name)
+        cnts.append(c)
+    if fails:
+        raise SystemExit(f"reconstruction failed on {len(fails)} held-out rows: {fails[:5]}")
+    Mh = build_matrix(cnts, cols).tocsr()
+    Mhu = Mh[:, used].tocsr()
+    nnz = np.asarray((Mh != 0).sum(axis=0)).ravel()
+    intrinsic_null = float(np.abs(Mhu @ Qa).max())
+    assert intrinsic_null <= TOL, f"intrinsic directions not null for held-out ({intrinsic_null})"
+    # route 1: the stacked matrix on TR0+TS0's used columns, the phase-0 functions
+    S = sp.vstack([A, Mhu]).tocsr()
+    Ng, inf_g = gram_null(S)
+    Nf, inf_q = qr_null(S)
+    Nr, inf_r, red = reduced_null(S)
+    rng = np.random.default_rng(np.random.SeedSequence([SEED, 30]))
+    ranks = {str(p): projected_rank_mod_p(red, p, rng) for p in PRIMES}
+    within = {"qr_svd": int(Nf.shape[1]), "eigh_gram": int(Ng.shape[1]),
+              "eigh_reduced": int(Nr.shape[1]),
+              "exact_mod_p": int(red.shape[1] - max(ranks.values()))}
+    # route 2: project the held-out counts onto the 426 directions
+    K = np.asarray(Mhu @ NT)
+    sv = np.linalg.svd(K, compute_uv=False)
+    tol = max(K.shape) * np.finfo(float).eps * sv.max()
+    rank_K = int((sv > tol).sum())
+    shared_proj = NT.shape[1] - rank_K
+    shared_stack = {k: v - Qa.shape[1] for k, v in within.items()}
+    agree = len(set(shared_stack.values()) | {shared_proj}) == 1
+    if not agree:
+        raise SystemExit(f"routes disagree: stacked {shared_stack}, projected {shared_proj}")
+    _, _, Vt = np.linalg.svd(K, full_matrices=False)
+    Vnull = Vt[rank_K:].T if rank_K < NT.shape[1] else np.zeros((NT.shape[1], 0))
+    shared_basis = NT @ Vnull
+    ucols = [cols[i] for i in used]
+    seen = sv[sv > tol]
+    # post hoc (Claude, to explain why E2's registered test failed): along each folded point,
+    # the fraction of held-out reference energies that change at all, from the sha-checked shards
+    for f, h in out["run"]["shards_sha256"].items():
+        assert _sha(SHARDS / f) == h, f"{f} changed"
+    sh = [[json.loads(ln) for ln in (SHARDS / f"shard{w}.jsonl").read_text().splitlines()]
+          for w in range(N_WORKERS)]
+    ref_change = {}
+    for t in [r["table"] for r in sh[0][1:] if "table" in r]:
+        d = np.array([np.nan if x is None else x for s in sh for r in s if r.get("table") == t
+                      for x in r["dref_dcal"]], dtype=float) / 100
+        d = d[~np.isnan(d)]
+        nz = d != 0
+        ref_change[t] = {"fraction_changed": float(nz.mean()), "n_compared": int(d.size),
+                         "rms_all_kcal": float(np.sqrt(np.mean(d ** 2))),
+                         "rms_among_changed_kcal": (float(np.sqrt(np.mean(d[nz] ** 2)))
+                                                    if nz.any() else 0.0),
+                         "max_abs_kcal": float(np.abs(d).max())}
+    out["exploratory_overlap"] = {
+        **OVERLAP,
+        "results": {
+            "n_heldout_rows": len(rows), "reconstruction_failures": 0,
+            "heldout_used_columns": int((nnz > 0).sum()),
+            "heldout_uses_tr0ts0_used_columns": int((nnz[used] > 0).sum()),
+            "intrinsic_null_for_heldout_max_abs": intrinsic_null,
+            "stacked_null_within_tr0ts0_used": within,
+            "stacked_qr": inf_q, "stacked_gram": inf_g, "stacked_reduced": inf_r,
+            "exact_ranks_mod_p": ranks, "stacked_shape": list(S.shape),
+            "shared_nontrivial_by_route": {"stacked": shared_stack,
+                                           "projected_426_minus_rank": shared_proj},
+            "shared_nontrivial": shared_proj, "of": int(NT.shape[1]),
+            "projected_sv_tol": float(tol),
+            "projected_smallest_nonnull_sv": float(seen.min()) if seen.size else None,
+            "projected_largest_null_sv": (float(sv[sv <= tol].max())
+                                          if (sv <= tol).any() else None),
+            "shared_weight_by_table": table_weights(shared_basis, ucols),
+            "heldout_reference_change_by_point": ref_change,
+            "heldout_reference_change_note": "post hoc (Claude), to explain E2's failure: "
+                                             "fraction of held-out reference energies that "
+                                             "change at all (exact integer differences under "
+                                             "the written table; references forbidden under a "
+                                             "whole table excluded)",
+            "seconds": round(time.time() - t0, 1),
+            "provenance": git_provenance(R)}}
+    write(out)
+    print(json.dumps({k: v for k, v in out["exploratory_overlap"]["results"].items()
+                      if k not in ("stacked_qr", "stacked_gram", "stacked_reduced",
+                                   "provenance")}, indent=1))
+    return 0
+
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
     if ph == "worker":
         a = sys.argv[sys.argv.index("worker") + 1:]
         sys.exit(worker(int(a[0]), int(a[1]), a[2]))
     sys.exit({"build": build, "preregister": preregister, "run": run,
-              "analyse": analyse}[ph]())
+              "analyse": analyse, "overlap": overlap}[ph]())

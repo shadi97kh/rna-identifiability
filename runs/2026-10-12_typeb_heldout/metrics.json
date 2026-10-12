@@ -127,6 +127,312 @@
    }
   ]
  },
+ "exploratory_overlap": {
+  "label": "EXPLORATORY, not registered. Asked by the user on 2026-10-12 after E2 was analysed (its registered test failed because held-out reference energies barely move along these directions); recorded with that timing. PRED is unchanged.",
+  "method": "held-out counts M_h by the registered Extractor, exact reconstruction on every row (any failure stops); on TR0+TS0's used columns, S = [A_TR0+TS0; M_h] and its null dimension by streamed QR + SVD, by the Gram eigenproblem after exact singleton elimination, and exactly (rank mod two primes after singleton elimination), minus the 2 intrinsic directions (asserted null for M_h); independently, 426 - rank(M_h N_nt). All must agree.",
+  "question_user": "how many of the 426 TR0+TS0 nontrivial directions are also invisible to the 46,130 held-out structures: the null space of the two count matrices stacked, with the phase-0 code",
+  "results": {
+   "exact_ranks_mod_p": {
+    "1048571": 3029,
+    "1048573": 3029
+   },
+   "heldout_reference_change_by_point": {
+    "full:Andronescu2007": {
+     "fraction_changed": 0.9990678517233904,
+     "max_abs_kcal": 33.75,
+     "n_compared": 46130,
+     "rms_all_kcal": 3.1547683301623666,
+     "rms_among_changed_kcal": 3.156239714834856
+    },
+    "full:Langdon2018": {
+     "fraction_changed": 0.9817437762873706,
+     "max_abs_kcal": 37.2,
+     "n_compared": 43985,
+     "rms_all_kcal": 2.7565740863285737,
+     "rms_among_changed_kcal": 2.7820862561799786
+    },
+    "full:Turner1999": {
+     "fraction_changed": 0.9395837849555604,
+     "max_abs_kcal": 11.16,
+     "n_compared": 46130,
+     "rms_all_kcal": 1.822912762216458,
+     "rms_among_changed_kcal": 1.8806073486305264
+    },
+    "null:0@16": {
+     "fraction_changed": 0.02952525471493605,
+     "max_abs_kcal": 1.72,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.09315775682476789,
+     "rms_among_changed_kcal": 0.5421534128402512
+    },
+    "null:0@4": {
+     "fraction_changed": 0.029330153912854973,
+     "max_abs_kcal": 0.43,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.023339268184978765,
+     "rms_among_changed_kcal": 0.1362793531106499
+    },
+    "null:0@64": {
+     "fraction_changed": 0.029633644049425537,
+     "max_abs_kcal": 6.9,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.3730294943905071,
+     "rms_among_changed_kcal": 2.166958737090221
+    },
+    "null:1@16": {
+     "fraction_changed": 0.029655321916323432,
+     "max_abs_kcal": 1.9,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.09033369023084285,
+     "rms_among_changed_kcal": 0.5245639375342185
+    },
+    "null:1@4": {
+     "fraction_changed": 0.029416865380446564,
+     "max_abs_kcal": 0.48,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.02263859451055646,
+     "rms_among_changed_kcal": 0.1319931107377966
+    },
+    "null:1@64": {
+     "fraction_changed": 0.029742033383915022,
+     "max_abs_kcal": 7.62,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.3612942567986162,
+     "rms_among_changed_kcal": 2.0949599730376085
+    },
+    "null:2@16": {
+     "fraction_changed": 0.029351831779752872,
+     "max_abs_kcal": 1.51,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.07961187825799539,
+     "rms_among_changed_kcal": 0.4646867244137507
+    },
+    "null:2@4": {
+     "fraction_changed": 0.02889659657489703,
+     "max_abs_kcal": 0.38,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.019873270722910712,
+     "rms_among_changed_kcal": 0.116908476587348
+    },
+    "null:2@64": {
+     "fraction_changed": 0.029742033383915022,
+     "max_abs_kcal": 6.05,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.31827801572823544,
+     "rms_among_changed_kcal": 1.8455308677108246
+    },
+    "null:3@16": {
+     "fraction_changed": 0.02961196618252764,
+     "max_abs_kcal": 1.65,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.10486463769700276,
+     "rms_among_changed_kcal": 0.6093901615225409
+    },
+    "null:3@4": {
+     "fraction_changed": 0.02740082375894212,
+     "max_abs_kcal": 0.41,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.02634399494766751,
+     "rms_among_changed_kcal": 0.15914750144186957
+    },
+    "null:3@64": {
+     "fraction_changed": 0.029742033383915022,
+     "max_abs_kcal": 6.58,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.4199890473730101,
+     "rms_among_changed_kcal": 2.435300940449442
+    },
+    "null:4@16": {
+     "fraction_changed": 0.029546932581833947,
+     "max_abs_kcal": 1.87,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.08134679529994536,
+     "rms_among_changed_kcal": 0.47324305333254796
+    },
+    "null:4@4": {
+     "fraction_changed": 0.02928679817905918,
+     "max_abs_kcal": 0.47,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.0202489384926768,
+     "rms_among_changed_kcal": 0.11832222123713707
+    },
+    "null:4@64": {
+     "fraction_changed": 0.029546932581833947,
+     "max_abs_kcal": 7.46,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.3252058495317917,
+     "rms_among_changed_kcal": 1.8919172983589392
+    },
+    "null:5@16": {
+     "fraction_changed": 0.029742033383915022,
+     "max_abs_kcal": 2.08,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.09125490225852459,
+     "rms_among_changed_kcal": 0.5291403446848273
+    },
+    "null:5@4": {
+     "fraction_changed": 0.029655321916323432,
+     "max_abs_kcal": 0.52,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.02285488011778562,
+     "rms_among_changed_kcal": 0.1327173270107897
+    },
+    "null:5@64": {
+     "fraction_changed": 0.029742033383915022,
+     "max_abs_kcal": 8.33,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.36499271408530415,
+     "rms_among_changed_kcal": 2.1164054287341805
+    },
+    "null:6@16": {
+     "fraction_changed": 0.029546932581833947,
+     "max_abs_kcal": 1.97,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.11109731927795508,
+     "rms_among_changed_kcal": 0.6463196785847533
+    },
+    "null:6@4": {
+     "fraction_changed": 0.029395187513548665,
+     "max_abs_kcal": 0.49,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.02780900140761919,
+     "rms_among_changed_kcal": 0.16219866546814132
+    },
+    "null:6@64": {
+     "fraction_changed": 0.029742033383915022,
+     "max_abs_kcal": 7.86,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.44446375009254196,
+     "rms_among_changed_kcal": 2.5772171807012034
+    },
+    "null:7@16": {
+     "fraction_changed": 0.029655321916323432,
+     "max_abs_kcal": 1.75,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.1042952357798442,
+     "rms_among_changed_kcal": 0.605638044974445
+    },
+    "null:7@4": {
+     "fraction_changed": 0.02952525471493605,
+     "max_abs_kcal": 0.44,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.025979114157833657,
+     "rms_among_changed_kcal": 0.15119154736335721
+    },
+    "null:7@64": {
+     "fraction_changed": 0.029720355517017124,
+     "max_abs_kcal": 7.01,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.4169477938812703,
+     "rms_among_changed_kcal": 2.4185478279156256
+    },
+    "published_own:Andronescu2007@21.0323": {
+     "fraction_changed": 0.029395187513548665,
+     "max_abs_kcal": 3.07,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.12429061662617046,
+     "rms_among_changed_kcal": 0.7249369314445716
+    },
+    "published_own:Langdon2018@5.42479": {
+     "fraction_changed": 0.020052026880554952,
+     "max_abs_kcal": 1.01,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.031145936639858388,
+     "rms_among_changed_kcal": 0.21994913416883824
+    },
+    "published_own:Turner1999@24.3831": {
+     "fraction_changed": 0.029113375243876003,
+     "max_abs_kcal": 3.27,
+     "n_compared": 46130,
+     "rms_all_kcal": 0.13403446337656047,
+     "rms_among_changed_kcal": 0.7855434303796692
+    }
+   },
+   "heldout_reference_change_note": "post hoc (Claude), to explain E2's failure: fraction of held-out reference energies that change at all (exact integer differences under the written table; references forbidden under a whole table excluded)",
+   "heldout_used_columns": 4524,
+   "heldout_uses_tr0ts0_used_columns": 2703,
+   "intrinsic_null_for_heldout_max_abs": 3.3306690738754696e-16,
+   "n_heldout_rows": 46130,
+   "of": 426,
+   "projected_largest_null_sv": 4.336089269635556e-12,
+   "projected_smallest_nonnull_sv": 0.36352263747746427,
+   "projected_sv_tol": 8.668979588195959e-11,
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": true,
+    "git_dirty_paths_outside_runs": [
+     "paper/recomb2027/main.tex",
+     "paper/recomb2027/pins.json",
+     "paper/recomb2027/sections/02_setup.tex",
+     "paper/recomb2027/supplement/body.tex",
+     "scripts/typeb_heldout.py",
+     "tests/test_recomb_pins.py"
+    ],
+    "git_sha": "b32b772e97c36cf417610bf710123d0462409fe8"
+   },
+   "reconstruction_failures": 0,
+   "seconds": 156.2,
+   "shared_nontrivial": 154,
+   "shared_nontrivial_by_route": {
+    "projected_426_minus_rank": 154,
+    "stacked": {
+     "eigh_gram": 154,
+     "eigh_reduced": 154,
+     "exact_mod_p": 154,
+     "qr_svd": 154
+    }
+   },
+   "shared_weight_by_table": {
+    "ML_cc": 0.0,
+    "ML_ci": 0.0,
+    "ML_cu": 0.0,
+    "TerminalAU": 0.0,
+    "bulge": 0.0,
+    "hairpin": 0.0,
+    "int11": 0.0,
+    "int21": 0.2404,
+    "int22": 0.7596,
+    "internal_loop": 0.0,
+    "mismatch1nI": 0.0,
+    "mismatch23I": 0.0,
+    "mismatchH": 0.0,
+    "mismatchI": 0.0,
+    "ninio_m": 0.0,
+    "ninio_max": 0.0,
+    "stack": 0.0
+   },
+   "stacked_gram": {
+    "eig_tol": 1.1685570213338744e-05,
+    "largest_null_eig": 8.314297720650134e-14,
+    "smallest_nonnull_eig": 0.07165246017842701
+   },
+   "stacked_null_within_tr0ts0_used": {
+    "eigh_gram": 156,
+    "eigh_reduced": 156,
+    "exact_mod_p": 156,
+    "qr_svd": 156
+   },
+   "stacked_qr": {
+    "largest_null_sv": 1.5085078991605211e-12,
+    "smallest_nonnull_sv": 0.26767977170195373,
+    "sv_tol": 4.3810582236331424e-08
+   },
+   "stacked_reduced": {
+    "eig_tol": 7.207080693288009e-06,
+    "largest_null_eig": 8.680106405177391e-11,
+    "reduced_shape": [
+     56709,
+     3185
+    ],
+    "singleton_columns_eliminated": 1376,
+    "smallest_nonnull_eig": 0.13845715499243152
+   },
+   "stacked_shape": [
+    58085,
+    4561
+   ]
+  }
+ },
  "predictions": {
   "descriptive_user": "the ratio held-out corrected / in-sample corrected, with replicates whose in-sample corrected spread is 0 counted as 0 (against the prediction). Descriptive only; this rule replaces any degenerate-case rule",
   "e3_on_heldout_user": "the held-out set folded under the whole Turner 1999, Andronescu 2007 and Langdon 2018 tables: changed fraction and paired dF1 (descriptive)",
