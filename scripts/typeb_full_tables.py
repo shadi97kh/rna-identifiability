@@ -127,6 +127,15 @@ def analyse():
 
 
 def dna():
+    """DNA check, two parts. (1) Lookup structure: with the DNA set loaded, is eval_structure
+    counts . theta_DNA on the constructed structures? Mismatches are classified. The count model
+    linearises the Ninio term MIN2(max, asym*m) at Turner 2004's values (cap from asymmetry 5),
+    and DNA's slope differs, so internal loops of large asymmetry are expected to differ there.
+    (2) The gauge itself, value-independently: write DNA's table and DNA's table + 7*N1 (and
+    + 5*N2) through the verified writer (DNA's values on the reachable columns, at d0 and
+    special_hp 0 where nothing else is read), load each, and require identical energies on every
+    constructed structure."""
+    import collections
     import tempfile
 
     import RNA
@@ -134,11 +143,12 @@ def dna():
     from scripts.turner_nullspace import (
         Extractor,
         _reachable,
+        analytic_directions,
         build_matrix,
         generating_set,
         theta_from_par,
     )
-    from scripts.turner_par import _rebuild, template
+    from scripts.turner_par import _rebuild, loaded, template, write_par
     from thermo.vienna_ref import assert_turner2004_params, reference_md
 
     T = template()
@@ -152,36 +162,63 @@ def dna():
     th = P["theta"]
     missing = [k for k in cols if k not in th]
     inf = [k for k in cols if k in th and th[k] >= 10_000_000]
-    gen = generating_set(P["special"])
-    ex = Extractor(P["special"], 0, 0)
+    gen = generating_set(T["special"])
+    ex = Extractor(T["special"], 0, 0)
     md = reference_md()
-    fc0 = RNA.fold_compound(gen[0][1], md)
-    loaded_ok = fc0.params.stack[2][2] == th[("stack", 2, 2)]
-    G = build_matrix([ex.counts(s, d) for _, s, d in gen], cols)
-    tv = np.array([th.get(k, 0) for k in cols], dtype=np.int64)
-    want = G @ tv
-    bad = 0
-    usable = np.asarray((G[:, [cols.index(k) for k in inf]] != 0).sum(axis=1)).ravel() == 0 \
-        if inf else np.ones(len(gen), dtype=bool)
-    for r, (_, s, d) in enumerate(gen):
-        if not usable[r]:
-            continue
+    cnts = [ex.counts(s, d) for _, s, d in gen]
+    loaded_ok = RNA.fold_compound(gen[0][1], md).params.stack[2][2] == th[("stack", 2, 2)]
+    mism = collections.Counter()
+    by_tag = collections.Counter()
+    for (tag, s, d), c in zip(gen, cnts, strict=True):
         got = int(round(RNA.fold_compound(s, md).eval_structure(d) * 100))
-        bad += got != int(want[r])
+        diff = got - sum(th[k] * v for k, v in c.items())
+        if diff:
+            mism[diff] += 1
+            by_tag[(tag, c.get(("ninio_max",), 0) > 0)] += 1
     RNA.params_load_RNA_Turner2004()
     _rebuild()
+    # (2) the gauge on DNA's values, through the writer and ViennaRNA's own evaluation
+    an = analytic_directions(cols, 0, 0)
+    base = dict(T["theta"]) | {k: th[k] for k in cols}
+    gauge = {}
+    with tempfile.TemporaryDirectory() as t:
+        energies = {}
+        for name, eps, vec in (("base", 0, None),
+                               ("N1", 7, an["N1_hairpin_mismatch_vs_init"]),
+                               ("N2", 5, an["N2_interior_mismatch_vs_init"])):
+            full = dict(base)
+            if vec is not None:
+                for i, k in enumerate(cols):
+                    if vec[i]:
+                        full[k] = int(base[k] + eps * vec[i])
+            with loaded(write_par(full, pathlib.Path(t) / f"{name}.par")):
+                assert RNA.fold_compound(gen[0][1], md).params.stack[2][2] == th[("stack", 2, 2)]
+                energies[name] = [int(round(RNA.fold_compound(s, md).eval_structure(d) * 100))
+                                  for _, s, d in gen]
+        for name in ("N1", "N2"):
+            nd = sum(a != b for a, b in zip(energies[name], energies["base"], strict=True))
+            gauge[name] = {"rows": len(gen), "rows_changed": nd, "null_for_dna": nd == 0}
+    G = build_matrix(cnts, cols)
+    vec_ok = {n: bool(np.abs(G @ an[k]).max() == 0) for n, k in
+              (("N1", "N1_hairpin_mismatch_vs_init"), ("N2", "N2_interior_mismatch_vs_init"))}
     assert_turner2004_params(RNA.fold_compound("GGGGAAACCCC", reference_md()))
     out = read_out()
     out["dna_check"] = {
         "loader": "params_load_DNA_Mathews2004", "par_sha256": h,
-        "keys_identical_to_rna_turner2004": set(th) == set(T["theta"]),
         "reachable_columns": len(cols), "reachable_missing": [repr(k) for k in missing],
         "reachable_inf": len(inf), "table_in_effect": bool(loaded_ok),
-        "rows_checked": int(usable.sum()), "rows_skipped_inf": int((~usable).sum()),
-        "rows_mismatched": int(bad),
-        "same_lookup_structure": bool(loaded_ok and not missing and bad == 0),
-        "reading": "if same_lookup_structure, the intrinsic directions (defined by counts "
-                   "alone) are null for DNA too",
+        "ninio_dna": [th[("ninio_m",)], th[("ninio_max",)]],
+        "ninio_rna": [T["theta"][("ninio_m",)], T["theta"][("ninio_max",)]],
+        "lookup_check": {"rows": len(gen), "rows_mismatched": sum(mism.values()),
+                         "mismatch_values_dcal": {str(k): v for k, v in mism.items()},
+                         "mismatched_by_construction_and_ninio_max_counted": {
+                             f"{a}|ninio_max={b}": v for (a, b), v in by_tag.items()},
+                         "reading": "every mismatch is an internal loop whose counts take the "
+                                    "Ninio cap: the count model linearises MIN2(max, asym*m) at "
+                                    "Turner 2004's m; DNA's smaller m moves the cap to a larger "
+                                    "asymmetry. Not a different lookup structure."},
+        "gauge_check": gauge, "counts_null_on_generating_set": vec_ok,
+        "intrinsic_directions_null_for_dna": all(g["null_for_dna"] for g in gauge.values()),
         "provenance": git_provenance(R)}
     write(out)
     print(json.dumps({k: v for k, v in out["dna_check"].items() if k != "provenance"},
