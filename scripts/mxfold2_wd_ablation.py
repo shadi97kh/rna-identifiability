@@ -489,6 +489,32 @@ def bound_wd0():
     return 0
 
 
+def lambda_required(width=1.0):
+    """The decoupled decay rate that would hold v.w to a stationary SD of `width`, by
+    inverting SD = sigma_LR / sqrt(2 eta lambda). Requested by the user 2026-10-12, from data
+    on disk; post hoc. Assumes sigma_LR does not itself depend on lambda, which no run here
+    tests: the trajectory under a 13-26x stronger decay is different."""
+    out = read_out()
+    res = {"width": width, "eta": LR, "lambda_conventional": WD,
+           "formula": "lambda = sigma_LR^2 / (2 eta width^2); exact AR(1): "
+                      "eta lambda = 1 - sqrt(1 - sigma_LR^2 / width^2)",
+           "assumption_untested": "sigma_LR measured at lambda = 0.01 holds at the larger "
+                                  "lambda; decoupled decay shrinks every parameter, "
+                                  "identifiable or not, by (1 - eta lambda) per step"}
+    for name, ar in (("arm_c_ten_epochs", out["analysis_c"]["AR1"]),
+                     ("arm_a_epoch1", out["analysis_ab"]["arm_a"]["AR1"])):
+        for b in ("1000", "100"):
+            s = ar["long_run"][b]["sigma_LR"]
+            lam = s**2 / (2 * LR * width**2)
+            lam_exact = (1 - math.sqrt(1 - s**2 / width**2)) / LR
+            res[f"{name}_b{b}"] = {"sigma_LR": s, "lambda": lam, "lambda_exact": lam_exact,
+                                   "times_conventional": lam / WD}
+    out["lambda_required_for_width"] = res
+    write(out)
+    print(json.dumps(res, indent=1))
+    return 0
+
+
 def preregister():
     p = OUT / "metrics.json"
     if p.exists():
@@ -543,4 +569,6 @@ if __name__ == "__main__":
         sys.exit(analyse_c())
     if ph == "bound-wd0":
         sys.exit(bound_wd0())
+    if ph == "lambda-required":
+        sys.exit(lambda_required())
     raise SystemExit(f"unknown phase {ph}")
