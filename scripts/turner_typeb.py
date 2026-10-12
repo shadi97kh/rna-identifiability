@@ -673,7 +673,7 @@ def _vec(cnt, idx):
     return np.array(ks, dtype=np.int64), np.array([cnt[k] for k in cnt], dtype=np.int64)
 
 
-def worker(w, W, dst, limit=None, only=None, skip_load=False):
+def worker(w, W, dst, limit=None, only=None, skip_load=False, stale_boltzmann=False):
     """Shard w of W: baseline once, then every point. Writes dst (JSON lines)."""
     T = template()
     theta0, special, lxc = T["theta"], T["special"], T["lxc"]
@@ -735,7 +735,8 @@ def worker(w, W, dst, limit=None, only=None, skip_load=False):
             dth = th - t0
             full = dict(theta0) | {k: int(th[i]) for i, k in enumerate(cols)}
             path = write_par(full, pathlib.Path(t) / f"p{p}.par")
-            ctx = contextlib.nullcontext() if skip_load else loaded(path)
+            ctx = (contextlib.nullcontext() if skip_load else
+                   _stale_boltzmann(path) if stale_boltzmann else loaded(path))
             with ctx:
                 first = RNA.fold_compound(mine[0][2], md)
                 bad = params_match(first, full, 0, 0)
@@ -747,6 +748,20 @@ def worker(w, W, dst, limit=None, only=None, skip_load=False):
                     if got != want:
                         raise GuardFailure(f"point {p}: carry row {r} evaluates to {got}, the "
                                            f"written table gives {want}")
+                # the Boltzmann factors are a separate cache (turner_par V3): a partition
+                # function constrained to the top carry row's one structure must give its
+                # counts . theta_r free energy
+                r, want = pm["carry"][0]
+                _, s, d = gen[r]
+                fcc = RNA.fold_compound(s, md)
+                fcc.hc_add_from_db(d.replace(".", "x"), RNA.CONSTRAINT_DB_DEFAULT
+                                   | RNA.CONSTRAINT_DB_ENFORCE_BP)
+                _, ec = fcc.mfe()
+                fcc.exp_params_rescale(ec)
+                gc = int(round(fcc.pf()[1] * 100))
+                if gc != want:
+                    raise GuardFailure(f"point {p}: Boltzmann carry row {r} gives {gc}, the "
+                                       f"written table gives {want}")
                 rec = {"p": p, "changed": [], "genuine": [], "f1_base": [], "dbpp": [],
                        "f1_ref": [], "leak": []}
                 for b in base:
@@ -790,6 +805,21 @@ def worker(w, W, dst, limit=None, only=None, skip_load=False):
     out.write(json.dumps({"done": True}) + "\n")
     out.close()
     return 0
+
+
+@contextlib.contextmanager
+def _stale_boltzmann(path):
+    """Planted control only: load the file with the OLD, MFE-only sentinel, so the energy
+    table is the file's and the Boltzmann factors are the previous model's."""
+    RNA.params_load(str(path))
+    sent = reference_md()
+    sent.temperature = 25.0
+    RNA.fold_compound("GGGGAAACCCC", sent)
+    try:
+        yield
+    finally:
+        RNA.params_load_RNA_Turner2004()
+        _rebuild()
 
 
 def _launch_workers(W, dsts, extra=()):
@@ -836,7 +866,17 @@ def fold_smoke():
                                   "caught_by_carry_check": pr.returncode != 0
                                   and "carry row" in pr.stderr,
                                   "stderr_tail": pr.stderr.strip().splitlines()[-1:]}
-    res["passes"] = (rc == [0, 0] and res["planted_stale_table"]["caught_by_carry_check"])
+    pb = subprocess.run([sys.executable, __file__, "--phase", "fold-worker", "0", "1",
+                         str(sm / "planted_boltzmann.jsonl"), "--limit", "10", "--only",
+                         str(pick[0]), "--stale-boltzmann"], capture_output=True, text=True,
+                        env=dict(os.environ, OMP_NUM_THREADS="1", CUDA_VISIBLE_DEVICES=""))
+    res["planted_stale_boltzmann"] = {"exit": pb.returncode,
+                                      "caught_by_boltzmann_carry": pb.returncode != 0
+                                      and "Boltzmann carry row" in pb.stderr,
+                                      "stderr_tail": pb.stderr.strip().splitlines()[-1:]}
+    res["passes"] = (rc == [0, 0] and res["planted_stale_table"]["caught_by_carry_check"]
+                     and res["planted_stale_boltzmann"]["caught_by_boltzmann_carry"]
+                     and all(v["mean_dbpp"] > 0 for v in res["points"].values()))
     out["fold_smoke"] = res | {"provenance": git_provenance(R)}
     write(out)
     print(json.dumps(res, indent=1))
@@ -982,7 +1022,8 @@ def fold_worker_cli(argv):
     limit = int(rest[rest.index("--limit") + 1]) if "--limit" in rest else None
     only = ({int(x) for x in rest[rest.index("--only") + 1].split(",")}
             if "--only" in rest else None)
-    return worker(w, W, dst, limit=limit, only=only, skip_load="--skip-load" in rest)
+    return worker(w, W, dst, limit=limit, only=only, skip_load="--skip-load" in rest,
+                  stale_boltzmann="--stale-boltzmann" in rest)
 
 
 PHASES = {"preregister": preregister, "bases": bases, "project": project,
