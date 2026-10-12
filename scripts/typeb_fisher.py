@@ -60,6 +60,25 @@ BOOT = 2000
 RECON_EVERY = 4
 RUNNING = f"{RUNNING_PREFIX}: E1 Fisher sampling"
 DONE = "sampled (workers)"
+# exploratory gradient phase (user, 2026-10-12, asked AFTER E1 was registered, sampled and
+# analysed; not registered; PRED is unchanged and the registered results are not touched)
+GRAD_SEED = 20261013
+GRAD_SHARDS = SHARDS / "gradient"
+GRAD_RUNNING = f"{RUNNING_PREFIX}: E1 gradient sampling (exploratory)"
+GRAD = {
+    "label": "EXPLORATORY, not registered. Asked by the user on 2026-10-12 after E1's "
+             "preregistration (c328815), sampling and analysis (fe66314); recorded with that "
+             "timing. PRED is unchanged.",
+    "spec_user": "per sequence, the sample mean of c(s).v for every direction; the likelihood "
+                 "gradient g(v) = sum_x [c(ref_x).v - mean_x(c.v)]/kT (gradient of -log P), "
+                 "sequence-bootstrap CIs; the one-step Newton move dt(v) = -g(v)/I(v) in "
+                 "kcal/mol; must hold: g = 0 exactly for N1 and N2 (every term an integer "
+                 "zero); report sign and size of dt along each published null component "
+                 "(positive = toward that table)",
+    "sampling": f"a fresh run of the E1 sampler (K = {K}) with ViennaRNA's sampler seeded per "
+                f"sequence, RNA.init_rand({GRAD_SEED} + sequence index); g, I and dt come from "
+                "the same samples; I is compared with E1's registered values as a check",
+}
 
 PRED = {
     "registered": "2026-10-12, before any sampling",
@@ -152,7 +171,11 @@ def directions():
     return names, np.stack(vecs, axis=1), np.round(np.stack([n1, n2], 1)).astype(np.int64), NTf, B
 
 
-def worker(w, W, dst):
+def worker(w, W, dst, gradient=False):
+    """The registered E1 sampler. With gradient=True (the exploratory gradient phase, added
+    after E1 was analysed) it also seeds ViennaRNA's sampler per sequence, so the run can be
+    repeated sample for sample, and stores per sequence the sample mean of c(s).v, the
+    reference's c(ref).v, and the integer intrinsic sums; the registered path is unchanged."""
     import RNA
     import scipy.sparse as sp
 
@@ -182,7 +205,11 @@ def worker(w, W, dst):
     covF, covA, covB = (np.zeros((k_nt, k_nt)) for _ in range(3))
     recon, kT = 0, None
     seq_index = []
-    for n, (i, (_, name, seq, _db)) in enumerate(mine):
+    if gradient:
+        mean_cv, ref_cv = np.zeros_like(Ix), np.zeros_like(Ix)
+        ref_int, sum_int = (np.zeros((len(mine), Nint.shape[1]), dtype=np.int64)
+                            for _ in range(2))
+    for n, (i, (_, name, seq, db)) in enumerate(mine):
         fc = RNA.fold_compound(seq, md)
         if n == 0:
             assert_turner2004_params(fc)
@@ -192,6 +219,8 @@ def worker(w, W, dst):
         if n == 0:
             assert_turner2004_boltzmann(fc)
             kT = fc.exp_params.kT / 1000.0  # kcal/mol
+        if gradient:
+            RNA.init_rand(GRAD_SEED + i)
         ss = fc.pbacktrack(K)
         assert len(ss) == K, (name, len(ss))
         ri, ci, va = [], [], []
@@ -214,14 +243,27 @@ def worker(w, W, dst):
             raise SystemExit(f"must-hold failed: c(s).N != 0 on {name}")
         P = np.asarray(C @ D)
         Ix[n] = P.var(axis=0, ddof=1) / kT**2
+        if gradient:
+            cr = ex.counts(seq, db)
+            cr.pop(("_offset",), 0)
+            rk = np.array([idx[k] for k in cr], dtype=np.int64)
+            rv = np.array([cr[k] for k in cr], dtype=np.int64)
+            ref_int[n] = rv @ Nint[rk] if len(rk) else 0
+            sum_int[n] = np.asarray(C @ Nint).sum(axis=0)
+            if np.any(ref_int[n] != 0) or np.any(sum_int[n] != 0):
+                raise SystemExit(f"must-hold failed: g(N) terms nonzero on {name}")
+            ref_cv[n] = rv @ D[rk] if len(rk) else 0.0
+            mean_cv[n] = P.mean(axis=0)
         Z = np.asarray(C @ NTf)
         for M_, rows_ in ((covF, slice(None)), (covA, slice(0, K // 2)),
                           (covB, slice(K // 2, K))):
             z = Z[rows_] - Z[rows_].mean(axis=0)
             M_ += (z.T @ z) / (z.shape[0] - 1)
         seq_index.append(i)
+    extra = ({"mean_cv": mean_cv, "ref_cv": ref_cv, "ref_int": ref_int, "sum_int": sum_int}
+             if gradient else {})
     np.savez(dst, Ix=Ix, seq_index=np.array(seq_index), covF=covF / kT**2, covA=covA / kT**2,
-             covB=covB / kT**2, names=np.array(names), kT=kT, recon_checked=recon)
+             covB=covB / kT**2, names=np.array(names), kT=kT, recon_checked=recon, **extra)
     return 0
 
 
@@ -354,9 +396,123 @@ def analyse():
     return 0
 
 
+def gradient_run():
+    """Driver for the exploratory gradient sampling (launch under setsid). Status lives under
+    /exploratory_gradient; the registered status and results are left as they are."""
+    out = read_out()
+    assert out["status"] == "analysed", out["status"]
+    if os.getsid(0) != os.getpid():
+        raise SystemExit("launch under setsid")
+    GRAD_SHARDS.mkdir(parents=True, exist_ok=True)
+    dsts = [GRAD_SHARDS / f"shard{w}.npz" for w in range(N_WORKERS)]
+    env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1",
+               MKL_NUM_THREADS="1", CUDA_VISIBLE_DEVICES="")
+    procs = [subprocess.Popen([sys.executable, __file__, "--phase", "gradient-worker", str(w),
+                               str(N_WORKERS), str(d)], env=env) for w, d in enumerate(dsts)]
+    prev = out.get("exploratory_gradient", {})
+    out["exploratory_gradient"] = {
+        **GRAD, "status": GRAD_RUNNING,
+        "failed_attempts": prev.get("failed_attempts", []) + (
+            [{"status": prev["status"], **prev.get("run", {})}]
+            if str(prev.get("status", "")).startswith("FAILED") else []),
+        "run": {"started": time.strftime("%Y-%m-%dT%H:%M:%S"), "driver_pid": os.getpid(),
+                "load_at_start": os.getloadavg(), "provenance": git_provenance(R)}}
+    write(out)
+    rc = [p.wait() for p in procs]
+    out = read_out()
+    ok = rc == [0] * N_WORKERS and all(d.exists() for d in dsts)
+    eg = out["exploratory_gradient"]
+    eg["run"].update({"workers_exit": rc, "finished": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                      "shards_sha256": {d.name: _sha(d) for d in dsts if d.exists()}})
+    eg["status"] = "sampled (workers)" if ok else f"FAILED: workers exited {rc}"
+    write(out)
+    return 0 if ok else 1
+
+
+def gradient_analyse():
+    out = read_out()
+    eg = out["exploratory_gradient"]
+    assert eg["status"] in ("sampled (workers)", "analysed"), eg["status"]
+    assert out["predictions"] == json.loads(json.dumps(PRED)), "PRED changed since registration"
+    for f, h in eg["run"]["shards_sha256"].items():
+        assert _sha(GRAD_SHARDS / f) == h, f"{f} changed"
+    sh = [np.load(GRAD_SHARDS / f"shard{w}.npz") for w in range(N_WORKERS)]
+    names = [str(x) for x in sh[0]["names"]]
+    kTs = {float(z["kT"]) for z in sh}
+    assert len(kTs) == 1
+    kT = kTs.pop()
+    cat = {k: np.concatenate([z[k] for z in sh]) for k in ("Ix", "mean_cv", "ref_cv", "ref_int",
+                                                            "sum_int", "seq_index")}
+    n = len(cat["seq_index"])
+    assert n == 11970 and len(set(cat["seq_index"].tolist())) == n
+    # must hold: every term of g along N1 and N2 is an integer zero (the workers stop otherwise)
+    assert not cat["ref_int"].any() and not cat["sum_int"].any()
+    gx = (cat["ref_cv"] - cat["mean_cv"]) / kT  # per-sequence gradient of -log P along v
+    Ix = cat["Ix"]
+    rng = np.random.default_rng(np.random.SeedSequence([SEED, 12]))
+    bi = _boot(rng, n)
+    gb = np.stack([gx[b].sum(axis=0) for b in bi])
+    Ib = np.stack([Ix[b].sum(axis=0) for b in bi])
+    g, Itot = gx.sum(axis=0), Ix.sum(axis=0)
+    reg = out["results"]["per_direction"]
+    per = {}
+    for j, nm in enumerate(names):
+        if nm.startswith("intrinsic:"):
+            per[nm] = {"g": 0, "g_exact": "every term an integer zero", "I": 0,
+                       "newton_step_kcal": None, "g_float_residue": float(g[j])}
+            continue
+        dt, dtb = -g[j] / Itot[j], -gb[:, j] / Ib[:, j]
+        per[nm] = {"g": float(g[j]), "g_ci95": [float(x) for x in np.percentile(gb[:, j],
+                                                                                 [2.5, 97.5])],
+                   "reference_term": float(cat["ref_cv"][:, j].sum() / kT),
+                   "I": float(Itot[j]), "I_registered_E1": reg[nm]["I"],
+                   "I_rel_diff_vs_E1": float(Itot[j] / reg[nm]["I"] - 1),
+                   "newton_step_kcal": float(dt),
+                   "newton_step_ci95_kcal": [float(x) for x in np.percentile(dtb, [2.5, 97.5])]}
+    # published components: positive = toward that table (checked against its own point)
+    from scripts.turner_typeb import FOLD
+    meta = json.loads((FOLD / "points.json").read_text())
+    Z = np.load(FOLD / "points.npz")
+    from scripts.typeb_common import fold_directions
+    fold, _ = fold_directions()
+    pub = {}
+    for X in ("Turner1999", "Andronescu2007", "Langdon2018"):
+        own = next(m for m in meta if m["kind"] == "published_own" and m["name"] == X)
+        d_own = Z["delta_dcal"][own["p"]] / 100.0  # kcal/mol
+        v = fold[("published", X)]
+        cos = float(v @ d_own / np.linalg.norm(d_own))
+        assert cos > 1 - 1e-9, f"{X}: the unit direction does not point toward the table ({cos})"
+        r = per[f"published:{X}"]
+        lo, hi = r["newton_step_ci95_kcal"]
+        pub[X] = {"newton_step_kcal": r["newton_step_kcal"], "ci95": [lo, hi],
+                  "sign": ("toward the table" if lo > 0 else "away from the table" if hi < 0
+                           else "CI contains 0"),
+                  "component_norm_kcal": float(np.linalg.norm(d_own)),
+                  "step_over_component_norm": r["newton_step_kcal"] / float(np.linalg.norm(d_own)),
+                  "unit_direction_cos_with_component": cos}
+    grp = lambda g_: [nm for nm in names if nm.startswith(g_ + ":")]  # noqa: E731
+    eg["results"] = {
+        "kT_kcal": kT, "n_sequences": n, "K": K, "per_direction": per,
+        "published_components": pub,
+        "must_hold_intrinsic_g_exact_zero": True,
+        "null_reference_term_max_abs": max(abs(per[nm]["reference_term"])
+                                           for nm in grp("null") + grp("published")),
+        "I_vs_E1_max_abs_rel_diff": max(abs(per[nm]["I_rel_diff_vs_E1"]) for nm in per
+                                        if "I_rel_diff_vs_E1" in per[nm]),
+        "provenance": git_provenance(R)}
+    eg["status"] = "analysed"
+    write(out)
+    print(json.dumps({"published_components": pub,
+                      "I_vs_E1_max_abs_rel_diff": eg["results"]["I_vs_E1_max_abs_rel_diff"],
+                      "null_reference_term_max_abs": eg["results"]["null_reference_term_max_abs"]},
+                     indent=1))
+    return 0
+
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
-    if ph == "worker":
-        a = sys.argv[sys.argv.index("worker") + 1:]
-        sys.exit(worker(int(a[0]), int(a[1]), a[2]))
-    sys.exit({"preregister": preregister, "run": run, "analyse": analyse}[ph]())
+    if ph in ("worker", "gradient-worker"):
+        a = sys.argv[sys.argv.index(ph) + 1:]
+        sys.exit(worker(int(a[0]), int(a[1]), a[2], gradient=ph == "gradient-worker"))
+    sys.exit({"preregister": preregister, "run": run, "analyse": analyse,
+              "gradient-run": gradient_run, "gradient-analyse": gradient_analyse}[ph]())

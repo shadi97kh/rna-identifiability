@@ -1,4 +1,558 @@
 {
+ "exploratory_gradient": {
+  "failed_attempts": [],
+  "label": "EXPLORATORY, not registered. Asked by the user on 2026-10-12 after E1's preregistration (c328815), sampling and analysis (fe66314); recorded with that timing. PRED is unchanged.",
+  "results": {
+   "I_vs_E1_max_abs_rel_diff": 0.00296671945399285,
+   "K": 2000,
+   "kT_kcal": 0.6163207755,
+   "must_hold_intrinsic_g_exact_zero": true,
+   "n_sequences": 11970,
+   "null_reference_term_max_abs": 7.071958235364226e-12,
+   "per_direction": {
+    "contrast:0": {
+     "I": 19.071078451076307,
+     "I_registered_E1": 19.079369652864155,
+     "I_rel_diff_vs_E1": -0.0004345637166583982,
+     "g": -76.40914536972696,
+     "g_ci95": [
+      -87.28266897400061,
+      -65.3938330203893
+     ],
+     "newton_step_ci95_kcal": [
+      3.437681505296277,
+      4.57685544791696
+     ],
+     "newton_step_kcal": 4.006545595506933,
+     "reference_term": 60.64443779822301
+    },
+    "contrast:1": {
+     "I": 15.517814963599056,
+     "I_registered_E1": 15.504860249463245,
+     "I_rel_diff_vs_E1": 0.0008355260174794932,
+     "g": -298.1436634971819,
+     "g_ci95": [
+      -309.23981316530956,
+      -287.23016987773235
+     ],
+     "newton_step_ci95_kcal": [
+      18.53762555699159,
+      19.89743904609063
+     ],
+     "newton_step_kcal": 19.212992563486093,
+     "reference_term": 159.13447895386915
+    },
+    "contrast:2": {
+     "I": 22.24612302438739,
+     "I_registered_E1": 22.26255862647634,
+     "I_rel_diff_vs_E1": -0.0007382620463671774,
+     "g": 300.6629902900634,
+     "g_ci95": [
+      288.04892208402026,
+      312.710055635401
+     ],
+     "newton_step_ci95_kcal": [
+      -14.048358435818518,
+      -12.980134342859845
+     ],
+     "newton_step_kcal": -13.515298371786425,
+     "reference_term": -137.56715949335577
+    },
+    "contrast:3": {
+     "I": 20.364304098921252,
+     "I_registered_E1": 20.353897806812174,
+     "I_rel_diff_vs_E1": 0.0005112677781842212,
+     "g": -128.08259196699024,
+     "g_ci95": [
+      -139.0948101486837,
+      -117.61092053869052
+     ],
+     "newton_step_ci95_kcal": [
+      5.77288943987737,
+      6.816310571665
+     ],
+     "newton_step_kcal": 6.289563902837961,
+     "reference_term": 15.472860500839857
+    },
+    "contrast:4": {
+     "I": 11.209766421109107,
+     "I_registered_E1": 11.210990609551569,
+     "I_rel_diff_vs_E1": -0.00010919538559051034,
+     "g": -23.450026008038883,
+     "g_ci95": [
+      -32.34490291819588,
+      -14.16667162094317
+     ],
+     "newton_step_ci95_kcal": [
+      1.2575369121185926,
+      2.8668610877742737
+     ],
+     "newton_step_kcal": 2.091928156850811,
+     "reference_term": 23.577016743161025
+    },
+    "contrast:5": {
+     "I": 42.87563251188509,
+     "I_registered_E1": 42.87215168394226,
+     "I_rel_diff_vs_E1": 8.119088513414141e-05,
+     "g": 674.619333644679,
+     "g_ci95": [
+      657.1462933205011,
+      693.1935345674548
+     ],
+     "newton_step_ci95_kcal": [
+      -16.100167907086387,
+      -15.36876702093697
+     ],
+     "newton_step_kcal": -15.734329597532472,
+     "reference_term": -332.3554494598154
+    },
+    "contrast:6": {
+     "I": 16.08814042529774,
+     "I_registered_E1": 16.079610903975066,
+     "I_rel_diff_vs_E1": 0.0005304557040348712,
+     "g": 348.90259787572506,
+     "g_ci95": [
+      338.0709836777926,
+      360.0919441801273
+     ],
+     "newton_step_ci95_kcal": [
+      -22.36237533296449,
+      -21.070105801486736
+     ],
+     "newton_step_kcal": -21.686943838897278,
+     "reference_term": -177.65431562639122
+    },
+    "contrast:7": {
+     "I": 9.081378529213383,
+     "I_registered_E1": 9.073187198364465,
+     "I_rel_diff_vs_E1": 0.000902806331428252,
+     "g": -78.84818412393909,
+     "g_ci95": [
+      -86.74830655562232,
+      -70.71058218986012
+     ],
+     "newton_step_ci95_kcal": [
+      7.771990705958458,
+      9.57014441293358
+     ],
+     "newton_step_kcal": 8.682402552684787,
+     "reference_term": 15.638051933509681
+    },
+    "coverage:0": {
+     "I": 0.9448294011808245,
+     "I_registered_E1": 0.9448830697528611,
+     "I_rel_diff_vs_E1": -5.679916780665373e-05,
+     "g": 3.810909421549127,
+     "g_ci95": [
+      2.5073217095050055,
+      5.167914347253494
+     ],
+     "newton_step_ci95_kcal": [
+      -5.511249807738596,
+      -2.6548911112000573
+     ],
+     "newton_step_kcal": -4.033436530220531,
+     "reference_term": 0.0
+    },
+    "coverage:1": {
+     "I": 0.9185058916377972,
+     "I_registered_E1": 0.9178644260983326,
+     "I_rel_diff_vs_E1": 0.0006988674157373254,
+     "g": -0.37999768000227696,
+     "g_ci95": [
+      -1.7365744984251439,
+      0.8792285005050028
+     ],
+     "newton_step_ci95_kcal": [
+      -0.965114359044268,
+      1.8945217485546693
+     ],
+     "newton_step_kcal": 0.413712838928773,
+     "reference_term": 0.0
+    },
+    "coverage:2": {
+     "I": 0.9461584108285324,
+     "I_registered_E1": 0.9460113147670929,
+     "I_rel_diff_vs_E1": 0.00015549080559962292,
+     "g": 4.164093577937887,
+     "g_ci95": [
+      2.807716607524932,
+      5.490722418186094
+     ],
+     "newton_step_ci95_kcal": [
+      -5.812987621487674,
+      -2.966297499242062
+     ],
+     "newton_step_kcal": -4.401053280593334,
+     "reference_term": 0.0
+    },
+    "coverage:3": {
+     "I": 0.9066990487594222,
+     "I_registered_E1": 0.9078757501185202,
+     "I_rel_diff_vs_E1": -0.001296103964605666,
+     "g": -0.6436044115417159,
+     "g_ci95": [
+      -1.9733757455470435,
+      0.7047442135194235
+     ],
+     "newton_step_ci95_kcal": [
+      -0.7811765615210395,
+      2.189027704208291
+     ],
+     "newton_step_kcal": 0.7098324547955778,
+     "reference_term": 0.0
+    },
+    "coverage:4": {
+     "I": 0.855670057935109,
+     "I_registered_E1": 0.8553036713704839,
+     "I_rel_diff_vs_E1": 0.00042837015306851356,
+     "g": -1.577858988235657,
+     "g_ci95": [
+      -2.883967044100029,
+      -0.31288719885298616
+     ],
+     "newton_step_ci95_kcal": [
+      0.3673298431348798,
+      3.3806054242289707
+     ],
+     "newton_step_kcal": 1.8440039751342057,
+     "reference_term": 0.0
+    },
+    "coverage:5": {
+     "I": 0.9255249955172875,
+     "I_registered_E1": 0.9255650881460498,
+     "I_rel_diff_vs_E1": -4.331691987491393e-05,
+     "g": -5.003304078281643,
+     "g_ci95": [
+      -6.415288763325562,
+      -3.511188757742057
+     ],
+     "newton_step_ci95_kcal": [
+      3.8193657007286475,
+      6.939929691578975
+     ],
+     "newton_step_kcal": 5.40590918939497,
+     "reference_term": 0.0
+    },
+    "coverage:6": {
+     "I": 0.9404891732636147,
+     "I_registered_E1": 0.9395774953700206,
+     "I_rel_diff_vs_E1": 0.0009703062260288942,
+     "g": -4.410333236335605,
+     "g_ci95": [
+      -5.895991533466577,
+      -2.9368188477511836
+     ],
+     "newton_step_ci95_kcal": [
+      3.1231727826691897,
+      6.2350731726018465
+     ],
+     "newton_step_kcal": 4.689403516503225,
+     "reference_term": 0.0
+    },
+    "coverage:7": {
+     "I": 0.9172196440097273,
+     "I_registered_E1": 0.9169537720104037,
+     "I_rel_diff_vs_E1": 0.00028995136662191,
+     "g": 1.4511201485595666,
+     "g_ci95": [
+      0.0644661166987042,
+      2.893286358541613
+     ],
+     "newton_step_ci95_kcal": [
+      -3.1582677968709163,
+      -0.07053181138268448
+     ],
+     "newton_step_kcal": -1.5820857719704235,
+     "reference_term": 0.0
+    },
+    "intrinsic:N1": {
+     "I": 0,
+     "g": 0,
+     "g_exact": "every term an integer zero",
+     "g_float_residue": -2.242428550964428e-13,
+     "newton_step_kcal": null
+    },
+    "intrinsic:N2": {
+     "I": 0,
+     "g": 0,
+     "g_exact": "every term an integer zero",
+     "g_float_residue": 6.663599494761588e-14,
+     "newton_step_kcal": null
+    },
+    "null:0": {
+     "I": 1.9694627546977015,
+     "I_registered_E1": 1.9680141967455105,
+     "I_rel_diff_vs_E1": 0.0007360505602991285,
+     "g": -0.35528462920716314,
+     "g_ci95": [
+      -2.683123546998851,
+      2.203466026704898
+     ],
+     "newton_step_ci95_kcal": [
+      -1.1232858616695496,
+      1.3499586760004354
+     ],
+     "newton_step_kcal": 0.18039672411154423,
+     "reference_term": -1.6760276712907003e-12
+    },
+    "null:1": {
+     "I": 2.185840435373727,
+     "I_registered_E1": 2.1824733866199253,
+     "I_rel_diff_vs_E1": 0.001542767382385568,
+     "g": 5.830995682542844,
+     "g_ci95": [
+      3.446945440240904,
+      8.359943711686407
+     ],
+     "newton_step_ci95_kcal": [
+      -3.7898220113124212,
+      -1.5573124487425787
+     ],
+     "newton_step_kcal": -2.6676218392610536,
+     "reference_term": 9.687511839691357e-14
+    },
+    "null:2": {
+     "I": 2.2572880036695375,
+     "I_registered_E1": 2.256194095075551,
+     "I_rel_diff_vs_E1": 0.0004848468473410694,
+     "g": 2.0984892738498977,
+     "g_ci95": [
+      -0.533295420131107,
+      4.65780180142134
+     ],
+     "newton_step_ci95_kcal": [
+      -2.062287974412257,
+      0.2340788493599097
+     ],
+     "newton_step_kcal": -0.929650656202713,
+     "reference_term": -4.469955334745345e-14
+    },
+    "null:3": {
+     "I": 2.169520457330427,
+     "I_registered_E1": 2.168327780304891,
+     "I_rel_diff_vs_E1": 0.0005500446179629304,
+     "g": -0.032194977530462215,
+     "g_ci95": [
+      -2.5129769601802234,
+      2.43560617870629
+     ],
+     "newton_step_ci95_kcal": [
+      -1.1258511426922198,
+      1.1596237396978775
+     ],
+     "newton_step_kcal": 0.014839674556504439,
+     "reference_term": -7.910506507226747e-13
+    },
+    "null:4": {
+     "I": 1.8890586336597006,
+     "I_registered_E1": 1.8877384066918135,
+     "I_rel_diff_vs_E1": 0.0006993696601218513,
+     "g": 0.5532817938699485,
+     "g_ci95": [
+      -1.8345561923293139,
+      2.8418715488107553
+     ],
+     "newton_step_ci95_kcal": [
+      -1.4950921969995177,
+      0.9872839828882537
+     ],
+     "newton_step_kcal": -0.29288757056633424,
+     "reference_term": 2.3440606852019178e-12
+    },
+    "null:5": {
+     "I": 2.0480054089461857,
+     "I_registered_E1": 2.046236212960859,
+     "I_rel_diff_vs_E1": 0.0008646098500850741,
+     "g": -1.2300175481473885,
+     "g_ci95": [
+      -3.8264686811603035,
+      1.1545708047163985
+     ],
+     "newton_step_ci95_kcal": [
+      -0.567405287950293,
+      1.8496251457549848
+     ],
+     "newton_step_kcal": 0.6005929197131866,
+     "reference_term": 3.322663978579392e-12
+    },
+    "null:6": {
+     "I": 2.004298953132366,
+     "I_registered_E1": 2.003408099947936,
+     "I_rel_diff_vs_E1": 0.0004446688542654176,
+     "g": 3.8171467432442396,
+     "g_ci95": [
+      1.4466007708076378,
+      6.329306106227801
+     ],
+     "newton_step_ci95_kcal": [
+      -3.1535962159471875,
+      -0.706453480359303
+     ],
+     "newton_step_kcal": -1.9044797370565465,
+     "reference_term": -4.0570802501870993e-13
+    },
+    "null:7": {
+     "I": 2.111278916448928,
+     "I_registered_E1": 2.1074311603890696,
+     "I_rel_diff_vs_E1": 0.0018258039133993709,
+     "g": 2.6396118711792997,
+     "g_ci95": [
+      0.0027784622434265326,
+      5.058668188330647
+     ],
+     "newton_step_ci95_kcal": [
+      -2.4054034823730723,
+      -0.001291003606269779
+     ],
+     "newton_step_kcal": -1.2502430875495139,
+     "reference_term": -7.071958235364226e-12
+    },
+    "published:Andronescu2007": {
+     "I": 2.0167556595170697,
+     "I_registered_E1": 2.0107902090858762,
+     "I_rel_diff_vs_E1": 0.00296671945399285,
+     "g": -5.138326256024707,
+     "g_ci95": [
+      -7.370688831841555,
+      -3.0608159991595016
+     ],
+     "newton_step_ci95_kcal": [
+      1.5336380014855813,
+      3.6400344035540093
+     ],
+     "newton_step_kcal": 2.5478179430299086,
+     "reference_term": 1.5298992803409341e-12
+    },
+    "published:Langdon2018": {
+     "I": 2.3331191277726906,
+     "I_registered_E1": 2.3371209203467203,
+     "I_rel_diff_vs_E1": -0.00171227450800282,
+     "g": 3.1692634321259647,
+     "g_ci95": [
+      0.5113492488322678,
+      5.9575504056080915
+     ],
+     "newton_step_ci95_kcal": [
+      -2.5524739458112022,
+      -0.22351989296128505
+     ],
+     "newton_step_kcal": -1.3583804591887678,
+     "reference_term": 3.689808847009751e-12
+    },
+    "published:Turner1999": {
+     "I": 1.8868672602305465,
+     "I_registered_E1": 1.881292543745036,
+     "I_rel_diff_vs_E1": 0.0029632374316506116,
+     "g": -7.54120264628193,
+     "g_ci95": [
+      -9.73955578198546,
+      -5.510873471547907
+     ],
+     "newton_step_ci95_kcal": [
+      2.9420481461191614,
+      5.093670748677847
+     ],
+     "newton_step_kcal": 3.9966789425136935,
+     "reference_term": 4.2154736804021063e-13
+    }
+   },
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": true,
+    "git_dirty_paths_outside_runs": [
+     "scripts/typeb_fisher.py"
+    ],
+    "git_sha": "6f2c79ac09b982a8630e9ad95c3b4aa8b08ca4d5"
+   },
+   "published_components": {
+    "Andronescu2007": {
+     "ci95": [
+      1.5336380014855813,
+      3.6400344035540093
+     ],
+     "component_norm_kcal": 21.032267714689354,
+     "newton_step_kcal": 2.5478179430299086,
+     "sign": "toward the table",
+     "step_over_component_norm": 0.12113852759921184,
+     "unit_direction_cos_with_component": 1.0000000000000002
+    },
+    "Langdon2018": {
+     "ci95": [
+      -2.5524739458112022,
+      -0.22351989296128505
+     ],
+     "component_norm_kcal": 5.4247900748291285,
+     "newton_step_kcal": -1.3583804591887678,
+     "sign": "away from the table",
+     "step_over_component_norm": -0.25040240091346844,
+     "unit_direction_cos_with_component": 1.0
+    },
+    "Turner1999": {
+     "ci95": [
+      2.9420481461191614,
+      5.093670748677847
+     ],
+     "component_norm_kcal": 24.383133442388665,
+     "newton_step_kcal": 3.9966789425136935,
+     "sign": "toward the table",
+     "step_over_component_norm": 0.16391162161158904,
+     "unit_direction_cos_with_component": 1.0000000000000002
+    }
+   }
+  },
+  "run": {
+   "driver_pid": 1326253,
+   "finished": "2026-10-12T18:25:44",
+   "load_at_start": [
+    2.171875,
+    6.06103515625,
+    6.33203125
+   ],
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": true,
+    "git_dirty_paths_outside_runs": [
+     "paper/recomb2027/figures/fig1_concept.tex",
+     "paper/recomb2027/main.tex",
+     "paper/recomb2027/pins.json",
+     "paper/recomb2027/references.bib",
+     "paper/recomb2027/sections/01_introduction.tex",
+     "paper/recomb2027/sections/02_setup.tex",
+     "paper/recomb2027/sections/04_typeb.tex",
+     "paper/recomb2027/sections/05_learned.tex",
+     "paper/recomb2027/supplement/body.tex",
+     "scripts/typeb_fisher.py",
+     "paper/recomb2027/figures/fig2_typeb.py"
+    ],
+    "git_sha": "ee1a7d40a97135e8d4e74797aedbb2a1f8c59250"
+   },
+   "shards_sha256": {
+    "shard0.npz": "136b9d4783659192a633aaffe3ab07f1f462c5845f011eb23cc711ae0d727877",
+    "shard1.npz": "c959396b2a100ac0472637abb13023baf7ecb5efde857d8962c5dd0d776bbded",
+    "shard2.npz": "ee0741f0458a432d998ea0138ea1e6075bc83fedac2e9b9f1b1818a79aff0e52",
+    "shard3.npz": "8536ce9cf4892099d7ea546d1124769eeacbad0c0c0ab3b9d51d10323ab729e6",
+    "shard4.npz": "cfd2a8a80fd01b8840c40758bd902861843d05bc4d8653d82ac4420320673d94",
+    "shard5.npz": "4aec4e1e6ca4d6fcddfe82e5e92856923e904d85d0714c0f74648084676014a7",
+    "shard6.npz": "b0d934f56ae8e8dcff82f627262638d3d61bc526f25e27c4804a14dcc5333b59",
+    "shard7.npz": "41dad10b6f23acad8de53bc24b6538dc71ac47fb5de97a4e1c45ffd319aefc2d"
+   },
+   "started": "2026-10-12T18:19:41",
+   "workers_exit": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "sampling": "a fresh run of the E1 sampler (K = 2000) with ViennaRNA's sampler seeded per sequence, RNA.init_rand(20261013 + sequence index); g, I and dt come from the same samples; I is compared with E1's registered values as a check",
+  "spec_user": "per sequence, the sample mean of c(s).v for every direction; the likelihood gradient g(v) = sum_x [c(ref_x).v - mean_x(c.v)]/kT (gradient of -log P), sequence-bootstrap CIs; the one-step Newton move dt(v) = -g(v)/I(v) in kcal/mol; must hold: g = 0 exactly for N1 and N2 (every term an integer zero); report sign and size of dt along each published null component (positive = toward that table)",
+  "status": "analysed"
+ },
  "git_dirty": true,
  "git_dirty_excluding_runs": true,
  "git_dirty_paths_outside_runs": [
