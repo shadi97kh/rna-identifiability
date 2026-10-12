@@ -46,3 +46,6 @@ runs/**/*.pth
 runs/**/ck/
 runs/**/hook_scratch/
 runs/**/shards/
+
+# Type B bases and count matrices (recomputable; sha256 recorded in metrics.json)
+runs/2026-10-12_turner_typeb/*.npz
