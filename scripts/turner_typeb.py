@@ -599,15 +599,22 @@ def build_points(out, B):
         v = NT @ (NT.T @ d[used])
         own[X] = float(np.linalg.norm(v))
         dirs.append(("published", X, v / own[X]))
+    # the nontrivial basis lies in the four tables up to SVD round-off (max 1.2e-14 outside,
+    # 2026-10-12); the contrast is built exactly in-table against that restriction,
+    # re-orthonormalised, and its residual overlap with the full basis is recorded per point
     mask = np.array([cols[i][0] in NULL_TABLES for i in used])
+    Qm, _ = np.linalg.qr(NT[mask])
+    contrast_overlap = []
     for j in range(N_CONTRAST):
         rng = np.random.default_rng(np.random.SeedSequence([SEED, 2, j]))
-        g = np.zeros(len(used))
-        g[mask] = rng.standard_normal(int(mask.sum()))
-        assert np.abs(NI.T @ g).max() == 0.0, "intrinsic directions have support in the tables"
-        v = g - NT @ (NT.T @ g)
-        assert np.abs(v[~mask]).max() == 0.0
-        dirs.append(("contrast", str(j), v / np.linalg.norm(v)))
+        g = rng.standard_normal(int(mask.sum()))
+        v = np.zeros(len(used))
+        v[mask] = g - Qm @ (Qm.T @ g)
+        if np.abs(NI.T @ v).max() != 0.0:
+            raise GuardFailure("intrinsic directions have support in the four tables")
+        v /= np.linalg.norm(v)
+        contrast_overlap.append(float(np.abs(NT.T @ v).max()))
+        dirs.append(("contrast", str(j), v))
     grid = out["experiment_2_grid"]["grid_kcal"]
     pts = [(kind, name, s, u) for kind, name, u in dirs for s in grid]
     pts += [("published_own", X, own[X], u) for kind, X, u in dirs if kind == "published"]
@@ -627,6 +634,8 @@ def build_points(out, B):
             raise GuardFailure(f"point {p}: no generating-set row sees the written change")
         ref_change = A @ (th - t0)[used]
         meta.append({"p": p, "kind": kind, "name": name, "norm_kcal": s,
+                     "contrast_max_overlap_with_null_basis": (
+                         contrast_overlap[int(name)] if kind == "contrast" else None),
                      "max_abs_null_check_kcal": float(np.abs(A @ (dl[used] / 100.0)).max()),
                      "written_rel_error": float(np.linalg.norm(th - t0 - dl) / np.linalg.norm(dl)),
                      "n_entries_changed": int((th != t0).sum()),
