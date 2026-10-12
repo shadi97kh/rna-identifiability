@@ -33,10 +33,12 @@ Run: OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 .venv/bin/python scripts/turner_ty
 from __future__ import annotations
 
 import ast
+import contextlib
 import hashlib
 import json
 import os
 import pathlib
+import subprocess
 import sys
 import tempfile
 import time
@@ -57,11 +59,12 @@ from scripts.turner_nullspace import (  # noqa: E402
     _reachable,
     analytic_directions,
     build_matrix,
+    generating_set,
     theta_from_par,
 )
 from scripts.turner_nullspace_rfam import load_rows, qr_null  # noqa: E402
 from scripts.turner_nullspace_tr0 import distinct_rows, tr0_ts0_rows  # noqa: E402
-from scripts.turner_par import _rebuild, template  # noqa: E402
+from scripts.turner_par import _rebuild, loaded, params_match, template, write_par  # noqa: E402
 from thermo.vienna_ref import assert_turner2004_params, reference_md  # noqa: E402
 
 RUN_ID = "2026-10-12_turner_typeb"
@@ -456,6 +459,25 @@ def decompose(delta, B, rng):
     }
 
 
+def set_delta(X, cols, theta0):
+    """delta = theta_X - theta_2004 over `cols` in kcal/mol, zero off the shared support, and
+    the record of how the key sets compare."""
+    P, h = dump_set(SETS[X])
+    th = P["theta"]
+    missing, extra = set(theta0) - set(th), set(th) - set(theta0)
+    absent = [k for k in cols if k not in th]
+    sentinel = [k for k in cols if k in th and (th[k] >= INF or theta0[k] >= INF)]
+    drop = set(absent) | set(sentinel)
+    rec = {"loader": SETS[X], "par_sha256": h, "keys_identical": not missing and not extra,
+           "missing_vs_turner2004_by_table": by_table(missing),
+           "extra_vs_turner2004_by_table": by_table(extra),
+           "reachable_absent": [repr(k) for k in absent],
+           "reachable_sentinel_INF": [repr(k) for k in sentinel],
+           "shared_support": len(cols) - len(drop)}
+    delta = np.array([0.0 if k in drop else (th[k] - theta0[k]) / 100.0 for k in cols])
+    return delta, rec
+
+
 def project():
     out = read_out()
     assert out["status"] == "bases complete", out["status"]
@@ -466,21 +488,8 @@ def project():
     cols = Bs["tr0ts0"]["cols"]
     assert cols == Bs["rfam"]["cols"]
     res = {"sets": {}, "per_set": {}}
-    for X, loader in SETS.items():
-        P, h = dump_set(loader)
-        th = P["theta"]
-        missing, extra = set(theta0) - set(th), set(th) - set(theta0)
-        absent = [k for k in cols if k not in th]
-        sentinel = [k for k in cols if k in th and (th[k] >= INF or theta0[k] >= INF)]
-        drop = set(absent) | set(sentinel)
-        res["sets"][X] = {"loader": loader, "par_sha256": h,
-                          "keys_identical": not missing and not extra,
-                          "missing_vs_turner2004_by_table": by_table(missing),
-                          "extra_vs_turner2004_by_table": by_table(extra),
-                          "reachable_absent": [repr(k) for k in absent],
-                          "reachable_sentinel_INF": [repr(k) for k in sentinel],
-                          "shared_support": len(cols) - len(drop)}
-        delta = np.array([0.0 if k in drop else (th[k] - theta0[k]) / 100.0 for k in cols])
+    for X in SETS:
+        delta, res["sets"][X] = set_delta(X, cols, theta0)
         res["per_set"][X] = {}
         for name, B in Bs.items():
             rng = np.random.default_rng(np.random.SeedSequence(
@@ -518,9 +527,292 @@ def project():
     return 0
 
 
-PHASES = {"preregister": preregister, "bases": bases, "project": project}
+# ----------------------------------------------------------------------------------
+# Experiment 2: fold perturbation
+# ----------------------------------------------------------------------------------
+FOLD = OUT / "fold"
+GAP_STEPS = (0, 1, 2, 5, 10, 20, 50, 100)  # dcal
+EXACT_TIE = 1e-9  # dcal; float round-off in c.(theta0 + delta), not a tolerance on energies
+
+
+class GuardFailure(RuntimeError):
+    """A loaded table is not the intended one, or an energy identity broke. Never repaired."""
+
+
+def fold_rows():
+    rows, _ = tr0_ts0_rows()
+    assert len({r[2] for r in rows}) == len(rows), "TR0+TS0 sequences are not distinct"
+    return rows
+
+
+def build_points(out, B):
+    """Every Experiment 2 point: direction, scale, theta_r (dcal ints) and delta (dcal)."""
+    cols, used, NT, NI, A = B["cols"], B["used"], B["NT"], B["I"], B["A"]
+    n = len(cols)
+    T = template()
+    theta0 = T["theta"]
+    t0 = np.array([theta0[k] for k in cols], dtype=np.int64)
+    dirs = []
+    for i in range(N_NULL):
+        g = np.random.default_rng(np.random.SeedSequence([SEED, 1, i])).standard_normal(len(used))
+        v = NT @ (NT.T @ g)
+        dirs.append(("null", str(i), v / np.linalg.norm(v)))
+    own = {}
+    for X in SETS:
+        d, _ = set_delta(X, cols, theta0)
+        v = NT @ (NT.T @ d[used])
+        own[X] = float(np.linalg.norm(v))
+        dirs.append(("published", X, v / own[X]))
+    mask = np.array([cols[i][0] in NULL_TABLES for i in used])
+    for j in range(N_CONTRAST):
+        rng = np.random.default_rng(np.random.SeedSequence([SEED, 2, j]))
+        g = np.zeros(len(used))
+        g[mask] = rng.standard_normal(int(mask.sum()))
+        assert np.abs(NI.T @ g).max() == 0.0, "intrinsic directions have support in the tables"
+        v = g - NT @ (NT.T @ g)
+        assert np.abs(v[~mask]).max() == 0.0
+        dirs.append(("contrast", str(j), v / np.linalg.norm(v)))
+    grid = out["experiment_2_grid"]["grid_kcal"]
+    pts = [(kind, name, s, u) for kind, name, u in dirs for s in grid]
+    pts += [("published_own", X, own[X], u) for kind, X, u in dirs if kind == "published"]
+    gen = generating_set(T["special"])
+    ex = Extractor(T["special"], 0, 0)
+    G = build_matrix([ex.counts(s, d) for _, s, d in gen], cols)
+    meta, TH, DL = [], np.zeros((len(pts), n), np.int64), np.zeros((len(pts), n))
+    for p, (kind, name, s, u) in enumerate(pts):
+        full = np.zeros(n)
+        full[used] = u
+        dl = 100.0 * s * full
+        th = np.rint(t0 + dl).astype(np.int64)
+        TH[p], DL[p] = th, dl
+        ch = G @ (th - t0)
+        top = np.argsort(-np.abs(ch), kind="stable")[:CARRY_ROWS]
+        if ch[top[0]] == 0:
+            raise GuardFailure(f"point {p}: no generating-set row sees the written change")
+        ref_change = A @ (th - t0)[used]
+        meta.append({"p": p, "kind": kind, "name": name, "norm_kcal": s,
+                     "max_abs_null_check_kcal": float(np.abs(A @ (dl[used] / 100.0)).max()),
+                     "written_rel_error": float(np.linalg.norm(th - t0 - dl) / np.linalg.norm(dl)),
+                     "n_entries_changed": int((th != t0).sum()),
+                     "reference_change_dcal_max_abs": int(np.abs(ref_change).max()),
+                     "carry": [[int(r), int((G[r] @ th)[0])] for r in top]})
+    FOLD.mkdir(parents=True, exist_ok=True)
+    np.savez(FOLD / "points.npz", theta_r=TH, delta_dcal=DL, t0=t0)
+    (FOLD / "points.json").write_text(json.dumps(meta))
+    return meta
+
+
+def f1(a: str, b: str) -> float:
+    pa, pb = set(_pairs(a)), set(_pairs(b))
+    if not pa and not pb:
+        return 1.0
+    return 2 * len(pa & pb) / (len(pa) + len(pb))
+
+
+def _pairs(db):
+    st, out = [], []
+    for i, c in enumerate(db):
+        if c == "(":
+            st.append(i)
+        elif c == ")":
+            out.append((st.pop(), i))
+    return out
+
+
+def _bpp(fc, n):
+    return np.triu(np.array(fc.bpp())[1:n + 1, 1:n + 1], 1).astype(np.float32)
+
+
+def _vec(cnt, idx):
+    ks = [idx[k] for k in cnt]
+    return np.array(ks, dtype=np.int64), np.array([cnt[k] for k in cnt], dtype=np.int64)
+
+
+def worker(w, W, dst, limit=None, only=None, skip_load=False):
+    """Shard w of W: baseline once, then every point. Writes dst (JSON lines)."""
+    T = template()
+    theta0, special, lxc = T["theta"], T["special"], T["lxc"]
+    B = load_basis("tr0ts0")
+    cols = B["cols"]
+    idx = {k: i for i, k in enumerate(cols)}
+    Z = np.load(FOLD / "points.npz")
+    meta = json.loads((FOLD / "points.json").read_text())
+    t0 = Z["t0"]
+    rows = fold_rows()[:limit]
+    mine = [r for i, r in enumerate(rows) if i % W == w]
+    ex = Extractor(special, 0, 0, lxc=lxc)
+    gen = generating_set(special)
+    md = reference_md()
+    md_sub = reference_md()
+    md_sub.uniq_ML = 1
+    out = open(dst, "w")  # noqa: SIM115
+
+    def emit(rec):
+        out.write(json.dumps(rec) + "\n")
+        out.flush()
+
+    _rebuild()
+    base = []
+    for n, (tag, name, seq, db) in enumerate(mine):
+        fc = RNA.fold_compound(seq, md)
+        if n == 0:
+            assert_turner2004_params(fc)
+        s0, e0 = fc.mfe()
+        fc.exp_params_rescale(e0)
+        fc.pf()
+        c0 = ex.counts(seq, s0)
+        off0 = c0.pop(("_offset",), 0)
+        cr = ex.counts(seq, db)
+        cr.pop(("_offset",), 0)
+        fs = RNA.fold_compound(seq, md_sub)
+        gap = None
+        for d in GAP_STEPS:
+            es = sorted(int(round(s.energy * 100)) for s in fs.subopt(d))
+            if len(es) >= 2:
+                gap = es[1] - es[0]
+                break
+        base.append({"tag": tag, "name": name, "seq": seq, "db": db, "s0": s0,
+                     "e0": int(round(e0 * 100)), "P0": _bpp(fc, len(seq)), "c0": _vec(c0, idx),
+                     "off0": off0, "cr": _vec(cr, idx),
+                     "ref_e0": int(round(fc.eval_structure(db) * 100))})
+        base[-1]["gap"] = gap
+    emit({"baseline": [{k: b[k] for k in ("tag", "name", "e0", "gap")}
+                       | {"len": len(b["seq"]), "f1_ref": f1(b["s0"], b["db"]),
+                          "ref_pairs": len(_pairs(b["db"]))} for b in base]})
+    _rebuild()
+
+    with tempfile.TemporaryDirectory() as t:
+        for pm in meta:
+            p = pm["p"]
+            if only is not None and p not in only:
+                continue
+            th, dl = Z["theta_r"][p], Z["delta_dcal"][p]
+            dth = th - t0
+            full = dict(theta0) | {k: int(th[i]) for i, k in enumerate(cols)}
+            path = write_par(full, pathlib.Path(t) / f"p{p}.par")
+            ctx = contextlib.nullcontext() if skip_load else loaded(path)
+            with ctx:
+                first = RNA.fold_compound(mine[0][2], md)
+                bad = params_match(first, full, 0, 0)
+                if bad:
+                    raise GuardFailure(f"point {p}: params_match {bad}")
+                for r, want in pm["carry"]:
+                    _, s, d = gen[r]
+                    got = int(round(RNA.fold_compound(s, md).eval_structure(d) * 100))
+                    if got != want:
+                        raise GuardFailure(f"point {p}: carry row {r} evaluates to {got}, the "
+                                           f"written table gives {want}")
+                rec = {"p": p, "changed": [], "genuine": [], "f1_base": [], "dbpp": [],
+                       "f1_ref": [], "leak": []}
+                for b in base:
+                    seq, db = b["seq"], b["db"]
+                    ki, kv = b["cr"]
+                    leak = int(kv @ dth[ki])
+                    e_ref = int(round(RNA.fold_compound(seq, md).eval_structure(db) * 100))
+                    if e_ref != b["ref_e0"] + leak:
+                        raise GuardFailure(f"point {p}: {b['name']} reference energy {e_ref} != "
+                                           f"{b['ref_e0']} + {leak}")
+                    fc = RNA.fold_compound(seq, md)
+                    s1, e1 = fc.mfe()
+                    fc.exp_params_rescale(e1)
+                    fc.pf()
+                    P1 = _bpp(fc, len(seq))
+                    changed = s1 != b["s0"]
+                    genuine = None
+                    if not changed:
+                        i0, v0 = b["c0"]
+                        if int(v0 @ th[i0]) + b["off0"] != int(round(e1 * 100)):
+                            raise GuardFailure(f"point {p}: {b['name']} MFE energy is not "
+                                               f"counts . theta_r (unchanged structure)")
+                    if changed:
+                        c1 = ex.counts(seq, s1)
+                        off1 = c1.pop(("_offset",), 0)
+                        i1, v1 = _vec(c1, idx)
+                        i0, v0 = b["c0"]
+                        if int(v1 @ th[i1]) + off1 != int(round(e1 * 100)):
+                            raise GuardFailure(f"point {p}: {b['name']} MFE energy is not "
+                                               f"counts . theta_r")
+                        ex1 = v1 @ (t0[i1] + dl[i1]) + off1
+                        ex0 = v0 @ (t0[i0] + dl[i0]) + b["off0"]
+                        genuine = bool(ex1 <= ex0 + EXACT_TIE)
+                    rec["changed"].append(changed)
+                    rec["genuine"].append(genuine)
+                    rec["f1_base"].append(round(f1(s1, b["s0"]), 6))
+                    rec["dbpp"].append(round(float(np.abs(P1 - b["P0"]).sum()) / len(seq), 8))
+                    rec["f1_ref"].append(round(f1(s1, db), 6))
+                    rec["leak"].append(leak)
+            emit(rec)
+    out.write(json.dumps({"done": True}) + "\n")
+    out.close()
+    return 0
+
+
+def _launch_workers(W, dsts, extra=()):
+    env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
+               CUDA_VISIBLE_DEVICES="")
+    return [subprocess.Popen([sys.executable, __file__, "--phase", "fold-worker", str(w), str(W),
+                              str(d), *extra], env=env) for w, d in enumerate(dsts)]
+
+
+def fold_smoke():
+    """2 workers, 50 sequences, one null and one contrast point at 1.0 kcal/mol, then the
+    planted stale-table run (load skipped) that the carry check must catch."""
+    out = read_out()
+    assert out["status"] == "projection complete", out["status"]
+    B = load_basis("tr0ts0")
+    meta = build_points(out, B)
+    pick = [next(m["p"] for m in meta if m["kind"] == k and m["name"] == "0"
+                 and m["norm_kcal"] == 1.0) for k in ("null", "contrast")]
+    sm = FOLD / "smoke"
+    sm.mkdir(parents=True, exist_ok=True)
+    dsts = [sm / f"shard{w}.jsonl" for w in range(2)]
+    procs = _launch_workers(2, dsts, ["--limit", "50", "--only", ",".join(map(str, pick))])
+    rc = [p.wait() for p in procs]
+    recs = [json.loads(ln) for d in dsts for ln in d.read_text().splitlines()]
+    res = {"workers_exit": rc, "points": {}}
+    for p in pick:
+        rs = [r for r in recs if r.get("p") == p]
+        ch = sum(sum(r["changed"]) for r in rs)
+        gen = sum(sum(1 for g in r["genuine"] if g) for r in rs)
+        leaks = [abs(x) for r in rs for x in r["leak"]]
+        res["points"][str(p)] = {k: meta[p][k] for k in ("kind", "name", "norm_kcal",
+                                                          "written_rel_error",
+                                                          "max_abs_null_check_kcal",
+                                                          "reference_change_dcal_max_abs")} | {
+            "n_seq": sum(len(r["changed"]) for r in rs), "changed": ch, "genuine": gen,
+            "leak_max_abs_dcal_on_these_refs": max(leaks) if leaks else None,
+            "mean_dbpp": float(np.mean([x for r in rs for x in r["dbpp"]]))}
+    planted = sm / "planted.jsonl"
+    pr = subprocess.run([sys.executable, __file__, "--phase", "fold-worker", "0", "1",
+                         str(planted), "--limit", "10", "--only", str(pick[0]), "--skip-load"],
+                        capture_output=True, text=True,
+                        env=dict(os.environ, OMP_NUM_THREADS="1", CUDA_VISIBLE_DEVICES=""))
+    res["planted_stale_table"] = {"exit": pr.returncode,
+                                  "caught_by_carry_check": pr.returncode != 0
+                                  and "carry row" in pr.stderr,
+                                  "stderr_tail": pr.stderr.strip().splitlines()[-1:]}
+    res["passes"] = (rc == [0, 0] and res["planted_stale_table"]["caught_by_carry_check"])
+    out["fold_smoke"] = res | {"provenance": git_provenance(R)}
+    write(out)
+    print(json.dumps(res, indent=1))
+    return 0 if res["passes"] else 1
+
+
+def fold_worker_cli(argv):
+    w, W, dst = int(argv[0]), int(argv[1]), argv[2]
+    rest = argv[3:]
+    limit = int(rest[rest.index("--limit") + 1]) if "--limit" in rest else None
+    only = ({int(x) for x in rest[rest.index("--only") + 1].split(",")}
+            if "--only" in rest else None)
+    return worker(w, W, dst, limit=limit, only=only, skip_load="--skip-load" in rest)
+
+
+PHASES = {"preregister": preregister, "bases": bases, "project": project,
+          "fold-smoke": fold_smoke}
 
 if __name__ == "__main__":
+    if sys.argv[1:3] == ["--phase", "fold-worker"]:
+        sys.exit(fold_worker_cli(sys.argv[3:]))
     if len(sys.argv) != 3 or sys.argv[1] != "--phase" or sys.argv[2] not in PHASES:
         raise SystemExit(f"usage: turner_typeb.py --phase {{{','.join(PHASES)}}}")
     sys.exit(PHASES[sys.argv[2]]())
