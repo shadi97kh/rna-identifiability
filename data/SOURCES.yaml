@@ -41,3 +41,25 @@ sources:
       verification: Distributed artifact, no transcription. md5 45a4d51f01517dd782216920ccc510b7 matches
         the Zenodo record.
     retrieved: '2026-10-07'
+  rfam_12_2_families:
+    description: 'Rfam release 12.2 family table (database_files/family.txt.gz): one row per family, accession
+      first.'
+    landing_page: https://rfam.org/
+    download_url: https://ftp.ebi.ac.uk/pub/databases/Rfam/12.2/database_files/family.txt.gz
+    licence: 'CC0 1.0. Release COPYING: ''Rfam is freely available under the Creative Commons Zero ("CC0")
+      licence.'''
+    licence_source: https://ftp.ebi.ac.uk/pub/databases/Rfam/12.2/COPYING
+    citation: 'Nawrocki EP, et al. Rfam 12.0: updates to the RNA families database. Nucleic Acids Res
+      2015;43:D130-D137 (release 12.2: rfam.org).'
+    role: 'FAMILY LIST ONLY: which Rfam families bpRNA-1m could contain (bpRNA-1m drew ''all families
+      from RFAM 12.2'', Danaee 2018, PMC6009582). Used by scripts/typeb_heldout.py to select Rfam 15.1
+      families absent from 12.2. No sequence or structure is read.'
+    files:
+    - path: data/raw/structure/Rfam_12.2.family.txt.gz
+      sha256: 8904fb58a8ae13650b0f95703b4105cdc84c2db58a6ef767d8cb572887effd54
+      bytes: 233455
+      route: machine-readable
+      origin: https://ftp.ebi.ac.uk/pub/databases/Rfam/12.2/database_files/family.txt.gz
+      verification: Distributed artifact, no transcription. Size checked against the FTP Content-Length;
+        sha256 taken at ingestion (the FTP publishes no checksum).
+    retrieved: '2026-10-12'
