@@ -58,8 +58,60 @@ def values():
     return seqs, vals, round(time.time() - t0, 1), hasattr(vr, "assert_turner2004_boltzmann")
 
 
+GUARD_COMMIT = "d5bedbe"  # the commit that added assert_turner2004_boltzmann
+PLANT = """
+import RNA
+from thermo.vienna_ref import ModelNotPinned, ensemble_free_energy, reference_md
+seq = {seq!r}
+RNA.params_load_RNA_Andronescu2007()
+fc = RNA.fold_compound(seq, reference_md()); fc.mfe(); fc.pf()
+RNA.params_load_RNA_Turner2004()
+md = reference_md(); md.temperature = 25.0
+RNA.fold_compound("GGGGAAACCCC", md).mfe()
+try:
+    print("RETURNED", repr(ensemble_free_energy(seq)))
+except ModelNotPinned as e:
+    print("CAUGHT", str(e).split(" -- ")[0])
+"""
+
+
+def planted():
+    """The planted stale-Boltzmann state (Andronescu 2007's Boltzmann table under Turner
+    2004's energy table) run against the guard before and after GUARD_COMMIT, each in a fresh
+    process with only that version of thermo/vienna_ref.py importable."""
+    import subprocess
+    import tempfile
+
+    from tests.test_vienna_reference import GOLDEN
+
+    seq, golden = GOLDEN["trna_73"]
+    res = {"sequence": "trna_73", "golden_kcal": golden}
+    for tag, rev in (("before_guard", f"{GUARD_COMMIT}^"), ("with_guard", GUARD_COMMIT)):
+        src = subprocess.run(["git", "show", f"{rev}:thermo/vienna_ref.py"], cwd=R,
+                             capture_output=True, text=True, check=True).stdout
+        with tempfile.TemporaryDirectory() as t:
+            pkg = pathlib.Path(t) / "thermo"
+            pkg.mkdir()
+            (pkg / "__init__.py").write_text("")
+            (pkg / "vienna_ref.py").write_text(src)
+            run = subprocess.run([sys.executable, "-c", PLANT.format(seq=seq)], cwd=t,
+                                 capture_output=True, text=True, timeout=300,
+                                 env=dict(os.environ, PYTHONPATH=t))
+        line = next((ln for ln in run.stdout.splitlines()
+                     if ln.startswith(("RETURNED", "CAUGHT"))), run.stderr[-300:])
+        res[tag] = {"vienna_ref_at": rev, "outcome": line,
+                    "vienna_ref_sha256": hashlib.sha256(src.encode()).hexdigest()}
+    out = json.loads((OUT / "metrics.json").read_text())
+    out["planted_stale_boltzmann"] = res | {"provenance": git_provenance(R)}
+    write(out)
+    print(json.dumps(res, indent=1))
+    return 0
+
+
 def main():
     phase = sys.argv[sys.argv.index("--phase") + 1]
+    if phase == "planted":
+        return planted()
     seqs, vals, secs, guarded = values()
     digest = hashlib.sha256("\n".join(seqs).encode()).hexdigest()
     rec = {"n_sequences": len(seqs), "sequences_sha256": digest, "seconds": secs,
