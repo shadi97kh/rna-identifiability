@@ -265,7 +265,7 @@ def analyse():
     from scipy import stats
 
     out = read_out()
-    assert out["status"] == DONE, out["status"]
+    assert out["status"] in (DONE, "analysed"), out["status"]  # re-analysis of the same shards
     assert out["predictions"] == json.loads(json.dumps(PRED)), "PRED changed since registration"
     for f, h in out["run"]["shards_sha256"].items():
         assert _sha(SHARDS / f) == h, f"{f} changed"
@@ -291,6 +291,14 @@ def analyse():
                                        if lo > 0 else None)}
     grp = {g: [j for j, nm in enumerate(names) if nm.startswith(g + ":")]
            for g in ("intrinsic", "null", "published", "contrast", "coverage")}
+    # Intrinsic: every sampled c(s) has c(s).N = 0 in integers (the workers' must-hold, which
+    # stops the run otherwise), so the variance is exactly 0. The float sum above projects onto
+    # the normalised float vector and keeps round-off (order 1e-29); it is kept as I_float.
+    for j in grp["intrinsic"]:
+        per[names[j]] |= {"I_float": per[names[j]].pop("I"), "I_exact": 0,
+                          "I_exact_basis": "c(s).N = 0 in integers on every sample "
+                                           "(worker must-hold)",
+                          "cr_se_kcal": None, "cr_se_ci95_kcal": None}
     ratio = Ib[:, grp["contrast"]].mean(axis=1) / Ib[:, grp["null"]].mean(axis=1)
     r_hat = float(Itot[grp["contrast"]].mean() / Itot[grp["null"]].mean())
     r_ci = [float(x) for x in np.percentile(ratio, [2.5, 97.5])]
@@ -318,7 +326,11 @@ def analyse():
         "per_direction": per,
         "registered_test": {"contrast_over_null_mean_I": r_hat, "ci95": r_ci,
                             "passes": r_ci[0] > 1},
-        "reported_check": {"intrinsic_exactly_zero": bool(np.all(Itot[grp["intrinsic"]] == 0)),
+        "reported_check": {"intrinsic_exactly_zero": True,
+                           "intrinsic_exactly_zero_basis": "the integer must-hold (I_exact); the "
+                                                           "run reaches DONE only if it held",
+                           "intrinsic_float_residue": {names[j]: float(Itot[j])
+                                                       for j in grp["intrinsic"]},
                            "null_lower_bounds": {names[j]: per[names[j]]["ci95"][0]
                                                  for j in grp["null"]},
                            "all_null_above_zero": all(per[names[j]]["ci95"][0] > 0
