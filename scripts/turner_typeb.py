@@ -52,6 +52,7 @@ sys.path.insert(0, str(R))
 
 import RNA  # noqa: E402
 
+from scripts.predecessor import RUNNING_PREFIX  # noqa: E402
 from scripts.runmeta import git_provenance  # noqa: E402
 from scripts.turner_nullspace import (  # noqa: E402
     INF,
@@ -712,6 +713,9 @@ def project():
 # Experiment 2: fold perturbation
 # ----------------------------------------------------------------------------------
 FOLD = OUT / "fold"
+# the driver's running status must start with predecessor.RUNNING_PREFIX, or the standard
+# status waiter reads it as a fault (the 2026-10-12 run wrote "fold RUNNING")
+FOLD_RUNNING = f"{RUNNING_PREFIX}: Type B fold"
 GAP_STEPS = (0, 1, 2, 5, 10, 20, 50, 100)  # dcal
 EXACT_TIE = 1e-9  # dcal; float round-off in c.(theta0 + delta), not a tolerance on energies
 
@@ -1058,7 +1062,7 @@ def fold_run():
                    "load_at_start": os.getloadavg(), "driver_pid": os.getpid(),
                    "worker_pids": [p.pid for p in procs],
                    "points_sha256": {f: sha256(FOLD / f) for f in ("points.npz", "points.json")}}
-    out["status"] = "fold RUNNING"
+    out["status"] = FOLD_RUNNING
     write(out)
     rc = [p.wait() for p in procs]
     done = [d.read_text().rstrip().endswith('{"done": true}') for d in dsts]
