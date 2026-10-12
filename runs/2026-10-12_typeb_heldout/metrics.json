@@ -1,0 +1,159 @@
+{
+ "build": {
+  "cd_hit": {
+   "binary_sha256": "54b5b5bda333756914ecc59c6a4f9d3690273120a142d7a14a52dc3b997f33a7",
+   "build": "make zlib=no openmp=no (no zlib headers on the box; single-threaded)",
+   "command": [
+    "cd-hit-est-2d",
+    "-i",
+    "TR0+TS0.fa",
+    "-i2",
+    "heldout.fa",
+    "-o",
+    "kept.fa",
+    "-c",
+    "0.8",
+    "-n",
+    "5",
+    "-M",
+    "0",
+    "-d",
+    "0"
+   ],
+   "inputs_sha256": {
+    "TR0+TS0.fa": "8a0497572eedc6468bbc4ea1b4d4732426e2d8e4da106c31c3c6a20c5f93d567",
+    "heldout.fa": "096c20a8897b62a18d59cc3e024507f9eb66e29f23776b46e69ecfcd9e6c502d"
+   },
+   "kept_fasta_sha256": "3149d5b8c1354e9bcd243835c1303428371c0330c7997a83b87d1e285e06c7ba",
+   "n_train": 11970,
+   "release": "https://github.com/weizhongli/cdhit/releases/download/V4.8.1/cd-hit-v4.8.1-2019-0228.tar.gz",
+   "reused_output": false,
+   "stdout_tail": [
+    "program completed !",
+    "",
+    "Total CPU time 1265.29"
+   ],
+   "tarball_sha256_ours": "26172dba3040d1ae5c73ff0ac6c3be8c8e60cc49fc7379e434cdf9cb1e7415de",
+   "version": "====== CD-HIT version 4.8.1 (built on Oct 12 2026) ======"
+  },
+  "conflicting_structures_same_sequence": 44,
+  "family_size_min_median_max": [
+   1,
+   3.0,
+   1577
+  ],
+  "heldout_tsv_sha256": "62b23a84178e2bda85a6bbbdbc00d376592eafeebc31f24819475a80f85b4a15",
+  "largest_family_share": 0.03418599609798396,
+  "length_min_median_max": [
+   32,
+   81.0,
+   489
+  ],
+  "n_families": 1641,
+  "n_sequences": 46130,
+  "projection": {
+   "distinct_rows": 98174,
+   "dropped_non_ACGU": 474,
+   "families": 4227,
+   "families_with_crossing": 0,
+   "length_min_median_max": [
+    19,
+    84,
+    4065
+   ],
+   "pairs_dropped_crossing": 0,
+   "pairs_dropped_gap": 117115,
+   "pairs_dropped_noncanonical": 199114,
+   "pairs_dropped_short_hairpin": 2995,
+   "rows": 108916,
+   "rows_without_pairs": 4293,
+   "sequences": 109390
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": true,
+   "git_dirty_paths_outside_runs": [
+    "paper/recomb2027/pins.json",
+    "paper/recomb2027/references.bib",
+    "paper/recomb2027/sections/02_setup.tex",
+    "paper/recomb2027/sections/04_typeb.tex",
+    "scripts/typeb_common.py",
+    "paper/recomb2027/figures/fig2_typeb.py",
+    "scripts/typeb_heldout.py"
+   ],
+   "git_sha": "022ff741486b5796ab5129d02c32b22c33c56690"
+  },
+  "references": "Rfam consensus projections, not structures determined per molecule",
+  "rfam_12_2_families": 2588,
+  "sources_sha256": {
+   "data/raw/structure/Rfam_12.2.family.txt.gz": "8904fb58a8ae13650b0f95703b4105cdc84c2db58a6ef767d8cb572887effd54",
+   "data/raw/structure/Rfam_15.1.seed.gz": "41f014f4ab5628620935f089b1bb77987ebc162fda7c72bff368a32c9cccabac"
+  },
+  "steps": [
+   {
+    "families": 4227,
+    "sequences": 108916,
+    "step": "Rfam 15.1 seed rows (projection rules)"
+   },
+   {
+    "families": 1658,
+    "sequences": 57523,
+    "step": "family accession absent from Rfam 12.2"
+   },
+   {
+    "families": 1658,
+    "sequences": 57324,
+    "step": "pair-bearing"
+   },
+   {
+    "families": 1654,
+    "sequences": 56983,
+    "step": "length <= 499"
+   },
+   {
+    "families": 1654,
+    "sequences": 51341,
+    "step": "distinct (sequence, structure)"
+   },
+   {
+    "families": 1654,
+    "sequences": 51297,
+    "step": "distinct sequence (first kept)"
+   },
+   {
+    "families": 1641,
+    "sequences": 46130,
+    "step": "< 80% identity to TR0+TS0 (cd-hit-est-2d -c 0.8 -n 5)"
+   }
+  ]
+ },
+ "predictions": {
+  "descriptive_user": "the ratio held-out corrected / in-sample corrected, with replicates whose in-sample corrected spread is 0 counted as 0 (against the prediction). Descriptive only; this rule replaces any degenerate-case rule",
+  "e3_on_heldout_user": "the held-out set folded under the whole Turner 1999, Andronescu 2007 and Langdon 2018 tables: changed fraction and paired dF1 (descriptive)",
+  "main_statistic_user": "per set and norm, the NOISE-CORRECTED between-direction spread of mean paired dF1 over the 8 random null directions: corrected = Var_directions(mean dF1) (ddof 1) - mean_directions(SE^2), floored at 0, reported beside the raw spread. SE = bootstrap SD of each direction's mean dF1: over FAMILIES for held-out (cluster bootstrap, sequence-weighted means), over sequences for in-sample (the fold's shards), 2000 draws each",
+  "metrics": "per point: paired dF1 against the held-out references, changed-MFE fraction, rms change of held-out reference energies (exact, c(ref).(theta_r - theta_0))",
+  "null_result_user": "a null result is reportable: 'real but small'",
+  "published_user": "the 3 published null components at their own norms: held-out dF1 with family-bootstrap CIs; no direction predicted",
+  "question_user": "do the TR0+TS0 blind spots matter on families bpRNA-1m never contained?",
+  "registered": "2026-10-12, after the held-out set was built (no folding), before any fold",
+  "registered_test_user": "at 16 kcal/mol: held-out corrected spread MINUS in-sample corrected spread > 0, joint-bootstrap 95% CI lower bound > 0 (families and sequences resampled independently; in each replicate the variance of the replicate means minus the fixed mean SE^2, floored at 0)",
+  "secondary_registered_user": "at each norm (4, 16, 64), the number of the 8 null directions whose dF1 95% CI excludes 0, held-out vs in-sample",
+  "seed": 20261012
+ },
+ "registration_provenance": {
+  "git_dirty": true,
+  "git_dirty_excluding_runs": true,
+  "git_dirty_paths_outside_runs": [
+   "paper/recomb2027/pins.json",
+   "paper/recomb2027/references.bib",
+   "paper/recomb2027/sections/02_setup.tex",
+   "paper/recomb2027/sections/04_typeb.tex",
+   "scripts/typeb_common.py",
+   "paper/recomb2027/figures/fig2_typeb.py",
+   "scripts/typeb_heldout.py"
+  ],
+  "git_sha": "022ff741486b5796ab5129d02c32b22c33c56690"
+ },
+ "run_id": "2026-10-12_typeb_heldout",
+ "status": "PRE-REGISTERED, nothing folded"
+}
