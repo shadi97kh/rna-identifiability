@@ -80,6 +80,11 @@ def point_tables(names_norms):
     for kind, name, norm in names_norms:
         m = next(mm for mm in meta if mm["kind"] == kind and mm["name"] == name
                  and abs(mm["norm_kcal"] - norm) < 1e-9)
+        if kind in ("null", "published", "published_own"):
+            # this point's own unrounded perturbation, re-checked like the unit directions
+            d = Z["delta_dcal"][m["p"]]
+            worst = float(np.abs(B["A"] @ (d / np.linalg.norm(d))[B["used"]]).max())
+            assert worst <= TOL, f"{kind} {name}@{norm:g}: |M v| = {worst} > {TOL}"
         th = Z["theta_r"][m["p"]]
         full = dict(T["theta"]) | {k: int(th[i]) for i, k in enumerate(B["cols"])}
         out.append({"id": f"{kind}:{name}@{norm:g}", "kind": "point", "theta": full,
