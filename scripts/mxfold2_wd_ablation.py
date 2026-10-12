@@ -509,6 +509,26 @@ def lambda_required(width=1.0):
             lam_exact = (1 - math.sqrt(1 - s**2 / width**2)) / LR
             res[f"{name}_b{b}"] = {"sigma_LR": s, "lambda": lam, "lambda_exact": lam_exact,
                                    "times_conventional": lam / WD}
+    # does sigma_LR grow with the horizon? arm (a) -> arm (c) changes both the horizon (1 vs
+    # 10 epochs) and the score-loss weight (1.0 vs 0.125); arm (c) epoch by epoch holds the
+    # weight fixed
+    d = OUT / "seeds" / "paper_like"
+    per_epoch = []
+    for e in range(1, ARMS["paper_like"]["epochs"] + 1):
+        _, _, vw, _ = load_arm(d, e)
+        dp = (vw["post"] - vw["pre"]) + LR * WD * vw["pre"]
+        per_epoch.append({"epoch": e, "n_steps": int(dp.size),
+                          "sigma_LR_b100": long_run_sd(dp, 100)["sigma_LR"],
+                          "sigma_LR_b1000": long_run_sd(dp, 1000)["sigma_LR"]})
+    res["arm_c_sigma_LR_by_epoch"] = per_epoch
+    res["reading"] = (
+        "A LINEARISED ESTIMATE. lambda ~ 0.26 holds the stationary width to 1.0 only if "
+        "sigma_LR is unchanged by lambda; no run tests that, and at 26x the conventional "
+        "decay the weights, and therefore the increments, would almost certainly differ. "
+        "Arm (c)'s value (ten epochs, the registered estimator) is the one quoted; arm (a)'s "
+        "epoch-1 value is reported beside it. The two differ in score-loss weight as well as "
+        "horizon, so the difference between them is not by itself a horizon effect; "
+        "arm_c_sigma_LR_by_epoch holds the weight fixed.")
     out["lambda_required_for_width"] = res
     write(out)
     print(json.dumps(res, indent=1))
