@@ -1,0 +1,126 @@
+{
+ "C1_planted_swap_detected": {
+  "columns": [
+   "('int22', 1, 1, 1, 1, 1, 2)",
+   "('int22', 1, 1, 1, 1, 2, 1)"
+  ],
+  "detected": true,
+  "rows_expected_to_fail": 2,
+  "rows_failing": 2,
+  "turner2004_values": [
+   160,
+   110
+  ]
+ },
+ "V1_table_cache_survives_params_load": {
+  "after_load_model_A_again": -340,
+  "after_load_model_B": 12841,
+  "file_stack22": 12841,
+  "fresh_on_other_model": true,
+  "stale_on_same_model": true,
+  "turner_stack22_model_A": -340
+ },
+ "V2_d2_clips_four_tables_at_zero": {
+  "d2_special_hp0": {
+   "mismatch_vs_clip_model": 0,
+   "mismatch_vs_linear_model": 23735,
+   "n_rows": 23741,
+   "n_rows_using_clipped_tables": 23735
+  },
+  "d2_special_hp1": {
+   "mismatch_vs_clip_model": 0,
+   "mismatch_vs_linear_model": 23735,
+   "n_rows": 23741,
+   "n_rows_using_clipped_tables": 23735
+  },
+  "holds": true,
+  "tables": [
+   "mismatchExt",
+   "mismatchM",
+   "dangle5",
+   "dangle3"
+  ],
+  "turner2004_max_in_those_tables": 0
+ },
+ "W1_identity": true,
+ "W2_round_trip": {
+  "labelled": true,
+  "labelled_values_distinct": true,
+  "turner2004": true
+ },
+ "W3_written_turner2004_reproduces_stock": {
+  "d0_special_hp0": {
+   "n_mismatch": 0,
+   "n_rows": 23741,
+   "passes": true
+  },
+  "d0_special_hp1": {
+   "n_mismatch": 0,
+   "n_rows": 23741,
+   "passes": true
+  },
+  "d2_special_hp0": {
+   "n_mismatch": 0,
+   "n_rows": 23741,
+   "passes": true
+  },
+  "d2_special_hp1": {
+   "n_mismatch": 0,
+   "n_rows": 23741,
+   "passes": true
+  }
+ },
+ "W4_labelled_reader_agrees_with_parser": {
+  "d0_special_hp0": {
+   "first_mismatches": [],
+   "n_mismatch": 0,
+   "n_reachable": 12607,
+   "n_reachable_used": 12607,
+   "n_rows": 23741,
+   "passes": true
+  },
+  "d0_special_hp1": {
+   "first_mismatches": [],
+   "n_mismatch": 0,
+   "n_reachable": 12629,
+   "n_reachable_used": 12629,
+   "n_rows": 23741,
+   "passes": true
+  },
+  "d2_special_hp0": {
+   "first_mismatches": [],
+   "n_mismatch": 0,
+   "n_reachable": 12847,
+   "n_reachable_used": 12847,
+   "n_rows": 23741,
+   "passes": true
+  },
+  "d2_special_hp1": {
+   "first_mismatches": [],
+   "n_mismatch": 0,
+   "n_reachable": 12869,
+   "n_reachable_used": 12869,
+   "n_rows": 23741,
+   "passes": true
+  }
+ },
+ "W5_turner2004_restored": true,
+ "all_pass": true,
+ "elapsed_seconds": 7.9,
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "004da9e06983f13be219ee3369b6756114bd6e4d",
+ "rows": {
+  "n": 23741,
+  "source": "turner_nullspace.generating_set (the r2 rows)"
+ },
+ "run_id": "2026-10-12_turner_par_writer",
+ "status": "complete",
+ "template": {
+  "n_columns": 12869,
+  "n_lines": 9887,
+  "n_value_tokens": 35715
+ },
+ "viennarna_version": "2.7.2"
+}
