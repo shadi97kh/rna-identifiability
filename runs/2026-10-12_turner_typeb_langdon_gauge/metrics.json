@@ -1,0 +1,294 @@
+{
+ "directions_exact_on_generating_set": 0.0,
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "8677126737ad715bc950b7012f0bd4457ad56fb4",
+ "label": "EXPLORATORY (amendment 2)",
+ "per_set": {
+  "Andronescu2007": {
+   "canonicaliser": {
+    "exact": true,
+    "exactness_max_abs_on_generating_set": 0.0,
+    "fraction_of_norm_removed": 0.00021118207506332087,
+    "norm_after_kcal": 116.58621299986004,
+    "norm_before_kcal": 116.61083911884003,
+    "per_table": {
+     "hairpin": {
+      "mean_abs_after": 1.0191820276497694,
+      "mean_abs_before": 0.8882142857142855,
+      "mean_shift_kcal": -0.8882142857142855,
+      "n_entries": 28,
+      "rms_after": 1.0380253724508097,
+      "rms_before": 0.9097743048219628
+     },
+     "internal_loop": {
+      "mean_abs_after": 0.7444444444444446,
+      "mean_abs_before": 0.9355555555555555,
+      "mean_shift_kcal": -0.9355555555555555,
+      "n_entries": 27,
+      "rms_after": 0.7528415307157081,
+      "rms_before": 0.9422510477770969
+     },
+     "mismatch1nI": {
+      "mean_abs_after": 0.25972222222222213,
+      "mean_abs_before": 0.16416666666666666,
+      "mean_shift_kcal": -0.16416666666666666,
+      "n_entries": 96,
+      "rms_after": 0.3873047098494994,
+      "rms_before": 0.33090784215548597
+     },
+     "mismatch23I": {
+      "mean_abs_after": 0.2133333333333333,
+      "mean_abs_before": 0.14166666666666666,
+      "mean_shift_kcal": -0.016250000000000004,
+      "n_entries": 96,
+      "rms_after": 0.2839948704109866,
+      "rms_before": 0.2615657979680575
+     },
+     "mismatchH": {
+      "mean_abs_after": 0.680823252688172,
+      "mean_abs_before": 0.7342708333333334,
+      "mean_shift_kcal": -0.42822916666666666,
+      "n_entries": 96,
+      "rms_after": 0.830459066088862,
+      "rms_before": 0.8858205941385648
+     },
+     "mismatchI": {
+      "mean_abs_after": 0.17166666666666663,
+      "mean_abs_before": 0.10166666666666667,
+      "mean_shift_kcal": 0.04833333333333332,
+      "n_entries": 96,
+      "rms_after": 0.25211206600867103,
+      "rms_before": 0.2523225449036742
+     }
+    },
+    "six_tables_fraction_removed": 0.01990993894407489,
+    "six_tables_norm_after": 11.829000872801787,
+    "six_tables_norm_before": 12.069299896845715
+   },
+   "control_constant_shift": {
+    "max": 0.8550590129977246,
+    "median": 0.6159204005066077,
+    "n_patterns_at_or_above_true": 56,
+    "patterns": 64,
+    "smallest_attainable_tail_share": 0.03125,
+    "statistic": "intrinsic fraction of the per-table-constant part of delta",
+    "tail_share": 0.875,
+    "true": 0.29461210322470005
+   },
+   "gauge_coefficients_kcal": {
+    "N1": 0.1309677419354838,
+    "N2": -0.0955555555555555
+   },
+   "gauge_relations_read": {
+    "N1_wants_mismatchH_equal_minus_hairpin": [
+     -0.42822916666666666,
+     0.8882142857142855
+    ],
+    "N2_wants_three_mismatch_tables_equal_and_internal_loop_minus_twice": [
+     0.04833333333333332,
+     -0.16416666666666666,
+     -0.016250000000000004,
+     0.46777777777777774
+    ]
+   },
+   "intrinsic_fraction_model_level": 0.02055041489258847,
+   "intrinsic_norm_kcal_model_level": 2.3964011248650485,
+   "shared_support": 12607
+  },
+  "Langdon2018": {
+   "canonicaliser": {
+    "exact": true,
+    "exactness_max_abs_on_generating_set": 0.0,
+    "fraction_of_norm_removed": 0.0038884079481822376,
+    "norm_after_kcal": 43.67537578043049,
+    "norm_before_kcal": 43.84586639581893,
+    "per_table": {
+     "hairpin": {
+      "mean_abs_after": 1.517511520737327,
+      "mean_abs_before": 1.25,
+      "mean_shift_kcal": -1.214285714285714,
+      "n_entries": 28,
+      "rms_after": 1.6798579845402337,
+      "rms_before": 1.4119388898147924
+     },
+     "internal_loop": {
+      "mean_abs_after": 0.1982658959537572,
+      "mean_abs_before": 0.4000000000000001,
+      "mean_shift_kcal": -0.4000000000000001,
+      "n_entries": 27,
+      "rms_after": 0.19826589595375718,
+      "rms_before": 0.4
+     },
+     "mismatch1nI": {
+      "mean_abs_after": 0.23304431599229283,
+      "mean_abs_before": 0.26666666666666666,
+      "mean_shift_kcal": 0.26666666666666666,
+      "n_entries": 96,
+      "rms_after": 0.2510877690599517,
+      "rms_before": 0.32659863237109044
+     },
+     "mismatch23I": {
+      "mean_abs_after": 0.10086705202312149,
+      "mean_abs_before": 0.0,
+      "mean_shift_kcal": 0.0,
+      "n_entries": 46,
+      "rms_after": 0.10086705202312143,
+      "rms_before": 0.0
+     },
+     "mismatchH": {
+      "mean_abs_after": 0.5749327956989246,
+      "mean_abs_before": 0.8229166666666669,
+      "mean_shift_kcal": -0.7458333333333335,
+      "n_entries": 96,
+      "rms_after": 0.6183384146845279,
+      "rms_before": 0.861805275763228
+     },
+     "mismatchI": {
+      "mean_abs_after": 0.22899205202312142,
+      "mean_abs_before": 0.12812500000000002,
+      "mean_shift_kcal": -0.12812500000000002,
+      "n_entries": 96,
+      "rms_after": 0.29699973781934547,
+      "rms_before": 0.22844583603121332
+     }
+    },
+    "six_tables_fraction_removed": 0.052224531286668596,
+    "six_tables_norm_after": 11.479043930650867,
+    "six_tables_norm_before": 12.111564721372709
+   },
+   "control_constant_shift": {
+    "max": 0.9656721959328332,
+    "median": 0.6824088435737856,
+    "n_patterns_at_or_above_true": 48,
+    "patterns": 64,
+    "smallest_attainable_tail_share": 0.03125,
+    "statistic": "intrinsic fraction of the per-table-constant part of delta",
+    "tail_share": 0.75,
+    "true": 0.37272167352139274
+   },
+   "gauge_coefficients_kcal": {
+    "N1": 0.3032258064516129,
+    "N2": -0.10086705202312142
+   },
+   "gauge_relations_read": {
+    "N1_wants_mismatchH_equal_minus_hairpin": [
+     -0.7458333333333335,
+     1.214285714285714
+    ],
+    "N2_wants_three_mismatch_tables_equal_and_internal_loop_minus_twice": [
+     -0.12812500000000002,
+     0.26666666666666666,
+     0.0,
+     0.20000000000000004
+    ]
+   },
+   "intrinsic_fraction_model_level": 0.08810048910188904,
+   "intrinsic_norm_kcal_model_level": 3.8628422745677287,
+   "shared_support": 11341
+  },
+  "Turner1999": {
+   "canonicaliser": {
+    "exact": true,
+    "exactness_max_abs_on_generating_set": 1.3877787807814457e-17,
+    "fraction_of_norm_removed": 6.262639842213868e-05,
+    "norm_after_kcal": 132.71959398864556,
+    "norm_before_kcal": 132.7279062593847,
+    "per_table": {
+     "hairpin": {
+      "mean_abs_after": 0.10279953917050703,
+      "mean_abs_before": 0.03928571428571429,
+      "mean_shift_kcal": 0.016428571428571428,
+      "n_entries": 28,
+      "rms_after": 0.11252030191919564,
+      "rms_before": 0.07091242083423346
+     },
+     "internal_loop": {
+      "mean_abs_after": 0.11989524878413767,
+      "mean_abs_before": 0.050740740740740746,
+      "mean_shift_kcal": 0.01,
+      "n_entries": 27,
+      "rms_after": 0.14967277166437504,
+      "rms_before": 0.1258600045317842
+     },
+     "mismatch1nI": {
+      "mean_abs_after": 0.20988005050505054,
+      "mean_abs_before": 0.18125,
+      "mean_shift_kcal": -0.18125,
+      "n_entries": 96,
+      "rms_after": 0.40910628322526454,
+      "rms_before": 0.4264680527307995
+     },
+     "mismatch23I": {
+      "mean_abs_after": 0.15727272727272726,
+      "mean_abs_before": 0.12291666666666666,
+      "mean_shift_kcal": -0.03333333333333334,
+      "n_entries": 96,
+      "rms_after": 0.2980539798092189,
+      "rms_before": 0.29965257660608674
+     },
+     "mismatchH": {
+      "mean_abs_after": 0.3480510752688173,
+      "mean_abs_before": 0.3104166666666667,
+      "mean_shift_kcal": -0.13125,
+      "n_entries": 96,
+      "rms_after": 0.513675320840965,
+      "rms_before": 0.5295438288439085
+     },
+     "mismatchI": {
+      "mean_abs_after": 0.12238005050505053,
+      "mean_abs_before": 0.09375,
+      "mean_shift_kcal": 0.03125,
+      "n_entries": 96,
+      "rms_after": 0.27264699763214834,
+      "rms_before": 0.26339134382131846
+     }
+    },
+    "six_tables_fraction_removed": 0.018488413976506246,
+    "six_tables_norm_after": 7.617219211163324,
+    "six_tables_norm_before": 7.760702287808751
+   },
+   "control_constant_shift": {
+    "max": 0.753228594597665,
+    "median": 0.6388179644869437,
+    "n_patterns_at_or_above_true": 20,
+    "patterns": 64,
+    "smallest_attainable_tail_share": 0.03125,
+    "statistic": "intrinsic fraction of the per-table-constant part of delta",
+    "tail_share": 0.3125,
+    "true": 0.6630958506557791
+   },
+   "gauge_coefficients_kcal": {
+    "N1": 0.10532258064516142,
+    "N2": 0.04580808080808082
+   },
+   "gauge_relations_read": {
+    "N1_wants_mismatchH_equal_minus_hairpin": [
+     -0.13125,
+     -0.016428571428571428
+    ],
+    "N2_wants_three_mismatch_tables_equal_and_internal_loop_minus_twice": [
+     0.03125,
+     -0.18125,
+     -0.03333333333333334,
+     -0.005
+    ]
+   },
+   "intrinsic_fraction_model_level": 0.011191464371486753,
+   "intrinsic_norm_kcal_model_level": 1.4854196340039374,
+   "shared_support": 12607
+  }
+ },
+ "registered_design": {
+  "basis_note_claude": "the MODEL-level intrinsic directions (analytic_directions over all reachable columns, not the TR0+TS0-restricted ones), restricted to each table's shared support and orthonormalised; their exactness is checked on the 23,741 generating-set rows (max |G g| <= 1e-9 before restriction)",
+  "canonicaliser_user": "canonicalise toward Turner 2004 along the 2 intrinsic directions: g* = argmin ||delta + g|| over their span on the shared support; report ||delta|| vs ||delta + g*||, and per table the rms per-entry difference before and after for the six tables: how much of the apparent per-entry difference goes away. Langdon is the case of interest; Andronescu and Turner 1999 alongside.",
+  "control": "per-table constant-shift control: keep each of the six tables' |mean shift|, flip the signs; all 2^6 = 64 sign patterns enumerated exactly; the statistic is the intrinsic fraction of the per-table-constant part of delta; report the true pattern's rank among the 64 and the per-table mean shifts themselves (kcal/mol)",
+  "execution": "scripts/turner_typeb_langdon_gauge.py, its own artifact (runs/2026-10-12_turner_typeb_langdon_gauge), one core, while the fold runs; it never writes the Type B artifact",
+  "status": "registered after seeing Experiment 1; EXPLORATORY whatever it returns",
+  "structure_note_claude": "the 2 intrinsic directions are per-table constant shifts (N1: +1 on every mismatchH entry, -1 on every hairpin[3..30]; N2: +1 on every mismatchI, mismatch1nI, mismatch23I entry, -2 on every internal_loop[4..30]), so delta's intrinsic component is set entirely by delta's per-table means over those six tables. Any revision that shifts those tables by constants projects onto them, whether or not the shifts satisfy the gauge relations.",
+  "why_user": "if it holds, the paper's most concrete Type A example: a published table sitting 3.8 kcal/mol along an exact gauge direction; and the natural test of the canonicaliser"
+ },
+ "run_id": "2026-10-12_turner_typeb_langdon_gauge",
+ "status": "complete"
+}
