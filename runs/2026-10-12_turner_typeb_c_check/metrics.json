@@ -1,0 +1,281 @@
+{
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "871ca7380126a1b5425a4d7deef9dafa4c634241",
+ "label": "EXPLORATORY (asked 2026-10-12)",
+ "per_set": {
+  "Andronescu2007": {
+   "rfam": {
+    "constant_part_share_of_delta_norm_squared": 0.17627979077267264,
+    "demeaned_nontrivial_fraction": 0.12291899988425445,
+    "demeaned_q50": 0.12577388637314754,
+    "demeaned_q99": 0.13978838279208303,
+    "moves_toward_50": true,
+    "nontrivial_projection_squared": {
+     "delta": 199.21149999251514,
+     "demeaned_part": 183.53679668147376,
+     "per_table_constant_part": 15.003931017729238
+    },
+    "overlap_constant_vs_rotated": {
+     "bulge": {
+      "constant_vector_squared_overlap": 1.2486739597864362e-31,
+      "n_columns": 30,
+      "rotated_mean_exact": 1.7394985661169032e-31,
+      "rotated_mean_sampled": 1.7420892857384367e-31
+     },
+     "int11": {
+      "constant_vector_squared_overlap": 3.660542702495668e-32,
+      "n_columns": 576,
+      "rotated_mean_exact": 4.681272054303237e-32,
+      "rotated_mean_sampled": 4.690126283896233e-32
+     },
+     "int21": {
+      "constant_vector_squared_overlap": 0.014229270953463293,
+      "n_columns": 1841,
+      "rotated_mean_exact": 0.01675328650323199,
+      "rotated_mean_sampled": 0.016787826430978207
+     },
+     "int22": {
+      "constant_vector_squared_overlap": 0.00883969464514442,
+      "n_columns": 4883,
+      "rotated_mean_exact": 0.037509154115820176,
+      "rotated_mean_sampled": 0.037556287733012526
+     }
+    },
+    "rank_demeaned": 29.799999999999997,
+    "rank_registered": 25.6,
+    "rank_reproduced_with_registered_seed": 25.6,
+    "reproduces_registered": true
+   },
+   "tr0ts0": {
+    "constant_part_share_of_delta_norm_squared": 0.1748676088472479,
+    "demeaned_nontrivial_fraction": 0.17488156313859002,
+    "demeaned_q50": 0.1848231572705513,
+    "demeaned_q99": 0.199806770947143,
+    "moves_toward_50": true,
+    "nontrivial_projection_squared": {
+     "delta": 442.3562852223641,
+     "demeaned_part": 390.3732049561607,
+     "per_table_constant_part": 41.55851718364028
+    },
+    "overlap_constant_vs_rotated": {
+     "bulge": {
+      "constant_vector_squared_overlap": 0.021666666666667986,
+      "n_columns": 30,
+      "rotated_mean_exact": 0.021666666666666515,
+      "rotated_mean_sampled": 0.021412705404146207
+     },
+     "int11": {
+      "constant_vector_squared_overlap": 0.012129814623923289,
+      "n_columns": 565,
+      "rotated_mean_exact": 0.012129814623922864,
+      "rotated_mean_sampled": 0.012349098510341074
+     },
+     "int21": {
+      "constant_vector_squared_overlap": 0.0727192069815563,
+      "n_columns": 1142,
+      "rotated_mean_exact": 0.10344523111821274,
+      "rotated_mean_sampled": 0.10308059341977983
+     },
+     "int22": {
+      "constant_vector_squared_overlap": 0.045340278425948094,
+      "n_columns": 2343,
+      "rotated_mean_exact": 0.12819556158791492,
+      "rotated_mean_sampled": 0.12817529616540485
+     }
+    },
+    "rank_demeaned": 4.8,
+    "rank_registered": 3.2,
+    "rank_reproduced_with_registered_seed": 3.2,
+    "reproduces_registered": true
+   }
+  },
+  "Langdon2018": {
+   "rfam": {
+    "constant_part_share_of_delta_norm_squared": 0.28040562636854793,
+    "demeaned_nontrivial_fraction": 0.1078126899060215,
+    "demeaned_q50": 0.10626769029870164,
+    "demeaned_q99": 0.11914073492616911,
+    "moves_toward_50": true,
+    "nontrivial_projection_squared": {
+     "delta": 18.671928273016775,
+     "demeaned_part": 17.56933231769969,
+     "per_table_constant_part": 0.6012901265715842
+    },
+    "overlap_constant_vs_rotated": {
+     "bulge": {
+      "constant_vector_squared_overlap": 1.2486739597864362e-31,
+      "n_columns": 30,
+      "rotated_mean_exact": 1.7394985661169032e-31,
+      "rotated_mean_sampled": 1.7381045302528635e-31
+     },
+     "int11": {
+      "constant_vector_squared_overlap": 3.660542702495668e-32,
+      "n_columns": 576,
+      "rotated_mean_exact": 4.681272054303237e-32,
+      "rotated_mean_sampled": 4.693497501436427e-32
+     },
+     "int21": {
+      "constant_vector_squared_overlap": 0.014960644103555631,
+      "n_columns": 1751,
+      "rotated_mean_exact": 0.017614392034523182,
+      "rotated_mean_sampled": 0.01771105998464033
+     },
+     "int22": {
+      "constant_vector_squared_overlap": 0.012143297531381622,
+      "n_columns": 4324,
+      "rotated_mean_exact": 0.0375008917947482,
+      "rotated_mean_sampled": 0.03751143480333373
+     }
+    },
+    "rank_demeaned": 61.3,
+    "rank_registered": 69.5,
+    "rank_reproduced_with_registered_seed": 69.5,
+    "reproduces_registered": true
+   },
+   "tr0ts0": {
+    "constant_part_share_of_delta_norm_squared": 0.35186311308274004,
+    "demeaned_nontrivial_fraction": 0.13334919679327575,
+    "demeaned_q50": 0.14113673640075536,
+    "demeaned_q99": 0.15905772209883556,
+    "moves_toward_50": true,
+    "nontrivial_projection_squared": {
+     "delta": 29.428347355964622,
+     "demeaned_part": 27.275153512702428,
+     "per_table_constant_part": 4.801306952060378
+    },
+    "overlap_constant_vs_rotated": {
+     "bulge": {
+      "constant_vector_squared_overlap": 0.021666666666667986,
+      "n_columns": 30,
+      "rotated_mean_exact": 0.021666666666666515,
+      "rotated_mean_sampled": 0.02140297716608144
+     },
+     "int11": {
+      "constant_vector_squared_overlap": 0.012129814623923289,
+      "n_columns": 565,
+      "rotated_mean_exact": 0.012129814623922864,
+      "rotated_mean_sampled": 0.012243248997124428
+     },
+     "int21": {
+      "constant_vector_squared_overlap": 0.07257564012365515,
+      "n_columns": 1074,
+      "rotated_mean_exact": 0.1019266401845329,
+      "rotated_mean_sampled": 0.10184834638379987
+     },
+     "int22": {
+      "constant_vector_squared_overlap": 0.05257081896625761,
+      "n_columns": 2102,
+      "rotated_mean_exact": 0.1280931464152029,
+      "rotated_mean_sampled": 0.12806703156309135
+     }
+    },
+    "rank_demeaned": 9.700000000000001,
+    "rank_registered": 3.8,
+    "rank_reproduced_with_registered_seed": 3.8,
+    "reproduces_registered": true
+   }
+  },
+  "Turner1999": {
+   "rfam": {
+    "constant_part_share_of_delta_norm_squared": 0.26631865712226854,
+    "demeaned_nontrivial_fraction": 0.11859515040925668,
+    "demeaned_q50": 0.12193979538547557,
+    "demeaned_q99": 0.1367119191618744,
+    "moves_toward_50": false,
+    "nontrivial_projection_squared": {
+     "delta": 261.74823196292414,
+     "demeaned_part": 210.04223115086853,
+     "per_table_constant_part": 41.8495083961012
+    },
+    "overlap_constant_vs_rotated": {
+     "bulge": {
+      "constant_vector_squared_overlap": 1.2486739597864362e-31,
+      "n_columns": 30,
+      "rotated_mean_exact": 1.7394985661169032e-31,
+      "rotated_mean_sampled": 1.7321723136060103e-31
+     },
+     "int11": {
+      "constant_vector_squared_overlap": 3.660542702495668e-32,
+      "n_columns": 576,
+      "rotated_mean_exact": 4.681272054303237e-32,
+      "rotated_mean_sampled": 4.6506580988933724e-32
+     },
+     "int21": {
+      "constant_vector_squared_overlap": 0.014229270953463293,
+      "n_columns": 1841,
+      "rotated_mean_exact": 0.01675328650323199,
+      "rotated_mean_sampled": 0.016784320367578088
+     },
+     "int22": {
+      "constant_vector_squared_overlap": 0.00883969464514442,
+      "n_columns": 4883,
+      "rotated_mean_exact": 0.037509154115820176,
+      "rotated_mean_sampled": 0.03758318717076433
+     }
+    },
+    "rank_demeaned": 29.099999999999998,
+    "rank_registered": 45.2,
+    "rank_reproduced_with_registered_seed": 45.2,
+    "reproduces_registered": true
+   },
+   "tr0ts0": {
+    "constant_part_share_of_delta_norm_squared": 0.24033576275312937,
+    "demeaned_nontrivial_fraction": 0.16956470889013495,
+    "demeaned_q50": 0.17405523966108932,
+    "demeaned_q99": 0.18722591790089016,
+    "moves_toward_50": false,
+    "nontrivial_projection_squared": {
+     "delta": 594.5371964693325,
+     "demeaned_part": 467.96413300581,
+     "per_table_constant_part": 106.04077994813703
+    },
+    "overlap_constant_vs_rotated": {
+     "bulge": {
+      "constant_vector_squared_overlap": 0.021666666666667986,
+      "n_columns": 30,
+      "rotated_mean_exact": 0.021666666666666515,
+      "rotated_mean_sampled": 0.022385169456358975
+     },
+     "int11": {
+      "constant_vector_squared_overlap": 0.012129814623923289,
+      "n_columns": 565,
+      "rotated_mean_exact": 0.012129814623922864,
+      "rotated_mean_sampled": 0.012471767126092053
+     },
+     "int21": {
+      "constant_vector_squared_overlap": 0.0727192069815563,
+      "n_columns": 1142,
+      "rotated_mean_exact": 0.10344523111821274,
+      "rotated_mean_sampled": 0.10396815365455998
+     },
+     "int22": {
+      "constant_vector_squared_overlap": 0.045340278425948094,
+      "n_columns": 2343,
+      "rotated_mean_exact": 0.12819556158791492,
+      "rotated_mean_sampled": 0.12854434284195787
+     }
+    },
+    "rank_demeaned": 20.0,
+    "rank_registered": 21.6,
+    "rank_reproduced_with_registered_seed": 21.6,
+    "reproduces_registered": true
+   }
+  }
+ },
+ "reading": {
+  "all_reproduce_registered": true,
+  "moves_toward_50": {
+   "Andronescu2007/rfam": true,
+   "Andronescu2007/tr0ts0": true,
+   "Langdon2018/rfam": true,
+   "Langdon2018/tr0ts0": true,
+   "Turner1999/rfam": false,
+   "Turner1999/tr0ts0": false
+  },
+  "rule_user": "if the ranks move toward 50, the stated finding becomes 'not enriched; the apparent depletion against table-matched rotations comes from constant per-table shifts, which the null directions barely contain'"
+ },
+ "run_id": "2026-10-12_turner_typeb_c_check",
+ "status": "complete"
+}
