@@ -350,6 +350,107 @@ def analyse_ab():
     return 0
 
 
+def ts0_f(checkpoint):
+    """TS0 F of a checkpoint with the gauge arms' scorer (the code path of
+    scripts/mxfold2_shipped_ts0_f.py: read_bpseq, predict, per-sequence pair counts,
+    scripts/mxfold2_gauge_eval.accuracy)."""
+    import hashlib
+
+    import torch
+
+    import scripts.mxfold2_gauge_eval as ev
+    from scripts.mxfold2_decompose import build_model, predict, read_bpseq
+
+    torch.set_num_threads(4)
+    model = build_model(ev.LIVE / "arch.conf")
+    model.load_state_dict(torch.load(checkpoint, map_location="cpu", weights_only=True)
+                          ["model_state_dict"])
+    model.eval()
+    entries = json.loads((ev.LIVE / "metrics.json").read_text())["evaluation_set"]["entries"]
+    tp, fp, fn = [], [], []
+    for e in entries:
+        seq, partner = read_bpseq(ev.DATA / e["file"])
+        assert hashlib.sha256(seq.encode()).hexdigest() == e["sha256"], e["file"]
+        with torch.no_grad():
+            param = model.make_param([seq])
+        _, _, bp = predict(model, seq, param)
+        ref = {(i, partner[i]) for i in range(1, len(partner)) if partner[i] > i}
+        pred = {(i, bp[i]) for i in range(1, len(bp)) if bp[i] > i}
+        tp.append(len(pred & ref))
+        fp.append(len(pred - ref))
+        fn.append(len(ref - pred))
+    return ev.accuracy(np.array(tp), np.array(fp), np.array(fn))
+
+
+def analyse_c():
+    out = read_out()
+    d = OUT / "seeds" / "paper_like"
+    E = ARMS["paper_like"]["epochs"]
+    recs = [load_arm(d, e) for e in range(1, E + 1)]
+    void = [void_check(gj, z, vw) for gj, z, vw, _ in recs]
+    pre = np.concatenate([vw["pre"] for _, _, vw, _ in recs])
+    post = np.concatenate([vw["post"] for _, _, vw, _ in recs])
+    ends = np.cumsum([len(vw["pre"]) for _, _, vw, _ in recs])
+    v0 = recs[0][0]["v_dot_w_start"]["v_dot_w"]
+    obs = [gj["v_dot_w"] for gj, _, _, _ in recs]
+    d_decay = -LR * WD * pre
+    d_prec = (post - pre) - d_decay
+    a = ar1(d_prec)
+    phi = 1 - ETA_LAMBDA
+    s_lr = a["long_run"]["1000"]["sigma_LR"]
+    path = []
+    for k, t in enumerate(ends, start=1):
+        mean = phi ** t * v0 + (a["mu"] / ETA_LAMBDA) * (1 - phi ** t)
+        sd = s_lr * math.sqrt((1 - phi ** (2 * t)) / (1 - phi ** 2))
+        o = obs[k - 1]
+        path.append({"epoch": k, "t_steps": int(t), "observed": o, "predicted_mean": mean,
+                     "predicted_sd": sd, "z": (o - mean) / sd,
+                     "inside_2sd": bool(abs(o - mean) <= 2 * sd)})
+    tracks = all(p["inside_2sd"] for p in path)
+    sp = epoch10_spread()
+    ev_res = json.loads(EVAL.read_text())["2b"]["results"]
+    arms_f = ev_res["main"]["arms"]
+    shipped = json.loads(SHIPPED.read_text())
+    f_c = ts0_f(d / "checkpoints" / f"epoch-{E}")
+    f06 = ev_res["F_per_model"]["adamw_w0.125_seed20261006"]["F_mean_per_sequence"]
+    pub = shipped["paper_training"]["table2_TS0_TR0_trained"]["F"]
+    res = {
+        "void_by_epoch": void, "void": any(v["void"] for v in void),
+        "between_steps_max_abs_change": float(np.abs(pre[1:] - post[:-1]).max()),
+        "endpoints_match_epoch_records": bool(abs(pre[0] - v0) < 1e-12 and all(
+            abs(post[t - 1] - o) < 1e-12 for t, o in zip(ends, obs, strict=True))),
+        "v_w_epoch0": v0, "v_w_by_epoch": obs, "N_update_steps": int(ends[-1]),
+        "sum_delta_decay": float(d_decay.sum()), "sum_delta_precond": float(d_prec.sum()),
+        "AR1": a, "AR1_arm_a_epoch1": out["analysis_ab"]["arm_a"]["AR1"],
+        "AR1_validation": {"path": path, "n_epochs_inside_2sd": sum(p["inside_2sd"] for p in path),
+                           "tracks": tracks,
+                           "stationary_width_quoted": (a["stationary_sd_long_run_b1000"]
+                                                       if tracks else None),
+                           "stationary_width_is": a["width_is"] if tracks else
+                           "not quoted: the AR(1) description failed the registered test"},
+        "trajectory_vs_wd0": {"adamw_w0.125_seed06": sp["adamw_w0.125"]["seed06_trace"],
+                              "adamw_w1.0_seed06": sp["adamw_w1.0"]["seed06_trace"]},
+        "unregularised_epoch10_spread": {k: {x: v[x] for x in ("seed_sd_epoch10",
+                                                               "min_epoch10", "max_epoch10")}
+                                         for k, v in sp.items()},
+        "TS0": {"paper_like_epoch10": f_c, "published_TR0_model": pub,
+                "shipped": shipped["shipped_same_scorer_as_arms"]["F_mean_per_sequence"],
+                "code_default_arm_mean": arms_f["adamw_w1.0"]["F_mean"],
+                "w0.125_arm_mean": arms_f["adamw_w0.125"]["F_mean"],
+                "w0.125_seed06_like_for_like": f06,
+                "paper_like_minus_w0.125_seed06": f_c["F_mean_per_sequence"] - f06,
+                "published_minus_paper_like": pub - f_c["F_mean_per_sequence"],
+                "note": "reported with no prediction; n = 1; decay is decoupled AdamW weight "
+                        "decay, not the paper's l2 loss term"}}
+    out["analysis_c"] = res
+    out["status"] = "arm c analysed"
+    write(out)
+    print(json.dumps({k: res[k] for k in ("void", "v_w_by_epoch", "sum_delta_decay",
+                                          "sum_delta_precond", "AR1_validation", "TS0")},
+                     indent=1, default=str))
+    return 0
+
+
 def preregister():
     p = OUT / "metrics.json"
     if p.exists():
@@ -400,4 +501,6 @@ if __name__ == "__main__":
         sys.exit(analyse_ab())
     if ph == "run-c":
         sys.exit(run_arms(("paper_like",), "arm c"))
+    if ph == "analyse-c":
+        sys.exit(analyse_c())
     raise SystemExit(f"unknown phase {ph}")
