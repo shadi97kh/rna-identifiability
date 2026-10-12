@@ -451,6 +451,41 @@ def analyse_c():
     return 0
 
 
+def bound_wd0():
+    """Per-epoch drift of the no-decay AdamW seed-20261006 runs, as the stationary mean it
+    would imply under decay. Requested by the user 2026-10-12 as a pre-arm-(c) bound, but
+    computed AFTER arm (c) was analysed (commit 7a9e1d2); recorded with that timing."""
+    out = read_out()
+    sp = epoch10_spread()
+    n = 10814  # update steps per epoch, as in the instrumented runs (seed-study runs have no hooks)
+    res = {"timing": "computed 2026-10-12 after arm (c) had been analysed and committed "
+                     "(7a9e1d2); requested as a pre-arm-(c) bound, so it is not one",
+           "steps_per_epoch_assumed": n}
+    for arm in ("adamw_w1.0", "adamw_w0.125"):
+        tr = sp[arm]["seed06_trace"]
+        vals = [tr[str(e)] for e in range(11)]
+        d = np.diff(vals)
+        late = d[3:]  # epochs 4-10
+        res[arm] = {"per_epoch_delta": d.tolist(), "mu_per_step": (d / n).tolist(),
+                    "stationary_mean_implied": (d / n / ETA_LAMBDA).tolist(),
+                    "epoch1_mu": float(d[0] / n),
+                    "epoch1_stationary_mean": float(d[0] / n / ETA_LAMBDA),
+                    "epochs4to10_mean_delta": float(late.mean()),
+                    "epochs4to10_mu": float(late.mean() / n),
+                    "epochs4to10_stationary_mean": float(late.mean() / n / ETA_LAMBDA)}
+    res["arm_a_epoch1_stationary_mean_with_decay"] = out["analysis_ab"]["arm_a"]["AR1"][
+        "stationary_mean"]
+    if "analysis_c" in out:
+        res["arm_c_fitted"] = {k: out["analysis_c"]["AR1"][k] for k in
+                               ("mu", "stationary_mean", "stationary_sd_long_run_b1000")}
+        res["note"] = ("arm (c) is score-loss weight 0.125, so its like-for-like no-decay "
+                       "trace is adamw_w0.125 seed 20261006; arm (a) is weight 1.0")
+    out["bound_wd0_late_epochs"] = res
+    write(out)
+    print(json.dumps(res, indent=1))
+    return 0
+
+
 def preregister():
     p = OUT / "metrics.json"
     if p.exists():
@@ -503,4 +538,6 @@ if __name__ == "__main__":
         sys.exit(run_arms(("paper_like",), "arm c"))
     if ph == "analyse-c":
         sys.exit(analyse_c())
+    if ph == "bound-wd0":
+        sys.exit(bound_wd0())
     raise SystemExit(f"unknown phase {ph}")
