@@ -32,6 +32,7 @@ Phases (.venv-mxfold2):
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import os
@@ -573,8 +574,49 @@ def smoke(dst):
     return 0 if all(c == 0 for c in codes.values()) else 1
 
 
+def epoch_split(thin=100):
+    """For the paper's figure (2026-10-12): arm (c)'s v.w over its ten epochs, split into the
+    decay and the optimiser (preconditioned-gradient) contributions, exactly as analyse_c splits
+    them (d_decay = -lr*wd*pre per step; d_prec = the rest). Per-epoch cumulative sums, plus the
+    per-step traces thinned to every `thin`-th step, so the figure reads only this artifact.
+    Adds a key; the status and every earlier result are left as they are."""
+    out = read_out()
+    assert out["status"] == "arm c analysed", out["status"]
+    d = OUT / "seeds" / "paper_like"
+    E = ARMS["paper_like"]["epochs"]
+    recs = [load_arm(d, e) for e in range(1, E + 1)]
+    pre = np.concatenate([vw["pre"] for _, _, vw, _ in recs])
+    post = np.concatenate([vw["post"] for _, _, vw, _ in recs])
+    ends = np.cumsum([len(vw["pre"]) for _, _, vw, _ in recs])
+    v0 = recs[0][0]["v_dot_w_start"]["v_dot_w"]
+    d_decay = -LR * WD * pre
+    d_prec = (post - pre) - d_decay
+    cd, cp = np.cumsum(d_decay), np.cumsum(d_prec)
+    assert np.abs(v0 + cd + cp - post).max() < 1e-9, "decomposition does not close"
+    ac = out["analysis_c"]
+    assert abs(float(cd[-1]) - ac["sum_delta_decay"]) < 1e-12
+    assert abs(float(cp[-1]) - ac["sum_delta_precond"]) < 1e-12
+    idx = np.unique(np.concatenate([np.arange(0, len(pre), thin), ends - 1]))
+    src = {f"seeds/paper_like/gauge/vw-epoch-{e}.npz":
+           hashlib.sha256((d / "gauge" / f"vw-epoch-{e}.npz").read_bytes()).hexdigest()
+           for e in range(1, E + 1)}
+    out["figure_epoch_split"] = {
+        "v_w_epoch0": v0, "lr": LR, "wd": WD, "thin": thin, "sources_sha256": src,
+        "by_epoch": [{"epoch": k, "t_steps": int(t), "v_w": float(post[t - 1]),
+                      "cum_decay": float(cd[t - 1]), "cum_optimiser": float(cp[t - 1])}
+                     for k, t in enumerate(ends, start=1)],
+        "trace": {"step": (idx + 1).tolist(), "v_w": post[idx].tolist(),
+                  "cum_decay": cd[idx].tolist(), "cum_optimiser": cp[idx].tolist()},
+        "provenance": git_provenance(R)}
+    write(out)
+    print(json.dumps(out["figure_epoch_split"]["by_epoch"], indent=1))
+    return 0
+
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
+    if ph == "epoch-split":
+        sys.exit(epoch_split())
     if ph == "preregister":
         sys.exit(preregister())
     if ph == "smoke":
