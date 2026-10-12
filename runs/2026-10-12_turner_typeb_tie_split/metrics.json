@@ -1,0 +1,14 @@
+{
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "401cc02c57b8a39f2da1e14d29b1943b649432c9",
+ "rule": {
+  "classification": "dE0 = E0(s1) - E0(s0) under Turner 2004 counts (integer dcal/mol): 0 is a tie flip, > 0 a real reordering",
+  "interval": "real reorderings / 11,970 sequences; bootstrap 95% percentile CI, 2000 draws over sequences, seed SeedSequence([20261012, 9, point])",
+  "label": "EXPLORATORY; written before any refold (the user's instruction)",
+  "rule_user": "the headline reports real reorderings, with the total changed and the tie-flip count beside it. A reviewer can dismiss tie flips as arbitrary, but can't dismiss reorderings."
+ },
+ "run_id": "2026-10-12_turner_typeb_tie_split",
+ "status": "PRE-REGISTERED, nothing refolded"
+}
