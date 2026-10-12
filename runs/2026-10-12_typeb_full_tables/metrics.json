@@ -59,5 +59,150 @@
   "reachable_missing": [],
   "table_in_effect": true
  },
- "run_id": "2026-10-12_typeb_full_tables"
+ "failed_attempts": [
+  {
+   "finished": "2026-10-12T16:40:13",
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": true,
+    "git_dirty_paths_outside_runs": [
+     "paper/recomb2027/figs/learned_gauge.pdf",
+     "paper/recomb2027/figs/learned_gauge.png",
+     "paper/recomb2027/figs/overview_nullspace.pdf",
+     "paper/recomb2027/figs/overview_nullspace.png",
+     "scripts/fig_learned_gauge.py",
+     "scripts/fig_overview_nullspace.py"
+    ],
+    "git_sha": "0a0beba7ee21b29508e8b42c7bac32001f31c6e8"
+   },
+   "shards_sha256": {
+    "shard0.jsonl": "2514cd62fb0ef13d2f83088c232472801e91de4fd4a9bbdfa2239d49479d74c9",
+    "shard1.jsonl": "1d8df89d4f372e3b1440b74da51bf00137dfd37e90dfe776c11231d0b9b41493",
+    "shard2.jsonl": "db1442abfa38c33ad1b8886d0fae702dd9387ca6902a6091c461b4e7190cf805",
+    "shard3.jsonl": "1d5abbc5f6317db363dc648bcac875f2efa061b96ec6c107a05fb95027a66833",
+    "shard4.jsonl": "13f45350a5cfed643d7a46dacc31c84b7527ffd03e6b823a5a9e53d48d7746c0",
+    "shard5.jsonl": "e886e252e11173b38b1fe8912f8dad55bff3442c40f94b9eea65004c6bfcc85f",
+    "shard6.jsonl": "49853770d4cd38f2323d20b0452c818014add22823b894928765019a9d4602c1",
+    "shard7.jsonl": "5d4504b11d99e6de09aebde2a9bff29ba074c1a73ba6b34a63b65fba63b4096e"
+   },
+   "started": "2026-10-12T16:37:40",
+   "status": "FAILED: [1, 1, 1, 1, 1, 1, 1, 1]",
+   "workers_exit": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ]
+  }
+ ],
+ "label": "DESCRIPTIVE (E3, the user's; no prediction)",
+ "results": {
+  "n_sequences": 11970,
+  "per_table": {
+   "full:Andronescu2007": {
+    "changed_ci95": [
+     0.8116938178780284,
+     0.825563909774436
+    ],
+    "changed_fraction": 0.8187134502923976,
+    "f1_ref0_mean": 0.48217092460901795,
+    "f1_ref_mean": 0.48400997518796995,
+    "n_reference_forbidden": 0,
+    "paired_dF1": 0.001839050578951966,
+    "paired_dF1_ci95": [
+     -0.0009969795680307668,
+     0.004792215282122862
+    ],
+    "rms_reference_energy_change_kcal": 4.1818646444812035
+   },
+   "full:Langdon2018": {
+    "changed_ci95": [
+     0.866499582289056,
+     0.8781954887218045
+    ],
+    "changed_fraction": 0.8723475355054302,
+    "f1_ref0_mean": 0.48217092460901795,
+    "f1_ref_mean": 0.5066274005012531,
+    "n_reference_forbidden": 1327,
+    "paired_dF1": 0.024456475892235176,
+    "paired_dF1_ci95": [
+     0.021320312413286354,
+     0.027715779698551483
+    ],
+    "rms_reference_energy_change_kcal": 3.2673447431487244
+   },
+   "full:Turner1999": {
+    "changed_ci95": [
+     0.6461152882205514,
+     0.6634106098579783
+    ],
+    "changed_fraction": 0.654720133667502,
+    "f1_ref0_mean": 0.48217092460901795,
+    "f1_ref_mean": 0.4875105260651628,
+    "n_reference_forbidden": 0,
+    "paired_dF1": 0.0053396014561449484,
+    "paired_dF1_ci95": [
+     0.002963185426552883,
+     0.007650314295495549
+    ],
+    "rms_reference_energy_change_kcal": 2.4057500875421938
+   }
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": true,
+   "git_dirty_paths_outside_runs": [
+    "paper/recomb2027/figs/learned_gauge.pdf",
+    "paper/recomb2027/figs/learned_gauge.png",
+    "paper/recomb2027/figs/overview_nullspace.pdf",
+    "paper/recomb2027/figs/overview_nullspace.png",
+    "scripts/fig_learned_gauge.py",
+    "scripts/fig_overview_nullspace.py"
+   ],
+   "git_sha": "fe6631438d6ee318d26f3b1f621ec28a765e7a5e"
+  }
+ },
+ "run": {
+  "finished": "2026-10-12T16:47:47",
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": true,
+   "git_dirty_paths_outside_runs": [
+    "paper/recomb2027/figs/learned_gauge.pdf",
+    "paper/recomb2027/figs/learned_gauge.png",
+    "paper/recomb2027/figs/overview_nullspace.pdf",
+    "paper/recomb2027/figs/overview_nullspace.png",
+    "scripts/fig_learned_gauge.py",
+    "scripts/fig_overview_nullspace.py"
+   ],
+   "git_sha": "fe6631438d6ee318d26f3b1f621ec28a765e7a5e"
+  },
+  "shards_sha256": {
+   "shard0.jsonl": "e7119ce15dbe9a4d925b6c45bd2eda0a4da1bfdadc268ae017b42d89ccabcca9",
+   "shard1.jsonl": "419d6297a5c2dc7de603cffc3f4a7e135a9b772c64a131278deca28bbaa00b2f",
+   "shard2.jsonl": "90bc119bd1524215d578b048a415077aee2c9ce7292e8359c85c18a98439f033",
+   "shard3.jsonl": "5a56e64beea9f127868fc15ff1c1292c53963232ab99c46e162b276170b3f4a7",
+   "shard4.jsonl": "8f6eb3ddb9a0b7cc071dc52bf81d0dea53cdca4f28359d0e55f1be8cce1ea193",
+   "shard5.jsonl": "f21b4ab07bdde6de0baa12e699e28d368d3a2d4c6daa3cb10b8b227edffe93cb",
+   "shard6.jsonl": "9e76e45bc940acf8fdb335d5720ade80116245b3bd74f9f1db79f2f03c3babd5",
+   "shard7.jsonl": "632c9e60ca872743242b6d2d1c4b2ddb3238b46ca2e044974a50edc547bb16c5"
+  },
+  "started": "2026-10-12T16:45:54",
+  "workers_exit": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
+ "run_id": "2026-10-12_typeb_full_tables",
+ "status": "analysed"
 }
