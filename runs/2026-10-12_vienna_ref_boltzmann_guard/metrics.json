@@ -14436,6 +14436,26 @@
   "slowdown": 1.1502890173410405,
   "unchanged": true
  },
+ "planted_stale_boltzmann": {
+  "before_guard": {
+   "outcome": "RETURNED -25.52735137939453",
+   "vienna_ref_at": "87d4b2e^",
+   "vienna_ref_sha256": "dbdc2c4d99a002be003d385ace8011c81be869e63fed886b35258ab62518b285"
+  },
+  "golden_kcal": -29.440468,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "c262b3c3cb375cd43a65a3ee3d8310614876d61f"
+  },
+  "sequence": "trna_73",
+  "with_guard": {
+   "outcome": "CAUGHT the partition function's Boltzmann factors are not Turner 2004",
+   "vienna_ref_at": "87d4b2e",
+   "vienna_ref_sha256": "d3f85d2510195ea2c4ab956528355a16cef4e2242c5a72d48830a84ca00439c6"
+  }
+ },
  "run_id": "2026-10-12_vienna_ref_boltzmann_guard",
  "status": "complete"
 }
