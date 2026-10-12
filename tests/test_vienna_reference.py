@@ -177,6 +177,82 @@ def test_params_poisoning_is_caught():
     )
 
 
+def test_stale_boltzmann_table_is_caught():
+    """A Boltzmann table left from another parameter set must fail loudly.
+
+    ViennaRNA 2.7.2 caches the partition function's Boltzmann factors separately from
+    the energy table, keyed on the model details. Planted here exactly as it happens:
+    a pf() with the reference model under Andronescu 2007 fills the Boltzmann cache;
+    Turner 2004 is reloaded; a compound with other model details (MFE only) rebuilds
+    the energy table but not the Boltzmann factors. The energy fingerprint then passes,
+    and only the Boltzmann guard can see that pf() is wrong. Runs in a subprocess.
+    """
+    import pathlib
+    import subprocess
+    import sys
+
+    seq = GOLDEN["trna_73"][0]
+    program = (
+        "import RNA\n"
+        "from thermo.vienna_ref import (ModelNotPinned, assert_turner2004_params,\n"
+        "                               ensemble_free_energy, reference_md)\n"
+        "RNA.params_load_RNA_Andronescu2007()\n"
+        f"fc = RNA.fold_compound({seq!r}, reference_md()); fc.mfe(); fc.pf()\n"
+        "RNA.params_load_RNA_Turner2004()\n"
+        "md = reference_md(); md.temperature = 25.0\n"
+        "RNA.fold_compound('GGGGAAACCCC', md).mfe()\n"
+        f"assert_turner2004_params(RNA.fold_compound({seq!r}, reference_md()))\n"
+        "print('ENERGY TABLE PASSES')\n"
+        "try:\n"
+        f"    ensemble_free_energy({seq!r})\n"
+        "except ModelNotPinned as e:\n"
+        "    print('CAUGHT', 'Boltzmann' in str(e))\n"
+    )
+    repo_root = pathlib.Path(__file__).resolve().parent.parent
+    result = subprocess.run([sys.executable, "-c", program], capture_output=True, text=True,
+                            timeout=120, cwd=repo_root)
+    assert "ENERGY TABLE PASSES" in result.stdout, result.stderr
+    assert "CAUGHT True" in result.stdout, (
+        f"a stale Boltzmann table was not rejected.\nstdout: {result.stdout}\n"
+        f"stderr: {result.stderr}"
+    )
+
+
+def test_stale_boltzmann_table_with_turner_scalars_is_caught_by_the_probe(tmp_path):
+    """The same planted state with a table that differs from Turner 2004 only in int22
+    (every entry +1.00 kcal/mol, written by scripts/turner_par.py): TerminalAU and
+    MLclosing agree, so only the constrained-probe check can see the stale factors."""
+    import pathlib
+    import subprocess
+    import sys
+
+    seq = GOLDEN["trna_73"][0]
+    par = tmp_path / "int22_shifted.par"
+    program = (
+        "import RNA\n"
+        "from scripts.turner_par import template, write_par\n"
+        "from thermo.vienna_ref import ModelNotPinned, ensemble_free_energy, reference_md\n"
+        "th = dict(template()['theta'])\n"
+        "th = {k: v + 100 if k[0] == 'int22' else v for k, v in th.items()}\n"
+        f"RNA.params_load(str(write_par(th, {str(par)!r})))\n"
+        f"fc = RNA.fold_compound({seq!r}, reference_md()); fc.mfe(); fc.pf()\n"
+        "RNA.params_load_RNA_Turner2004()\n"
+        "md = reference_md(); md.temperature = 25.0\n"
+        "RNA.fold_compound('GGGGAAACCCC', md).mfe()\n"
+        "try:\n"
+        f"    ensemble_free_energy({seq!r})\n"
+        "except ModelNotPinned as e:\n"
+        "    print('CAUGHT', 'probe' in str(e))\n"
+    )
+    repo_root = pathlib.Path(__file__).resolve().parent.parent
+    result = subprocess.run([sys.executable, "-c", program], capture_output=True, text=True,
+                            timeout=120, cwd=repo_root)
+    assert "CAUGHT True" in result.stdout, (
+        f"a stale int22-only Boltzmann table was not rejected.\nstdout: {result.stdout}\n"
+        f"stderr: {result.stderr}"
+    )
+
+
 @pytest.mark.parametrize("sequence", ["", "ACGTACGT", "acgu", "ACGUNNNN"])
 def test_rejects_sequences_vienna_would_quietly_accept(sequence):
     """ViennaRNA maps T, lowercase and N to unpaired N rather than erroring."""
