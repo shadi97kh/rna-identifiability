@@ -811,6 +811,9 @@ def worker(w, W, dst, limit=None, only=None, skip_load=False, stale_boltzmann=Fa
 def _stale_boltzmann(path):
     """Planted control only: load the file with the OLD, MFE-only sentinel, so the energy
     table is the file's and the Boltzmann factors are the previous model's."""
+    fc = RNA.fold_compound("GGGGAAACCCC", reference_md())  # model A's Boltzmann table,
+    fc.mfe()                                               # built from Turner 2004
+    fc.pf()
     RNA.params_load(str(path))
     sent = reference_md()
     sent.temperature = 25.0
