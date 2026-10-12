@@ -50,3 +50,6 @@ runs/**/shards/
 # Type B bases and count matrices (recomputable; sha256 recorded in metrics.json)
 runs/2026-10-12_turner_typeb/*.npz
 runs/2026-10-12_turner_typeb/fold/
+
+# RECOMB manuscript build output (tectonic --outdir build)
+paper/recomb2027/build/
