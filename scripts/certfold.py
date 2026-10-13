@@ -88,6 +88,9 @@ FOUR = ("int11", "int21", "int22", "bulge")
 # by its reference matrix to 1e-13, so 1e-12 is far above the noise and a real direction would
 # exceed it by orders of magnitude
 WEIGHT_BAR = 1e-12
+# a row norm at or below this is the basis's own noise, not a direction: the four-table
+# entries TR0's references pin carry about 1e-15, against an annihilation residual of 1e-13
+ROW_NOISE = 1e-9
 R_CAP_MULTIPLE = 4               # r_cap = 4 x the largest published radius on B_four
 
 
@@ -435,7 +438,6 @@ def per_loop_shift(B: dict, B4: np.ndarray, a_four: np.ndarray, radii: dict, row
     md = reference_md()
     rows = rows if n_seq is None else rows[:n_seq]
     unit, entry_ball, entry_pub = [], [], {x: [] for x in deltas}
-    n_loops_charged = 0
     for n, (_tag, _name, seq, _db) in enumerate(rows):
         fc = RNA.fold_compound(seq, md)
         if n == 0:
@@ -444,43 +446,51 @@ def per_loop_shift(B: dict, B4: np.ndarray, a_four: np.ndarray, radii: dict, row
         for rec in lc.loops(seq, s_star):
             w = sum(abs(v) * a_four[idx[k]] for k, v in rec["counts"].items() if k in idx)
             unit.append(w)
-            if w > 0:
-                n_loops_charged += 1
             for k in rec["counts"]:
-                if k not in idx or a_four[idx[k]] <= 0:
+                if k not in idx or a_four[idx[k]] <= ROW_NOISE:
                     continue
                 entry_ball.append(a_four[idx[k]])
                 for x, d in deltas.items():
                     entry_pub[x].append(abs(d[idx[k]]))
     unit = np.array(unit)
     ball = np.array(entry_ball)
+    # A four-table entry TR0's references do pin still carries a row norm at the basis's noise
+    # floor, around 1e-15, so "any weight at all" counts almost every interior loop and its
+    # median is 1e-14. The bar that matters is physical: ViennaRNA's energies are integer
+    # dcal/mol, so an allowance below half a dcal cannot move an energy at all.
+    real = unit > ROW_NOISE
 
     def q(v, scale=1.0):
         if not len(v):
             return None
         return {"median": float(np.median(v) * scale), "p95": float(np.quantile(v, 0.95) * scale),
-                "max": float(v.max() * scale)}
+                "p99": float(np.quantile(v, 0.99) * scale), "max": float(v.max() * scale)}
 
     per_radius = {}
     for x, v in radii.items():
         if not isinstance(v, dict):
             continue
         r = v["radius_on_B_four_kcal"]
+        at_r = unit * r
         per_radius[x] = {
             "radius_kcal": r,
-            # over every loop of s*, and over the charged ones alone: about nine loops in ten
-            # carry no weight at all (stacks, hairpins, multiloops, exterior stems), so the
-            # unconditional median and 95th percentile are both 0 and say nothing
-            "per_loop_shift_the_ball_allows_kcal": q(unit, r),
-            "per_loop_shift_the_ball_allows_kcal_charged_only": q(unit[unit > 0], r),
+            "per_loop_shift_the_ball_allows_kcal_over_loops_above_the_noise_floor": q(
+                unit[real], r),
+            "loops_the_ball_can_move": {
+                "above_half_a_dcal": int((at_r >= 0.005).sum()),
+                "above_0.1_kcal": int((at_r >= 0.1).sum()),
+                "above_1_kcal": int((at_r >= 1.0).sum()),
+                "fraction_above_half_a_dcal": float((at_r >= 0.005).mean()),
+            },
             "per_entry_shift_the_ball_allows_kcal": q(ball, r),
             "per_entry_shift_this_component_makes_kcal": q(np.array(entry_pub[x])),
         }
     return {
         "n_sequences_folded": len(rows),
         "n_loops": int(len(unit)),
-        "n_loops_with_any_weight": n_loops_charged,
-        "fraction_of_loops_charged": float(n_loops_charged / len(unit)) if len(unit) else 0.0,
+        "n_loops_above_the_row_noise_floor": int(real.sum()),
+        "row_noise_floor": ROW_NOISE,
+        "fraction_of_loops_above_the_noise_floor": float(real.mean()) if len(unit) else 0.0,
         "by_radius": per_radius,
         "expectation_user": "at the published radii, few pairs that depend on an internal loop "
                             "will be certified, because the set allows the entire norm on one "
