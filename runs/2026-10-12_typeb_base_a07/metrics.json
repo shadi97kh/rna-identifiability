@@ -414,6 +414,57 @@
   "seconds": 8.2,
   "viennarna_version": "2.7.2"
  },
+ "fold_run": {
+  "driver_pid": 1411151,
+  "finished": "2026-10-13T03:09:21",
+  "load_at_start": [
+   6.6279296875,
+   6.4931640625,
+   6.3779296875
+  ],
+  "n_workers": 6,
+  "nice": 10,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "304f702eeead325675251bbb1432942b1be0a49e"
+  },
+  "shards_done": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "shards_sha256": {
+   "shard0.jsonl": "e63f0a1b46ba829e5e794028421028fb5726cc0146b093bdd11d75cbd9c42f45",
+   "shard1.jsonl": "52da79eb7cda90b0e717217c809d4bf89cf9244a6c9ed655f44779f4e6207a9d",
+   "shard2.jsonl": "9d8a15485937bd62cbfafe31941a52298a6e912dbbc05c668a9bbd2d529387ed",
+   "shard3.jsonl": "7a457323f73bb2738c5165ca14e4b0721f76f267327f9eba778005772ad2dbfa",
+   "shard4.jsonl": "6cf4d75956a54ff62a6db28d410899bfe28512df0488e4e67a46de987659ea94",
+   "shard5.jsonl": "06a6246f7fb66d0251300dcbfd473a8ec50cd1b23a398bf4ccf15822e5268b07"
+  },
+  "started": "2026-10-13T02:40:15",
+  "terminated_after_first_failure": [],
+  "worker_pids": [
+   1411231,
+   1411232,
+   1411233,
+   1411234,
+   1411235,
+   1411236
+  ],
+  "workers_exit": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
  "predictions": {
   "base_table": "theta_A07 = ViennaRNA's shipped Andronescu 2007 set (params_load_RNA_Andronescu2007, read through params_save) written on the Turner 2004 template at the 12,849 shared keys (shards/a07.par, sha256 in the build record); the non-shared keys are special hairpins, unused at special_hp 0. Its reproduction of the shipped set is the build's B1-B9",
   "conservative_choices_claude": "where the plan left a detail open: (1) every theta0 of the fold and of E1 is theta_A07, including the carry rows and the Boltzmann probe (the generating row whose energy A07 changes most against Turner 2004); (2) the Ninio linearisation is asserted exact for every table loaded; (3) the point-level planted controls (S3, S4 at a point) leave the closest stale table loaded, the A07 base, not Turner 2004 (B8 and the sampler's S4 use Turner 2004's factors, the only other table loaded at that stage); (4) the run phases require the committed artifact, so the lead commits after smoke and after the fold; (5) the contrast directions are re-checked orthogonal to both null bases and supported in the four tables at their own norms; (6) the build must run on a tree clean outside runs/, and every later phase requires the code (this script's static import closure over scripts/ and thermo/) to be the build's, the run phases also the smoke's; (7) every point carries the Type B fold's written integer perturbation, keeping its half-integer tie-breaks (points_written_claude), and the build re-asserts the equality; (8) the driver terminates the other workers on the first failure; a RUNNING status left by a killed driver is reset by hand only",
@@ -585,5 +636,5 @@
   },
   "seconds": 37.8
  },
- "status": "PRE-REGISTERED, nothing folded or sampled"
+ "status": "folded (workers)"
 }
