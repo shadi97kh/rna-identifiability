@@ -422,10 +422,174 @@
    }
   }
  },
+ "gate": {
+  "G1": {
+   "constructed": {
+    "Andronescu2007": {
+     "n_rows": 23741,
+     "n_with_a_nonzero_offset": {
+      "minus": 941,
+      "plus": 941
+     },
+     "pass": true,
+     "radius_kcal": 21.26280733187213
+    },
+    "r1": {
+     "n_rows": 23741,
+     "n_with_a_nonzero_offset": {
+      "minus": 941,
+      "plus": 941
+     },
+     "pass": true,
+     "radius_kcal": 1.0
+    },
+    "r_cap": {
+     "n_rows": 23741,
+     "n_with_a_nonzero_offset": {
+      "minus": 941,
+      "plus": 941
+     },
+     "pass": true,
+     "radius_kcal": 96.52924364315216
+    }
+   },
+   "il_keys_vs_viennarna": {
+    "both_asymmetry_directions": true,
+    "bulge_sizes": {
+     "max": 30,
+     "min": 1,
+     "n": 30
+    },
+    "cases": {
+     "bulge": 378,
+     "generic": 3740,
+     "int11": 576,
+     "int1n": 5760,
+     "int21": 2368,
+     "int22": 9217,
+     "int23": 386,
+     "stack": 93872
+    },
+    "mismatches": [],
+    "n_interior_loops": 116297,
+    "n_mismatches": 0,
+    "oracle": "RNA.E_IntLoop on the pinned compound's own parameters",
+    "pass": true
+   },
+   "pass": true,
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "6f3914a1c59dedf22bf08b2701eff57ef7cfe90c"
+   },
+   "radii_kcal": {
+    "Andronescu2007": 21.26280733187213,
+    "r1": 1.0,
+    "r_cap": 96.52924364315216
+   },
+   "sampled": {
+    "Andronescu2007": {
+     "callback_invocations": 769766,
+     "lengths": [
+      53,
+      69,
+      74,
+      77,
+      78,
+      85,
+      89,
+      91,
+      98,
+      102,
+      112,
+      118,
+      124,
+      139,
+      140,
+      159,
+      182,
+      196,
+      304,
+      365
+     ],
+     "n_sequences": 20,
+     "n_structures": 20020,
+     "n_with_a_nonzero_offset": 2008,
+     "pass": true,
+     "radius_kcal": 21.26280733187213
+    },
+    "r1": {
+     "callback_invocations": 769766,
+     "lengths": [
+      53,
+      69,
+      74,
+      77,
+      78,
+      85,
+      89,
+      91,
+      98,
+      102,
+      112,
+      118,
+      124,
+      139,
+      140,
+      159,
+      182,
+      196,
+      304,
+      365
+     ],
+     "n_sequences": 20,
+     "n_structures": 20020,
+     "n_with_a_nonzero_offset": 2008,
+     "pass": true,
+     "radius_kcal": 1.0
+    },
+    "r_cap": {
+     "callback_invocations": 769766,
+     "lengths": [
+      53,
+      69,
+      74,
+      77,
+      78,
+      85,
+      89,
+      91,
+      98,
+      102,
+      112,
+      118,
+      124,
+      139,
+      140,
+      159,
+      182,
+      196,
+      304,
+      365
+     ],
+     "n_sequences": 20,
+     "n_structures": 20020,
+     "n_with_a_nonzero_offset": 2008,
+     "pass": true,
+     "radius_kcal": 96.52924364315216
+    }
+   },
+   "samples_per_sequence": 1000,
+   "seconds": 38.2,
+   "seed": 20261013,
+   "sequences": 20
+  }
+ },
  "gate_shards_dropped_on_rebuild": [
   "G1"
  ],
  "run_id": "2026-10-13_certified_folding",
- "status": "basis built",
+ "status": "G1 passed",
  "viennarna": "2.7.2"
 }
