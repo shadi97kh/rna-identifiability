@@ -206,7 +206,7 @@
    "git_dirty": true,
    "git_dirty_excluding_runs": false,
    "git_dirty_paths_outside_runs": [],
-   "git_sha": "27687bf5ad5bfa984d882dc5c87ad723fe456012"
+   "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
   },
   "published_radii": {
    "Andronescu2007": {
@@ -246,7 +246,7 @@
    "n": 10667,
    "tag": "TR0 only"
   },
-  "seconds": 209.9,
+  "seconds": 209.2,
   "weight_by_table_B_TR0": {
    "ML_cc": {
     "max_row_norm": 9.431534028074415e-16,
@@ -481,7 +481,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "6f3914a1c59dedf22bf08b2701eff57ef7cfe90c"
+    "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
    },
    "radii_kcal": {
     "Andronescu2007": 21.26280733187213,
@@ -581,15 +581,294 @@
     }
    },
    "samples_per_sequence": 1000,
-   "seconds": 38.2,
+   "seconds": 33.5,
    "seed": 20261013,
    "sequences": 20
+  },
+  "G2": {
+   "certified_absent": {
+    "1": 7847,
+    "20": 5855,
+    "5": 7769
+   },
+   "certified_present": {
+    "1": 371,
+    "20": 5,
+    "5": 323
+   },
+   "exactly_robust_absent": {
+    "1": 7847,
+    "20": 5857,
+    "5": 7773
+   },
+   "exactly_robust_present": {
+    "1": 371,
+    "20": 5,
+    "5": 326
+   },
+   "false_certificates": {
+    "1": 0,
+    "20": 0,
+    "5": 0
+   },
+   "folds": 2931,
+   "n_admissible_total": 8242,
+   "n_pairs_star_total": 373,
+   "n_sequences": 200,
+   "n_structures_total": 262593,
+   "pair_tables_vs_enumeration": {
+    "note": "X' from the forbidden-pair fold and Z' from the Zuker set are compared against the enumerated minimum of E' on every sequence and every radius here; a mismatch raises. This is G3's n <= 20 half, done where the enumeration already exists.",
+    "x_prime_mismatches": 0,
+    "z_prime_mismatches": 0
+   },
+   "pass": true,
+   "power_check": {
+    "false_certificates_produced": 429,
+    "n_sequences": 50,
+    "pass": true,
+    "weights_scaled_by": 0.5
+   },
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
+   },
+   "radii_kcal": [
+    1.0,
+    5.0,
+    20.0
+   ],
+   "rho": {
+    "capped": 5,
+    "max_overstatement_vs_enumeration_kcal": 0.0,
+    "n_compared_against_enumeration": 368,
+    "n_pairs": 373,
+    "r_cap_kcal": 96.52924364315216,
+    "tied_at_zero": 2,
+    "unconverged": 0
+   },
+   "seconds": 18.8,
+   "sequences": {
+    "lengths": [
+     16,
+     20
+    ],
+    "n_kept": 200,
+    "n_rejected_no_reachable_loop": 40,
+    "n_screened": 240
+   },
+   "slack_absent": {
+    "1": 1.0,
+    "20": 0.9996585282567868,
+    "5": 0.9994853981731635
+   },
+   "slack_present": {
+    "1": 1.0,
+    "20": 1.0,
+    "5": 0.99079754601227
+   },
+   "whole_structure_certified": {
+    "1": 191,
+    "20": 0,
+    "5": 171
+   }
+  },
+  "G3": {
+   "folds": 1220,
+   "lengths": [
+    120,
+    122,
+    129,
+    131,
+    134,
+    135,
+    139,
+    140,
+    146,
+    149
+   ],
+   "n_at_most_20_half": "in G2's shard: X' and Z' against the enumerated minimum of E'",
+   "n_covered_by_the_zuker_set": {
+    "Andronescu2007": 33643,
+    "r1": 33643
+   },
+   "n_omitted": {
+    "Andronescu2007": 0,
+    "r1": 0
+   },
+   "n_omitted_but_feasible": 0,
+   "n_sampled_covered": 1200,
+   "n_sampled_omitted": 0,
+   "n_sequences": 10,
+   "n_zprime_disagreements": 0,
+   "pairs_sampled_per_radius": 60,
+   "pass": true,
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
+   },
+   "radii_kcal": {
+    "Andronescu2007": 21.26280733187213,
+    "r1": 1.0
+   },
+   "seconds": 117.2
+  },
+  "G6": {
+   "gauge": {
+    "directions": {
+     "N1_hairpin_mismatch_vs_init": {
+      "max_entry_shift_dcal": 898,
+      "n_entries_touched": 124,
+      "n_sequences": 10,
+      "n_with_a_changed_E0": 0,
+      "n_with_a_changed_MFE_structure": 0,
+      "n_with_changed_labels": 0,
+      "norm_kcal": 99.9970479564272,
+      "par_sha256": "0bb3ebd53546cb05c5508156a6e28796e1b7d5ef35af4b33668eaf05b64e334a",
+      "step_dcal": 898
+     },
+     "N2_interior_mismatch_vs_init": {
+      "max_entry_shift_dcal": 1006,
+      "n_entries_touched": 315,
+      "n_sequences": 10,
+      "n_with_a_changed_E0": 0,
+      "n_with_a_changed_MFE_structure": 0,
+      "n_with_changed_labels": 0,
+      "norm_kcal": 100.09573617292597,
+      "par_sha256": "6bd13b6afb3469347f249b1c5113c494c514cffc9c61b717b9da4faf6b8e1ed8",
+      "step_dcal": 503
+     }
+    },
+    "n_violations": 0,
+    "radii_kcal": [
+     1.0,
+     21.26280733187213
+    ],
+    "target_norm_kcal": 100.0
+   },
+   "monotonicity": {
+    "certified_absent_totals": [
+     35646,
+     34526,
+     0,
+     0
+    ],
+    "certified_present_totals": [
+     528,
+     302,
+     0,
+     0
+    ],
+    "n_sequences": 20,
+    "n_violations": 0,
+    "per_sequence": [
+     {
+      "certified_absent": [
+       605,
+       605,
+       0,
+       0
+      ],
+      "certified_present": [
+       15,
+       15,
+       0,
+       0
+      ],
+      "n_nt": 59,
+      "name": "bpRNA_RFAM_41675.bpseq"
+     },
+     {
+      "certified_absent": [
+       717,
+       695,
+       0,
+       0
+      ],
+      "certified_present": [
+       14,
+       0,
+       0,
+       0
+      ],
+      "n_nt": 67,
+      "name": "bpRNA_RFAM_23921.bpseq"
+     },
+     {
+      "certified_absent": [
+       815,
+       815,
+       0,
+       0
+      ],
+      "certified_present": [
+       19,
+       19,
+       0,
+       0
+      ],
+      "n_nt": 69,
+      "name": "bpRNA_RFAM_7701.bpseq"
+     },
+     {
+      "certified_absent": [
+       943,
+       943,
+       0,
+       0
+      ],
+      "certified_present": [
+       17,
+       17,
+       0,
+       0
+      ],
+      "n_nt": 72,
+      "name": "bpRNA_RFAM_39808.bpseq"
+     },
+     {
+      "certified_absent": [
+       902,
+       684,
+       0,
+       0
+      ],
+      "certified_present": [
+       0,
+       0,
+       0,
+       0
+      ],
+      "n_nt": 76,
+      "name": "bpRNA_RFAM_31850.bpseq"
+     }
+    ],
+    "radii_kcal": [
+     1.0,
+     5.215229067044539,
+     21.26280733187213,
+     24.13231091078804
+    ]
+   },
+   "pass": true,
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
+   },
+   "seconds": 450.8
   }
  },
  "gate_shards_dropped_on_rebuild": [
-  "G1"
+  "G1",
+  "G2",
+  "G3"
  ],
  "run_id": "2026-10-13_certified_folding",
- "status": "G1 passed",
+ "status": "G6 passed",
  "viennarna": "2.7.2"
 }
