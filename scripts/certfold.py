@@ -550,6 +550,23 @@ def build_basis() -> int:
     tabs_tr0 = table_norms(cols, used, NT)
     tabs_four = table_norms(cols, used, B4)
 
+    # Which entries B_four actually reaches. This is the population a future melting study would
+    # have to measure, and it bounds how many MFE pairs can be uncertain at all: a pair whose
+    # loops read none of these entries is certified at every radius, trivially.
+    reach = np.nonzero(a_four > ROW_NOISE)[0]
+    by_tab: dict[str, int] = {}
+    for e in reach:
+        by_tab[cols[e][0]] = by_tab.get(cols[e][0], 0) + 1
+    entries_reached = {
+        "n": int(len(reach)),
+        "of_used": int(len(used)),
+        "by_table": dict(sorted(by_tab.items(), key=lambda z: -z[1])),
+        "row_norm": {"min": float(a_four[reach].min()) if len(reach) else None,
+                     "median": float(np.median(a_four[reach])) if len(reach) else None,
+                     "max": float(a_four[reach].max()) if len(reach) else None},
+        "noise_floor": ROW_NOISE,
+    }
+
     # ---- must-holds
     idx = {k: n for n, k in enumerate(cols)}
     ninio = {str(k): float(a_tr0[idx[k]]) for k in (("ninio_m",), ("ninio_max",)) if k in idx}
@@ -625,6 +642,7 @@ def build_basis() -> int:
             "four_table_projection": proj,
             "weight_by_table_B_TR0": tabs_tr0,
             "weight_by_table_B_four": tabs_four,
+            "entries_reached_by_B_four": entries_reached,
             "must_hold": must,
             "basis_quality": quality,
             "published_radii": radii,
