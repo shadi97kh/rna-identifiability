@@ -66,11 +66,10 @@ R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R))
 
 from scripts.runmeta import git_provenance  # noqa: E402
-from scripts.turner_nullspace import (  # noqa: E402  # noqa: E402
+from scripts.turner_nullspace import (  # noqa: E402
     BCODE,
     Extractor,
     pair_table,
-    principal_overlap,
     ptype,
 )
 from scripts.turner_nullspace_tr0 import distinct_rows, tr0_ts0_rows  # noqa: E402
@@ -270,6 +269,10 @@ def four_table_projection(B: dict):
     Q, s_, _ = np.linalg.svd(NT * mask[:, None], full_matrices=False)
     keep = s_ > 1e-8
     B4 = Q[:, keep]
+    # the whole point of the projection is that a callback returning 0 outside PAIR_IL is EXACT
+    # for this basis, so the rows outside the four tables are set to exactly zero rather than
+    # left at the SVD's 1e-15: LAPACK has no reason to deliver them as zeros and did not
+    B4[~mask] = 0.0
     diag = {
         "n_used": int(len(used)),
         "n_used_in_four_tables": int(mask.sum()),
@@ -298,6 +301,36 @@ def table_norms(cols, used, V):
     for d in by.values():
         d["share"] = d["share"] / tot if tot else 0.0
     return dict(sorted(by.items(), key=lambda z: -z[1]["share"]))
+
+
+def compare_spans(V_tr0: np.ndarray, V_ref: np.ndarray) -> dict:
+    """How the TR0-only span relates to the TR0+TS0 one, in shared coordinates.
+
+    `principal_overlap` answers this only for spans of equal dimension and returns NaN
+    otherwise, and these differ (dropping the TS0 references can only enlarge the null space).
+    The well-posed questions are the two one-sided containments and the principal-angle cosine
+    spectrum. What is expected, and what the numbers have to be read against: a direction no
+    TR0+TS0 reference can see is still invisible to the TR0 subset, so the smaller span should
+    sit inside the larger one up to numerical error, while the larger one should NOT sit inside
+    the smaller -- its extra directions are exactly the ones TS0's references used to pin.
+    """
+    Qa, _ = np.linalg.qr(V_tr0)
+    Qb, _ = np.linalg.qr(V_ref)
+    resid_ref_in_tr0 = float(np.linalg.norm(Qb - Qa @ (Qa.T @ Qb), axis=0).max())
+    resid_tr0_in_ref = float(np.linalg.norm(Qa - Qb @ (Qb.T @ Qa), axis=0).max())
+    cos = np.linalg.svd(Qa.T @ Qb, compute_uv=False)
+    return {
+        "residual_tr0ts0_inside_B_TR0": resid_ref_in_tr0,
+        "residual_B_TR0_inside_tr0ts0": resid_tr0_in_ref,
+        "containment_holds": bool(resid_ref_in_tr0 < 1e-8),
+        "principal_angle_cosines": {
+            "n": int(cos.size),
+            "n_at_least_1_minus_1e_8": int((cos >= 1 - 1e-8).sum()),
+            "min": float(cos.min()) if cos.size else None,
+            "max": float(cos.max()) if cos.size else None,
+            "smallest_five": [float(x) for x in np.sort(cos)[:5]],
+        },
+    }
 
 
 def basis_quality(B: dict, V: np.ndarray, label: str) -> dict:
@@ -394,16 +427,15 @@ def build_basis() -> int:
                   "note": "the TR0+TS0 basis is recomputable by turner_typeb's bases phase; "
                           "its npz is gitignored and was not on disk"}
     else:
-        angles = {
+        angles = compare_spans(on_shared(NT, used), on_shared(ref["NT"], ref["used"]))
+        angles.update({
             "n_shared_used_columns": int(len(shared)),
             "tr0ts0_used_columns": int(len(ref["used"])),
             "tr0_used_columns": int(len(used)),
-            "principal_residual_B_TR0_in_tr0ts0": float(
-                principal_overlap(on_shared(NT, used), on_shared(ref["NT"], ref["used"]))),
-            "principal_residual_tr0ts0_in_B_TR0": float(
-                principal_overlap(on_shared(ref["NT"], ref["used"]), on_shared(NT, used))),
             "dim_tr0ts0": int(ref["NT"].shape[1]),
-        }
+            "dim_B_TR0": int(NT.shape[1]),
+            "extra_directions_in_B_TR0": int(NT.shape[1] - ref["NT"].shape[1]),
+        })
 
     files = {}
     np.savez_compressed(SHARDS / "basis_tr0.npz", cols=np.array([repr(k) for k in cols]),
