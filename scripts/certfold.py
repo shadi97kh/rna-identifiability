@@ -115,6 +115,11 @@ G3_PAIRS = 60                    # pairs sampled per sequence per radius, each s
 G6_SEQUENCES = 20                # monotonicity in r
 G6_GAUGE_SEQUENCES = 10          # the gauge half, which writes parameter files
 G6_GAUGE_NORM = 100.0            # kcal/mol, the authors' size for the gauge shift
+G4_SEQUENCES = 100               # the authors' G4 size, on TR0 (amendment 1)
+G4_MAX_N = 150
+G4_DELTA_CAP = 600               # dcal: a band wider than this is skipped, not cut
+PILOT_SEQUENCES = 300            # the authors' pilot size, TR0 only
+PILOT_WORKERS = 8                # of 16 cores, at nice 10
 
 
 def _sha(p: pathlib.Path) -> str:
@@ -2107,8 +2112,442 @@ def gate_g6() -> int:
                      default=str))
     return 0
 
+# ----------------------------------------------------------------------------------
+# the TR0 pilot: the whole run path, on training data, before any registration
+# ----------------------------------------------------------------------------------
+def exposure(seq: str, W1: Weights, shapes) -> int:
+    """Admissible interior loops, both closing pairs canonical, that read a reached entry.
+
+    This is the COMPETITOR-side exposure, and it is the quantity that actually decides the
+    labels. A pair of s* is uncertain whenever some structure LACKING it, within the
+    certificate's allowance of the MFE, forms a loop the ball can move; whether such a structure
+    exists depends on the competitors' loops, not on s*'s. Counting s*'s own weighted loops --
+    the obvious thing to count -- answers a different question and would understate the exposure
+    badly, because the certificate credits every competitor with -w_L for each moved loop it
+    contains.
+    """
+    S = [0] + [BCODE[c] for c in seq] + [0]
+    n = len(seq)
+    cnt = 0
+    for i in range(1, n + 1):
+        for j in range(i + 4, n + 1):
+            if not PT[S[i]][S[j]]:
+                continue
+            for u1, u2 in shapes:
+                k, l = i + u1 + 1, j - u2 - 1      # noqa: E741
+                if l - k < 4 or l > n or k < 1 or not PT[S[k]][S[l]]:
+                    continue
+                if W1.kcal(il_keys(S, i, j, k, l)) > 0:
+                    cnt += 1
+    return cnt
+
+
+def pilot_one(lc: LoopCounts, B: dict, W1: Weights, shapes, name: str, seq: str,
+              radii: dict, r_cap: float) -> dict:
+    """One sequence of the pilot: labels at every radius, rho once, and the exposure."""
+    import RNA
+
+    from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+    t0 = time.time()
+    plain = RNA.fold_compound(seq, reference_md())
+    assert_turner2004_params(plain)
+    star, e_mfe = plain.mfe()
+    pt = pair_table(star)
+    sp = [(i, pt[i]) for i in range(1, len(seq) + 1) if pt[i] > i]
+    adm = admissible_pairs(seq)
+    t_setup = time.time() - t0
+    F = Folder(lc, seq, star, Weights(B["a_four"], B["cols"], 1.0))
+    rec = {"name": name, "n_nt": len(seq), "e0_star_dcal": int(round(e_mfe * 100)),
+           "n_pairs_star": len(sp), "n_admissible": len(adm), "by_radius": {}}
+    for label, r in radii.items():
+        t1 = time.time()
+        F.set_radius(r)
+        c = certify(F, sp, adm)
+        n_out = c["n_pairs_admissible_outside_star"]
+        rec["by_radius"][label] = {
+            "radius_kcal": r,
+            "n_certified_present": c["n_certified_present"],
+            "n_uncertain_present": len(sp) - c["n_certified_present"],
+            "n_certified_absent": c["n_certified_absent"],
+            "n_uncertain_absent": n_out - c["n_certified_absent"],
+            "n_absent_because_unreachable": c["n_absent_because_unreachable"],
+            "whole_structure_certified": bool(c["whole_structure_certified"]),
+            "seconds": round(time.time() - t1, 2),
+        }
+    t2 = time.time()
+    rhos = [rho_of_pair(F, star_map := loop_coeff_map(lc, seq, star, W1), W1, i, j, r_cap)
+            for i, j in sp] if sp else []
+    fin = sorted(x["rho"] for x in rhos if not x["capped"] and not x["tied_at_zero"])
+    rec["rho"] = {
+        "n_pairs": len(rhos), "n_finite": len(fin),
+        "capped": sum(1 for x in rhos if x["capped"]),
+        "tied_at_zero": sum(1 for x in rhos if x["tied_at_zero"]),
+        "unconverged": sum(1 for x in rhos if not x["converged"]),
+        "quartiles_kcal": [float(np.percentile(fin, q)) for q in (0, 25, 50, 75, 100)]
+        if fin else None,
+        "values_kcal": [round(x, 4) for x in fin],
+        "seconds": round(time.time() - t2, 2),
+    }
+    rec["n_weighted_loops_of_star"] = sum(1 for v in star_map.values() if v > 0)
+    t3 = time.time()
+    rec["exposure"] = {"n_reachable_admissible_interior_loops": exposure(seq, W1, shapes),
+                       "shapes": sorted(list(s) for s in shapes),
+                       "seconds": round(time.time() - t3, 2)}
+    rec["folds"] = F.folds
+    rec["callback_invocations"] = F.calls[0]
+    rec["seconds"] = round(time.time() - t0, 2)
+    rec["seconds_setup"] = round(t_setup, 2)
+    return rec
+
+
+def pilot_radii(B: dict) -> dict:
+    rad = B["radii"]
+    return {"r1": 1.0,
+            "Langdon2018": float(rad["Langdon2018"]["radius_on_B_four_kcal"]),
+            "Andronescu2007": float(rad["Andronescu2007"]["radius_on_B_four_kcal"]),
+            "Turner1999": float(rad["Turner1999"]["radius_on_B_four_kcal"])}
+
+
+def pilot_sequences(rows) -> list[tuple[str, str]]:
+    """300 TR0 sequences, stratified over the sorted length pool by a recorded seed.
+
+    Equal-count bins, not equal-width: the draw then has TR0's own length distribution, so the
+    label fractions it reports are the fractions a TR0-like set gives rather than the fractions
+    of an artificially long set. The cost is that the long tail is thinly covered, which is why
+    the runtime is reported against length rather than averaged.
+    """
+    picked = gate_sequences(rows, PILOT_SEQUENCES, 1, 10 ** 6, SEED + 10)
+    return [(nm, seq) for _t, nm, seq, _db in picked]
+
+
+def pilot_worker() -> int:
+    w = int(sys.argv[sys.argv.index("--shard") + 1])
+    n_w = int(sys.argv[sys.argv.index("--of") + 1])
+    B = load_tr0_basis()
+    P = template()
+    lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    W1 = Weights(B["a_four"], B["cols"], 1.0)
+    shapes = W1.shapes
+    radii = pilot_radii(B)
+    r_cap = float(B["radii"]["r_cap_kcal"])
+    rows, _ = tr0_rows()
+    seqs = pilot_sequences(rows)
+    dst = SHARDS / f"pilot_{w}.jsonl"
+    with open(dst, "w") as fh:
+        for k, (name, seq) in enumerate(seqs):
+            if k % n_w != w:
+                continue
+            rec = pilot_one(lc, B, W1, shapes, name, seq, radii, r_cap)
+            rec["index"] = k
+            fh.write(json.dumps(rec, default=str) + "\n")
+            fh.flush()
+    return 0
+
+
+def pilot() -> int:
+    """The pilot, on TR0 only, before any registration. NOT a registered test.
+
+    The authors' instruction of 2026-10-13: the expectation PRED states about the label
+    fractions must be written from measured numbers rather than from an argument, because the
+    argument I gave was wrong. Nothing here touches TS0 or the held-out families, and the
+    numbers are labelled a pilot wherever they appear.
+
+    It is also the smoke test of the run path: the same sharded driver, the same worker, the same
+    JSON-lines-per-sequence discipline the TS0 run will use, so a fault in that machinery shows
+    up here where no registration depends on it.
+    """
+    out = read_out()
+    assert out.get("status") in ("G6 passed", "G4 passed", "pilot done"), out.get("status")
+    if "predictions" in out:
+        raise SystemExit("preregistered: the pilot belongs before the registration")
+    # provenance at the START: the pilot runs for hours, and what it must record is the code
+    # it ran, not whatever HEAD is when it finishes. A dirty tree is refused for the same reason.
+    prov = git_provenance(R)
+    if prov.get("git_dirty_excluding_runs"):
+        raise SystemExit(f"commit first: {prov.get('git_dirty_paths_outside_runs')}")
+    t0 = time.time()
+    B = load_tr0_basis()
+    rows, _ = tr0_rows()
+    seqs = pilot_sequences(rows)
+    SHARDS.mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1",
+               MKL_NUM_THREADS="1", CUDA_VISIBLE_DEVICES="")
+    procs = []
+    for w in range(PILOT_WORKERS):
+        procs.append(subprocess.Popen(
+            ["nice", "-n", "10", sys.executable, str(R / "scripts" / "certfold.py"),
+             "--phase", "pilot-worker", "--shard", str(w), "--of", str(PILOT_WORKERS)],
+            cwd=R, env=env, stdout=(SHARDS / f"pilot_{w}.log").open("w"),
+            stderr=subprocess.STDOUT))
+    codes = [p.wait() for p in procs]
+    if any(codes):
+        raise GuardFailure(f"pilot workers exited {codes}; shards kept at {SHARDS}")
+
+    per = []
+    for w in range(PILOT_WORKERS):
+        with open(SHARDS / f"pilot_{w}.jsonl") as fh:
+            per += [json.loads(line) for line in fh if line.strip()]
+    if len(per) != len(seqs):
+        raise GuardFailure(f"the pilot ran {len(per)} of {len(seqs)} sequences")
+    radii = pilot_radii(B)
+
+    def frac(label, num, den):
+        a = sum(p["by_radius"][label][num] for p in per)
+        b = sum(p["by_radius"][label][den] for p in per)
+        return {"n": a, "of": b, "fraction": (a / b) if b else None}
+
+    by_radius = {}
+    for label in radii:
+        pres_den = sum(p["n_pairs_star"] for p in per)
+        abs_den = sum(p["by_radius"][label]["n_certified_absent"]
+                      + p["by_radius"][label]["n_uncertain_absent"] for p in per)
+        by_radius[label] = {
+            "radius_kcal": radii[label],
+            "certified_present": {
+                "n": sum(p["by_radius"][label]["n_certified_present"] for p in per),
+                "of": pres_den,
+                "fraction": sum(p["by_radius"][label]["n_certified_present"]
+                                for p in per) / pres_den if pres_den else None},
+            "certified_absent": {
+                "n": sum(p["by_radius"][label]["n_certified_absent"] for p in per),
+                "of": abs_den,
+                "fraction": sum(p["by_radius"][label]["n_certified_absent"]
+                                for p in per) / abs_den if abs_den else None},
+            "uncertain_present_fraction": (
+                sum(p["by_radius"][label]["n_uncertain_present"] for p in per) / pres_den
+                if pres_den else None),
+            "absent_because_unreachable": sum(
+                p["by_radius"][label]["n_absent_because_unreachable"] for p in per),
+            "whole_structure_certified": {
+                "n": sum(p["by_radius"][label]["whole_structure_certified"] for p in per),
+                "of": len(per),
+                "fraction": sum(p["by_radius"][label]["whole_structure_certified"]
+                                for p in per) / len(per)},
+            "mean_per_sequence_certified_present_fraction": float(np.mean(
+                [p["by_radius"][label]["n_certified_present"] / p["n_pairs_star"]
+                 for p in per if p["n_pairs_star"]])),
+        }
+
+    allrho = [v for p in per for v in p["rho"]["values_kcal"]]
+    expo = np.array([p["exposure"]["n_reachable_admissible_interior_loops"] for p in per])
+    secs = np.array([p["seconds"] for p in per])
+    lens = np.array([p["n_nt"] for p in per])
+    # the exposure is the thing the labels should track, so it is reported against them rather
+    # than on its own: the uncertain-present fraction by exposure quartile, at the Andronescu
+    # radius, which is the one the paper quotes
+    q = np.quantile(expo, [0.25, 0.5, 0.75])
+    bins = np.digitize(expo, q)
+    unc = np.array([(p["by_radius"]["Andronescu2007"]["n_uncertain_present"]
+                     / p["n_pairs_star"]) if p["n_pairs_star"] else np.nan for p in per])
+    by_quartile = [{"quartile": int(b),
+                    "n_sequences": int((bins == b).sum()),
+                    "exposure_median": float(np.median(expo[bins == b])),
+                    "uncertain_present_fraction_mean":
+                        float(np.nanmean(unc[bins == b])) if (bins == b).any() else None}
+                   for b in range(4)]
+
+    shard = {
+        "label": "PILOT on TR0 training data, not a registered test",
+        "n_sequences": len(per), "seed": SEED + 10, "workers": PILOT_WORKERS,
+        "lengths": {"min": int(lens.min()), "p25": int(np.percentile(lens, 25)),
+                    "median": int(np.median(lens)), "p75": int(np.percentile(lens, 75)),
+                    "p95": int(np.percentile(lens, 95)), "max": int(lens.max())},
+        "radii_kcal": radii,
+        "by_radius": by_radius,
+        "rho": {
+            "n_pairs": sum(p["rho"]["n_pairs"] for p in per),
+            "n_finite": len(allrho),
+            "capped": sum(p["rho"]["capped"] for p in per),
+            "tied_at_zero": sum(p["rho"]["tied_at_zero"] for p in per),
+            "unconverged": sum(p["rho"]["unconverged"] for p in per),
+            "r_cap_kcal": float(B["radii"]["r_cap_kcal"]),
+            "quartiles_kcal": [float(np.percentile(allrho, x)) for x in (0, 25, 50, 75, 100)]
+            if allrho else None,
+        },
+        "exposure": {
+            "shapes": per[0]["exposure"]["shapes"],
+            "n_reachable_admissible_interior_loops": {
+                "min": int(expo.min()), "median": float(np.median(expo)),
+                "p95": float(np.percentile(expo, 95)), "max": int(expo.max()),
+                "n_sequences_with_none": int((expo == 0).sum())},
+            "weighted_loops_of_star": {
+                "median": float(np.median([p["n_weighted_loops_of_star"] for p in per])),
+                "max": int(max(p["n_weighted_loops_of_star"] for p in per)),
+                "n_sequences_with_none": int(sum(1 for p in per
+                                                 if not p["n_weighted_loops_of_star"]))},
+            "uncertain_present_by_exposure_quartile_at_Andronescu": by_quartile,
+        },
+        "runtime": {
+            "seconds_per_sequence": {
+                "median": float(np.median(secs)), "p95": float(np.percentile(secs, 95)),
+                "max": float(secs.max()), "total_cpu_seconds": float(secs.sum())},
+            "slowest": sorted(({"name": p["name"], "n_nt": p["n_nt"],
+                                "seconds": p["seconds"], "folds": p["folds"]} for p in per),
+                              key=lambda x: -x["seconds"])[:5],
+            "folds_total": sum(p["folds"] for p in per),
+            "callback_invocations_total": sum(p["callback_invocations"] for p in per),
+            "wall_seconds": round(time.time() - t0, 1),
+        },
+        "files_sha256": {f"pilot_{w}.jsonl": _sha(SHARDS / f"pilot_{w}.jsonl")
+                         for w in range(PILOT_WORKERS)},
+        "provenance": prov,
+    }
+    out = read_out()          # re-read: hours have passed since the start
+    out["pilot"] = shard
+    out["status"] = "pilot done"
+    write(out)
+    print(json.dumps({k: v for k, v in shard.items()
+                      if k not in ("provenance", "files_sha256")}, indent=1, default=str))
+    return 0
+
+
+# ----------------------------------------------------------------------------------
+# G4: the certificate's own band, tested exactly, at realistic lengths
+# ----------------------------------------------------------------------------------
+def gate_g4() -> int:
+    """G4: every structure E' admits within reach of E'(s*), tested exactly, on TR0 at n <= 150.
+
+    The band is exactly the set that can break a certificate: if no structure with
+    E'(s) <= E'(s*) witnesses against a label, none does, because E' is a lower bound on the gap
+    for every theta in the ball. So this is G2's test made lazy -- the structures are drawn from
+    ViennaRNA's Wuchty enumeration under E' instead of from a complete enumeration -- which is
+    what makes it affordable at the lengths the evaluation runs at.
+
+    It runs on TR0, not TS0 (the authors' amendment of 2026-10-13): no test-set sequence is
+    folded before PRED is committed, and TR0 is the basis's own reference set, so there is
+    nothing to leak. Its role, soundness at realistic lengths, is unchanged.
+
+    THE GAP IT CANNOT CLOSE, stated because it matters. The band is computed FROM the callback,
+    so a callback that charges a loop too little shrinks the band and hides the very structures
+    that would break the certificate: the check would pass vacuously. That gap is closed in G1,
+    whose constructed cases walk every vrna_E_internal case with both signs, and in G2, whose
+    structure space is built by code that shares nothing with ViennaRNA. G4 adds length, not
+    independence.
+
+    The band grows with r, so the radii are taken in order and a sequence whose band would
+    exceed the recorded cap is SKIPPED rather than truncated, with the skips reported per radius.
+    A truncated band is a silent gap; a skip is a number.
+    """
+    out = read_out()
+    assert out.get("status") in ("G6 passed", "pilot done", "G4 passed"), out.get("status")
+    if "predictions" in out:
+        raise SystemExit("preregistered: the gate's shards are fixed")
+    t0 = time.time()
+    B = load_tr0_basis()
+    P = template()
+    lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    rows, _ = tr0_rows()
+    pos = {B["cols"][e]: k for k, e in enumerate(B["used"])}
+    seqs = gate_sequences(rows, G4_SEQUENCES, 30, G4_MAX_N, SEED + 4)
+
+    import RNA
+
+    from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+    per, viol = [], []
+    for _t, nm, seq, _db in seqs:
+        plain = RNA.fold_compound(seq, reference_md())
+        assert_turner2004_params(plain)
+        star, _e = plain.mfe()
+        pt = pair_table(star)
+        sp = [(i, pt[i]) for i in range(1, len(seq) + 1) if pt[i] > i]
+        adm = admissible_pairs(seq)
+        u_star = basis_image(B["B4"], pos, lc.counts(seq, star))
+        F = Folder(lc, seq, star, Weights(B["a_four"], B["cols"], G2_RADII[0]))
+        rec = {"name": nm, "n_nt": len(seq), "n_pairs_star": len(sp), "by_radius": {}}
+        for r in G2_RADII:
+            F.set_radius(r)
+            _s_min, e_min, _e0 = F.free()
+            delta = F.eprime_star - e_min
+            if delta < 0:
+                raise GuardFailure(f"E'(s*) is below the constrained minimum on {nm}")
+            if delta > G4_DELTA_CAP:
+                rec["by_radius"][f"{r:g}"] = {"radius_kcal": r, "skipped": True,
+                                              "band_delta_dcal": int(delta),
+                                              "cap_dcal": G4_DELTA_CAP}
+                continue
+            band = [z.structure for z in F.fc.subopt(int(delta))]
+            if not band:
+                raise GuardFailure(f"an empty band on {nm} at r = {r} with delta = {delta}")
+            # subopt must be honouring the callback: its best structure must reach E'_min
+            best = min(F.eprime(s)[0] for s in band)
+            if best != e_min:
+                raise GuardFailure(f"subopt under E' does not reach the constrained minimum on "
+                                   f"{nm}: {best} != {e_min}")
+            c = certify(F, sp, adm)
+            cert_p = {p for p, m in c["margins_present_dcal"].items() if m > 0}
+            cert_a = {q for q, m in c["margins_absent_dcal"].items() if m is None or m > 0}
+            n_witness = 0
+            for s in band:
+                ep, e0 = F.eprime(s)
+                if ep > F.eprime_star:
+                    continue
+                n_s = (e0 - F.e0_star) / 100.0
+                u = basis_image(B["B4"], pos, lc.counts(seq, s))
+                margin = n_s - r * float(np.linalg.norm(u - u_star))
+                if margin > 0:
+                    continue
+                n_witness += 1
+                here = set()
+                p_t = pair_table(s)
+                for i in range(1, len(seq) + 1):
+                    if p_t[i] > i:
+                        here.add((i, p_t[i]))
+                for p in cert_p - here:
+                    viol.append({"name": nm, "radius_kcal": r, "kind": "present", "pair": p,
+                                 "exact_margin_kcal": margin, "structure": s[:60]})
+                for q in cert_a & here:
+                    viol.append({"name": nm, "radius_kcal": r, "kind": "absent", "pair": q,
+                                 "exact_margin_kcal": margin, "structure": s[:60]})
+            rec["by_radius"][f"{r:g}"] = {
+                "radius_kcal": r, "skipped": False, "band_delta_dcal": int(delta),
+                "band_size": len(band), "n_exact_witnesses": n_witness,
+                "n_certified_present": len(cert_p), "n_certified_absent": len(cert_a),
+            }
+        rec["folds"] = F.folds
+        per.append(rec)
+        if viol:
+            raise GuardFailure(f"G4: {len(viol)} false certificates: {viol[:2]}")
+
+    def at(r, key, pred=lambda v: True):
+        return [v[key] for p in per for k, v in p["by_radius"].items()
+                if k == f"{r:g}" and key in v and pred(v)]
+
+    shard = {
+        "n_sequences": len(per), "max_n": G4_MAX_N, "radii_kcal": list(G2_RADII),
+        "band_cap_dcal": G4_DELTA_CAP,
+        "lengths": {"min": min(p["n_nt"] for p in per), "max": max(p["n_nt"] for p in per)},
+        "by_radius": {f"{r:g}": {
+            "n_run": len(at(r, "band_size")),
+            "n_skipped": sum(1 for p in per
+                             if p["by_radius"].get(f"{r:g}", {}).get("skipped")),
+            "band_size_total": sum(at(r, "band_size")),
+            "band_size_max": max(at(r, "band_size"), default=0),
+            "band_delta_dcal_max": max(at(r, "band_delta_dcal"), default=0),
+            "n_exact_witnesses": sum(at(r, "n_exact_witnesses")),
+            "n_certified_present": sum(at(r, "n_certified_present")),
+            "n_certified_absent": sum(at(r, "n_certified_absent")),
+        } for r in G2_RADII},
+        "n_false_certificates": 0,
+        "folds": sum(p["folds"] for p in per),
+        "the_gap_this_cannot_close": "the band comes from the callback, so an under-charging "
+                                     "callback would shrink it and pass vacuously; G1's "
+                                     "constructed cases and G2's independent enumeration are "
+                                     "what close that",
+        "pass": True, "seconds": round(time.time() - t0, 1),
+        "provenance": git_provenance(R),
+    }
+    out.setdefault("gate", {})["G4"] = shard
+    out["status"] = "G4 passed"
+    write(out)
+    print(json.dumps({k: v for k, v in shard.items() if k != "provenance"}, indent=1,
+                     default=str))
+    return 0
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
     sys.exit({"build-basis": build_basis, "gate-g1": gate_g1,
               "gate-g2": gate_g2, "gate-g3": gate_g3,
-              "gate-g6": gate_g6}[ph]())
+              "gate-g6": gate_g6, "gate-g4": gate_g4,
+              "pilot": pilot, "pilot-worker": pilot_worker}[ph]())
