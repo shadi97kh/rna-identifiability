@@ -54,6 +54,7 @@ Guards raise GuardFailure and are never repaired.
 from __future__ import annotations
 
 import json
+import math
 import os
 import pathlib
 import subprocess
@@ -68,6 +69,7 @@ sys.path.insert(0, str(R))
 from scripts.runmeta import git_provenance  # noqa: E402
 from scripts.turner_nullspace import (  # noqa: E402
     BCODE,
+    PTYPE,
     Extractor,
     pair_table,
     ptype,
@@ -91,7 +93,14 @@ WEIGHT_BAR = 1e-12
 # a row norm at or below this is the basis's own noise, not a direction: the four-table
 # entries TR0's references pin carry about 1e-15, against an annihilation residual of 1e-13
 ROW_NOISE = 1e-9
+# pair type by base CODE, so the callback need not build strings: PT[a][b] is what
+# turner_nullspace.ptype returns for those two bases, 0 for a non-canonical pair
+PT = [[0] * 5 for _ in range(5)]
+for _p, _k in PTYPE.items():
+    PT[BCODE[_p[0]]][BCODE[_p[1]]] = _k
 R_CAP_MULTIPLE = 4               # r_cap = 4 x the largest published radius on B_four
+G1_SEQUENCES = 20                # the authors' G1 size: 20 sequences, n 50 to 500
+G1_SAMPLES = 1000                # about 1,000 sampled structures each
 
 
 def _sha(p: pathlib.Path) -> str:
@@ -220,6 +229,92 @@ class LoopCounts(Extractor):
         return per
 
 
+def il_keys(S: list[int], i: int, j: int, k: int, l: int  # noqa: E741  (i, j, k, l) is
+            ) -> dict[tuple, int]:  # ViennaRNA's own callback signature; renaming hides it
+    """The parameter-file entries vrna_E_internal reads for the interior loop closed by (i, j)
+    and enclosing (k, l), from the positions and the encoded sequence alone.
+
+    This is the CALLBACK's side of the feature map: a VRNA_DECOMP_PAIR_IL callback is handed
+    exactly (i, j, k, l) and must recover the entries itself, because stack, bulge, int11,
+    int21, int22, 1xn, 2x3 and generic interior loops all arrive under that one decomposition
+    code. `LoopCounts` walks a structure instead and is the checker's side.
+
+    The two share a convention -- which entry a case reads, and in which orientation -- so
+    agreement between them would not catch a convention applied wrongly in both. That is why
+    `check_il_keys_against_viennarna` dots these keys with theta0 and compares against
+    RNA.E_IntLoop, ViennaRNA's own interior-loop energy: an oracle that shares nothing with
+    either implementation.
+
+    S is 1-based with sentinels, as Extractor uses it: S = [0] + codes + [0].
+    """
+    n1, n2 = k - i - 1, j - l - 1
+    t = PT[S[i]][S[j]]
+    t2 = PT[S[l]][S[k]]                       # the enclosed pair, reversed
+    si1, sj1, sp1, sq1 = S[i + 1], S[j - 1], S[k - 1], S[l + 1]
+    nl, ns = max(n1, n2), min(n1, n2)
+    c: dict[tuple, int] = {}
+
+    def add(key, v=1):
+        c[key] = c.get(key, 0) + v
+
+    def tau(pt):
+        return pt > 2                            # AU, UA, GU, UG close with a terminal penalty
+
+    if nl == 0:
+        add(("stack", t, t2))
+        return c
+    if ns == 0:
+        add(("bulge", nl) if nl <= 30 else ("bulge", 30))
+        if nl == 1:
+            add(("stack", t, t2))
+        else:
+            if tau(t):
+                add(("TerminalAU",))
+            if tau(t2):
+                add(("TerminalAU",))
+        return c
+    if ns == 1:
+        if nl == 1:
+            add(("int11", t, t2, si1, sj1))
+            return c
+        if nl == 2:
+            if n1 == 1:
+                add(("int21", t, t2, si1, sq1, sj1))
+            else:
+                add(("int21", t2, t, sq1, si1, sp1))
+            return c
+        add(("internal_loop", min(nl + 1, 30)))
+        _ninio_keys(nl - ns, add)
+        add(("mismatch1nI", t, si1, sj1))
+        add(("mismatch1nI", t2, sq1, sp1))
+        return c
+    if ns == 2:
+        if nl == 2:
+            add(("int22", t, t2, si1, sp1, sq1, sj1))
+            return c
+        if nl == 3:
+            add(("internal_loop", 5))
+            add(("ninio_m",))
+            add(("mismatch23I", t, si1, sj1))
+            add(("mismatch23I", t2, sq1, sp1))
+            return c
+    add(("internal_loop", min(nl + ns, 30)))
+    _ninio_keys(nl - ns, add)
+    add(("mismatchI", t, si1, sj1))
+    add(("mismatchI", t2, sq1, sp1))
+    return c
+
+
+def _ninio_keys(asym: int, add):
+    """MIN2(MAX_NINIO, asym * m), linearised at Turner 2004's (m, cap) = (60, 300)."""
+    if asym == 0:
+        return
+    if asym * 60 <= 300:
+        add(("ninio_m",), asym)
+    else:
+        add(("ninio_max",))
+
+
 def interior_sub(i: int, j: int, p: int, q: int) -> str:
     """Which vrna_E_internal case an interior loop (i, j, p, q) takes, from positions alone.
 
@@ -240,6 +335,254 @@ def interior_sub(i: int, j: int, p: int, q: int) -> str:
     if ns == 2 and nl == 3:
         return "int23"
     return "generic"
+
+
+# ----------------------------------------------------------------------------------
+# the certificate: per-loop weights, the callback, and E'
+# ----------------------------------------------------------------------------------
+class Weights:
+    """Per-loop weights w_L(r) = r * sum_e |c_{L,e}| ||a_e||, in ViennaRNA's integer dcal/mol.
+
+    Unit discipline, in one place because a silent factor of 100 would make every certificate
+    either vacuous or false: r and ||a_e|| are kcal/mol in the parameter-file gauge, ViennaRNA's
+    energies and a soft-constraint callback's return value are integer dcal/mol, so the weight is
+    formed in kcal, multiplied by 100 and rounded UP. Rounding up on both sides of the
+    comparison is what keeps E'(s) - E'(s*) a lower bound on the true gap: the certificate then
+    subtracts at least the worst-case penalty rather than at most.
+    """
+
+    def __init__(self, a_full: np.ndarray, cols: list[tuple], r_kcal: float):
+        self.a = a_full
+        self.idx = {k: n for n, k in enumerate(cols)}
+        self.r = float(r_kcal)
+
+    def kcal(self, keys: dict[tuple, int]) -> float:
+        return self.r * sum(abs(v) * self.a[self.idx[k]] for k, v in keys.items()
+                            if k in self.idx)
+
+    def dcal(self, keys: dict[tuple, int]) -> int:
+        w = self.kcal(keys)
+        return 0 if w <= 0 else int(math.ceil(w * 100.0 - 1e-12))
+
+    def loop_dcal(self, S: list[int], i: int, j: int, k: int, l: int) -> int:  # noqa: E741
+        return self.dcal(il_keys(S, i, j, k, l))
+
+
+def star_interior_loops(lc: LoopCounts, seq: str, db: str) -> set:
+    """The (i, j, k, l) of s*'s interior loops: constant-time membership for the callback.
+
+    A loop of some other structure counts as a loop of s* exactly when s* contains it, closing
+    pair, enclosed pair and an unpaired interior alike, which is what this set encodes: it holds
+    only loops the walk over s* actually found.
+    """
+    return {(r["i"], r["j"], r["k"], r["l"]) for r in lc.loops(seq, db)
+            if r["kind"] == "interior"}
+
+
+def make_callback(S: list[int], star: set, W: Weights, counter: list | None = None):
+    """The soft-constraint callback: +ceil(w_L) on a loop of s*, -ceil(w_L) on any other loop.
+
+    Returns 0 for every decomposition code other than VRNA_DECOMP_PAIR_IL. That is exact rather
+    than approximate because the set certified over is the ball in B_four, whose rows outside
+    int11, int21, int22 and bulge are exactly zero -- build-basis asserts it. If the basis ever
+    carried weight on a hairpin, multiloop or exterior-stem entry, this callback would silently
+    under-charge those loops, so the assertion is a precondition and not a nicety.
+
+    `counter`, when given, is a one-element list the caller can read afterwards: the number of
+    invocations, which is how the gate reports cost without the callback holding mutable state
+    that a parallel region could race on.
+    """
+    import RNA
+
+    il = RNA.DECOMP_PAIR_IL
+
+    def cb(i, j, k, l, d, _data=None):  # noqa: E741  ViennaRNA's own argument names
+        if counter is not None:
+            counter[0] += 1
+        if d != il:
+            return 0
+        w = W.loop_dcal(S, i, j, k, l)
+        if w == 0:
+            return 0
+        return w if (i, j, k, l) in star else -w
+
+    return cb
+
+
+def eprime_offset(lc: LoopCounts, seq: str, s: str, star: set, W: Weights) -> int:
+    """E'(s) - E0(s) in dcal, summed over the loops of s from the checker's side.
+
+    Only interior loops can contribute, because B_four reaches no other table, and this is the
+    quantity the gate compares against what ViennaRNA's own decomposition plus the callback
+    produce. E'(s*) is taken from here rather than from eval_structure on the constrained
+    compound, which honours only the hairpin and interior-loop codes and silently drops the
+    multiloop and exterior ones.
+    """
+    S = [0] + [BCODE[c] for c in seq] + [0]
+    total = 0
+    for rec in lc.loops(seq, s):
+        if rec["kind"] != "interior":
+            continue
+        key = (rec["i"], rec["j"], rec["k"], rec["l"])
+        w = W.loop_dcal(S, *key)
+        if w:
+            total += w if key in star else -w
+    return total
+
+
+def load_tr0_basis() -> dict:
+    """B_TR0 and B_four from the build-basis shard, with the digest the artifact recorded.
+
+    The npz is gitignored, as every basis in this repository is; the contract is that the
+    artifact carries its sha256 and the matrix is recomputable by rerunning the phase.
+    """
+    import ast
+
+    out = read_out()
+    rec = out["build_basis"]["files_sha256"]
+    for f, h in rec.items():
+        got = _sha(SHARDS / f)
+        if got != h:
+            raise GuardFailure(f"{f} changed since build-basis ({got[:12]} != {h[:12]})")
+    z = np.load(SHARDS / "basis_tr0.npz", allow_pickle=False)
+    cols = [ast.literal_eval(str(s)) for s in z["cols"]]
+    return {"cols": cols, "used": z["used"], "NT": z["NT"], "B4": z["B4"],
+            "a_tr0": z["a_tr0"], "a_four": z["a_four"],
+            "radii": out["build_basis"]["published_radii"]}
+
+
+def gate_sequences(rows, n_seq: int, lo: int, hi: int, seed: int):
+    """`n_seq` TR0 sequences spread over lengths lo..hi, drawn by a recorded seed.
+
+    Stratified rather than uniform, because the identity has to be exercised at the lengths the
+    evaluation will see: a uniform draw from TR0 is almost all short sequences.
+    """
+    pool = [r for r in rows if lo <= len(r[2]) <= hi]
+    pool.sort(key=lambda r: len(r[2]))
+    rng = np.random.default_rng(np.random.SeedSequence([seed, 1]))
+    edges = np.linspace(0, len(pool), n_seq + 1).astype(int)
+    out = []
+    for a, b in zip(edges[:-1], edges[1:], strict=True):
+        if b > a:
+            out.append(pool[int(rng.integers(a, b))])
+    return out
+
+
+# ----------------------------------------------------------------------------------
+# G1: the callback identity
+# ----------------------------------------------------------------------------------
+def il_keys_against_viennarna(lc: LoopCounts, theta0: dict, rows) -> dict:
+    """il_keys . theta0 == RNA.E_IntLoop, over every interior loop of `rows`.
+
+    The oracle that makes G1 more than two implementations agreeing with each other.
+    RNA.E_IntLoop is ViennaRNA's own interior-loop energy and shares nothing with either the
+    callback's key reconstruction or the Extractor's loop walk, so a wrong orientation for the
+    enclosed pair, a wrong mismatch base or a wrong int21 orientation fails here. Reported with
+    the case coverage, because a green identity proves nothing if the rows never build the hard
+    loops.
+    """
+    import RNA
+
+    from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+    fc = RNA.fold_compound("GGGGAAAACCCC", reference_md())
+    assert_turner2004_params(fc)
+    par = fc.params
+    bad, n = [], 0
+    cases: dict[str, int] = {}
+    bulges, asym = set(), set()
+    for tag, seq, db in rows:
+        S = [0] + [BCODE[c] for c in seq] + [0]
+        for rec in lc.loops(seq, db):
+            if rec["kind"] != "interior":
+                continue
+            i, j, k, ll = rec["i"], rec["j"], rec["k"], rec["l"]
+            keys = il_keys(S, i, j, k, ll)
+            mine = sum(theta0[key] * v for key, v in keys.items())
+            n1, n2 = k - i - 1, j - ll - 1
+            want = RNA.E_IntLoop(n1, n2, PT[S[i]][S[j]], PT[S[ll]][S[k]],
+                                 S[i + 1], S[j - 1], S[k - 1], S[ll + 1], par)
+            n += 1
+            cases[rec["sub"]] = cases.get(rec["sub"], 0) + 1
+            if rec["sub"] == "bulge":
+                bulges.add(max(n1, n2))
+            if n1 != n2:
+                asym.add(n1 > n2)
+            if mine != want:
+                bad.append({"row": tag, "sub": rec["sub"], "ijkl": [i, j, k, ll],
+                            "n1_n2": [n1, n2], "keys_dot_theta0": mine, "E_IntLoop": want})
+            own = {a: b for a, b in rec["counts"].items() if b}
+            if own != {a: b for a, b in keys.items() if b}:
+                bad.append({"row": tag, "sub": rec["sub"] + " (checker disagrees)",
+                            "callback": dict(keys), "checker": own})
+    return {
+        "n_interior_loops": n,
+        "cases": dict(sorted(cases.items(), key=lambda z: -z[1])),
+        "bulge_sizes": {"n": len(bulges), "min": min(bulges) if bulges else None,
+                        "max": max(bulges) if bulges else None},
+        "both_asymmetry_directions": bool(asym == {True, False}),
+        "mismatches": bad[:10],
+        "n_mismatches": len(bad),
+        "pass": not bad,
+        "oracle": "RNA.E_IntLoop on the pinned compound's own parameters",
+    }
+
+
+def sample_structures(seq: str, k: int, seed: int) -> list[str]:
+    """`k` structures of `seq` by stochastic backtracking.
+
+    uniq_ML has to be 1 for pbacktrack, and it is a field the pinned REFERENCE_MODEL fixes at 0,
+    so the sampling runs on its OWN compound and never on the one any energy comes from. The
+    sampling distribution is irrelevant here: these structures are inputs to an identity, not a
+    measurement.
+    """
+    import RNA
+
+    from thermo.vienna_ref import reference_md
+
+    md = reference_md()
+    md.uniq_ML = 1
+    fc = RNA.fold_compound(seq, md)
+    fc.pf()
+    RNA.init_rand(seed)
+    out = fc.pbacktrack(k)
+    return [s for s in (out if isinstance(out, (list, tuple)) else [out]) if s]
+
+
+def g1_identity(lc: LoopCounts, W: Weights, seq: str, structures, star_db: str) -> dict:
+    """eval_structure on the constrained compound == E0(s) + the checker's signed ceil weights.
+
+    The left side is ViennaRNA's own decomposition driving the callback; the right side is the
+    Extractor's loop walk. eval_structure honours only the hairpin and interior-loop codes,
+    which is exactly the set the callback is nonzero on, so the identity is well posed; it would
+    not be if the basis reached a multiloop or exterior entry.
+    """
+    import RNA
+
+    from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+    S = [0] + [BCODE[c] for c in seq] + [0]
+    star = star_interior_loops(lc, seq, star_db)
+    plain = RNA.fold_compound(seq, reference_md())
+    assert_turner2004_params(plain)
+    con = RNA.fold_compound(seq, reference_md())
+    calls = [0]
+    cb = make_callback(S, star, W, calls)
+    rc = con.sc_add_f(cb)
+    bad, n, nonzero = [], 0, 0
+    for s in structures:
+        e0 = int(round(plain.eval_structure(s) * 100))
+        got = int(round(con.eval_structure(s) * 100))
+        want = e0 + eprime_offset(lc, seq, s, star, W)
+        n += 1
+        if want != e0:
+            nonzero += 1
+        if got != want:
+            bad.append({"structure": s[:60], "eval_constrained": got, "expected": want,
+                        "E0": e0})
+    return {"n": n, "n_with_a_nonzero_offset": nonzero, "sc_add_f_rc": int(rc),
+            "callback_invocations": calls[0], "n_mismatches": len(bad),
+            "mismatches": bad[:5], "pass": not bad}
 
 
 # ----------------------------------------------------------------------------------
@@ -496,6 +839,14 @@ def per_loop_shift(B: dict, B4: np.ndarray, a_four: np.ndarray, radii: dict, row
                             "will be certified, because the set allows the entire norm on one "
                             "entry; the descriptive label fractions are read against this, not "
                             "as a performance number",
+        "what_this_does_not_imply_user": "This counts the loops of s* only, and it does NOT "
+            "imply that nearly every pair certifies because most of s*'s loops are untouched "
+            "(a wrong gloss, corrected by the authors on 2026-10-13 before preregistration). "
+            "The certificate credits every competitor structure -w_L for each touched loop IT "
+            "contains, up to about 19 kcal/mol at the Andronescu radius, so a pair is uncertain "
+            "as soon as some structure lacking it, within that allowance of the MFE, forms a "
+            "touched loop. That depends on the competitors' loops, not on s*'s. The expectation "
+            "PRED carries is written from the TR0 pilot's measured label fractions instead.",
     }
 
 
@@ -663,6 +1014,104 @@ def build_basis() -> int:
     return 0
 
 
+def gate_g1() -> int:
+    """G1: the callback identity, with the constructed-case extension.
+
+    Two halves, and the second is the one the authors added on 2026-10-13. The sampled half
+    takes about 1,000 stochastic structures on each of 20 TR0 sequences spread over n = 50 to
+    500. The constructed half runs every row of the generating set, which builds every
+    vrna_E_internal case deliberately -- the full int11, int21 and int22 tables, 1xn and 2x3,
+    18 generic shapes, bulges of 1 to 30 on either side -- and checks the keys against
+    RNA.E_IntLoop as well as the identity. That closes the hole G4 cannot: G4's band is computed
+    from the callback, so a callback that charges a loop too LITTLE shrinks the band and hides
+    the very structures that would break the certificate, and G4 passes vacuously.
+    """
+    out = read_out()
+    assert out.get("status") == "basis built", out.get("status")
+    if "predictions" in out:
+        raise SystemExit("preregistered: the gate's shards are fixed")
+    t0 = time.time()
+    B = load_tr0_basis()
+    P = template()
+    lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    rows, _ = tr0_rows()
+
+    from scripts.turner_nullspace import generating_set
+
+    gen = generating_set(P["special"])
+    oracle = il_keys_against_viennarna(lc, P["theta"], gen)
+    if not oracle["pass"]:
+        raise GuardFailure(f"G1: il_keys disagrees with RNA.E_IntLoop on "
+                           f"{oracle['n_mismatches']} interior loops: {oracle['mismatches'][:2]}")
+
+    radii = {"r1": 1.0, "Andronescu2007": B["radii"]["Andronescu2007"]["radius_on_B_four_kcal"],
+             "r_cap": B["radii"]["r_cap_kcal"]}
+    seqs = gate_sequences(rows, G1_SEQUENCES, 50, 500, SEED)
+    sampled, constructed = {}, {}
+    for name, r in radii.items():
+        W = Weights(B["a_four"], B["cols"], r)
+        per_seq = []
+        for n, (_t, nm, seq, _db) in enumerate(seqs):
+            import RNA
+
+            from thermo.vienna_ref import reference_md
+            fc = RNA.fold_compound(seq, reference_md())
+            s_star, _e = fc.mfe()
+            structs = sample_structures(seq, G1_SAMPLES, SEED + n) + [s_star]
+            res = g1_identity(lc, W, seq, structs, s_star)
+            res.update({"name": nm, "n_nt": len(seq)})
+            per_seq.append(res)
+            if not res["pass"]:
+                raise GuardFailure(
+                    f"G1: the callback identity failed at r = {r} on {nm} "
+                    f"({res['n_mismatches']} of {res['n']}): {res['mismatches'][:2]}")
+        sampled[name] = {
+            "radius_kcal": r, "n_sequences": len(per_seq),
+            "n_structures": sum(x["n"] for x in per_seq),
+            "n_with_a_nonzero_offset": sum(x["n_with_a_nonzero_offset"] for x in per_seq),
+            "callback_invocations": sum(x["callback_invocations"] for x in per_seq),
+            "lengths": [x["n_nt"] for x in per_seq], "pass": True,
+        }
+        # The constructed half: every row of the generating set, under two reference structures.
+        # With s* = the row's own structure every loop is a loop of s* and only the + branch
+        # fires; with s* all-unpaired no loop is, and only the - branch does. Every
+        # vrna_E_internal case therefore gets checked with both signs, which a sampled structure
+        # set covers only where it happens to differ from s* in a weighted loop.
+        bad, n_rows, nonzero = [], 0, {"plus": 0, "minus": 0}
+        for _tag, seq, db in gen:
+            for sign, star_db in (("plus", db), ("minus", "." * len(seq))):
+                res = g1_identity(lc, W, seq, [db], star_db)
+                nonzero[sign] += res["n_with_a_nonzero_offset"]
+                if not res["pass"]:
+                    bad.append({"seq": seq, "db": db, "sign": sign, **res})
+            n_rows += 1
+        if bad:
+            raise GuardFailure(f"G1 constructed cases: {len(bad)} rows failed at r = {r}: "
+                               f"{bad[:2]}")
+        constructed[name] = {"radius_kcal": r, "n_rows": n_rows,
+                             "n_with_a_nonzero_offset": nonzero, "pass": True}
+
+    out.setdefault("gate", {})["G1"] = {
+        "sampled": sampled,
+        "constructed": constructed,
+        "il_keys_vs_viennarna": oracle,
+        "samples_per_sequence": G1_SAMPLES,
+        "sequences": G1_SEQUENCES,
+        "seed": SEED,
+        "radii_kcal": radii,
+        "pass": True,
+        "seconds": round(time.time() - t0, 1),
+        "provenance": git_provenance(R),
+    }
+    out["status"] = "G1 passed"
+    write(out)
+    print(json.dumps({"G1": {k: v for k, v in out["gate"]["G1"].items()
+                             if k not in ("provenance", "il_keys_vs_viennarna")},
+                      "oracle": {k: v for k, v in oracle.items() if k != "mismatches"}},
+                     indent=1, default=str))
+    return 0
+
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
-    sys.exit({"build-basis": build_basis}[ph]())
+    sys.exit({"build-basis": build_basis, "gate-g1": gate_g1}[ph]())
