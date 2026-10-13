@@ -110,6 +110,11 @@ G2_SEQUENCES = 200               # the authors' G2 size: 200 sequences at n <= 2
 G2_MAX_N = 20
 G2_RADII = (1.0, 5.0, 20.0)      # the authors' G2 radii
 G2_POWER_SEQUENCES = 50          # the halved-weights power check, on the same draw
+G3_SEQUENCES = 10                # G3's realistic-length half, n 120 to 150
+G3_PAIRS = 60                    # pairs sampled per sequence per radius, each side
+G6_SEQUENCES = 20                # monotonicity in r
+G6_GAUGE_SEQUENCES = 10          # the gauge half, which writes parameter files
+G6_GAUGE_NORM = 100.0            # kcal/mol, the authors' size for the gauge shift
 
 
 def _sha(p: pathlib.Path) -> str:
@@ -366,8 +371,12 @@ class Weights:
         self.r = float(r_kcal)
 
     def kcal(self, keys: dict[tuple, int]) -> float:
-        return self.r * sum(abs(v) * self.a[self.idx[k]] for k, v in keys.items()
-                            if k in self.idx)
+        # float() deliberately: self.a is a numpy array, so without it every weight, every
+        # D(s), every rho and every flag derived from them is a numpy scalar, and numpy scalars
+        # serialise through json's default=str as QUOTED STRINGS. The artifact is read by jq and
+        # by the paper's pins, so a quoted number there is a broken pin later.
+        return float(self.r * sum(abs(v) * self.a[self.idx[k]] for k, v in keys.items()
+                                  if k in self.idx))
 
     def dcal(self, keys: dict[tuple, int]) -> int:
         w = self.kcal(keys)
@@ -502,7 +511,8 @@ class Folder:
     rules out, because it would show up only on the structures the DP actually visits.
     """
 
-    def __init__(self, lc: LoopCounts, seq: str, star_db: str, W: Weights):
+    def __init__(self, lc: LoopCounts, seq: str, star_db: str, W: Weights,
+                 pinned: bool = True):
         import RNA
 
         from thermo.vienna_ref import assert_turner2004_params, reference_md
@@ -512,7 +522,11 @@ class Folder:
         self.S = [0] + [BCODE[c] for c in seq] + [0]
         self.star = star_interior_loops(lc, seq, star_db)
         self.plain = RNA.fold_compound(seq, reference_md())
-        assert_turner2004_params(self.plain)
+        # pinned=False is for the gauge half of G6 and nowhere else: inside a loaded() block the
+        # global table is a written parameter file, so the Turner 2004 fingerprint is the wrong
+        # pin and params_match against the written theta is the right one. The caller does that.
+        if pinned:
+            assert_turner2004_params(self.plain)
         self.fc = RNA.fold_compound(seq, reference_md())
         self.calls = [0]
         self._cb = make_callback(self.S, self.star, W, self.calls)
@@ -1765,7 +1779,295 @@ def gate_g2() -> int:
                      default=str))
     return 0
 
+# ----------------------------------------------------------------------------------
+# G3: the pair tables at realistic lengths
+# ----------------------------------------------------------------------------------
+def gate_g3() -> int:
+    """G3: Z' from the Zuker set against an enforced fold, pair by pair, at n about 134.
+
+    G2 already checks both pair tables against the enumerated minimum of E' on 200 sequences at
+    three radii, which is this gate's n <= 20 half and is recorded in G2's shard. What that
+    cannot reach is the length where the evaluation runs, and the claim being licensed is
+    specific: Zuker's suboptimal fold returns, for every possible pair, an optimal structure
+    containing it, so the minimum of E' over the returned structures that contain q is exactly
+    Z'(q), and a pair in none of them has no legal structure containing it. Here the oracle is an
+    enforced-pair fold, one per sampled pair, which answers the same question by a different
+    route. Both halves of the claim are tested: the pairs the Zuker set covers must agree
+    exactly, and the pairs it omits must be infeasible when enforced.
+    """
+    out = read_out()
+    assert out.get("status") in ("G2 passed", "G3 passed"), out.get("status")
+    if "predictions" in out:
+        raise SystemExit("preregistered: the gate's shards are fixed")
+    t0 = time.time()
+    B = load_tr0_basis()
+    P = template()
+    lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    rows, _ = tr0_rows()
+    seqs = gate_sequences(rows, G3_SEQUENCES, 120, 150, SEED + 3)
+    radii = {"r1": 1.0,
+             "Andronescu2007": float(B["radii"]["Andronescu2007"]["radius_on_B_four_kcal"])}
+    rng = np.random.default_rng(np.random.SeedSequence([SEED, 3]))
+    per, mismatch, infeasible_bad = [], [], []
+    for _t, nm, seq, _db in seqs:
+        import RNA
+
+        from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+        plain = RNA.fold_compound(seq, reference_md())
+        assert_turner2004_params(plain)
+        star, _e = plain.mfe()
+        adm = admissible_pairs(seq)
+        F = Folder(lc, seq, star, Weights(B["a_four"], B["cols"], 1.0))
+        rec = {"name": nm, "n_nt": len(seq), "n_admissible": len(adm), "by_radius": {}}
+        for label, r in radii.items():
+            F.set_radius(r)
+            zmap = zprime_map(F, F.zuker())
+            covered = [q for q in adm if q in zmap]
+            omitted = [q for q in adm if q not in zmap]
+            take_c = [covered[k] for k in rng.permutation(len(covered))[:G3_PAIRS]]
+            take_o = [omitted[k] for k in rng.permutation(len(omitted))[:G3_PAIRS]]
+            agree = 0
+            for q in take_c:
+                got = F.with_pair(*q)
+                if got is None or got[1] != zmap[q]:
+                    mismatch.append({"name": nm, "radius": label, "pair": q,
+                                     "zuker": int(zmap[q]),
+                                     "enforced": None if got is None else int(got[1])})
+                else:
+                    agree += 1
+            for q in take_o:
+                got = F.with_pair(*q)
+                if got is not None:
+                    infeasible_bad.append({"name": nm, "radius": label, "pair": q,
+                                           "enforced": int(got[1])})
+            rec["by_radius"][label] = {
+                "radius_kcal": r, "n_covered_by_the_zuker_set": len(covered),
+                "n_omitted": len(omitted), "n_sampled_covered": len(take_c),
+                "n_sampled_omitted": len(take_o), "n_agree": agree,
+            }
+        rec["folds"] = F.folds
+        per.append(rec)
+    if mismatch or infeasible_bad:
+        raise GuardFailure(f"G3: {len(mismatch)} Z' disagreements with an enforced fold and "
+                           f"{len(infeasible_bad)} pairs the Zuker set omitted that are in fact "
+                           f"feasible: {(mismatch + infeasible_bad)[:3]}")
+    shard = {
+        "n_sequences": len(per), "lengths": [p["n_nt"] for p in per],
+        "radii_kcal": radii, "pairs_sampled_per_radius": G3_PAIRS,
+        "n_sampled_covered": sum(v["n_sampled_covered"] for p in per
+                                 for v in p["by_radius"].values()),
+        "n_sampled_omitted": sum(v["n_sampled_omitted"] for p in per
+                                 for v in p["by_radius"].values()),
+        "n_zprime_disagreements": 0, "n_omitted_but_feasible": 0,
+        "n_covered_by_the_zuker_set": {k: sum(p["by_radius"][k]["n_covered_by_the_zuker_set"]
+                                              for p in per) for k in radii},
+        "n_omitted": {k: sum(p["by_radius"][k]["n_omitted"] for p in per) for k in radii},
+        "n_at_most_20_half": "in G2's shard: X' and Z' against the enumerated minimum of E'",
+        "folds": sum(p["folds"] for p in per),
+        "pass": True, "seconds": round(time.time() - t0, 1),
+        "provenance": git_provenance(R),
+    }
+    out.setdefault("gate", {})["G3"] = shard
+    out["status"] = "G3 passed"
+    write(out)
+    print(json.dumps({k: v for k, v in shard.items() if k != "provenance"}, indent=1,
+                     default=str))
+    return 0
+
+
+# ----------------------------------------------------------------------------------
+# G6: the gauge, and monotonicity in r
+# ----------------------------------------------------------------------------------
+def gauge_tables(cols: list[tuple], theta0: dict, norm_kcal: float) -> dict:
+    """theta0 shifted along each analytic gauge direction, at about `norm_kcal` in norm.
+
+    The shift is an exact multiple of 0.01 kcal/mol on every entry, because the directions are
+    integer patterns (+1 on the mismatch tables, -1 or -2 on the loop initiations) and the step
+    is an integer number of dcal. So the written table is the intended table exactly, with no
+    rounding to argue about, and any change in a structure's energy is the gauge claim failing
+    rather than the parameter file quantising.
+    """
+    from scripts.turner_nullspace import analytic_directions
+
+    out = {}
+    for name, g in analytic_directions(cols, 0, 0).items():
+        scale = float(np.linalg.norm(g))
+        step = max(1, int(round(norm_kcal * 100.0 / scale)))      # dcal per unit coefficient
+        shifted = dict(theta0)
+        touched = 0
+        for k, c in zip(cols, g, strict=True):
+            if c and k in shifted:
+                shifted[k] = int(shifted[k] + step * int(round(c)))
+                touched += 1
+        out[name] = {
+            "theta": shifted, "step_dcal": step, "n_entries_touched": touched,
+            "norm_kcal": step * scale / 100.0,
+            "max_entry_shift_dcal": int(step * max(abs(int(round(c))) for c in g if c)),
+        }
+    return out
+
+
+def gate_g6() -> int:
+    """G6: a gauge shift changes no label, and the certified sets shrink as r grows.
+
+    The two halves fail differently. Monotonicity is a property of the certificate: w_L(r) is
+    increasing in r, so the band can only widen and a certified pair can only stop being
+    certified, never start. A violation would mean the weights are not what they are claimed to
+    be. The gauge half is a property of the model: a direction that changes no structure's energy
+    cannot change a label, and the only way the pipeline could disagree is if the count model
+    were wrong about which entries a loop reads -- which is exactly what it would take for the
+    paper's Type A claim to be wrong too. Both are run against written parameter files, so the
+    shift goes through ViennaRNA rather than being asserted.
+    """
+    out = read_out()
+    assert out.get("status") in ("G3 passed", "G6 passed"), out.get("status")
+    if "predictions" in out:
+        raise SystemExit("preregistered: the gate's shards are fixed")
+    t0 = time.time()
+    B = load_tr0_basis()
+    P = template()
+    lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    rows, _ = tr0_rows()
+    rad = B["radii"]
+    ladder = sorted([1.0, float(rad["Langdon2018"]["radius_on_B_four_kcal"]),
+                     float(rad["Andronescu2007"]["radius_on_B_four_kcal"]),
+                     float(rad["Turner1999"]["radius_on_B_four_kcal"])])
+
+    # --- monotonicity
+    mono_seqs = gate_sequences(rows, G6_SEQUENCES, 50, 150, SEED + 6)
+    viol, mono = [], []
+    for _t, nm, seq, _db in mono_seqs:
+        import RNA
+
+        from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+        plain = RNA.fold_compound(seq, reference_md())
+        assert_turner2004_params(plain)
+        star, _e = plain.mfe()
+        pt = pair_table(star)
+        sp = [(i, pt[i]) for i in range(1, len(seq) + 1) if pt[i] > i]
+        adm = admissible_pairs(seq)
+        F = Folder(lc, seq, star, Weights(B["a_four"], B["cols"], ladder[0]))
+        sets = []
+        for r in ladder:
+            F.set_radius(r)
+            c = certify(F, sp, adm)
+            sets.append(({p for p, m in c["margins_present_dcal"].items() if m > 0},
+                         {q for q, m in c["margins_absent_dcal"].items()
+                          if m is None or m > 0}))
+        for a, b, r_a, r_b in zip(sets[:-1], sets[1:], ladder[:-1], ladder[1:], strict=True):
+            for half, kind in ((0, "present"), (1, "absent")):
+                gained = b[half] - a[half]
+                if gained:
+                    viol.append({"name": nm, "kind": kind, "from_kcal": r_a, "to_kcal": r_b,
+                                 "n_gained": len(gained), "example": sorted(gained)[:3]})
+        mono.append({"name": nm, "n_nt": len(seq),
+                     "certified_present": [len(s[0]) for s in sets],
+                     "certified_absent": [len(s[1]) for s in sets]})
+
+    # --- the gauge
+    from scripts.turner_par import loaded, params_match, write_par
+
+    gauge = gauge_tables(B["cols"], P["theta"], G6_GAUGE_NORM)
+    g_seqs = gate_sequences(rows, G6_GAUGE_SEQUENCES, 50, 150, SEED + 7)
+    g_radii = [1.0, float(rad["Andronescu2007"]["radius_on_B_four_kcal"])]
+    base = {}
+    for _t, nm, seq, _db in g_seqs:
+        import RNA
+
+        from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+        plain = RNA.fold_compound(seq, reference_md())
+        assert_turner2004_params(plain)
+        star, _e = plain.mfe()
+        pt = pair_table(star)
+        sp = [(i, pt[i]) for i in range(1, len(seq) + 1) if pt[i] > i]
+        adm = admissible_pairs(seq)
+        F = Folder(lc, seq, star, Weights(B["a_four"], B["cols"], 1.0))
+        labels = {}
+        for r in g_radii:
+            F.set_radius(r)
+            c = certify(F, sp, adm)
+            labels[f"{r:g}"] = ({p for p, m in c["margins_present_dcal"].items() if m > 0},
+                                {q for q, m in c["margins_absent_dcal"].items()
+                                 if m is None or m > 0})
+        base[nm] = {"seq": seq, "star": star, "e0": F.e0_star, "pairs": sp, "adm": adm,
+                    "labels": labels}
+
+    g_out, g_viol = {}, []
+    for name, rec in gauge.items():
+        path = SHARDS / f"gauge_{name}.par"
+        write_par(rec["theta"], path)
+        changed_e0, changed_star, changed_labels = 0, 0, 0
+        with loaded(path):
+            import RNA
+
+            from thermo.vienna_ref import reference_md
+
+            for nm, b in base.items():
+                fc = RNA.fold_compound(b["seq"], reference_md())
+                bad = params_match(fc, rec["theta"], 0, 0)
+                if bad:
+                    raise GuardFailure(f"G6: the loaded table is not the written one: {bad}")
+                e0 = int(round(fc.eval_structure(b["star"]) * 100))
+                if e0 != b["e0"]:
+                    changed_e0 += 1
+                    g_viol.append({"direction": name, "name": nm, "kind": "E0 of s*",
+                                   "before": b["e0"], "after": e0})
+                star2, _e = fc.mfe()
+                if star2 != b["star"]:
+                    changed_star += 1
+                    g_viol.append({"direction": name, "name": nm, "kind": "MFE structure"})
+                    continue
+                F = Folder(lc, b["seq"], b["star"], Weights(B["a_four"], B["cols"], 1.0),
+                           pinned=False)
+                for r in g_radii:
+                    F.set_radius(r)
+                    c = certify(F, b["pairs"], b["adm"])
+                    now = ({p for p, m in c["margins_present_dcal"].items() if m > 0},
+                           {q for q, m in c["margins_absent_dcal"].items()
+                            if m is None or m > 0})
+                    was = b["labels"][f"{r:g}"]
+                    if now != was:
+                        changed_labels += 1
+                        g_viol.append({
+                            "direction": name, "name": nm, "kind": "labels",
+                            "radius_kcal": r,
+                            "present_gained": len(now[0] - was[0]),
+                            "present_lost": len(was[0] - now[0]),
+                            "absent_gained": len(now[1] - was[1]),
+                            "absent_lost": len(was[1] - now[1])})
+        g_out[name] = {k: v for k, v in rec.items() if k != "theta"}
+        g_out[name].update({"par_sha256": _sha(path), "n_sequences": len(base),
+                            "n_with_a_changed_E0": changed_e0,
+                            "n_with_a_changed_MFE_structure": changed_star,
+                            "n_with_changed_labels": changed_labels})
+    if viol or g_viol:
+        raise GuardFailure(f"G6: {len(viol)} monotonicity violations and {len(g_viol)} gauge "
+                           f"violations: {(viol + g_viol)[:3]}")
+    shard = {
+        "monotonicity": {"radii_kcal": ladder, "n_sequences": len(mono), "n_violations": 0,
+                         "per_sequence": mono[:5],
+                         "certified_present_totals": [sum(m["certified_present"][k]
+                                                          for m in mono)
+                                                      for k in range(len(ladder))],
+                         "certified_absent_totals": [sum(m["certified_absent"][k] for m in mono)
+                                                     for k in range(len(ladder))]},
+        "gauge": {"target_norm_kcal": G6_GAUGE_NORM, "radii_kcal": g_radii,
+                  "directions": g_out, "n_violations": 0},
+        "pass": True, "seconds": round(time.time() - t0, 1),
+        "provenance": git_provenance(R),
+    }
+    out.setdefault("gate", {})["G6"] = shard
+    out["status"] = "G6 passed"
+    write(out)
+    print(json.dumps({k: v for k, v in shard.items() if k != "provenance"}, indent=1,
+                     default=str))
+    return 0
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
     sys.exit({"build-basis": build_basis, "gate-g1": gate_g1,
-              "gate-g2": gate_g2}[ph]())
+              "gate-g2": gate_g2, "gate-g3": gate_g3,
+              "gate-g6": gate_g6}[ph]())
