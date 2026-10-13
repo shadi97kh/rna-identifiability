@@ -1645,6 +1645,436 @@
   },
   "report_sha256": "ad9d823c51a3cf7f33ca32a9d2aa695cdeaa6956208bd189538d0b40c68d42ee"
  },
+ "smoke_gpu": {
+  "G1": {
+   "compare": {
+    "bitwise_identical": true,
+    "model_max_abs_diff": 0.0,
+    "model_tensors": 130,
+    "model_tensors_bitwise_equal": 130,
+    "optimizer_tensors": 321,
+    "optimizer_tensors_bitwise_equal": 321
+   },
+   "pass": true,
+   "vw_gpu0": {
+    "epochs": {
+     "1": {
+      "all_post_within_bound": true,
+      "bound_lengths_equal": true,
+      "end_matches_record": true,
+      "epoch_start_measured": 9.499490261077881e-08,
+      "lengths_equal": true,
+      "max_abs_post_over_bound": 0.4420111352724451,
+      "n_backward": 200,
+      "n_steps": 200,
+      "no_move_between_steps": true,
+      "raw_step_nonzero": true,
+      "start_continuity": true,
+      "start_measured_continuity": true,
+      "start_measured_equals_record": true,
+      "sum_abs_raw_minus_pre": 0.5111654456704855,
+      "v_dot_w": 3.3527612686157227e-08,
+      "v_dot_w_start": 9.499490261077881e-08
+     }
+    },
+    "init_has_post": true,
+    "init_not_planted": true,
+    "init_post_within_bound": true,
+    "init_projected_matches_arm": true,
+    "pass": true,
+    "projection_init": {
+     "bound": 3.3604168431696916e-07,
+     "c": -0.009129036293548142,
+     "l2_weight": 0.0,
+     "lr": 0.001,
+     "optimizer": "AdamW",
+     "planted": null,
+     "post": 9.499490261077881e-08,
+     "pre": -1.0680972463451326,
+     "pre_cpu": -1.0680972463451326,
+     "projected": true,
+     "within_bound": true
+    }
+   },
+   "vw_gpu1": {
+    "epochs": {
+     "1": {
+      "all_post_within_bound": true,
+      "bound_lengths_equal": true,
+      "end_matches_record": true,
+      "epoch_start_measured": 9.499490261077881e-08,
+      "lengths_equal": true,
+      "max_abs_post_over_bound": 0.4420111352724451,
+      "n_backward": 200,
+      "n_steps": 200,
+      "no_move_between_steps": true,
+      "raw_step_nonzero": true,
+      "start_continuity": true,
+      "start_measured_continuity": true,
+      "start_measured_equals_record": true,
+      "sum_abs_raw_minus_pre": 0.5111654456704855,
+      "v_dot_w": 3.3527612686157227e-08,
+      "v_dot_w_start": 9.499490261077881e-08
+     }
+    },
+    "init_has_post": true,
+    "init_not_planted": true,
+    "init_post_within_bound": true,
+    "init_projected_matches_arm": true,
+    "pass": true,
+    "projection_init": {
+     "bound": 3.3604168431696916e-07,
+     "c": -0.009129036293548142,
+     "l2_weight": 0.0,
+     "lr": 0.001,
+     "optimizer": "AdamW",
+     "planted": null,
+     "post": 9.499490261077881e-08,
+     "pre": -1.0680972463451326,
+     "pre_cpu": -1.0680972463451326,
+     "projected": true,
+     "within_bound": true
+    }
+   },
+   "vw_logs_identical": true
+  },
+  "G1_pass": true,
+  "G2_reported": {
+   "compare": {
+    "bitwise_identical": true,
+    "model_max_abs_diff": 0.0,
+    "model_tensors": 130,
+    "model_tensors_bitwise_equal": 130,
+    "optimizer_tensors": 321,
+    "optimizer_tensors_bitwise_equal": 321
+   },
+   "reference": "runs/2026-10-07_mxfold2_seed_study/seeds/full_seed20261006_w1.0/checkpoints/epoch-1",
+   "reference_sha256": "d7e5c3b74f454ccf316786c1dd51da288fd5aedb0f4ea6a2fa97a3b6ba338753",
+   "vw": {
+    "epochs": {
+     "1": {
+      "end_matches_record": true,
+      "epoch_start_measured": -1.0680972463451326,
+      "lengths_equal": true,
+      "n_backward": 10814,
+      "n_steps": 10814,
+      "no_move_between_steps": true,
+      "post_equals_raw": true,
+      "raw_step_nonzero": true,
+      "start_continuity": true,
+      "start_measured_continuity": true,
+      "start_measured_equals_record": true,
+      "sum_abs_raw_minus_pre": 36.92936355953134,
+      "v_dot_w": 1.4605856398120522,
+      "v_dot_w_start": -1.0680972463451326
+     }
+    },
+    "init_has_pre": true,
+    "init_not_planted": true,
+    "init_projected_matches_arm": true,
+    "pass": true,
+    "projection_init": {
+     "l2_weight": 0.0,
+     "lr": 0.001,
+     "optimizer": "AdamW",
+     "planted": null,
+     "pre": -1.0680972463451326,
+     "projected": false
+    }
+   }
+  },
+  "code_sha256": {
+   "mxfold2/train.py (installed)": "9457ae99a4928487efca33bb98bb537ef262e58f7c9e302a53e9917d436eb451",
+   "scripts/mxfold2_ablation_train.py": "efac43b9eeae5960d25271c159564122db3972cb7fce1ef78d659f944bba064f",
+   "scripts/mxfold2_gauge.py": "fd89fe0ebaa4e3efce9245edda98434ba0355be56248181d72658bb92e19229f",
+   "scripts/mxfold2_gauge_hooks.py": "5da12846bca3e1999d86db2d57e7e6b226b22458a78c7452b08eee9af67e1f90",
+   "scripts/mxfold2_timed_train.py": "ba0fd496f4d962dbbef8ac0890d826e02b724faadd39877da9b9d89b4da79675",
+   "scripts/mxfold2_vproject.py": "d8c355724251e4eaab8597ec403b4f4b5ede5f67bcaf6206ab828b9a83bf576d"
+  },
+  "config": {
+   "g1_n_sequences": 200,
+   "g1_pick": [
+    20261006,
+    71
+   ],
+   "g1_seed": 20261006,
+   "g2_seed": 20261006
+  },
+  "data_sha256": {
+   "arch.conf": "b80e84d8711866093cfe57b189ff93486d9c3cabee8f050d0c468b56948ed67d",
+   "data/TR0-canonicals.lst": "938919afbbd2f1f568457a2d59e656ee7e6b4afadb4e1fb71bb9365f4354d7fb"
+  },
+  "exit_status": {
+   "g1_gpu0": "complete",
+   "g1_gpu1": "complete",
+   "g2_pairing": "complete"
+  },
+  "files_sha256": {
+   "g1_gpu0": {
+    "checkpoints/epoch-1": "9e39e7e5493287a1d5597d2d33ad5928638b35eed2af8faa5c7e8f620f9d0ec1",
+    "gauge/gauge-epoch-1.json": "c4621e32292d155500d3c68ab7ba475103b5bb351169d00384b8f502a2645292",
+    "gauge/projection-init.json": "008ac72d559e81ab10d01b52b814a3dc3811c8f79248923d8bbacfc8e4de9d92",
+    "gauge/steps-epoch-1.npz": "376a4a7e4ab6abd54af8c9877b16d76c6a2f7f9771411b894d7c9260460860ed",
+    "gauge/vw-epoch-1.npz": "c7c252d28e196eeb7ec696b75594cda63e17716050b82d5a5176bd23a7ea483b",
+    "stdout.attempt0.log": "26e1a857f2c6abe3b884aba20bcef27c1de29c46c21ba46fffeea7569a7c1bb8",
+    "timing.attempt0.json": "5de28fe2c084a421552d219c33afe1e1de6f967daf582b9b7fdc14f5f2f53f25"
+   },
+   "g1_gpu1": {
+    "checkpoints/epoch-1": "9e39e7e5493287a1d5597d2d33ad5928638b35eed2af8faa5c7e8f620f9d0ec1",
+    "gauge/gauge-epoch-1.json": "0f09259bee1a1a17e296478dd283638c1e4b540392421cb402041622b6082a24",
+    "gauge/projection-init.json": "008ac72d559e81ab10d01b52b814a3dc3811c8f79248923d8bbacfc8e4de9d92",
+    "gauge/steps-epoch-1.npz": "376a4a7e4ab6abd54af8c9877b16d76c6a2f7f9771411b894d7c9260460860ed",
+    "gauge/vw-epoch-1.npz": "c7c252d28e196eeb7ec696b75594cda63e17716050b82d5a5176bd23a7ea483b",
+    "stdout.attempt0.log": "3bef174f8306cf9e0438fb5b446e606a8b33fbac8ed40681d7e76e47a2610b2d",
+    "timing.attempt0.json": "c51583f73550aea4f6b0096d79f586fca69bebb277a2734c5bcbc5bcf2c837df"
+   },
+   "g2_pairing": {
+    "checkpoints/epoch-1": "d7e5c3b74f454ccf316786c1dd51da288fd5aedb0f4ea6a2fa97a3b6ba338753",
+    "gauge/gauge-epoch-1.json": "1f0aa5759ffb0e7eb28fd5ecfd6ce7f72d94be238e7af8e8255e29390fed3d15",
+    "gauge/projection-init.json": "8b93ea41a5ab5fe533dfa564b48defe9e150e220590db44881ce0a071a90b2f8",
+    "gauge/steps-epoch-1.npz": "765fa1879566769f196ace7e7fa9d99960c17de0178c21889c729475ea67efb0",
+    "gauge/vw-epoch-1.npz": "410a6bfefece1dd3d1dda201f2d7c697f933822043e994c51773a9ac8d74b5a7",
+    "stdout.attempt0.log": "1147de7b92fc596893564314fa31b8687a475a62b2c120a8f794a4a50bafa0f5",
+    "timing.attempt0.json": "3699a57f29c8e88a68f54f96ef7446478d066023086310f613feea23cfb17103"
+   }
+  },
+  "g1_list_sha256": "5cb04c6b9bd66841bdf1375807da8384b3b19c806c9842d99deb8b0c92b9524a",
+  "launch_gate": {
+   "checked": "2026-10-12 23:04:32",
+   "free_mib": {
+    "0": 23957,
+    "1": 24016
+   },
+   "make_gpu_exit": 0,
+   "tail": "./gpucheck.sh\nindex, name, memory.used [MiB], memory.total [MiB], utilization.gpu [%]\n0, NVIDIA TITAN RTX, 58 MiB, 24576 MiB, 0 %\n1, NVIDIA TITAN RTX, 7 MiB, 24576 MiB, 0 %\npid, process_name, used_gpu_memory [MiB]\ngpu 0 free MiB: 23957\ngpu 1 free MiB: 24016\nfree MiB: 24016 (gpu 1)\nOK to launch: CUDA_VISIBLE_DEVICES=1\n"
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "8d09534a15ae03654276f7d0b6e48c3f273f3e26"
+  },
+  "registration": {
+   "artifact_sha256": "4a7b165d247c8d522f0746f001b2aa4b86b6e4b393b817b16e9a5180a5ae653a",
+   "path": "runs/2026-10-12_mxfold2_ablation/metrics.json",
+   "tracked": true,
+   "unmodified": true
+  },
+  "status": "G1 passed"
+ },
+ "smoke_gpu_g1": {
+  "blocked": {},
+  "disk_free_gb": 16.15548324584961,
+  "gpus_free_mib": {
+   "0": 24518,
+   "1": 24569
+  },
+  "runs": {
+   "g1_gpu0": {
+    "attempts": [
+     {
+      "cmd": [
+       "/home/shadi/sirna-thermo/.venv-mxfold2/bin/python",
+       "/home/shadi/sirna-thermo/scripts/mxfold2_ablation_train.py",
+       "train",
+       "@/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/arch.conf",
+       "--param",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu0/param.pth",
+       "--save-config",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu0/model.conf",
+       "--log-dir",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu0/checkpoints",
+       "--epochs",
+       "1",
+       "--gpu",
+       "0",
+       "--seed",
+       "20261006",
+       "--loss-func",
+       "hinge_mix",
+       "--score-loss-weight",
+       "1.0",
+       "--disable-progress-bar",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_tr0.lst"
+      ],
+      "code_sha256": {
+       "mxfold2/train.py (installed)": "9457ae99a4928487efca33bb98bb537ef262e58f7c9e302a53e9917d436eb451",
+       "scripts/mxfold2_ablation_train.py": "efac43b9eeae5960d25271c159564122db3972cb7fce1ef78d659f944bba064f",
+       "scripts/mxfold2_gauge.py": "fd89fe0ebaa4e3efce9245edda98434ba0355be56248181d72658bb92e19229f",
+       "scripts/mxfold2_gauge_hooks.py": "5da12846bca3e1999d86db2d57e7e6b226b22458a78c7452b08eee9af67e1f90",
+       "scripts/mxfold2_timed_train.py": "ba0fd496f4d962dbbef8ac0890d826e02b724faadd39877da9b9d89b4da79675",
+       "scripts/mxfold2_vproject.py": "d8c355724251e4eaab8597ec403b4f4b5ede5f67bcaf6206ab828b9a83bf576d"
+      },
+      "ended": "2026-10-12 23:05:02",
+      "env": {
+       "CUDA_VISIBLE_DEVICES": "0",
+       "MKL_NUM_THREADS": "1",
+       "MXF_GAUGE_CROSSCHECK": "0",
+       "MXF_GAUGE_LAMBDA": "0",
+       "MXF_GAUGE_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu0/gauge",
+       "MXF_PROJECT": "1",
+       "MXF_TIMING_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu0/timing.attempt0.json",
+       "MXF_VW_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu0/gauge",
+       "OMP_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True"
+      },
+      "exit_code": 0,
+      "resume_from": null,
+      "started": "2026-10-12 23:04:32"
+     }
+    ],
+    "gpu": 0,
+    "l2": 0.0,
+    "list": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_tr0.lst",
+    "name": "g1_gpu0",
+    "project": true,
+    "recoveries": 0,
+    "seed": 20261006,
+    "status": "complete",
+    "trajectory_exact": true
+   },
+   "g1_gpu1": {
+    "attempts": [
+     {
+      "cmd": [
+       "/home/shadi/sirna-thermo/.venv-mxfold2/bin/python",
+       "/home/shadi/sirna-thermo/scripts/mxfold2_ablation_train.py",
+       "train",
+       "@/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/arch.conf",
+       "--param",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu1/param.pth",
+       "--save-config",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu1/model.conf",
+       "--log-dir",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu1/checkpoints",
+       "--epochs",
+       "1",
+       "--gpu",
+       "0",
+       "--seed",
+       "20261006",
+       "--loss-func",
+       "hinge_mix",
+       "--score-loss-weight",
+       "1.0",
+       "--disable-progress-bar",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_tr0.lst"
+      ],
+      "code_sha256": {
+       "mxfold2/train.py (installed)": "9457ae99a4928487efca33bb98bb537ef262e58f7c9e302a53e9917d436eb451",
+       "scripts/mxfold2_ablation_train.py": "efac43b9eeae5960d25271c159564122db3972cb7fce1ef78d659f944bba064f",
+       "scripts/mxfold2_gauge.py": "fd89fe0ebaa4e3efce9245edda98434ba0355be56248181d72658bb92e19229f",
+       "scripts/mxfold2_gauge_hooks.py": "5da12846bca3e1999d86db2d57e7e6b226b22458a78c7452b08eee9af67e1f90",
+       "scripts/mxfold2_timed_train.py": "ba0fd496f4d962dbbef8ac0890d826e02b724faadd39877da9b9d89b4da79675",
+       "scripts/mxfold2_vproject.py": "d8c355724251e4eaab8597ec403b4f4b5ede5f67bcaf6206ab828b9a83bf576d"
+      },
+      "ended": "2026-10-12 23:05:02",
+      "env": {
+       "CUDA_VISIBLE_DEVICES": "1",
+       "MKL_NUM_THREADS": "1",
+       "MXF_GAUGE_CROSSCHECK": "0",
+       "MXF_GAUGE_LAMBDA": "0",
+       "MXF_GAUGE_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu1/gauge",
+       "MXF_PROJECT": "1",
+       "MXF_TIMING_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu1/timing.attempt0.json",
+       "MXF_VW_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_gpu1/gauge",
+       "OMP_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True"
+      },
+      "exit_code": 0,
+      "resume_from": null,
+      "started": "2026-10-12 23:04:32"
+     }
+    ],
+    "gpu": 1,
+    "l2": 0.0,
+    "list": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g1_tr0.lst",
+    "name": "g1_gpu1",
+    "project": true,
+    "recoveries": 0,
+    "seed": 20261006,
+    "status": "complete",
+    "trajectory_exact": true
+   }
+  },
+  "updated": "2026-10-12 23:05:02"
+ },
+ "smoke_gpu_g2": {
+  "blocked": {},
+  "disk_free_gb": 16.051654815673828,
+  "gpus_free_mib": {
+   "0": 24518,
+   "1": 24569
+  },
+  "runs": {
+   "g2_pairing": {
+    "attempts": [
+     {
+      "cmd": [
+       "/home/shadi/sirna-thermo/.venv-mxfold2/bin/python",
+       "/home/shadi/sirna-thermo/scripts/mxfold2_ablation_train.py",
+       "train",
+       "@/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/arch.conf",
+       "--param",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g2_pairing/param.pth",
+       "--save-config",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g2_pairing/model.conf",
+       "--log-dir",
+       "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g2_pairing/checkpoints",
+       "--epochs",
+       "1",
+       "--gpu",
+       "0",
+       "--seed",
+       "20261006",
+       "--loss-func",
+       "hinge_mix",
+       "--score-loss-weight",
+       "1.0",
+       "--disable-progress-bar",
+       "data/TR0-canonicals.lst"
+      ],
+      "code_sha256": {
+       "mxfold2/train.py (installed)": "9457ae99a4928487efca33bb98bb537ef262e58f7c9e302a53e9917d436eb451",
+       "scripts/mxfold2_ablation_train.py": "efac43b9eeae5960d25271c159564122db3972cb7fce1ef78d659f944bba064f",
+       "scripts/mxfold2_gauge.py": "fd89fe0ebaa4e3efce9245edda98434ba0355be56248181d72658bb92e19229f",
+       "scripts/mxfold2_gauge_hooks.py": "5da12846bca3e1999d86db2d57e7e6b226b22458a78c7452b08eee9af67e1f90",
+       "scripts/mxfold2_timed_train.py": "ba0fd496f4d962dbbef8ac0890d826e02b724faadd39877da9b9d89b4da79675",
+       "scripts/mxfold2_vproject.py": "d8c355724251e4eaab8597ec403b4f4b5ede5f67bcaf6206ab828b9a83bf576d"
+      },
+      "ended": "2026-10-12 23:24:33",
+      "env": {
+       "CUDA_VISIBLE_DEVICES": "0",
+       "MKL_NUM_THREADS": "1",
+       "MXF_GAUGE_CROSSCHECK": "0",
+       "MXF_GAUGE_LAMBDA": "0",
+       "MXF_GAUGE_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g2_pairing/gauge",
+       "MXF_PROJECT": "0",
+       "MXF_TIMING_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g2_pairing/timing.attempt0.json",
+       "MXF_VW_OUT": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/smoke_gpu/g2_pairing/gauge",
+       "OMP_NUM_THREADS": "1",
+       "OPENBLAS_NUM_THREADS": "1",
+       "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True"
+      },
+      "exit_code": 0,
+      "resume_from": null,
+      "started": "2026-10-12 23:05:02"
+     }
+    ],
+    "gpu": 0,
+    "l2": 0.0,
+    "name": "g2_pairing",
+    "project": false,
+    "recoveries": 0,
+    "seed": 20261006,
+    "status": "complete",
+    "trajectory_exact": true
+   }
+  },
+  "updated": "2026-10-12 23:24:33"
+ },
  "status": "PRE-REGISTERED, nothing trained",
  "written_at": "2026-10-12 23:04:02"
 }
