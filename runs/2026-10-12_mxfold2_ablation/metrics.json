@@ -2107,6 +2107,246 @@
    "seed": 20261007
   }
  ],
+ "score": {
+  "F": {
+   "adam_seed20261006": {
+    "F_mean_per_sequence": 0.5221762505127678,
+    "F_pooled": 0.5177416811228513,
+    "PPV_pooled": 0.4319655645570572,
+    "SEN_pooled": 0.6460236696370844,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "adam_seed20261007": {
+    "F_mean_per_sequence": 0.5222878942770767,
+    "F_pooled": 0.5179972936400541,
+    "PPV_pooled": 0.43248535974541963,
+    "SEN_pooled": 0.6456582239338824,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "adam_seed20261008": {
+    "F_mean_per_sequence": 0.5226490107743632,
+    "F_pooled": 0.5172984847631387,
+    "PPV_pooled": 0.4316250563994586,
+    "SEN_pooled": 0.645405223062435,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "adamw_wd0.01_seed20261006": {
+    "F_mean_per_sequence": 0.522396173580398,
+    "F_pooled": 0.5186194164265129,
+    "PPV_pooled": 0.43250905950168045,
+    "SEN_pooled": 0.647541674865769,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "adamw_wd0.01_seed20261007": {
+    "F_mean_per_sequence": 0.5229189807894303,
+    "F_pooled": 0.5187047035087521,
+    "PPV_pooled": 0.432941973357417,
+    "SEN_pooled": 0.6468388946673038,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "adamw_wd0.01_seed20261008": {
+    "F_mean_per_sequence": 0.5228091464481941,
+    "F_pooled": 0.5176873121813415,
+    "PPV_pooled": 0.43167655229371577,
+    "SEN_pooled": 0.6465015601720406,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "proj_seed20261006": {
+    "F_mean_per_sequence": 0.5221220671539534,
+    "F_pooled": 0.518095366864972,
+    "PPV_pooled": 0.43233231162676994,
+    "SEN_pooled": 0.6463047817164703,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "proj_seed20261007": {
+    "F_mean_per_sequence": 0.5230408926696654,
+    "F_pooled": 0.5188226006541108,
+    "PPV_pooled": 0.433207149179803,
+    "SEN_pooled": 0.6466140050037951,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   },
+   "proj_seed20261008": {
+    "F_mean_per_sequence": 0.5221903153299317,
+    "F_pooled": 0.5169050568757743,
+    "PPV_pooled": 0.4312155890035139,
+    "SEN_pooled": 0.6450959997751103,
+    "n_scored": 1304,
+    "n_without_reference_pairs": 1
+   }
+  },
+  "adam_checkpoints_match_existing": true,
+  "adam_checkpoints_sha256": {
+   "20261006": "c840e3482ae4b886dcda82ee77e611f870a526512a714e397bcbc7164bd5c5fa",
+   "20261007": "c897afd86f8fe59825bbf5a238f7e98f28b65a05aa93434be9c7bd15a649ac5e",
+   "20261008": "be130c7733afaa34d0e4e32024d79bdbe02781a9067df87b9a82e8e8094777fd"
+  },
+  "input_artifacts_sha256": {
+   "runs/2026-10-07_mxfold2_seed_study/metrics.json": "a2670c58f085889c6605625d6a5dc69598bd2eaeced7e819d1419271605a163c",
+   "runs/2026-10-08_mxfold2_gauge_eval/metrics.json": "fc258bcc0e53b528d8b385a5513f3aecbb0d3f76164ef0cc9cb820c46af6b58e"
+  },
+  "models": [
+   {
+    "arm": "adam",
+    "checkpoint_sha256": "c840e3482ae4b886dcda82ee77e611f870a526512a714e397bcbc7164bd5c5fa",
+    "name": "adam_seed20261006",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-07_mxfold2_seed_study/seeds/full_seed20261006_w1.0/checkpoints/epoch-10",
+    "seed": 20261006
+   },
+   {
+    "arm": "adam",
+    "checkpoint_sha256": "c897afd86f8fe59825bbf5a238f7e98f28b65a05aa93434be9c7bd15a649ac5e",
+    "name": "adam_seed20261007",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-07_mxfold2_seed_study/seeds/full_seed20261007_w1.0/checkpoints/epoch-10",
+    "seed": 20261007
+   },
+   {
+    "arm": "adam",
+    "checkpoint_sha256": "be130c7733afaa34d0e4e32024d79bdbe02781a9067df87b9a82e8e8094777fd",
+    "name": "adam_seed20261008",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-07_mxfold2_seed_study/seeds/full_seed20261008_w1.0/checkpoints/epoch-10",
+    "seed": 20261008
+   },
+   {
+    "arm": "adamw_wd0.01",
+    "checkpoint_sha256": "fec70b1b8c09c19a7bf6ec0f4f5adb48ada082bb395650ab3b1e3f141fbd9b3d",
+    "name": "adamw_wd0.01_seed20261006",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/adamw_wd0.01_seed20261006/checkpoints/epoch-10",
+    "seed": 20261006
+   },
+   {
+    "arm": "adamw_wd0.01",
+    "checkpoint_sha256": "df7e905e5b712f1d077a5c108c8cc3ea2f073a8782249827d536a105d5762166",
+    "name": "adamw_wd0.01_seed20261008",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/adamw_wd0.01_seed20261008/checkpoints/epoch-10",
+    "seed": 20261008
+   },
+   {
+    "arm": "adam_proj",
+    "checkpoint_sha256": "4086a45d8d851a5290b7536dd1295022f24b3a91d73bb1c6e51f9c1e07d15ff1",
+    "name": "proj_seed20261007",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/proj_seed20261007/checkpoints/epoch-10",
+    "seed": 20261007
+   },
+   {
+    "arm": "adam_proj",
+    "checkpoint_sha256": "7bcc15663d23c648d107636ab998ffb2889d4ef66a7fffd53c2fb934a7d25dd5",
+    "name": "proj_seed20261006",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/proj_seed20261006/checkpoints/epoch-10",
+    "seed": 20261006
+   },
+   {
+    "arm": "adam_proj",
+    "checkpoint_sha256": "ecbcda69e764d43757e93cfa19cbd70f9dbff851faaee39b47f60ecf3543371d",
+    "name": "proj_seed20261008",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/proj_seed20261008/checkpoints/epoch-10",
+    "seed": 20261008
+   },
+   {
+    "arm": "adamw_wd0.01",
+    "checkpoint_sha256": "e1595c25ee93c18d027138e8efac546cf54cf0f9c3d93c07d5badce46ae00264",
+    "name": "adamw_wd0.01_seed20261007",
+    "path": "/home/shadi/sirna-thermo/runs/2026-10-12_mxfold2_ablation/shards/adamw_wd0.01_seed20261007/checkpoints/epoch-10",
+    "seed": 20261007
+   }
+  ],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "4de76f917207488d772795b47c19b4c82f06fdbb"
+  },
+  "registration": {
+   "artifact_sha256": "91665a247ca37360ae50ac05a235bf7880c5475a75868b779bcd2c24f051d409",
+   "path": "runs/2026-10-12_mxfold2_ablation/metrics.json",
+   "tracked": true,
+   "unmodified": true
+  },
+  "scorer_check_reported": {
+   "20261006": {
+    "abs_diff_F": 0.0,
+    "equal_exactly": true,
+    "evaluator": {
+     "F_mean_per_sequence": 0.5221762505127678,
+     "F_pooled": 0.5177416811228513,
+     "PPV_pooled": 0.4319655645570572,
+     "SEN_pooled": 0.6460236696370844,
+     "n_scored": 1304,
+     "n_without_reference_pairs": 1
+    },
+    "ours": {
+     "F_mean_per_sequence": 0.5221762505127678,
+     "F_pooled": 0.5177416811228513,
+     "PPV_pooled": 0.4319655645570572,
+     "SEN_pooled": 0.6460236696370844,
+     "n_scored": 1304,
+     "n_without_reference_pairs": 1
+    }
+   },
+   "20261007": {
+    "abs_diff_F": 0.0,
+    "equal_exactly": true,
+    "evaluator": {
+     "F_mean_per_sequence": 0.5222878942770767,
+     "F_pooled": 0.5179972936400541,
+     "PPV_pooled": 0.43248535974541963,
+     "SEN_pooled": 0.6456582239338824,
+     "n_scored": 1304,
+     "n_without_reference_pairs": 1
+    },
+    "ours": {
+     "F_mean_per_sequence": 0.5222878942770767,
+     "F_pooled": 0.5179972936400541,
+     "PPV_pooled": 0.43248535974541963,
+     "SEN_pooled": 0.6456582239338824,
+     "n_scored": 1304,
+     "n_without_reference_pairs": 1
+    }
+   },
+   "20261008": {
+    "abs_diff_F": 0.0,
+    "equal_exactly": true,
+    "evaluator": {
+     "F_mean_per_sequence": 0.5226490107743632,
+     "F_pooled": 0.5172984847631387,
+     "PPV_pooled": 0.4316250563994586,
+     "SEN_pooled": 0.645405223062435,
+     "n_scored": 1304,
+     "n_without_reference_pairs": 1
+    },
+    "ours": {
+     "F_mean_per_sequence": 0.5226490107743632,
+     "F_pooled": 0.5172984847631387,
+     "PPV_pooled": 0.4316250563994586,
+     "SEN_pooled": 0.645405223062435,
+     "n_scored": 1304,
+     "n_without_reference_pairs": 1
+    }
+   }
+  },
+  "scorer_reproduces_evaluator": true,
+  "seconds": 1609.1,
+  "shards_sha256": {
+   "w0.json": "241d8c4602ca2d87cbc273e110d03caefcee4eadaf11c59f58a0bc694059c338",
+   "w0.npz": "e7da99cd03f654383869cd62378eac9efb059798ed8403c718c8705835a0660e",
+   "w1.json": "9a1b2bde8cd3b1ce81b15df76fc926bb7a47cb970d5a81efc5053ba38afe4af6",
+   "w1.npz": "47f3db4178c4f4e855df36f8f6a09e05b3663c605c5ac0b4e80c057a226133de",
+   "w2.json": "beee5cbfdce7828295dcc4c465de290c3f92ee895c20ed6fee9dbfd0d1ab4425",
+   "w2.npz": "40480fea7320a4bb142727ac2ee1a8c65eadd2f42da3eda6ef89cf2b26fc2f5c",
+   "w3.json": "812834ef160e6456bcb35963eeaed94e6cbff87adf8398c4952e2de048701eca",
+   "w3.npz": "893869037a08dc2567d2068f672f8326341f8dea55d00cf1bd80282d8e68351a"
+  },
+  "threads": 2,
+  "threads_note": "the evaluator's thread count (2b.threads), so that the reproduction check is like for like",
+  "workers": 4
+ },
  "smoke_cpu": {
   "report": {
    "C1": {
@@ -2753,6 +2993,6 @@
   },
   "updated": "2026-10-12 23:24:33"
  },
- "status": "trained",
+ "status": "scored",
  "written_at": "2026-10-12 23:04:02"
 }
