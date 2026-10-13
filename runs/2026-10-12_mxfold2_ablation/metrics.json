@@ -1,0 +1,464 @@
+{
+ "analysis_code_sha256": "962200940f206138d04bfbc6e23dbf04ef973b8e9d43621aec6525f5a79f08e8",
+ "code_sha256_at_registration": {
+  "mxfold2/train.py (installed)": "9457ae99a4928487efca33bb98bb537ef262e58f7c9e302a53e9917d436eb451",
+  "scripts/mxfold2_ablation_train.py": "efac43b9eeae5960d25271c159564122db3972cb7fce1ef78d659f944bba064f",
+  "scripts/mxfold2_gauge.py": "fd89fe0ebaa4e3efce9245edda98434ba0355be56248181d72658bb92e19229f",
+  "scripts/mxfold2_gauge_hooks.py": "5da12846bca3e1999d86db2d57e7e6b226b22458a78c7452b08eee9af67e1f90",
+  "scripts/mxfold2_timed_train.py": "ba0fd496f4d962dbbef8ac0890d826e02b724faadd39877da9b9d89b4da79675",
+  "scripts/mxfold2_vproject.py": "d8c355724251e4eaab8597ec403b4f4b5ede5f67bcaf6206ab828b9a83bf576d"
+ },
+ "data_sha256_at_registration": {
+  "arch.conf": "b80e84d8711866093cfe57b189ff93486d9c3cabee8f050d0c468b56948ed67d",
+  "data/TR0-canonicals.lst": "938919afbbd2f1f568457a2d59e656ee7e6b4afadb4e1fb71bb9365f4354d7fb"
+ },
+ "epochs": 10,
+ "predictions": {
+  "analysis_stopped": "if a must-hold fails, analyse reports no statistic and leaves none in the artifact: it records the failing checks under analysis_stopped, discards any earlier results and leaves the status at 'scored', so that a cause fixed outside the artifact can be re-analysed. Nothing about a failing must-hold is reported as a result",
+  "breaker_note": "v is an exact symmetry of the loss only on steps whose scored structures have no helix longer than 30 pairs; 11 of the 13 TR0 sequences whose allowed pairs admit a 31+ pair run break it (runs/2026-10-10_mxfold2_vg_breaker; |v.g| up to ~0.4 on a step). On those steps the projection removes a component of the step that the loss does see, so 'no accuracy cost' is a measured outcome, not a tautology; every other change the projection makes is float32 rounding of 30 entries",
+  "check_not_prediction": "|v.w| <= v_bound(b, W, c) after the initial projection and after every projected step, asserted live in the runner; the bound is derived in scripts/mxfold2_vproject.py",
+  "framing_adamw_user": "the AdamW row is reported as measured; there is no claim that weight decay fixes or relocates the gauge (the 2026-10-12 ruling)",
+  "must_hold": {
+   "adam_checkpoints": "the epoch-10 checkpoint this script scores for Adam seeds 20261006-08 is sha256-identical to the one collect-existing traced for the Adam row's v.w, so the row's F and its drift come from the same file",
+   "bound_logged": "projection runs: every logged post satisfies |post| <= its logged bound, and the initial projection's post its bound (re-checked from the logs)",
+   "config_matches_arm": "every new run's logged configuration is the arm it is tabulated as: projection-init.json records projected, planted, the optimiser class, lr and l2_weight as the process built them (AdamW, lr 1e-3, l2 0.01 for the AdamW arm and 0 for the projection arm, planted null), and every recorded attempt's argv and environment carry that arm's flags (--seed, --epochs 10, hinge_mix, --score-loss-weight 1.0, the TR0 list, MXF_PROJECT 0/1, MXF_GAUGE_LAMBDA 0, no MXF_PROJECT_PLANTED, threads 1, the device pinned; --optimizer AdamW --l2-weight 0.01 on the AdamW arm and neither flag on the projection arm)",
+   "continuity": "every run, new or collected: gauge-epoch-e v_dot_w_start == gauge-epoch-(e-1) v_dot_w exactly (e = 2..10), and v_dot_w(10) equals the epoch-10 checkpoint's v.w (evaluator's ckpt_vdot) within 1e-12 * max(1, |x|). Stated exactly: within ONE process the first of those is true by construction, because the gauge hooks set the next epoch's v_dot_w_start from the epoch they have just recorded (mxfold2_gauge_hooks.py:206); it bites across a resume, where the start is measured on the loaded checkpoint. The substantive per-epoch check is the NEW runs' own measurement: scripts/mxfold2_ablation_train.py reads v.w from the live parameters at the top of every epoch (vw-epoch-k.npz 'start'), and that value must equal the previous epoch's last logged post exactly (the initial pre or post for epoch 1) and the hooks' recorded v_dot_w_start exactly",
+   "existing": "the evaluator artifact AND the gauge-runs artifact (runs/2026-10-08_mxfold2_gauge_runs/metrics.json, which supplies the reg and SGD rows' status, trajectory_exact and attempts) are tracked and unmodified; recomputing S2's SD at epoch 10 and mean |step| from its recorded traces and every arm's F mean and SD from its F_per_model reproduces the recorded values exactly; the Adam traces equal ckpt_vdot of every checkpoint on disk and init_vdot(seed) exactly; every reg run is recorded complete with trajectory_exact true and has 10 finite gauge records starting at init_vdot(seed) within 1e-12 * max(1, |x|); the complete SGD run's records equal the evaluator's S1 trace exactly",
+   "hooks_only_read": "the logged v.w does not move between steps within an epoch (pre[t+1] == post[t] exactly); for the AdamW runs post == raw exactly; each epoch's first pre equals its v_dot_w_start and its last post its v_dot_w within 1e-12 * max(1, |x|); epoch 1's v_dot_w_start equals projection-init.json's post (projection) or pre (AdamW) exactly",
+   "inputs_pinned": "preregister refuses unless every pinned code file (RUN_CODE and this launcher) is tracked and unmodified, and records the sha256 of this launcher (analysis_code_sha256), of the registered constants (the run table, the seeds, the epochs, the band, the bootstrap, the worker count) and of the two untracked training INPUTS: the TR0 list data/TR0-canonicals.lst and the seed study's arch.conf. Every later phase (collect-existing, smoke-gpu, run, score, analyse) refuses unless all three still equal what was registered, and each start re-checks the inputs as it re-checks the code",
+   "pairing_init": "every new run's unprojected initial v.w (projection-init.json pre) equals the evaluator's rebuild init_vdot(seed) within 1e-12 * max(1, |x|)",
+   "raw_step_nonzero": "every epoch of every new run took at least one optimiser step and the raw step moved v.w (sum |raw - pre| > 0): a dead optimiser would satisfy every bound",
+   "registration": "collect-existing, smoke-gpu and run refuse unless the artifact is tracked and unmodified and predictions == PRED; score and analyse check PRED and every shard sha256; smoke-gpu and run refuse unless the RUN_CODE sha256s (and the installed mxfold2/train.py) equal those recorded at registration; run also needs a session leader, a tree clean outside runs/, collect-existing passed, G1 passed and make gpu reporting both cards free",
+   "score_inputs": "score refuses unless the evaluator artifact is sha256-identical to the one collect-existing read, and records the sha256 of both artifacts it reads as inputs (the evaluator's, for the thread count and the F compared against, and the seed study's, for the evaluation set); analyse refuses unless both are still identical",
+   "scored_set": "every scored TS0 sequence matches the evaluation set's sha256 (asserted in the worker; a mismatch exits nonzero and is recorded as score_failed); the sequences with reference pairs are the same set for every model AND number exactly 1,304, which is also the evaluator's n_scored for the Adam models the test compares against",
+   "shards": "every per-run and score shard file is sha256-recorded when written and re-checked by score and analyse"
+  },
+  "plan": "approved 2026-10-12, /home/shadi/.claude/plans/wild-kindling-moth.md section A3, with the user's amendments: the projection arm's drift from its POST-projection start, the one-time initial projection reported separately per seed; the primary test is the paired t-interval over the 3 per-seed differences (df = 2)",
+  "prior_claude": "projection drift and per-epoch steps at the bound's scale (~1e-6 or below); the AdamW row's drift and epoch-10 SD of the same order as Adam's (the decay contracts v.w by roughly 10% per epoch while the preconditioned drift dominates); the test passes, with per-seed |d| of order the Adam arm's seed SD of F (0.0008), SD(d) ~ 0.001 and a t half-width ~ 0.0025. Uncertain: with df = 2 an SD(d) above ~0.002 alone fails it",
+  "projection_spec": "w <- w - ((v.w)/117) v: c = (b[0] - 2 sum W[0, 2:31]) / 117 in float64 on the CPU, b[0] -= c, W[0, 2:31] += 2c, written back in float32 (scripts/mxfold2_vproject.project_v_); applied once after the model is built, before the first step, and after every optimiser step (a torch step post-hook between the raw-step log and the post log); Adam's moment estimates are not touched",
+  "question_user": "which MXfold2 training choices move the model along its weight-space symmetry v, and does a parameter projection hold it at no accuracy cost?",
+  "registered": "2026-10-12, after the CPU smoke (embedded in this artifact) and before collect-existing, the GPU smoke or any A3 training; nothing trained or scored",
+  "registered_test_user": {
+   "F": "F = mean per-sequence F1 over the 1,304 TS0 sequences with reference pairs (scripts/mxfold2_gauge_eval.accuracy, F_mean_per_sequence) of the epoch-10 checkpoint; both arms scored by this script's score phase (the ts0_f code path)",
+   "missing_projection_run": "a projection run that diverges or fails after its recoveries leaves fewer than 3 differences: the test is then NOT PASSED and reported so (a projection that cannot train is a cost). A diverged or failed run does not block the analysis: the run phase ends in a terminal status that score and analyse accept, and the row's n falls. It is not retried",
+   "passes_iff": "the interval lies inside the open interval (-0.005, 0.005)",
+   "per_seed": "d_s = F_proj(s) - F_adam(s), s in 20261006, 20261007, 20261008; Adam = the seed study's full_seed{s}_w1.0",
+   "primary": "the paired t-interval over the 3 per-seed differences: mean(d) +- t(0.975, df = 2) * SD(d) / sqrt(3), SD with ddof 1, t(0.975, 2) = 0.95 / sqrt(2 * 0.975 * 0.025) = 4.302652729749464 (closed form for df = 2)",
+   "statement": "projection keeps TS0 F within +-0.005 of Adam",
+   "void": "a live bound violation voids the projection arm: no statistic is reported for it (the registered test is VOID) and the result goes to the user. The other rows of Table 3 are still reported, with the violating runs named"
+  },
+  "reported_beside_the_test": {
+   "duplicate_floor": "|F(seed 20261006) - F(its duplicate)| from the evaluator's F_per_model for adamw_w1.0 (bitwise-identical checkpoints), adamw_w0.125 and reg; the projection arm has no duplicate",
+   "flagged": "if any run was resumed (trajectory_exact false) everything is also reported with flagged runs excluded",
+   "per_seed_differences": "the 3 d_s",
+   "scorer_check": "a reported check, not a prediction: this script's F for the Adam seeds 20261006-08 equals the evaluator's F_per_model[adamw_w1.0_seed{s}] (every field, exact; differences recorded). For that comparison to be like for like the score workers run CUDA_VISIBLE_DEVICES='' on the CPU with the EVALUATOR's thread count, read from its artifact (2b.threads = 2), not 1: the evaluator launched its own workers with OMP/OPENBLAS/MKL = that number and refuses a stage 2b whose --threads differs from 2a's, because the thread count is part of its bitwise reproduction contract (mxfold2_gauge_eval.py:801-812). The number used is recorded. Training children, by contrast, run with threads = 1",
+   "sequence_only": "the same X draws with all three seeds kept once each; 95% percentile interval",
+   "two_level_bootstrap": "paired, 10,000 resamples, rng = np.random.default_rng(np.random.SeedSequence([20261006, 70])): first S = rng.integers(0, 3, (10000, 3)) seed indices, then X = rng.integers(0, 1304, (10000, 1304)) sequence indices; replicate = mean over its 3 drawn seeds of the mean over its 1,304 drawn sequences of f_proj(s, x) - f_adam(s, x); 95% percentile interval"
+  },
+  "rows": {
+   "adam": "existing adamw_w1.0 arm of runs/2026-10-07_mxfold2_seed_study (8 seeds, full_seed*_w1.0): MXfold2's code-default AdamW at weight decay 0, which is torch-identical to Adam; v.w from the evaluator's S2 traces, F from its F_per_model; seeds 20261006-08 re-scored here for the registered test",
+   "adam_penalty": "existing reg arm (8 seeds; AdamW wd 0 plus the null-component penalty at the pilot's lambda*); its per-epoch v.w lives only in untracked gauge-epoch-*.json files, recorded by collect-existing with every file's sha256",
+   "adam_projection": "NEW: the Adam row's optimiser and flags (AdamW, wd 0) with the parameter projection once at initialisation and after every optimiser step, seeds 20261006-08, 10 epochs",
+   "adam_w0.125": "existing adamw_w0.125 arm (8 seeds): score-loss weight C1 = 0.125, the paper's; the paper's l2 term C2 was never in the released code",
+   "adamw_new": "NEW: --optimizer AdamW --l2-weight 0.01 (torch's decoupled weight decay) at w = 1.0, seeds 20261006-08, 10 epochs",
+   "common": "every new run: the seed study's arch.conf (byte-identical copy, sha256 recorded), TR0-canonicals uncapped, hinge_mix, --score-loss-weight 1.0, lr 1e-3 (default), --seed s, 10 epochs, a checkpoint every epoch, runner scripts/mxfold2_ablation_train.py with the gauge hooks at lambda 0 (they only log). The Adam baselines ran the plain timed runner; a new run shares its seed's initialisation, data order and dropout draws (G2 checks the pairing at epoch 1 with the projection off)",
+   "sgd": "existing registered arm, runs/2026-10-08_mxfold2_gauge_runs sgd_seed2026100{6,7,8}_w1.0: MXfold2's SGD (Nesterov, momentum 0.9), lr 1e-3, wd 0, w = 1.0, lambda 0; 2 of 3 seeds diverged; reported as 'did not train at the registered LR', n = 1 of 3"
+  },
+  "seeds": [
+   20261006,
+   20261007,
+   20261008
+  ],
+  "smoke_user": {
+   "cpu": "C1: the new runner with projection off is bit-identical to the plain timed runner (wd 0); C2: the same at --l2-weight 0.01; C3: projection on: every logged post within its bound, Adam's raw v.w step nonzero, checkpoint differs from C1's; C4 (must fail): a planted skip of the projection exits nonzero with the bound message; C5: tests/test_mxfold2_vproject.py passes. 20 seeded TR0 sequences <= 80 nt, seed 20261006, 1 epoch, CPU",
+   "gpu": "G1 (must pass before run): two concurrent 1-epoch runs with the projection on, one per GPU, seed 20261006, 200 seeded TR0 sequences: checkpoints bitwise identical, v.w logs identical, every logged post within its bound. G2 (reported): the new runner with the projection off, seed 20261006, full TR0, 1 epoch, GPU 0, against the seed study's full_seed20261006_w1.0 epoch-1 checkpoint (compare_checkpoints)"
+  },
+  "table3_columns": {
+   "F": "TS0 F_mean_per_sequence, mean and SD (ddof 1) over trained seeds; existing arms from the evaluator's F_per_model, the new arms and the Adam seeds 20261006-08 from this script's scorer",
+   "drift": "mean over trained seeds of |v.w(10) - v.w(0)|; v.w(0) is the initialisation (existing Adam arms: the evaluator's rebuild, S2 trace '0'; reg, SGD and the new AdamW: gauge-epoch-1 v_dot_w_start); for the PROJECTION arm v.w(0) is the POST-projection start, gauge-epoch-1 v_dot_w_start, which the hooks record after the initial projection (user's amendment)",
+   "initial_projection": "projection arm only, per seed, reported separately: |v.w(0)| BEFORE the one-time initial projection (projection-init.json pre), with the post value and its bound",
+   "like_for_like": "existing arms are also shown restricted to seeds 20261006-08",
+   "mean_abs_step": "S2's definition: mean over trained seeds and epochs e = 1..10 of |v.w(e) - v.w(e-1)|, with v.w(0) as in drift",
+   "n": "trained of started (complete; not diverged or failed)",
+   "sd_epoch10": "across-seed SD of v.w at epoch 10, ddof 1 (none for n = 1)"
+  },
+  "void_and_resume": {
+   "bound_violation": "stops that run (status bound_violation), is not resumed and voids the projection arm",
+   "crash": "any other non-zero exit resumes from the newest loadable checkpoint (the gauge hooks restore the RNG sidecar), at most 2 recoveries per run; a resumed GPU run is flagged trajectory_exact = false. A run whose recoveries are exhausted is 'failed': terminal, not retried, and reported with the row's n",
+   "driver_death": "status RUNNING with no live process of this run is a fault (scripts/predecessor.py rule), recorded under failed_attempts; after the artifact is committed run may be relaunched and resumes unfinished runs, the recovery count carried over",
+   "nan": "a NaN/inf loss or v.w (stdout 'Loss: nan', a non-finite gauge or vw record, or the runner's NON-FINITE exit) marks a run diverged; it is not rerun without asking",
+   "terminal_statuses": "the run phase ends with every run in one of complete, diverged, failed, bound_violation. If any is failed or bound_violation the artifact's status is 'trained, with runs that failed or were stopped' (and the phase exits nonzero), which score and analyse accept: only the analysis can report what PRED registers for those outcomes. The run phase is not relaunched from it"
+  }
+ },
+ "registered_constants": {
+  "band": 0.005,
+  "boot": 10000,
+  "boot_seed": [
+   20261006,
+   70
+  ],
+  "epochs": 10,
+  "gpucheck_mib": 8000,
+  "lr": 0.001,
+  "max_per_gpu": 3,
+  "max_recover": 2,
+  "n_score_workers": 4,
+  "n_scored": 1304,
+  "rel_tol": 1e-12,
+  "reserve_mib": 7500,
+  "run_code": [
+   "scripts/mxfold2_ablation_train.py",
+   "scripts/mxfold2_vproject.py",
+   "scripts/mxfold2_gauge_hooks.py",
+   "scripts/mxfold2_gauge.py",
+   "scripts/mxfold2_timed_train.py"
+  ],
+  "runs_planned": [
+   {
+    "arm": "adamw_wd0.01",
+    "gpu": 0,
+    "l2": 0.01,
+    "name": "adamw_wd0.01_seed20261006",
+    "project": false,
+    "seed": 20261006
+   },
+   {
+    "arm": "adamw_wd0.01",
+    "gpu": 0,
+    "l2": 0.01,
+    "name": "adamw_wd0.01_seed20261008",
+    "project": false,
+    "seed": 20261008
+   },
+   {
+    "arm": "adam_proj",
+    "gpu": 0,
+    "l2": 0.0,
+    "name": "proj_seed20261007",
+    "project": true,
+    "seed": 20261007
+   },
+   {
+    "arm": "adam_proj",
+    "gpu": 1,
+    "l2": 0.0,
+    "name": "proj_seed20261006",
+    "project": true,
+    "seed": 20261006
+   },
+   {
+    "arm": "adam_proj",
+    "gpu": 1,
+    "l2": 0.0,
+    "name": "proj_seed20261008",
+    "project": true,
+    "seed": 20261008
+   },
+   {
+    "arm": "adamw_wd0.01",
+    "gpu": 1,
+    "l2": 0.01,
+    "name": "adamw_wd0.01_seed20261007",
+    "project": false,
+    "seed": 20261007
+   }
+  ],
+  "seeds": [
+   20261006,
+   20261007,
+   20261008
+  ],
+  "smoke_cpu": {
+   "epochs": 1,
+   "max_len": 80,
+   "n_sequences": 20,
+   "seed": 20261006
+  },
+  "smoke_gpu": {
+   "g1_n_sequences": 200,
+   "g1_pick": [
+    20261006,
+    71
+   ],
+   "g1_seed": 20261006,
+   "g2_seed": 20261006
+  },
+  "t975_df2": 4.302652729749464,
+  "wd_new": 0.01
+ },
+ "registration_provenance": {
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "0ea431fa81cb9f499fde67bf865c008a245068ac"
+ },
+ "run_id": "2026-10-12_mxfold2_ablation",
+ "runs_planned": [
+  {
+   "arm": "adamw_wd0.01",
+   "gpu": 0,
+   "l2": 0.01,
+   "name": "adamw_wd0.01_seed20261006",
+   "project": false,
+   "seed": 20261006
+  },
+  {
+   "arm": "adamw_wd0.01",
+   "gpu": 0,
+   "l2": 0.01,
+   "name": "adamw_wd0.01_seed20261008",
+   "project": false,
+   "seed": 20261008
+  },
+  {
+   "arm": "adam_proj",
+   "gpu": 0,
+   "l2": 0.0,
+   "name": "proj_seed20261007",
+   "project": true,
+   "seed": 20261007
+  },
+  {
+   "arm": "adam_proj",
+   "gpu": 1,
+   "l2": 0.0,
+   "name": "proj_seed20261006",
+   "project": true,
+   "seed": 20261006
+  },
+  {
+   "arm": "adam_proj",
+   "gpu": 1,
+   "l2": 0.0,
+   "name": "proj_seed20261008",
+   "project": true,
+   "seed": 20261008
+  },
+  {
+   "arm": "adamw_wd0.01",
+   "gpu": 1,
+   "l2": 0.01,
+   "name": "adamw_wd0.01_seed20261007",
+   "project": false,
+   "seed": 20261007
+  }
+ ],
+ "smoke_cpu": {
+  "report": {
+   "C1": {
+    "compare": {
+     "bitwise_identical": true,
+     "model_max_abs_diff": 0.0,
+     "model_tensors": 130,
+     "model_tensors_bitwise_equal": 130,
+     "optimizer_tensors": 321,
+     "optimizer_tensors_bitwise_equal": 321
+    },
+    "pass": true,
+    "vw": {
+     "epochs": {
+      "1": {
+       "end_matches_record": true,
+       "epoch_start_measured": -1.0680972463451326,
+       "lengths_equal": true,
+       "n_backward": 20,
+       "n_steps": 20,
+       "no_move_between_steps": true,
+       "post_equals_raw": true,
+       "raw_step_nonzero": true,
+       "start_continuity": true,
+       "start_measured_continuity": true,
+       "start_measured_equals_record": true,
+       "sum_abs_raw_minus_pre": 0.09903099702205509,
+       "v_dot_w": -0.972536409390159,
+       "v_dot_w_start": -1.0680972463451326
+      }
+     },
+     "init_has_pre": true,
+     "init_not_planted": true,
+     "init_projected_matches_arm": true,
+     "pass": true,
+     "projection_init": {
+      "l2_weight": 0.0,
+      "lr": 0.001,
+      "optimizer": "AdamW",
+      "planted": null,
+      "pre": -1.0680972463451326,
+      "projected": false
+     }
+    }
+   },
+   "C2": {
+    "compare": {
+     "bitwise_identical": true,
+     "model_max_abs_diff": 0.0,
+     "model_tensors": 130,
+     "model_tensors_bitwise_equal": 130,
+     "optimizer_tensors": 321,
+     "optimizer_tensors_bitwise_equal": 321
+    },
+    "pass": true,
+    "vw": {
+     "epochs": {
+      "1": {
+       "end_matches_record": true,
+       "epoch_start_measured": -1.0680972463451326,
+       "lengths_equal": true,
+       "n_backward": 20,
+       "n_steps": 20,
+       "no_move_between_steps": true,
+       "post_equals_raw": true,
+       "raw_step_nonzero": true,
+       "start_continuity": true,
+       "start_measured_continuity": true,
+       "start_measured_equals_record": true,
+       "sum_abs_raw_minus_pre": 0.09921318641863763,
+       "v_dot_w": -0.97233288991265,
+       "v_dot_w_start": -1.0680972463451326
+      }
+     },
+     "init_has_pre": true,
+     "init_not_planted": true,
+     "init_projected_matches_arm": true,
+     "pass": true,
+     "projection_init": {
+      "l2_weight": 0.01,
+      "lr": 0.001,
+      "optimizer": "AdamW",
+      "planted": null,
+      "pre": -1.0680972463451326,
+      "projected": false
+     }
+    }
+   },
+   "C3": {
+    "init_pre": -1.0680972463451326,
+    "init_pre_matches_rebuild": true,
+    "init_vdot_rebuild": -1.0680972463451326,
+    "pass": true,
+    "sum_abs_raw_minus_pre": 0.09903106838464737,
+    "vs_C1": {
+     "bitwise_identical": false,
+     "model_max_abs_diff": 0.01662459969520569,
+     "model_tensors": 130,
+     "model_tensors_bitwise_equal": 33,
+     "optimizer_tensors": 321,
+     "optimizer_tensors_bitwise_equal": 108
+    },
+    "vw": {
+     "epochs": {
+      "1": {
+       "all_post_within_bound": true,
+       "bound_lengths_equal": true,
+       "end_matches_record": true,
+       "epoch_start_measured": 9.499490261077881e-08,
+       "lengths_equal": true,
+       "max_abs_post_over_bound": 0.4157779810515026,
+       "n_backward": 20,
+       "n_steps": 20,
+       "no_move_between_steps": true,
+       "raw_step_nonzero": true,
+       "start_continuity": true,
+       "start_measured_continuity": true,
+       "start_measured_equals_record": true,
+       "sum_abs_raw_minus_pre": 0.09903106838464737,
+       "v_dot_w": -8.568167686462402e-08,
+       "v_dot_w_start": 9.499490261077881e-08
+      }
+     },
+     "init_has_post": true,
+     "init_not_planted": true,
+     "init_post_within_bound": true,
+     "init_projected_matches_arm": true,
+     "pass": true,
+     "projection_init": {
+      "bound": 3.3604168431696916e-07,
+      "c": -0.009129036293548142,
+      "l2_weight": 0.0,
+      "lr": 0.001,
+      "optimizer": "AdamW",
+      "planted": null,
+      "post": 9.499490261077881e-08,
+      "pre": -1.0680972463451326,
+      "pre_cpu": -1.0680972463451326,
+      "projected": true,
+      "within_bound": true
+     }
+    }
+   },
+   "C4": {
+    "bound_message": true,
+    "exit_code": 1,
+    "message": "MXF_PROJECT BOUND VIOLATION at optimiser step 2 of this process: |v.w| = 0.001734936609864235 > v_bound = 3.3583419578542663e-07",
+    "pass": true
+   },
+   "C5": {
+    "exit_code": 0,
+    "pass": true,
+    "tail": "test_model_v_dot_and_untouched_tensors (tests.test_mxfold2_vproject.TestOnMixC.test_model_v_dot_and_untouched_tensors) ... ok\ntest_bound_holds_and_only_30_entries_move (tests.test_mxfold2_vproject.TestProjection.test_bound_holds_and_only_30_entries_move) ... ok\ntest_bound_is_not_vacuous (tests.test_mxfold2_vproject.TestProjection.test_bound_is_not_vacuous)\nWithout a projection (c = 0) the bound rejects the unprojected weights. ... ok\ntest_exact_zero_and_non_finite (tests.test_mxfold2_vproject.TestProjection.test_exact_zero_and_non_finite) ... ok\ntest_planted_step_is_caught (tests.test_mxfold2_vproject.TestProjection.test_planted_step_is_caught)\nAn Adam-sized step along v after a projection (relative 1e-3) exceeds the bound. ... ok\ntest_rejects_float64 (tests.test_mxfold2_vproject.TestProjection.test_rejects_float64) ... ok\ntest_second_projection_changes_nothing_beyond_the_bound (tests.test_mxfold2_vproject.TestProjection.test_second_projection_changes_nothing_beyond_the_bound) ... ok\ntest_vw64_is_v_dot_on_tensors (tests.test_mxfold2_vproject.TestProjection.test_vw64_is_v_dot_on_tensors) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 6.907s\n\nOK\n"
+   },
+   "analysis_code_sha256": "962200940f206138d04bfbc6e23dbf04ef973b8e9d43621aec6525f5a79f08e8",
+   "code_sha256": {
+    "mxfold2/train.py (installed)": "9457ae99a4928487efca33bb98bb537ef262e58f7c9e302a53e9917d436eb451",
+    "scripts/mxfold2_ablation_train.py": "efac43b9eeae5960d25271c159564122db3972cb7fce1ef78d659f944bba064f",
+    "scripts/mxfold2_gauge.py": "fd89fe0ebaa4e3efce9245edda98434ba0355be56248181d72658bb92e19229f",
+    "scripts/mxfold2_gauge_hooks.py": "5da12846bca3e1999d86db2d57e7e6b226b22458a78c7452b08eee9af67e1f90",
+    "scripts/mxfold2_timed_train.py": "ba0fd496f4d962dbbef8ac0890d826e02b724faadd39877da9b9d89b4da79675",
+    "scripts/mxfold2_vproject.py": "d8c355724251e4eaab8597ec403b4f4b5ede5f67bcaf6206ab828b9a83bf576d"
+   },
+   "config": {
+    "epochs": 1,
+    "max_len": 80,
+    "n_sequences": 20,
+    "seed": 20261006
+   },
+   "data_sha256": {
+    "arch.conf": "b80e84d8711866093cfe57b189ff93486d9c3cabee8f050d0c468b56948ed67d",
+    "data/TR0-canonicals.lst": "938919afbbd2f1f568457a2d59e656ee7e6b4afadb4e1fb71bb9365f4354d7fb"
+   },
+   "exit_codes": {
+    "c1_new": 0,
+    "c1_plain": 0,
+    "c2_new": 0,
+    "c2_plain": 0,
+    "c3": 0,
+    "c4_planted": 1
+   },
+   "n_short_candidates": 2744,
+   "pass": true,
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "0ea431fa81cb9f499fde67bf865c008a245068ac"
+   },
+   "seconds": 57.9,
+   "sequences": [
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_CRW_30954.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_CRW_35638.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_11367.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_11542.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_14595.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_16030.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_18732.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25607.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_25640.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_27437.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_32018.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_32181.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_38872.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_40483.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_4876.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_6024.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_7371.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_RFAM_7719.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_SPR_504.bpseq",
+    "data/bpRNA_dataset-canonicals/TR0/bpRNA_SPR_7.bpseq"
+   ],
+   "train_list_sha256": "543b9b242a320b0a15ca6b3b0dd7e19dac02cdfcf2e1f82e964e88e8116643db"
+  },
+  "report_sha256": "ad9d823c51a3cf7f33ca32a9d2aa695cdeaa6956208bd189538d0b40c68d42ee"
+ },
+ "status": "PRE-REGISTERED, nothing trained",
+ "written_at": "2026-10-12 23:04:02"
+}
