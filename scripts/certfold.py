@@ -354,6 +354,36 @@ def interior_sub(i: int, j: int, p: int, q: int) -> str:
 # ----------------------------------------------------------------------------------
 # the certificate: per-loop weights, the callback, and E'
 # ----------------------------------------------------------------------------------
+def reached_shapes(cols: list[tuple], a: np.ndarray) -> frozenset:
+    """The (u1, u2) shapes an interior loop must have for the ball to move it at all.
+
+    Each of the four tables fixes its loop's shape: int11 is 1x1, int21 is 1x2 and 2x1, int22 is
+    2x2, and a bulge of size n is nx0 and 0xn. Every other shape -- a stack, a generic interior
+    loop, a 1xn, a 2x3, a bulge of an unreached size -- reads only entries outside those tables,
+    where B_four is exactly zero, so its weight is exactly zero too.
+
+    This is derived from the basis rather than assumed, and it is what lets the callback answer
+    the common case with one integer test instead of rebuilding a key dictionary: stacks alone
+    are 81% of the interior loops in the generating set. The equivalence is not taken on trust --
+    G1's constructed cases walk every vrna_E_internal case with both signs, and G2 enumerates
+    whole structure spaces, so a shape wrongly left out of this set would show up as an
+    under-charged loop and a false certificate.
+    """
+    shapes: set[tuple[int, int]] = set()
+    for k, nrm in zip(cols, a, strict=True):
+        if nrm <= ROW_NOISE:
+            continue
+        if k[0] == "int11":
+            shapes.add((1, 1))
+        elif k[0] == "int21":
+            shapes.update({(1, 2), (2, 1)})
+        elif k[0] == "int22":
+            shapes.add((2, 2))
+        elif k[0] == "bulge":
+            shapes.update({(int(k[1]), 0), (0, int(k[1]))})
+    return frozenset(shapes)
+
+
 class Weights:
     """Per-loop weights w_L(r) = r * sum_e |c_{L,e}| ||a_e||, in ViennaRNA's integer dcal/mol.
 
@@ -369,6 +399,7 @@ class Weights:
         self.a = a_full
         self.idx = {k: n for n, k in enumerate(cols)}
         self.r = float(r_kcal)
+        self.shapes = reached_shapes(cols, a_full)
 
     def kcal(self, keys: dict[tuple, int]) -> float:
         # float() deliberately: self.a is a numpy array, so without it every weight, every
@@ -413,13 +444,23 @@ def make_callback(S: list[int], star: set, W: Weights, counter: list | None = No
     import RNA
 
     il = RNA.DECOMP_PAIR_IL
+    shapes = W.shapes
+    loop_dcal = W.loop_dcal
 
     def cb(i, j, k, l, d, _data=None):  # noqa: E741  ViennaRNA's own argument names
         if counter is not None:
             counter[0] += 1
         if d != il:
             return 0
-        w = W.loop_dcal(S, i, j, k, l)
+        # the shape test first, because it decides the overwhelming majority of calls with two
+        # subtractions and a frozenset lookup. One mfe() at n = 134 invokes this callback
+        # 834,253 times; rebuilding a key dictionary on each of them cost 0.68 s a fold, which
+        # is what made G3 take 14 minutes and would have made one n = 467 sequence of the pilot
+        # take hours. A loop whose shape no reached table carries has weight exactly zero, so
+        # the early return changes no value -- see reached_shapes.
+        if (k - i - 1, j - l - 1) not in shapes:
+            return 0
+        w = loop_dcal(S, i, j, k, l)
         if w == 0:
             return 0
         return w if (i, j, k, l) in star else -w
