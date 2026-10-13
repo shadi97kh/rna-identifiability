@@ -1627,22 +1627,31 @@ def g2_one(lc: LoopCounts, B: dict, pos: dict, W1: Weights, seq: str, radii,
             "false_certificates": (false_p + false_a)[:3],
             "whole_structure_certified": c["whole_structure_certified"],
         }
-        if with_rho:
-            rhos = [rho_of_pair(F, star_map, W1, i, j, radii[-1] * R_CAP_MULTIPLE)
-                    for i, j in star_pairs]
-            worst = 0.0
-            for (i, j), got in zip(star_pairs, rhos, strict=True):
-                keep = np.ones(len(allS), bool)
-                keep[holds.get((i, j), [])] = False
-                m = (D > 0) & keep
-                ex = float((N[m] / D[m]).min()) if m.any() else float("inf")
-                if not got["capped"] and ex < float("inf"):
-                    worst = max(worst, got["rho"] - ex)
-            rec["rho_overstatement_vs_enumeration_kcal"] = worst
-            rec["rho_capped"] = sum(x["capped"] for x in rhos)
-            rec["rho_tied_at_zero"] = sum(x["tied_at_zero"] for x in rhos)
-            F.set_radius(r)
         res["by_radius"][f"{r:g}"] = rec
+    if with_rho:
+        # rho is a radius, not a quantity at a radius, so it is computed once per pair and
+        # compared against the exact minimum of N(s)/D(s) over the enumerated structures that
+        # lack the pair. A positive difference would mean rho overstates robustness, which is
+        # the one direction that matters: it is what the ceiled inner minimisation could cost.
+        r_cap = float(B["radii"]["r_cap_kcal"])
+        rhos = [rho_of_pair(F, star_map, W1, i, j, r_cap) for i, j in star_pairs]
+        worst, n_cmp = 0.0, 0
+        for (i, j), got in zip(star_pairs, rhos, strict=True):
+            keep = np.ones(len(allS), bool)
+            keep[holds.get((i, j), [])] = False
+            m = (D > 0) & keep
+            ex = float((N[m] / D[m]).min()) if m.any() else float("inf")
+            if not got["capped"] and ex < float("inf"):
+                worst = max(worst, got["rho"] - ex)
+                n_cmp += 1
+        res["rho"] = {
+            "n_pairs": len(rhos), "n_compared_against_enumeration": n_cmp,
+            "overstatement_vs_enumeration_kcal": worst,
+            "capped": sum(x["capped"] for x in rhos),
+            "tied_at_zero": sum(x["tied_at_zero"] for x in rhos),
+            "unconverged": sum(not x["converged"] for x in rhos),
+            "r_cap_kcal": r_cap,
+        }
     res["folds"] = F.folds
     return res
 
@@ -1714,9 +1723,17 @@ def gate_g2() -> int:
         "slack_absent": {f"{r:g}": (agg("n_certified_absent")[f"{r:g}"]
                                     / max(1, agg("n_exactly_robust_absent")[f"{r:g}"]))
                          for r in G2_RADII},
-        "rho_overstatement_vs_enumeration_kcal": {
-            f"{r:g}": max(p["by_radius"][f"{r:g}"]["rho_overstatement_vs_enumeration_kcal"]
-                          for p in per) for r in G2_RADII},
+        "rho": {
+            "n_pairs": sum(p["rho"]["n_pairs"] for p in per),
+            "n_compared_against_enumeration":
+                sum(p["rho"]["n_compared_against_enumeration"] for p in per),
+            "max_overstatement_vs_enumeration_kcal":
+                max(p["rho"]["overstatement_vs_enumeration_kcal"] for p in per),
+            "capped": sum(p["rho"]["capped"] for p in per),
+            "tied_at_zero": sum(p["rho"]["tied_at_zero"] for p in per),
+            "unconverged": sum(p["rho"]["unconverged"] for p in per),
+            "r_cap_kcal": per[0]["rho"]["r_cap_kcal"],
+        },
         "power_check": {"weights_scaled_by": 0.5, "n_sequences": n_planted,
                         "false_certificates_produced": planted, "pass": planted > 0},
         "pair_tables_vs_enumeration": {

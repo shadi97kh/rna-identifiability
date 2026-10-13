@@ -2,18 +2,18 @@
  "build_basis": {
   "basis_quality": [
    {
-    "annihilation_max_abs_dcal": 1.679019867288673e-14,
+    "annihilation_max_abs_dcal": 2.976262082931063e-14,
     "dim": 448,
     "label": "B_TR0",
-    "orthonormality_max_abs": 9.992007221626409e-16,
-    "row_norm_max": 0.9045340337332912
+    "orthonormality_max_abs": 1.3322676295501878e-15,
+    "row_norm_max": 0.9045340337332914
    },
    {
-    "annihilation_max_abs_dcal": 1.5606383987350338e-14,
+    "annihilation_max_abs_dcal": 3.435446371824469e-14,
     "dim": 448,
     "label": "B_four",
-    "orthonormality_max_abs": 1.1102230246251565e-15,
-    "row_norm_max": 0.9045340337332913
+    "orthonormality_max_abs": 1.3322676295501878e-15,
+    "row_norm_max": 0.9045340337332914
    }
   ],
   "dims": {
@@ -34,33 +34,39 @@
    "noise_floor": 1e-09,
    "of_used": 4337,
    "row_norm": {
-    "max": 0.9045340337332913,
-    "median": 0.7071067811865476,
-    "min": 0.35729480050524776
+    "max": 0.9045340337332914,
+    "median": 0.7071067811865475,
+    "min": 0.35729480050524615
    }
   },
   "files_sha256": {
-   "basis_tr0.npz": "230c4517f392456dac3d10b3d7a79ff55a91098834aa67a86eea1965ab6f755d"
+   "basis_tr0.npz": "1fd6a358d034576a8320fe64d78b948e082fb567d966ebea69f1df0909047614"
   },
   "four_table_projection": {
    "dim_B_TR0": 448,
    "dim_B_four": 448,
-   "dropped_frobenius": 1.0972306919887076e-13,
-   "dropped_max_row_norm": 4.2369798693635554e-14,
+   "dropped_frobenius": 1.5578468516539677e-13,
+   "dropped_max_row_norm": 5.4156503119804304e-14,
+   "n_rows_zeroed_as_noise": 2933,
    "n_used": 4337,
    "n_used_in_four_tables": 3856,
    "n_used_outside_four_tables": 481,
+   "noise_dropped_frobenius": 2.0303081363782088e-12,
+   "noise_dropped_max_row_norm": 2.270531896799235e-13,
+   "row_noise_floor": 1e-09,
    "singular_values_dropped": [],
-   "weight_outside_four_tables": 2.6873106951830755e-29
+   "smallest_row_norm_kept": 0.35729480050524626,
+   "weight_in_the_noise_rows": 9.201230197865078e-27,
+   "weight_outside_four_tables": 5.41715806519683e-29
   },
   "must_hold": {
    "B_four_is_exactly_inside_four_tables": 0.0,
-   "largest_share_outside_four_tables": 1.794927109338312e-29,
+   "largest_share_outside_four_tables": 3.237358080126657e-29,
    "ninio_bar": 1e-12,
    "ninio_ok": true,
    "ninio_rows_on_B_TR0": {
-    "('ninio_m',)": 2.4094399658134263e-16,
-    "('ninio_max',)": 1.1491196419350802e-15
+    "('ninio_m',)": 1.1578092326443423e-16,
+    "('ninio_max',)": 6.648059249933239e-16
    },
    "outside_ok": true,
    "share_bar": 1e-12
@@ -75,10 +81,10 @@
       "fraction_above_half_a_dcal": 0.00274111855393234
      },
      "per_entry_shift_the_ball_allows_kcal": {
-      "max": 19.23293288439204,
-      "median": 15.035075251429777,
-      "p95": 17.970352084004382,
-      "p99": 18.716905414902715
+      "max": 19.2329328843921,
+      "median": 15.035075251429813,
+      "p95": 17.97035208400442,
+      "p99": 18.716905414902783
      },
      "per_entry_shift_this_component_makes_kcal": {
       "max": 2.26,
@@ -87,12 +93,12 @@
       "p99": 2.14
      },
      "per_loop_shift_the_ball_allows_kcal_over_loops_above_the_noise_floor": {
-      "max": 19.23293288439204,
-      "median": 15.035075251429777,
-      "p95": 17.970352084004382,
-      "p99": 18.716905414902715
+      "max": 19.2329328843921,
+      "median": 15.035075251429813,
+      "p95": 17.97035208400442,
+      "p99": 18.716905414902783
      },
-     "radius_kcal": 21.26280733187207
+     "radius_kcal": 21.26280733187213
     },
     "Langdon2018": {
      "loops_the_ball_can_move": {
@@ -102,10 +108,10 @@
       "fraction_above_half_a_dcal": 0.00274111855393234
      },
      "per_entry_shift_the_ball_allows_kcal": {
-      "max": 4.717352184856897,
-      "median": 3.687723838748377,
-      "p95": 4.407673035396517,
-      "p99": 4.590783692923089
+      "max": 4.717352184856907,
+      "median": 3.6877238387483824,
+      "p95": 4.407673035396522,
+      "p99": 4.590783692923101
      },
      "per_entry_shift_this_component_makes_kcal": {
       "max": 1.8,
@@ -114,12 +120,12 @@
       "p99": 0.7
      },
      "per_loop_shift_the_ball_allows_kcal_over_loops_above_the_noise_floor": {
-      "max": 4.717352184856897,
-      "median": 3.687723838748377,
-      "p95": 4.407673035396517,
-      "p99": 4.590783692923089
+      "max": 4.717352184856907,
+      "median": 3.6877238387483824,
+      "p95": 4.407673035396522,
+      "p99": 4.590783692923101
      },
-     "radius_kcal": 5.21522906704453
+     "radius_kcal": 5.215229067044539
     },
     "Turner1999": {
      "loops_the_ball_can_move": {
@@ -129,10 +135,10 @@
       "fraction_above_half_a_dcal": 0.00274111855393234
      },
      "per_entry_shift_the_ball_allows_kcal": {
-      "max": 21.828496531440994,
-      "median": 17.06412069072031,
-      "p95": 20.3955252426839,
-      "p99": 21.242829025835697
+      "max": 21.828496531441026,
+      "median": 17.06412069072032,
+      "p95": 20.395525242683906,
+      "p99": 21.24282902583574
      },
      "per_entry_shift_this_component_makes_kcal": {
       "max": 2.9,
@@ -141,12 +147,12 @@
       "p99": 1.9
      },
      "per_loop_shift_the_ball_allows_kcal_over_loops_above_the_noise_floor": {
-      "max": 21.828496531440994,
-      "median": 17.06412069072031,
-      "p95": 20.3955252426839,
-      "p99": 21.242829025835697
+      "max": 21.828496531441026,
+      "median": 17.06412069072032,
+      "p95": 20.395525242683906,
+      "p99": 21.24282902583574
      },
-     "radius_kcal": 24.132310910788018
+     "radius_kcal": 24.13231091078804
     }
    },
    "expectation_user": "at the published radii, few pairs that depend on an internal loop will be certified, because the set allows the entire norm on one entry; the descriptive label fractions are read against this, not as a performance number",
@@ -154,12 +160,13 @@
    "n_loops": 450546,
    "n_loops_above_the_row_noise_floor": 1235,
    "n_sequences_folded": 10667,
-   "row_noise_floor": 1e-09
+   "row_noise_floor": 1e-09,
+   "what_this_does_not_imply_user": "This counts the loops of s* only, and it does NOT imply that nearly every pair certifies because most of s*'s loops are untouched (a wrong gloss, corrected by the authors on 2026-10-13 before preregistration). The certificate credits every competitor structure -w_L for each touched loop IT contains, up to about 19 kcal/mol at the Andronescu radius, so a pair is uncertain as soon as some structure lacking it, within that allowance of the MFE, forms a touched loop. That depends on the competitors' loops, not on s*'s. The expectation PRED carries is written from the TR0 pilot's measured label fractions instead."
   },
   "principal_angles": {
-   "abs_residual_in_B_TR0_nontrivial_only_max": 8.413523051998609e-13,
-   "abs_residual_in_B_TR0_plus_gauge_max": 8.413494713599042e-13,
-   "abs_residual_in_B_TR0_plus_gauge_rel_max": 8.804546407603958e-13,
+   "abs_residual_in_B_TR0_nontrivial_only_max": 8.394787773192638e-13,
+   "abs_residual_in_B_TR0_plus_gauge_max": 8.394907730821449e-13,
+   "abs_residual_in_B_TR0_plus_gauge_rel_max": 8.785095518524757e-13,
    "containment_holds": true,
    "dim_B_TR0": 448,
    "dim_tr0ts0": 426,
@@ -174,8 +181,8 @@
    "extra_directions_in_B_TR0": 22,
    "n_shared_used_columns": 4337,
    "residual_of_B_TR0_basis_against_restricted_reference_span": {
-    "max": 0.41667482367860686,
-    "min": 0.22159480470317694
+    "max": 0.4316102092869306,
+    "min": 0.2468605451895412
    },
    "restricted_reference_columns": {
     "n": 426,
@@ -185,11 +192,11 @@
     "rank_at_1e_8": 399,
     "rank_lost_by_restriction": 27,
     "singular_values_smallest_five": [
-     2.3246228177107203e-15,
-     2.4786301350479294e-15,
-     2.520890384315877e-15,
-     2.661535984758877e-15,
-     2.6780286680606286e-15
+     2.3395876944586433e-15,
+     2.613763209334413e-15,
+     2.6366804311624796e-15,
+     2.6722104011997052e-15,
+     2.699241346561408e-15
     ]
    },
    "tr0_used_columns": 4337,
@@ -199,31 +206,31 @@
    "git_dirty": true,
    "git_dirty_excluding_runs": false,
    "git_dirty_paths_outside_runs": [],
-   "git_sha": "f861c6752ae5f4b0969177ae43c0a176f778d4a8"
+   "git_sha": "27687bf5ad5bfa984d882dc5c87ad723fe456012"
   },
   "published_radii": {
    "Andronescu2007": {
     "n_entries_set_to_INF_and_skipped": 0,
-    "norm_delta_kcal": 116.61083911884006,
-    "radius_on_B_four_kcal": 21.26280733187207
+    "norm_delta_kcal": 116.61083911884003,
+    "radius_on_B_four_kcal": 21.26280733187213
    },
    "Langdon2018": {
     "n_entries_set_to_INF_and_skipped": 1266,
-    "norm_delta_kcal": 43.84586639581889,
-    "radius_on_B_four_kcal": 5.21522906704453
+    "norm_delta_kcal": 43.84586639581893,
+    "radius_on_B_four_kcal": 5.215229067044539
    },
    "Turner1999": {
     "n_entries_set_to_INF_and_skipped": 0,
-    "norm_delta_kcal": 132.72790625938467,
-    "radius_on_B_four_kcal": 24.132310910788018
+    "norm_delta_kcal": 132.7279062593847,
+    "radius_on_B_four_kcal": 24.13231091078804
    },
-   "r_cap_kcal": 96.52924364315207,
+   "r_cap_kcal": 96.52924364315216,
    "r_cap_multiple": 4
   },
   "qr": {
-   "largest_null_sv": 1.1640298847851964e-12,
-   "smallest_nonnull_sv": 0.1372674335516218,
-   "sv_tol": 6.208211909773458e-09
+   "largest_null_sv": 1.16402339410341e-12,
+   "smallest_nonnull_sv": 0.13726743355162188,
+   "sv_tol": 6.208211909773456e-09
   },
   "rows": {
    "loader": {
@@ -239,92 +246,92 @@
    "n": 10667,
    "tag": "TR0 only"
   },
-  "seconds": 201.0,
+  "seconds": 209.9,
   "weight_by_table_B_TR0": {
    "ML_cc": {
-    "max_row_norm": 4.525356056637809e-16,
+    "max_row_norm": 9.431534028074415e-16,
     "n_used": 1,
-    "share": 4.571171303426003e-34
+    "share": 1.985576654525125e-33
    },
    "ML_ci": {
-    "max_row_norm": 4.215593122795425e-16,
+    "max_row_norm": 7.309436734768618e-16,
     "n_used": 1,
-    "share": 3.966791378785732e-34
+    "share": 1.192586280794306e-33
    },
    "ML_cu": {
-    "max_row_norm": 3.983490473141802e-16,
+    "max_row_norm": 4.212976324802308e-16,
     "n_used": 1,
-    "share": 3.5420081137525663e-34
+    "share": 3.961868194943027e-34
    },
    "TerminalAU": {
-    "max_row_norm": 4.1885137088331397e-16,
+    "max_row_norm": 5.495896238734046e-16,
     "n_used": 1,
-    "share": 3.915992653813202e-34
+    "share": 6.742159702439962e-34
    },
    "bulge": {
-    "max_row_norm": 0.7254762501100087,
+    "max_row_norm": 0.7254762501100263,
     "n_used": 30,
-    "share": 0.0017328477443609035
+    "share": 0.0017328477443609488
    },
    "hairpin": {
-    "max_row_norm": 4.434714641502306e-15,
+    "max_row_norm": 3.6617192408395555e-15,
     "n_used": 28,
-    "share": 1.3437489487063042e-31
+    "share": 1.8445596758089567e-31
    },
    "int11": {
-    "max_row_norm": 0.8271701918685118,
+    "max_row_norm": 0.827170191868508,
     "n_used": 564,
-    "share": 0.016642566556129963
+    "share": 0.016642566556129952
    },
    "int21": {
-    "max_row_norm": 0.8944271909999162,
+    "max_row_norm": 0.8944271909999157,
     "n_used": 1080,
-    "share": 0.29063718840927494
+    "share": 0.290637188409275
    },
    "int22": {
-    "max_row_norm": 0.9045340337332912,
+    "max_row_norm": 0.9045340337332914,
     "n_used": 2182,
-    "share": 0.6909873972902342
+    "share": 0.6909873972902343
    },
    "internal_loop": {
-    "max_row_norm": 6.00151385235239e-15,
+    "max_row_norm": 9.722137229342346e-15,
     "n_used": 27,
-    "share": 3.8763832482000614e-31
+    "share": 8.35336851291037e-31
    },
    "mismatch1nI": {
-    "max_row_norm": 3.165448992706548e-14,
+    "max_row_norm": 4.547518467868811e-14,
     "n_used": 96,
-    "share": 7.060791891555887e-30
+    "share": 1.7209128840419776e-29
    },
    "mismatch23I": {
-    "max_row_norm": 4.2369798693635554e-14,
+    "max_row_norm": 5.415650311980431e-14,
     "n_used": 96,
-    "share": 1.794927109338312e-29
+    "share": 3.237358080126657e-29
    },
    "mismatchH": {
-    "max_row_norm": 5.602313088790079e-15,
+    "max_row_norm": 7.941450744928332e-15,
     "n_used": 96,
-    "share": 3.6794356150371558e-31
+    "share": 1.2607100267147173e-30
    },
    "mismatchI": {
-    "max_row_norm": 8.968761538845096e-15,
+    "max_row_norm": 1.0535542698157219e-14,
     "n_used": 96,
-    "share": 9.508410024863835e-31
+    "share": 2.1819586563606422e-30
    },
    "ninio_m": {
-    "max_row_norm": 2.4094399658134263e-16,
+    "max_row_norm": 1.1578092326443423e-16,
     "n_used": 1,
-    "share": 1.2958484260845992e-34
+    "share": 2.9922370964207163e-35
    },
    "ninio_max": {
-    "max_row_norm": 1.1491196419350802e-15,
+    "max_row_norm": 6.648059249933239e-16,
     "n_used": 1,
-    "share": 2.9474909631272477e-33
+    "share": 9.865332988978325e-34
    },
    "stack": {
-    "max_row_norm": 1.5340256965421637e-15,
+    "max_row_norm": 3.046321925635825e-15,
     "n_used": 36,
-    "share": 1.7569511060291988e-32
+    "share": 1.211444869397558e-31
    }
   },
   "weight_by_table_B_four": {
@@ -349,9 +356,9 @@
     "share": 0.0
    },
    "bulge": {
-    "max_row_norm": 0.7254762501100086,
+    "max_row_norm": 0.7254762501100269,
     "n_used": 30,
-    "share": 0.0017328477443609022
+    "share": 0.0017328477443609514
    },
    "hairpin": {
     "max_row_norm": 0.0,
@@ -359,19 +366,19 @@
     "share": 0.0
    },
    "int11": {
-    "max_row_norm": 0.8271701918685116,
+    "max_row_norm": 0.8271701918685083,
     "n_used": 564,
-    "share": 0.01664256655612996
+    "share": 0.016642566556129956
    },
    "int21": {
-    "max_row_norm": 0.8944271909999164,
+    "max_row_norm": 0.8944271909999163,
     "n_used": 1080,
     "share": 0.290637188409275
    },
    "int22": {
-    "max_row_norm": 0.9045340337332913,
+    "max_row_norm": 0.9045340337332914,
     "n_used": 2182,
-    "share": 0.690987397290234
+    "share": 0.6909873972902342
    },
    "internal_loop": {
     "max_row_norm": 0.0,
@@ -415,171 +422,10 @@
    }
   }
  },
- "gate": {
-  "G1": {
-   "constructed": {
-    "Andronescu2007": {
-     "n_rows": 23741,
-     "n_with_a_nonzero_offset": {
-      "minus": 4241,
-      "plus": 4241
-     },
-     "pass": true,
-     "radius_kcal": 21.26280733187207
-    },
-    "r1": {
-     "n_rows": 23741,
-     "n_with_a_nonzero_offset": {
-      "minus": 2957,
-      "plus": 2957
-     },
-     "pass": true,
-     "radius_kcal": 1.0
-    },
-    "r_cap": {
-     "n_rows": 23741,
-     "n_with_a_nonzero_offset": {
-      "minus": 4247,
-      "plus": 4247
-     },
-     "pass": true,
-     "radius_kcal": 96.52924364315207
-    }
-   },
-   "il_keys_vs_viennarna": {
-    "both_asymmetry_directions": true,
-    "bulge_sizes": {
-     "max": 30,
-     "min": 1,
-     "n": 30
-    },
-    "cases": {
-     "bulge": 378,
-     "generic": 3740,
-     "int11": 576,
-     "int1n": 5760,
-     "int21": 2368,
-     "int22": 9217,
-     "int23": 386,
-     "stack": 93872
-    },
-    "mismatches": [],
-    "n_interior_loops": 116297,
-    "n_mismatches": 0,
-    "oracle": "RNA.E_IntLoop on the pinned compound's own parameters",
-    "pass": true
-   },
-   "pass": true,
-   "provenance": {
-    "git_dirty": true,
-    "git_dirty_excluding_runs": false,
-    "git_dirty_paths_outside_runs": [],
-    "git_sha": "77e4c63b90d09900971a157ff1f00517ae3b5bda"
-   },
-   "radii_kcal": {
-    "Andronescu2007": 21.26280733187207,
-    "r1": 1.0,
-    "r_cap": 96.52924364315207
-   },
-   "sampled": {
-    "Andronescu2007": {
-     "callback_invocations": 769766,
-     "lengths": [
-      53,
-      69,
-      74,
-      77,
-      78,
-      85,
-      89,
-      91,
-      98,
-      102,
-      112,
-      118,
-      124,
-      139,
-      140,
-      159,
-      182,
-      196,
-      304,
-      365
-     ],
-     "n_sequences": 20,
-     "n_structures": 20020,
-     "n_with_a_nonzero_offset": 17356,
-     "pass": true,
-     "radius_kcal": 21.26280733187207
-    },
-    "r1": {
-     "callback_invocations": 769766,
-     "lengths": [
-      53,
-      69,
-      74,
-      77,
-      78,
-      85,
-      89,
-      91,
-      98,
-      102,
-      112,
-      118,
-      124,
-      139,
-      140,
-      159,
-      182,
-      196,
-      304,
-      365
-     ],
-     "n_sequences": 20,
-     "n_structures": 20020,
-     "n_with_a_nonzero_offset": 9633,
-     "pass": true,
-     "radius_kcal": 1.0
-    },
-    "r_cap": {
-     "callback_invocations": 769766,
-     "lengths": [
-      53,
-      69,
-      74,
-      77,
-      78,
-      85,
-      89,
-      91,
-      98,
-      102,
-      112,
-      118,
-      124,
-      139,
-      140,
-      159,
-      182,
-      196,
-      304,
-      365
-     ],
-     "n_sequences": 20,
-     "n_structures": 20020,
-     "n_with_a_nonzero_offset": 17370,
-     "pass": true,
-     "radius_kcal": 96.52924364315207
-    }
-   },
-   "samples_per_sequence": 1000,
-   "seconds": 38.1,
-   "seed": 20261013,
-   "sequences": 20
-  }
- },
+ "gate_shards_dropped_on_rebuild": [
+  "G1"
+ ],
  "run_id": "2026-10-13_certified_folding",
- "status": "G1 passed",
+ "status": "basis built",
  "viennarna": "2.7.2"
 }
