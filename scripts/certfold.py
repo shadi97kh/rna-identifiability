@@ -266,9 +266,11 @@ def il_keys(S: list[int], i: int, j: int, k: int, l: int  # noqa: E741  (i, j, k
 
     The two share a convention -- which entry a case reads, and in which orientation -- so
     agreement between them would not catch a convention applied wrongly in both. That is why
-    `check_il_keys_against_viennarna` dots these keys with theta0 and compares against
-    RNA.E_IntLoop, ViennaRNA's own interior-loop energy: an oracle that shares nothing with
-    either implementation.
+    `il_keys_against_positional` dots these keys with theta0 and compares against
+    vrna_eval_int_loop(i, j, k, l), which takes positions only and derives pair types and
+    mismatches itself: the independent oracle. `il_keys_against_viennarna` (RNA.E_IntLoop) is
+    NOT independent -- its pair-type arguments come from PT, the table used here -- and is kept
+    only because it locates a failure by case.
 
     S is 1-based with sentinels, as Extractor uses it: S = [0] + codes + [0].
     """
@@ -595,7 +597,8 @@ class Folder:
         # the recursion side (the authors' item 3 of 2026-10-13): G1 drives the callback through
         # eval_structure, but the certificate's numbers come from mfe and subopt_zuker, which
         # are different code. Every fold here is checked against both, and counted.
-        self.recursion = {"folds_checked": 0, "zuker_structures_checked": 0, "violations": 0}
+        self.recursion = {"folds_checked": 0, "zuker_structures_checked": 0,
+                          "subopt_structures_checked": 0, "violations": 0}
         self.set_radius(W.r)
 
     def set_radius(self, r: float) -> None:
@@ -808,6 +811,13 @@ def rho_of_pair(F: Folder, star_map: dict, W1: Weights, i: int, j: int, r_cap: f
             continue
         margin = n_s - r * d_s
         r_new = n_s / d_s
+        if r >= r_cap and margin >= 0:
+            # the registered edge case: the pair is still certified at the cap, so it is
+            # recorded as rho >= r_cap. Without this exit the iteration clamps back to the cap
+            # and refolds the same structure until max_iter, reporting "unconverged" for a pair
+            # that is simply robust beyond the cap -- G2 found one (envelope rho 4.22, cap 4)
+            return {"rho": r_cap, "tied_at_zero": False, "capped": True, "converged": True,
+                    "iterations": it, "nominal_gap_kcal": nominal_gap}
         if abs(margin) <= 1e-9 * max(1.0, abs(n_s)) or abs(r_new - r) <= 1e-9 * max(1.0, r):
             return {"rho": min(r, r_new), "tied_at_zero": False,
                     "capped": min(r, r_new) >= r_cap, "converged": True, "iterations": it,
@@ -1292,15 +1302,19 @@ def published_envelope(B: dict, B4: np.ndarray, a_four: np.ndarray, radii: dict)
 
     cols, used = B["cols"], B["used"]
     t0 = template()["theta"]
-    worst_excess = {}
+    worst_excess, n_inf = {}, {}
     for tb in full_tables():
         th = tb["theta"]
         d = np.array([th[k] - t0[k] for k in cols], dtype=np.float64) / 100.0
-        d = np.where(np.array([th[k] >= 100000 for k in cols]), 0.0, d)
+        inf = np.array([th[k] >= 100000 for k in cols])
+        d = np.where(inf, 0.0, d)
         comp = np.zeros(len(cols))
         comp[used] = B4 @ (B4.T @ d[used])
-        excess = float((np.abs(comp) - u).max())
+        # over the REACHED entries only: elsewhere both sides are exactly zero, and a maximum
+        # taken over them reports 0.0 for every component and hides each one's real margin
+        excess = float((np.abs(comp[reach]) - u[reach]).max())
         worst_excess[tb["id"].split(":")[-1]] = excess
+        n_inf[tb["id"].split(":")[-1]] = int((inf & reach).sum())
         if excess > 1e-12:
             raise GuardFailure(f"the envelope does not contain {tb['id']}: an entry exceeds "
                                f"u_e by {excess:.3e} kcal/mol")
@@ -1315,7 +1329,17 @@ def published_envelope(B: dict, B4: np.ndarray, a_four: np.ndarray, radii: dict)
         "u_over_reached_entries_kcal": {"min": float(ru.min()), "median": float(np.median(ru)),
                                         "max": float(ru.max()), "n": int(reach.sum())},
         "n_entries_where_the_ball_bound_binds": int((r_max * a_four[reach] < delta).sum()),
-        "components_contained": {"max_excess_over_u_kcal": worst_excess, "pass": True},
+        "components_contained": {
+            "max_over_reached_of_abs_shift_minus_u_kcal": worst_excess,
+            "n_reached_entries_INF_in_the_component": n_inf,
+            "what_this_checks": "a consistency check, not evidence: |B4 B4^T d| <= u_e holds by "
+                                "Cauchy-Schwarz and the definition of delta, so this can fail "
+                                "only through code drift. A component's INF entries (Langdon "
+                                "2018 forbids some loops) are set to a zero shift before "
+                                "projecting, as for the radii, so 'contains' means contains "
+                                "that INF-zeroed projection; the count above says how many "
+                                "reached entries that concerns.",
+            "pass": True},
         "lambda_cap": LAMBDA_CAP,
     }, u
 
@@ -1589,6 +1613,27 @@ def build_basis() -> int:
     return 0
 
 
+def superseded_g1_sampled() -> dict:
+    """The superseded G1 shard's sampled record, read from git.
+
+    By its local hash first; in the exported artifact, whose commits are rewrites, through
+    docs/remote_commit_map.tsv. A failed read raises with what was tried, never parses empty.
+    """
+    path = (OUT / "metrics.json").relative_to(R)
+    tried = [SUPERSEDED_G1_COMMIT]
+    mp = R / "docs" / "remote_commit_map.tsv"
+    if mp.exists():
+        for line in mp.read_text().splitlines():
+            f = line.split("\t")
+            if len(f) >= 2 and f[0].startswith(SUPERSEDED_G1_COMMIT):
+                tried.append(f[1])
+    for c in tried:
+        r = _git("show", f"{c}:{path}")
+        if r.returncode == 0 and r.stdout.strip():
+            return json.loads(r.stdout)["gate"]["G1"]["sampled"]
+    raise GuardFailure(f"the superseded G1 record is not reachable: tried {tried} for {path}")
+
+
 def explain_offsets(B: dict, lc: LoopCounts, seqs, radii: dict) -> dict:
     """Why the first G1 recorded fewer nonzero offsets at r = 1 than at the Andronescu radius.
 
@@ -1646,9 +1691,16 @@ def explain_offsets(B: dict, lc: LoopCounts, seqs, radii: dict) -> dict:
                     noise_only += (plus != minus) and not real
             counts[f"{basis}:{name}"] = {"nonzero": nonzero, "zero_by_cancellation": cancel,
                                          "nonzero_only_through_noise_rows": noise_only}
-    old = json.loads(_git("show", f"{SUPERSEDED_G1_COMMIT}:{(OUT / 'metrics.json').relative_to(R)}"
-                          ).stdout)["gate"]["G1"]["sampled"]
+    old = superseded_g1_sampled()
     recorded = {k: old[k]["n_with_a_nonzero_offset"] for k in radii}
+    # at r_cap every noise row clears the guard whatever its rounding, so there the rebuilt
+    # projection must reproduce the recorded count exactly; below r_cap it need not, and the
+    # differences are recorded rather than described
+    if counts["superseded:r_cap"]["nonzero"] != recorded["r_cap"]:
+        raise GuardFailure(f"the rebuilt superseded projection gives "
+                           f"{counts['superseded:r_cap']['nonzero']} nonzero offsets at r_cap, "
+                           f"the superseded G1 recorded {recorded['r_cap']}")
+    diffs = {k: counts[f"superseded:{k}"]["nonzero"] - recorded[k] for k in radii}
     real_n = {counts[f"superseded:{k}"]["nonzero"]
               - counts[f"superseded:{k}"]["nonzero_only_through_noise_rows"] for k in radii}
     cur = {counts[f"current:{k}"]["nonzero"] for k in radii}
@@ -1656,7 +1708,7 @@ def explain_offsets(B: dict, lc: LoopCounts, seqs, radii: dict) -> dict:
         raise GuardFailure(f"the noise-row account does not close: superseded minus noise-only "
                            f"{real_n}, current {cur}")
     (n_real,) = cur
-    cancel_now = sum(counts[f"current:{k}"]["zero_by_cancellation"] for k in radii)
+    cancel_now = [counts[f"current:{k}"]["zero_by_cancellation"] for k in radii]
     rk = list(radii)
     sup_nonzero = " / ".join(f"{counts['superseded:' + k]['nonzero']:,}" for k in rk)
     sup_noise = " / ".join(
@@ -1674,17 +1726,19 @@ def explain_offsets(B: dict, lc: LoopCounts, seqs, radii: dict) -> dict:
         f"at r = 1 over the {int(reach.sum())} reached "
         f"entries is {cw.min()} to {cw.max()} dcal (median {int(np.median(cw))}), "
         f"{int(((a_new > 0) & (a_new < 0.01)).sum())} entries have a row norm below 0.01, and "
-        f"{cancel_now} sampled structures have offset zero by exact cancellation at any radius."
+        f"{' / '.join(str(c) for c in cancel_now)} sampled structures have offset zero by "
+        f"exact cancellation at those three radii."
     )
     return {"line": line, "recorded_in_superseded_G1": recorded, "counts": counts,
             "ceil_w_r1_dcal": {"min": int(cw.min()), "p25": int(np.percentile(cw, 25)),
                                "median": int(np.median(cw)), "p75": int(np.percentile(cw, 75)),
                                "max": int(cw.max())},
             "n_entries_row_norm_below_0_01": int(((a_new > 0) & (a_new < 0.01)).sum()),
-            "reproduction_note": "the reconstruction matches the superseded record where every "
-                                 "noise row clears the guard (r_cap) and differs slightly below "
-                                 "it, because which ~1e-14 rows clear a 1e-12 guard depends on "
-                                 "rounding a fresh SVD does not reproduce bit for bit"}
+            "rebuilt_minus_recorded": diffs,
+            "reproduction_note": (
+                f"rebuilt minus recorded: {diffs}. Exact at r_cap, where every noise row clears "
+                f"the guard whatever its rounding; below it, which ~1e-14 rows clear a 1e-12 "
+                f"guard depends on rounding a fresh SVD need not reproduce bit for bit")}
 
 
 def gate_g1() -> int:
@@ -1694,8 +1748,10 @@ def gate_g1() -> int:
     takes about 1,000 stochastic structures on each of 20 TR0 sequences spread over n = 50 to
     500. The constructed half runs every row of the generating set, which builds every
     vrna_E_internal case deliberately -- the full int11, int21 and int22 tables, 1xn and 2x3,
-    18 generic shapes, bulges of 1 to 30 on either side -- and checks the keys against
-    RNA.E_IntLoop as well as the identity. That closes the hole G4 cannot: G4's band is computed
+    18 generic shapes, bulges of 1 to 30 on either side -- and checks the keys against the
+    positional oracle vrna_eval_int_loop (independent of il_keys' conventions) and against
+    RNA.E_IntLoop (not independent: it shares PT), as well as the identity. That, with G2's
+    independent enumeration, closes the hole G4 cannot: G4's band is computed
     from the callback, so a callback that charges a loop too LITTLE shrinks the band and hides
     the very structures that would break the certificate, and G4 passes vacuously.
     """
@@ -2056,10 +2112,15 @@ def gate_g2() -> int:
     # reported as a count, not a boolean -- a single false certificate is weak evidence that the
     # exact test has teeth, and the number says how much.
     planted, planted_env, n_planted = 0, 0, min(G2_POWER_SEQUENCES, len(seqs))
+    pc_rec = {k: 0 for k in per[0]["recursion"]}
+    pc_folds = 0
     for _src, seq, _n in seqs[:n_planted]:
         rec = g2_one(lc, B, pos, W1, seq, G2_RADII, scale=0.5, with_rho=False)
         planted += sum(v["n_false_certificates"] for v in rec["by_radius"].values())
         planted_env += rec["envelope"]["n_false_certificates"]
+        pc_folds += rec["folds"]
+        for k in pc_rec:
+            pc_rec[k] += rec["recursion"][k]
     if planted == 0 or planted_env == 0:
         raise GuardFailure(f"G2 power check: halving the weights produced {planted} false "
                            f"certificates for the ball and {planted_env} for the envelope on "
@@ -2102,6 +2163,7 @@ def gate_g2() -> int:
         "power_check": {"weights_scaled_by": 0.5, "n_sequences": n_planted,
                         "false_certificates_produced": planted,
                         "false_certificates_produced_envelope": planted_env,
+                        "folds": pc_folds, "recursion_side": pc_rec,
                         "pass": planted > 0 and planted_env > 0},
         "recursion_side": {k: sum(p["recursion"][k] for p in per)
                            for k in per[0]["recursion"]},
@@ -2150,9 +2212,11 @@ def gate_g3() -> int:
     lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
     rows, _ = tr0_rows()
     seqs = gate_sequences(rows, G3_SEQUENCES, 120, 150, SEED + 3)
+    # scale is a radius in kcal/mol for the ball and the multiple lambda for the envelope
     radii = {"r1": 1.0,
              "Andronescu2007": float(B["radii"]["Andronescu2007"]["radius_on_B_four_kcal"]),
              "envelope": 1.0}
+    kinds = {"r1": "ball", "Andronescu2007": "ball", "envelope": "envelope"}
     rng = np.random.default_rng(np.random.SeedSequence([SEED, 3]))
     recursion = {"folds_checked": 0, "zuker_structures_checked": 0, "violations": 0}
     per, mismatch, infeasible_bad = [], [], []
@@ -2191,7 +2255,7 @@ def gate_g3() -> int:
                     infeasible_bad.append({"name": nm, "radius": label, "pair": q,
                                            "enforced": int(got[1])})
             rec["by_radius"][label] = {
-                "radius_kcal": r, "n_covered_by_the_zuker_set": len(covered),
+                "kind": kinds[label], "scale": r, "n_covered_by_the_zuker_set": len(covered),
                 "n_omitted": len(omitted), "n_sampled_covered": len(take_c),
                 "n_sampled_omitted": len(take_o), "n_agree": agree,
             }
@@ -2205,7 +2269,10 @@ def gate_g3() -> int:
                            f"feasible: {(mismatch + infeasible_bad)[:3]}")
     shard = {
         "n_sequences": len(per), "lengths": [p["n_nt"] for p in per],
-        "radii_kcal": radii, "pairs_sampled_per_radius": G3_PAIRS,
+        "sets": {k: {"kind": kinds[k], "scale": v,
+                     "unit": "kcal/mol radius" if kinds[k] == "ball" else "multiple lambda"}
+                 for k, v in radii.items()},
+        "pairs_sampled_per_radius": G3_PAIRS,
         "n_sampled_covered": sum(v["n_sampled_covered"] for p in per
                                  for v in p["by_radius"].values()),
         "n_sampled_omitted": sum(v["n_sampled_omitted"] for p in per
@@ -2494,7 +2561,7 @@ def pilot_sequences(rows) -> tuple[list[tuple[str, str, int]], list[dict]]:
 
 
 def pilot_one(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, stratum: int,
-              budget_s: float) -> dict:
+              budget_s: float, index: int) -> dict:
     """One sequence of the pilot under every set, within a time budget.
 
     The work is staged so that a timeout leaves results that are comparable ACROSS sets rather
@@ -2503,6 +2570,14 @@ def pilot_one(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, stratum:
     labels; (C) pair by pair, rho for the ball and rho_env for the envelope. A fold is never
     interrupted; the budget is checked between folds. Whatever completed is recorded, and the
     timeout with it.
+
+    Two things keep a timed-out sequence honest, both from the review of 2026-10-13. The pairs
+    are visited in a seeded random order, so a truncated set of pairs is a random sample of the
+    sequence's pairs rather than its 5'-most ones. And on a timeout every set is cut back to
+    what ALL sets completed -- the absent stage for all or none, the same number of pairs, the
+    same number of rho values -- because the sets are visited in a fixed order and the last one
+    (the envelope) would otherwise always be the one that lost the race, leaving the sets the
+    authors compare on different denominators.
     """
     import RNA
 
@@ -2517,6 +2592,8 @@ def pilot_one(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, stratum:
     star_set = set(sp)
     adm = admissible_pairs(seq)
     outside = [q for q in adm if q not in star_set]
+    order = np.random.default_rng(np.random.SeedSequence([SEED, 11, index])).permutation(len(sp))
+    sp = [sp[k] for k in order]
     W1b = Weights(B["a_four"], B["cols"], 1.0)
     W1e = Weights(B["u_env"], B["cols"], 1.0)
     smap = {"ball": loop_coeff_map(lc, seq, star, W1b),
@@ -2538,6 +2615,7 @@ def pilot_one(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, stratum:
            "sets": {k: {"kind": kind, "scale": x, "absent": None, "present_margins_dcal": []}
                     for k, (kind, x) in sets.items()},
            "rho": {"ball": [], "envelope": []},
+           "pair_order_seed": [SEED, 11, index],
            "stages_completed": [], "timed_out": False, "seconds_by_stage": {}}
     try:
         ts = time.time()
@@ -2571,6 +2649,15 @@ def pilot_one(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, stratum:
         rec["seconds_by_stage"]["rho"] = round(time.time() - ts, 2)
     except Timeout:
         rec["timed_out"] = True
+        if "absent" not in rec["stages_completed"]:
+            for v in rec["sets"].values():
+                v["absent"] = None
+        m = min(len(v["present_margins_dcal"]) for v in rec["sets"].values())
+        for v in rec["sets"].values():
+            del v["present_margins_dcal"][m:]
+        mr = min(len(x) for x in rec["rho"].values())
+        for x in rec["rho"].values():
+            del x[mr:]
     for v in rec["sets"].values():
         pm = v["present_margins_dcal"]
         v["n_present_labelled"] = len(pm)
@@ -2610,7 +2697,7 @@ def pilot_worker() -> int:
         for k, (name, seq, stratum) in enumerate(seqs):
             if k % n_w != w:
                 continue
-            rec = pilot_one(lc, B, sets, name, seq, stratum, PILOT_BUDGET_S)
+            rec = pilot_one(lc, B, sets, name, seq, stratum, PILOT_BUDGET_S, k)
             rec["index"] = k
             fh.write(json.dumps(rec) + "\n")
             fh.flush()
@@ -2656,13 +2743,19 @@ def pilot() -> int:
              "--phase", "pilot-worker", "--shard", str(w), "--of", str(PILOT_WORKERS)],
             cwd=R, env=env, stdout=(SHARDS / f"pilot_{w}.log").open("w"),
             stderr=subprocess.STDOUT))
-    codes = []
-    for p in procs:
-        codes.append(p.wait())
-        if codes[-1]:
+    # poll rather than wait in launch order: a guard failure in worker 7 must stop the run now,
+    # not after workers 0 to 6 have finished their hours of work
+    while True:
+        codes = [p.poll() for p in procs]
+        if any(c not in (None, 0) for c in codes):
             for q in procs:
                 if q.poll() is None:
                     q.terminate()
+            codes = [q.wait() for q in procs]
+            break
+        if all(c == 0 for c in codes):
+            break
+        time.sleep(10)
     if any(codes):
         raise GuardFailure(f"pilot workers exited {codes}; shards kept at {SHARDS}")
 
@@ -2692,8 +2785,22 @@ def pilot() -> int:
         cert_a = sum(p["sets"][k]["absent"]["n_certified_absent"] for p in done_a)
         whole = [p["sets"][k]["whole_structure_certified"] for p in per]
         det = [v for v in whole if v is not None]
+        full = [p for p in per if "present" in p["stages_completed"]]
+        lab_f = sum(p["sets"][k]["n_present_labelled"] for p in full)
+        cert_f = sum(p["sets"][k]["n_certified_present"] for p in full)
+        strat = {}
+        for b in bounds:
+            sel = [p for p in per if p["stratum"] == b["stratum"]]
+            lb = sum(p["sets"][k]["n_present_labelled"] for p in sel)
+            cb = sum(p["sets"][k]["n_certified_present"] for p in sel)
+            strat[b["stratum"]] = {"labelled": lb, "certified": cb,
+                                   "fraction": cb / lb if lb else None}
         by_set[k] = {
             "kind": kind, "scale": x,
+            "certified_present_over_completed_sequences": {
+                "n": cert_f, "of": lab_f, "fraction": cert_f / lab_f if lab_f else None,
+                "n_sequences": len(full)},
+            "certified_present_by_stratum": strat,
             "certified_present": {"n": cert, "of_labelled": lab,
                                   "fraction": cert / lab if lab else None,
                                   "pairs_not_labelled_timeout":
@@ -2871,7 +2978,13 @@ def gate_g4() -> int:
                                               "band_delta_dcal": int(delta),
                                               "cap_dcal": G4_DELTA_CAP}
                 continue
-            band = [z.structure for z in F.fc.subopt(int(delta))]
+            # every structure of the band goes through the recursion-side check, as every
+            # other soft-constrained fold does: subopt's energy == eval_structure == E0 + offset
+            band = []
+            for z in F.fc.subopt(int(delta)):
+                F._check(z.structure, int(round(z.energy * 100)), "wuchty")
+                F.recursion["subopt_structures_checked"] += 1
+                band.append(z.structure)
             if not band:
                 raise GuardFailure(f"an empty band on {nm} at r = {r} with delta = {delta}")
             # subopt must be honouring the callback: its best structure must reach E'_min
@@ -2910,6 +3023,7 @@ def gate_g4() -> int:
                 "n_certified_present": len(cert_p), "n_certified_absent": len(cert_a),
             }
         rec["folds"] = F.folds
+        rec["recursion"] = dict(F.recursion)
         per.append(rec)
         if viol:
             raise GuardFailure(f"G4: {len(viol)} false certificates: {viol[:2]}")
@@ -2935,6 +3049,9 @@ def gate_g4() -> int:
         } for r in G2_RADII},
         "n_false_certificates": 0,
         "folds": sum(p["folds"] for p in per),
+        "recursion_side": {k: sum(p["recursion"][k] for p in per)
+                           for k in ("folds_checked", "zuker_structures_checked",
+                                     "subopt_structures_checked", "violations")},
         "the_gap_this_cannot_close": "the band comes from the callback, so an under-charging "
                                      "callback would shrink it and pass vacuously; G1's "
                                      "constructed cases and G2's independent enumeration are "
