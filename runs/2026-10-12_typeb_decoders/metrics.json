@@ -1,4 +1,68 @@
 {
+ "mini": {
+  "finished": "2026-10-12T23:06:04",
+  "inputs_sha256": {
+   "fold_ref.json": "d9dda559f9b8ed072d92e445d6291272f7b1fbe4e411eb3a6d753d7f6cd0a66d",
+   "points_a1.json": "79149366e8b65a0536e68184d6dfdc4661c9914b506509c69478f5cf9ca00feb"
+  },
+  "must_hold": {
+   "amendment_1_reproduced_all_exact": true,
+   "boot_mean_signature": "(x, rng, n=1000)",
+   "coverage": {
+    "decoders": [
+     "mfe",
+     "mea",
+     "centroid"
+    ],
+    "fields": [
+     "changed",
+     "f1_ref",
+     "f1_base"
+    ],
+    "full_set": false,
+    "n_points": 36,
+    "n_sequences": 12,
+    "names_equal_fold": false
+   },
+   "mfe_reproduces_fold": {
+    "baseline": [
+     "e0",
+     "f1_ref"
+    ],
+    "fields": [
+     "changed",
+     "genuine",
+     "f1_ref",
+     "leak"
+    ],
+    "points": 35,
+    "sequences": 12
+   },
+   "tie_split_reproduced": "skipped: 12 sequences, not the full 11970"
+  },
+  "n_points_analysed": {
+   "centroid": 36,
+   "mea": 36,
+   "mfe": 36
+  },
+  "n_sequences": 12,
+  "passes": true,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "9f749542b550b3a17e215b0855f38ed1ca7c65ba"
+  },
+  "script_sha256": "e43b29436b3bf6c405dda4874390840b541fb7643fda2e79008c50d0f478a1fc",
+  "shards_done": [
+   true,
+   true
+  ],
+  "workers_exit": [
+   0,
+   0
+  ]
+ },
  "points": {
   "carry_rule_reproduces_points_json": 35,
   "ctrl": {
@@ -2923,6 +2987,104 @@
  },
  "run_id": "2026-10-12_typeb_decoders",
  "script_sha256": "e43b29436b3bf6c405dda4874390840b541fb7643fda2e79008c50d0f478a1fc",
+ "smoke": {
+  "finished": "2026-10-12T23:05:31",
+  "inputs_sha256": {
+   "fold_ref.json": "d9dda559f9b8ed072d92e445d6291272f7b1fbe4e411eb3a6d753d7f6cd0a66d",
+   "points_a1.json": "79149366e8b65a0536e68184d6dfdc4661c9914b506509c69478f5cf9ca00feb"
+  },
+  "mfe_must_hold": "checked in the workers against the fold shards; exit 0 = held",
+  "passes": true,
+  "planted": {
+   "bpp0": {
+    "caught": true,
+    "exit": 1,
+    "must_be_caught_by": "MEA structure",
+    "stderr_tail": "scripts.turner_typeb.GuardFailure: baseline bpRNA_CRW_15639.bpseq: MEA structure: not a string of length 119: 'None'"
+   },
+   "skip-load": {
+    "caught": true,
+    "exit": 1,
+    "must_be_caught_by": "carry row",
+    "stderr_tail": "scripts.turner_typeb.GuardFailure: point 3: carry row 10673 evaluates to -400, the written table gives -389"
+   },
+   "stale-boltzmann": {
+    "caught": true,
+    "exit": 1,
+    "must_be_caught_by": "Boltzmann carry row",
+    "stderr_tail": "scripts.turner_typeb.GuardFailure: point 3: Boltzmann carry row 10673 gives -400, the written table gives -389"
+   }
+  },
+  "points": {
+   "113": {
+    "mfe_genuine": 2,
+    "n_changed": {
+     "centroid": 8,
+     "mea": 9,
+     "mfe": 2
+    },
+    "n_seq": 50,
+    "seconds": [
+     0.5,
+     0.6
+    ]
+   },
+   "191": {
+    "mfe_genuine": 4,
+    "n_changed": {
+     "centroid": 9,
+     "mea": 9,
+     "mfe": 4
+    },
+    "n_seq": 50,
+    "seconds": [
+     0.5,
+     0.6
+    ]
+   },
+   "3": {
+    "mfe_genuine": 0,
+    "n_changed": {
+     "centroid": 3,
+     "mea": 0,
+     "mfe": 0
+    },
+    "n_seq": 50,
+    "seconds": [
+     0.5,
+     0.6
+    ]
+   }
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "9f749542b550b3a17e215b0855f38ed1ca7c65ba"
+  },
+  "script_sha256": "e43b29436b3bf6c405dda4874390840b541fb7643fda2e79008c50d0f478a1fc",
+  "shards_done": [
+   true,
+   true
+  ],
+  "workers_exit": [
+   0,
+   0
+  ],
+  "zero_control": {
+   "max_abs_dE_dcal": 0,
+   "max_abs_dP": 0.0,
+   "n_changed": {
+    "centroid": 0,
+    "mea": 0,
+    "mfe": 0
+   },
+   "n_sequences": 50,
+   "params_match_empty": true,
+   "passes": true,
+   "what": "write_par(Turner 2004) under loaded() against the built-in table"
+  }
+ },
  "status": "PRE-REGISTERED, nothing folded",
  "tie_split_pin": {
   "by_point": {
