@@ -34,11 +34,16 @@ affordable exact certificate that it vanishes: singleton elimination determines 
 column's null entry from the others rather than forcing it to zero, and a mod-p rank gives a
 lower bound on the rational rank, not the equality this would need.
 
-So the set is DEFINED to be the ball in B_four, the projection of B_TR0 onto the four tables'
-coordinates, re-orthonormalised. Then returning 0 outside PAIR_IL is exact rather than
-approximate, and the only thing owed to the reader is how far B_four sits from B_TR0, which this
-phase measures and records (expected about 1e-10 in Frobenius norm, against the 0.005 kcal/mol
-rounding the parameter file already imposes). Every radius, every published component and every
+So the set is DEFINED to be the ball in B_four: B_TR0 restricted to the coordinates that are
+BOTH in the four tables and carry a row norm above the basis's own arithmetic noise, then
+re-orthonormalised. Then returning 0 on every other entry is exact rather than approximate, and
+the only thing owed to the reader is how far B_four sits from B_TR0, which this phase measures and
+records (about 1e-13 in Frobenius norm, against the 0.005 kcal/mol rounding the parameter file
+already imposes). The second restriction is not a threshold choice: the rows that carry a
+direction have norms from 0.36 to 0.90 and every other row sits at 4e-14 or below. Keeping those
+rows would be sound but would cost a full dcal on every loop that touches one, since ceil of any
+positive weight is at least 1 dcal, and it would make rho(p) a ratio with noise in the
+denominator -- measured, it sent rho to 1e15. Every radius, every published component and every
 label is stated with respect to B_four. The alternative -- keeping all of B and charging every
 loop -- is sound but costs one dcal per differing loop after the ceiling, because ceil of any
 positive weight is at least 1 dcal, and it would require implementing all nine decomposition
@@ -101,6 +106,10 @@ for _p, _k in PTYPE.items():
 R_CAP_MULTIPLE = 4               # r_cap = 4 x the largest published radius on B_four
 G1_SEQUENCES = 20                # the authors' G1 size: 20 sequences, n 50 to 500
 G1_SAMPLES = 1000                # about 1,000 sampled structures each
+G2_SEQUENCES = 200               # the authors' G2 size: 200 sequences at n <= 20
+G2_MAX_N = 20
+G2_RADII = (1.0, 5.0, 20.0)      # the authors' G2 radii
+G2_POWER_SEQUENCES = 50          # the halved-weights power check, on the same draw
 
 
 def _sha(p: pathlib.Path) -> str:
@@ -430,6 +439,327 @@ def eprime_offset(lc: LoopCounts, seq: str, s: str, star: set, W: Weights) -> in
     return total
 
 
+# ----------------------------------------------------------------------------------
+# the certificate: X', Z', the labels and rho
+# ----------------------------------------------------------------------------------
+def admissible_pairs(seq: str, min_hp: int = 3) -> list[tuple[int, int]]:
+    """Every (i, j) some structure of `seq` could contain: canonical, min_hp unpaired between.
+
+    This is the denominator of the certified-absent fraction. It is a property of the sequence
+    alone, not of any fold, so the fraction does not move when the structure does.
+    """
+    S = [0] + [BCODE[c] for c in seq] + [0]
+    n = len(seq)
+    return [(i, j) for i in range(1, n + 1) for j in range(i + min_hp + 1, n + 1)
+            if PT[S[i]][S[j]]]
+
+
+def loop_coeff_map(lc: LoopCounts, seq: str, db: str, W1: Weights) -> dict:
+    """{(i, j, k, l): D_L} over the interior loops of `db`, in kcal/mol per unit radius.
+
+    D_L = sum_e |c_{L,e}| ||a_e|| is the weight at r = 1, so w_L(r) = r * D_L exactly. The keys
+    come from il_keys, the callback's own reconstruction, so this and the callback cannot drift
+    apart; G1 is what established they agree with ViennaRNA's own interior-loop energy.
+    """
+    S = [0] + [BCODE[c] for c in seq] + [0]
+    return {(d["i"], d["j"], d["k"], d["l"]):
+            W1.kcal(il_keys(S, d["i"], d["j"], d["k"], d["l"]))
+            for d in lc.loops(seq, db) if d["kind"] == "interior"}
+
+
+def d_coeff(star_map: dict, s_map: dict) -> float:
+    """D(s): the sum of D_L over the loops in the symmetric difference of s and s*.
+
+    Only the symmetric difference is charged, and that is not an approximation. For theta in the
+    ball the gap is E(s) - E(s*) = [E0(s) - E0(s*)] + sum over loops of s of c_L.Bt - the same
+    over s*, and a loop the two structures share cancels exactly, term for term, because it is
+    the same loop with the same counts. So the worst case over the ball charges the differing
+    loops only, which is also why the callback signs by membership in s* rather than charging
+    every loop: a shared loop gets +w in E'(s) and +w in E'(s*) and drops out of the difference.
+    """
+    tot = 0.0
+    for k, v in s_map.items():
+        if k not in star_map:
+            tot += v
+    for k, v in star_map.items():
+        if k not in s_map:
+            tot += v
+    return tot
+
+
+class Folder:
+    """One constrained compound, reused for every fold of one sequence.
+
+    Measured on this box: hc_init() clears the hard constraints while leaving the soft callback
+    in force, so a per-pair sweep costs one compound and one callback registration rather than
+    one of each per pair. The callback object is held on the instance because ViennaRNA keeps
+    only a borrowed reference and would call into freed memory otherwise.
+
+    Every fold is cross-checked: the DP's own E' for the structure it returns must equal the
+    checker's E0(s) + signed ceiled weights, exactly, in integer dcal. That is the G1 identity
+    re-run on every fold in anger, and it is what would catch the DP applying the callback on a
+    decomposition the checker does not model -- a failure mode no amount of sampled structures
+    rules out, because it would show up only on the structures the DP actually visits.
+    """
+
+    def __init__(self, lc: LoopCounts, seq: str, star_db: str, W: Weights):
+        import RNA
+
+        from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+        self.RNA = RNA
+        self.lc, self.seq, self.star_db, self.W = lc, seq, star_db, W
+        self.S = [0] + [BCODE[c] for c in seq] + [0]
+        self.star = star_interior_loops(lc, seq, star_db)
+        self.plain = RNA.fold_compound(seq, reference_md())
+        assert_turner2004_params(self.plain)
+        self.fc = RNA.fold_compound(seq, reference_md())
+        self.calls = [0]
+        self._cb = make_callback(self.S, self.star, W, self.calls)
+        rc = self.fc.sc_add_f(self._cb)
+        if not rc:
+            raise GuardFailure(f"sc_add_f refused the callback on {seq[:20]}... (rc = {rc})")
+        self.e0_star = int(round(self.plain.eval_structure(star_db) * 100))
+        self.folds = 0
+        self.set_radius(W.r)
+
+    def set_radius(self, r: float) -> None:
+        """Change the radius in place. The callback reads W.r when the DP calls it.
+
+        ViennaRNA stores an f-callback, not a table of its values, so the next fold sees the new
+        weights; nothing is precomputed at registration time. G2 checks that against the
+        alternative of a fresh compound per radius, because "nothing is cached" is a claim about
+        someone else's code.
+        """
+        self.W.r = float(r)
+        self.eprime_star = self.e0_star + eprime_offset(
+            self.lc, self.seq, self.star_db, self.star, self.W)
+
+    def eprime(self, s: str) -> tuple[int, int]:
+        """(E'(s), E0(s)) in dcal from the checker: E0 plus the signed ceiled weights."""
+        e0 = int(round(self.plain.eval_structure(s) * 100))
+        return e0 + eprime_offset(self.lc, self.seq, s, self.star, self.W), e0
+
+    def _mfe(self, what: str) -> tuple[str, int, int]:
+        self.folds += 1
+        s, e = self.fc.mfe()
+        got = int(round(e * 100))
+        want, e0 = self.eprime(s)
+        if got != want:
+            raise GuardFailure(
+                f"the DP and the checker disagree on E' ({what}, r = {self.W.r}): "
+                f"DP {got} != checker {want} (E0 {e0}) on {s[:60]}")
+        return s, got, e0
+
+    def free(self) -> tuple[str, int, int]:
+        self.fc.hc_init()
+        return self._mfe("free")
+
+    def without(self, i: int, j: int) -> tuple[str, int, int]:
+        """X'(i, j): the minimum of E' over structures that do NOT contain the pair."""
+        self.fc.hc_init()
+        self.fc.hc_add_bp(i, j, self.RNA.CONSTRAINT_CONTEXT_NONE)
+        s, e, e0 = self._mfe(f"without {(i, j)}")
+        if pair_table(s)[i] == j:
+            raise GuardFailure(f"forbidding {(i, j)} did not: {s[:60]}")
+        return s, e, e0
+
+    def with_pair(self, i: int, j: int) -> tuple[str, int, int] | None:
+        """Z'(i, j) by an enforced fold, or None if no structure can contain the pair."""
+        self.fc.hc_init()
+        self.fc.hc_add_bp(i, j, self.RNA.CONSTRAINT_CONTEXT_ALL_LOOPS
+                          | self.RNA.CONSTRAINT_CONTEXT_ENFORCE)
+        self.folds += 1
+        s, e = self.fc.mfe()
+        if pair_table(s)[i] != j or e > 1e4:
+            return None
+        got = int(round(e * 100))
+        want, e0 = self.eprime(s)
+        if got != want:
+            raise GuardFailure(f"the DP and the checker disagree on E' (with {(i, j)}): "
+                               f"DP {got} != checker {want}")
+        return s, got, e0
+
+    def zuker(self) -> list[str]:
+        """The Zuker suboptimal set under E': one optimal structure per possible pair.
+
+        Its licence is G3. Zuker's algorithm computes, for each pair, the optimal structure
+        containing it, so the minimum of E' over the returned structures that contain q is
+        Z'(q), and a pair in none of them has no legal structure containing it at all. Both
+        halves of that are tested against enumeration and against enforced folds before any
+        label depends on them.
+        """
+        self.fc.hc_init()
+        self.folds += 1
+        return [z.structure for z in self.fc.subopt_zuker()]
+
+
+def zprime_map(F: Folder, structures: list[str]) -> dict:
+    """{(i, j): min E'} over the given structures, with E' from the checker, not from subopt.
+
+    subopt_zuker reports its own energies; taking them on trust would make the labels depend on
+    how that routine accounts for the soft constraint. Recomputing E' from E0 plus the signed
+    weights costs 60 microseconds a structure and removes the question.
+    """
+    best: dict[tuple[int, int], int] = {}
+    for s in structures:
+        e, _e0 = F.eprime(s)
+        pt = pair_table(s)
+        for i in range(1, len(s) + 1):
+            if pt[i] > i:
+                k = (i, pt[i])
+                if e < best.get(k, 1 << 30):
+                    best[k] = e
+    return best
+
+
+def certify(F: Folder, star_pairs: list, adm: list, zuker: bool = True) -> dict:
+    """Labels at F's current radius: certified present, certified absent, or uncertain.
+
+    A pair p of s* is certified present when EVERY structure without it has E' above E'(s*),
+    which is one forbidden-pair fold; a pair q outside s* is certified absent when every
+    structure containing it does, which is one Zuker fold for all of them at once. Both
+    comparisons are strict and in integer dcal: a tie is uncertain, never certified, because at
+    a tie some theta in the ball makes the competitor an equal-energy ground state.
+    """
+    present, absent = {}, {}
+    for (i, j) in star_pairs:
+        _s, x, _e0 = F.without(i, j)
+        present[(i, j)] = x - F.eprime_star
+    zmap = zprime_map(F, F.zuker()) if zuker else {}
+    n_unreachable = 0
+    for q in adm:
+        if q in present:
+            continue
+        z = zmap.get(q)
+        if z is None:
+            n_unreachable += 1
+            absent[q] = None                      # no structure contains it: trivially absent
+        else:
+            absent[q] = z - F.eprime_star
+    n_p = sum(1 for v in present.values() if v > 0)
+    n_a = sum(1 for v in absent.values() if v is None or v > 0)
+    return {
+        "radius_kcal": F.W.r,
+        "n_pairs_star": len(present),
+        "n_certified_present": n_p,
+        "n_pairs_admissible_outside_star": len(absent),
+        "n_certified_absent": n_a,
+        "n_absent_because_unreachable": n_unreachable,
+        "whole_structure_certified": n_p == len(present) and n_a == len(absent),
+        "margins_present_dcal": present,
+        "margins_absent_dcal": absent,
+        "folds": F.folds,
+    }
+
+
+def rho_of_pair(F: Folder, star_map: dict, W1: Weights, i: int, j: int, r_cap: float,
+                max_iter: int = 20) -> dict:
+    """rho(i, j): the largest radius at which the pair is still certified, by Dinkelbach.
+
+    rho = min over structures s without the pair of N(s)/D(s), with N(s) = E0(s) - E0(s*) >= 0
+    and D(s) the symmetric-difference coefficient, both exact in kcal from the counts. Dinkelbach
+    iterates r <- N(s_r)/D(s_r) for s_r the minimiser of N - r D, which is one constrained fold.
+
+    The inner minimisation uses the CEILED integer weights, because that is what a callback can
+    return, so it searches with a slightly over-charged D. The bias is toward structures with
+    larger D and hence smaller ratios, which is the conservative direction, and G2 measures what
+    it costs against the exact minimum over an enumerated structure space.
+
+    Edge cases are the registered ones. A nominal tie (N = 0 at r = 0) gives rho = 0 and is
+    reported separately rather than averaged in. A minimiser with D = 0 is insensitive to the
+    ball along every direction, so the iteration restarts at r_cap; if the margin there is still
+    positive the pair is recorded as rho >= r_cap, capped, and never given a number.
+    """
+    if W1 is F.W or W1.r != 1.0:
+        # set_radius mutates the Weights object in place, so the unit-radius coefficients must
+        # be a separate instance: sharing one would zero D(s) the moment the iteration visits
+        # r = 0 and hand back rho = r_cap for every pair.
+        raise GuardFailure("rho needs its own r = 1 Weights, distinct from the folder's")
+    F.set_radius(0.0)
+    s0, x0, _e0_0 = F.without(i, j)
+    nominal_gap = (x0 - F.e0_star) / 100.0
+    if x0 <= F.e0_star:
+        return {"rho": 0.0, "tied_at_zero": True, "capped": False, "converged": True,
+                "iterations": 0, "nominal_gap_kcal": nominal_gap}
+    d0 = d_coeff(star_map, loop_coeff_map(F.lc, F.seq, s0, W1))
+    r = r_cap if d0 <= 0 else min(nominal_gap / d0, r_cap)
+    jumped = d0 <= 0
+    for it in range(1, max_iter + 1):
+        F.set_radius(r)
+        s, _x, e0 = F.without(i, j)
+        n_s = (e0 - F.e0_star) / 100.0
+        d_s = d_coeff(star_map, loop_coeff_map(F.lc, F.seq, s, W1))
+        if d_s <= 0:
+            if jumped or r >= r_cap:
+                return {"rho": r_cap, "tied_at_zero": False, "capped": True, "converged": True,
+                        "iterations": it, "nominal_gap_kcal": nominal_gap}
+            r, jumped = r_cap, True
+            continue
+        margin = n_s - r * d_s
+        r_new = n_s / d_s
+        if abs(margin) <= 1e-9 * max(1.0, abs(n_s)) or abs(r_new - r) <= 1e-9 * max(1.0, r):
+            return {"rho": min(r, r_new), "tied_at_zero": False,
+                    "capped": min(r, r_new) >= r_cap, "converged": True, "iterations": it,
+                    "nominal_gap_kcal": nominal_gap}
+        r = min(r_new, r_cap)
+    return {"rho": r, "tied_at_zero": False, "capped": r >= r_cap, "converged": False,
+            "iterations": max_iter, "nominal_gap_kcal": nominal_gap}
+
+
+# ----------------------------------------------------------------------------------
+# the exact test G2 checks the certificate against
+# ----------------------------------------------------------------------------------
+def enumerate_structures(seq: str, min_hp: int = 3) -> list[str]:
+    """Every secondary structure of `seq`, canonical pairs and no lone-pair rule.
+
+    Written here rather than taken from ViennaRNA's subopt so that G2's reference structure
+    space shares no code with the thing it tests. The recursion is the textbook one: position i
+    is unpaired, or pairs with some k, and the two sides are independent.
+    """
+    n = len(seq)
+    S = [0] + [BCODE[c] for c in seq] + [0]
+    memo: dict[tuple[int, int], tuple] = {}
+
+    def f(i: int, j: int) -> tuple:
+        if j - i + 1 < min_hp + 2:
+            return ((),)
+        key = (i, j)
+        if key in memo:
+            return memo[key]
+        out = list(f(i + 1, j))
+        for k in range(i + min_hp + 1, j + 1):
+            if PT[S[i]][S[k]]:
+                for a in f(i + 1, k - 1):
+                    for b in f(k + 1, j):
+                        out.append(((i, k),) + a + b)
+        memo[key] = tuple(out)
+        return memo[key]
+
+    res = []
+    for pairs in f(1, n):
+        db = ["."] * n
+        for a, b in pairs:
+            db[a - 1], db[b - 1] = "(", ")"
+        res.append("".join(db))
+    return res
+
+
+def exact_worst_case(B4: np.ndarray, pos: dict, dc: dict, n_kcal: float, r: float) -> float:
+    """N(s) - r ||B_four^T (c(s) - c(s*))||_2: the exact worst case over the ball.
+
+    Exact, not a bound: the minimum of t.(B^T dc) over ||t|| <= r is -r times that norm, attained
+    at t along -B^T dc. The certificate's per-entry weights replace this norm by the sum of
+    |dc_e| ||a_e||, which the triangle inequality makes no smaller, so certified implies exactly
+    robust as mathematics. G2 tests the implementation of that claim, not the claim.
+    """
+    v = np.zeros(B4.shape[1])
+    for k, c in dc.items():
+        p = pos.get(k)
+        if p is not None and c:
+            v += c * B4[p]
+    return n_kcal - r * float(np.linalg.norm(v))
+
 def load_tr0_basis() -> dict:
     """B_TR0 and B_four from the build-basis shard, with the digest the artifact recorded.
 
@@ -611,24 +941,40 @@ def four_table_projection(B: dict):
     cols, used, NT = B["cols"], B["used"], B["NT"]
     tab = np.array([cols[e][0] for e in used])
     mask = np.isin(tab, FOUR)
-    off = NT[~mask]                                   # the rows the mask drops
-    Q, s_, _ = np.linalg.svd(NT * mask[:, None], full_matrices=False)
+    off = NT[~mask]                                   # the rows the table mask drops
+    M = NT * mask[:, None]
+    # the second mask. A row norm at ROW_NOISE or below is the basis's own arithmetic, not a
+    # direction: among the rows that do carry one the SMALLEST norm is 0.36, thirteen orders of
+    # magnitude above the 4e-14 the rest sit at, so the cut is unambiguous rather than a
+    # threshold choice. Left in, such a row costs a full dcal on every loop that touches it,
+    # because ceil of any positive weight is at least 1, and it makes rho divide by noise.
+    rn = np.linalg.norm(M, axis=1)
+    phys = rn > ROW_NOISE
+    noise = M[mask & ~phys]
+    Q, s_, _ = np.linalg.svd(M * phys[:, None], full_matrices=False)
     keep = s_ > 1e-8
     B4 = Q[:, keep]
-    # the whole point of the projection is that a callback returning 0 outside PAIR_IL is EXACT
-    # for this basis, so the rows outside the four tables are set to exactly zero rather than
-    # left at the SVD's 1e-15: LAPACK has no reason to deliver them as zeros and did not
-    B4[~mask] = 0.0
+    # the whole point of the projection is that a callback returning 0 outside these rows is
+    # EXACT for this basis, so they are set to exactly zero rather than left at the SVD's
+    # 1e-15: LAPACK has no reason to deliver them as zeros and did not
+    B4[~(mask & phys)] = 0.0
     diag = {
         "n_used": int(len(used)),
         "n_used_in_four_tables": int(mask.sum()),
         "n_used_outside_four_tables": int((~mask).sum()),
+        "n_rows_zeroed_as_noise": int((mask & ~phys).sum()),
+        "row_noise_floor": ROW_NOISE,
         "dim_B_TR0": int(NT.shape[1]),
         "dim_B_four": int(B4.shape[1]),
         "dropped_frobenius": float(np.linalg.norm(off)),
         "dropped_max_row_norm": float(np.linalg.norm(off, axis=1).max()) if off.size else 0.0,
+        "noise_dropped_frobenius": float(np.linalg.norm(noise)),
+        "noise_dropped_max_row_norm": (float(np.linalg.norm(noise, axis=1).max())
+                                       if noise.size else 0.0),
+        "smallest_row_norm_kept": float(rn[phys].min()) if phys.any() else 0.0,
         "singular_values_dropped": [float(x) for x in s_[~keep][:8]],
         "weight_outside_four_tables": float((off ** 2).sum() / (NT ** 2).sum()),
+        "weight_in_the_noise_rows": float((noise ** 2).sum() / (NT ** 2).sum()),
     }
     return B4, diag
 
@@ -981,8 +1327,14 @@ def build_basis() -> int:
                         used=used, NT=NT, B4=B4, a_tr0=a_tr0, a_four=a_four)
     files["basis_tr0.npz"] = _sha(SHARDS / "basis_tr0.npz")
 
+    # the gate is a statement about a basis: rebuilding one invalidates every shard that ran
+    # against the old one, so they are dropped here rather than left to look current. The count
+    # of what was dropped goes in the record, because a reader of the artifact is entitled to
+    # know the gate was re-run rather than inherited.
+    stale = sorted(out.pop("gate", {}))
     out.update({
         "status": "basis built",
+        "gate_shards_dropped_on_rebuild": stale,
         "viennarna": VIENNARNA,
         "build_basis": {
             "rows": {"n": len(rows), "loader": loader, "tag": "TR0 only"},
@@ -1112,6 +1464,281 @@ def gate_g1() -> int:
     return 0
 
 
+# ----------------------------------------------------------------------------------
+# G2: the labels against full enumeration at n <= 20
+# ----------------------------------------------------------------------------------
+def offset_from_map(star_map: dict, s_map: dict, r: float) -> int:
+    """E'(s) - E0(s) in dcal from a precomputed loop map: the callback's arithmetic, once.
+
+    eprime_offset re-walks the structure for every radius, and G2 evaluates every enumerated
+    structure at three; the walk is done once and only the ceiling applied here. The two must
+    agree exactly, which G2 checks on a sample rather than assuming.
+    """
+    tot = 0
+    for k, d in s_map.items():
+        w = r * d
+        if w <= 0:
+            continue
+        c = int(math.ceil(w * 100.0 - 1e-12))
+        tot += c if k in star_map else -c
+    return tot
+
+
+def basis_image(B4: np.ndarray, pos: dict, counts: dict) -> np.ndarray:
+    """B_four^T c, the count vector's image in the ball's coordinates."""
+    v = np.zeros(B4.shape[1])
+    for k, c in counts.items():
+        p = pos.get(k)
+        if p is not None and c:
+            v += c * B4[p]
+    return v
+
+
+def g2_sequences(rows, n_seq: int, lo: int, hi: int, seed: int, lc: LoopCounts,
+                 W1: Weights) -> tuple[list, dict]:
+    """Sequences for G2: half random, half TR0 fragments, each screened for a reachable loop.
+
+    The screen is the authors' condition that the structure spaces contain int11/int21/int22
+    or bulge loops the basis actually reaches. Measured first and recorded: every 20-mer tried,
+    random or real, has such a structure, so the screen rejects nothing and the sample is not
+    quietly selected -- which is worth recording precisely because it could have been.
+    """
+    rng = np.random.default_rng(np.random.SeedSequence([seed, 2]))
+    pool = [r[2] for r in rows if len(r[2]) >= hi]
+    out, screened, rejected = [], 0, 0
+    while len(out) < n_seq:
+        screened += 1
+        n = int(rng.integers(lo, hi + 1))
+        if len(out) % 2 == 0:
+            seq = "".join(rng.choice(list("ACGU"), n))
+            src = "random"
+        else:
+            s = pool[int(rng.integers(len(pool)))]
+            a = int(rng.integers(0, len(s) - n + 1))
+            seq, src = s[a:a + n], "TR0 fragment"
+        structs = enumerate_structures(seq)
+        if not any(any(v > 0 for v in loop_coeff_map(lc, seq, s, W1).values()) for s in structs):
+            rejected += 1
+            continue
+        out.append((src, seq, len(structs)))
+    return out, {"n_screened": screened, "n_rejected_no_reachable_loop": rejected,
+                 "n_kept": len(out), "lengths": [lo, hi]}
+
+
+def g2_one(lc: LoopCounts, B: dict, pos: dict, W1: Weights, seq: str, radii,
+           scale: float = 1.0, with_rho: bool = True) -> dict:
+    """One sequence of G2: the pipeline's labels against the exact worst case over the ball.
+
+    The exact test is min over structures without p of [N(s) - r ||B^T (c(s) - c(s*))||], which
+    for a ball is the worst case and not a bound. The certificate replaces that norm by the
+    per-entry sum, which the triangle inequality makes no smaller, so a certified pair must be
+    exactly robust; a pair that is exactly robust need not be certified, and the gap between the
+    two is the slack this reports rather than hides.
+
+    `scale` multiplies the PIPELINE's weights only, leaving the exact test alone: that is the
+    authors' power check, and at scale 0.5 it must produce false certificates.
+    """
+    import RNA
+
+    from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+    plain = RNA.fold_compound(seq, reference_md())
+    assert_turner2004_params(plain)
+    star, e_mfe = plain.mfe()
+    allS = enumerate_structures(seq)
+    if star not in allS:
+        raise GuardFailure(f"the MFE structure is not in the enumeration: {seq} {star}")
+    e0 = np.array([int(round(plain.eval_structure(s) * 100)) for s in allS])
+    k_star = allS.index(star)
+    if e0[k_star] != e0.min() or abs(e0[k_star] / 100.0 - e_mfe) > 1e-6:
+        raise GuardFailure(f"ViennaRNA's MFE is not the enumeration's minimum on {seq}: "
+                           f"{e0[k_star]} vs {e0.min()}")
+    star_map = loop_coeff_map(lc, seq, star, W1)
+    maps = [loop_coeff_map(lc, seq, s, W1) for s in allS]
+    u_star = basis_image(B["B4"], pos, lc.counts(seq, star))
+    norms = np.array([float(np.linalg.norm(basis_image(B["B4"], pos, lc.counts(seq, s)) - u_star))
+                      for s in allS])
+    D = np.array([d_coeff(star_map, m) for m in maps])
+    N = (e0 - e0[k_star]) / 100.0
+    if (N < 0).any():
+        raise GuardFailure(f"a structure beats the MFE on {seq}")
+    if (norms > D + 1e-9).any():
+        raise GuardFailure(f"the per-entry sum is below the exact norm on {seq}: the triangle "
+                           f"inequality does not hold, so the weights are wrong")
+
+    pt_star = pair_table(star)
+    star_pairs = [(i, pt_star[i]) for i in range(1, len(seq) + 1) if pt_star[i] > i]
+    adm = admissible_pairs(seq)
+    holds: dict[tuple, list] = {}
+    for k, s in enumerate(allS):
+        pt = pair_table(s)
+        for i in range(1, len(seq) + 1):
+            if pt[i] > i:
+                holds.setdefault((i, pt[i]), []).append(k)
+
+    res = {"seq": seq, "n_nt": len(seq), "n_structures": len(allS),
+           "n_pairs_star": len(star_pairs), "n_admissible": len(adm),
+           "n_structures_the_ball_can_move": int((D > 0).sum()), "by_radius": {}}
+    W_pipe = Weights(B["a_four"] * scale, B["cols"], radii[0])
+    F = Folder(lc, seq, star, W_pipe)
+    for r in radii:
+        F.set_radius(r)
+        c = certify(F, star_pairs, adm)
+        eprime = e0 + np.array([offset_from_map(star_map, m, r * scale) for m in maps])
+        if eprime[k_star] != F.eprime_star:
+            raise GuardFailure(f"E'(s*) differs between the map and the walk on {seq}: "
+                               f"{eprime[k_star]} != {F.eprime_star}")
+        exact = N - r * norms
+        bad_x, bad_z, false_p, false_a, robust_p, robust_a = [], [], [], [], 0, 0
+        for p in star_pairs:
+            keep = np.ones(len(allS), bool)
+            keep[holds.get(p, [])] = False
+            if not keep.any():
+                continue
+            if int(eprime[keep].min()) != c["margins_present_dcal"][p] + F.eprime_star:
+                bad_x.append({"pair": p, "dp": c["margins_present_dcal"][p] + F.eprime_star,
+                              "enumerated": int(eprime[keep].min())})
+            ok = float(exact[keep].min()) > 0
+            robust_p += ok
+            if c["margins_present_dcal"][p] > 0 and not ok:
+                false_p.append({"pair": p, "exact_margin_kcal": float(exact[keep].min())})
+        for q, m in c["margins_absent_dcal"].items():
+            idx = holds.get(q)
+            if idx is None:
+                robust_a += 1
+                continue
+            if m is not None and int(eprime[idx].min()) != m + F.eprime_star:
+                bad_z.append({"pair": q, "zuker": m + F.eprime_star,
+                              "enumerated": int(eprime[idx].min())})
+            ok = float(exact[idx].min()) > 0
+            robust_a += ok
+            if (m is None or m > 0) and not ok:
+                false_a.append({"pair": q, "exact_margin_kcal": float(exact[idx].min())})
+        if bad_x or bad_z:
+            raise GuardFailure(f"the pair tables disagree with enumeration on {seq} at r = {r}: "
+                               f"X' {bad_x[:2]} Z' {bad_z[:2]}")
+        rec = {
+            "radius_kcal": r, "eprime_star_dcal": int(F.eprime_star),
+            "n_certified_present": c["n_certified_present"],
+            "n_certified_absent": c["n_certified_absent"],
+            "n_exactly_robust_present": int(robust_p),
+            "n_exactly_robust_absent": int(robust_a),
+            "n_false_certificates": len(false_p) + len(false_a),
+            "false_certificates": (false_p + false_a)[:3],
+            "whole_structure_certified": c["whole_structure_certified"],
+        }
+        if with_rho:
+            rhos = [rho_of_pair(F, star_map, W1, i, j, radii[-1] * R_CAP_MULTIPLE)
+                    for i, j in star_pairs]
+            worst = 0.0
+            for (i, j), got in zip(star_pairs, rhos, strict=True):
+                keep = np.ones(len(allS), bool)
+                keep[holds.get((i, j), [])] = False
+                m = (D > 0) & keep
+                ex = float((N[m] / D[m]).min()) if m.any() else float("inf")
+                if not got["capped"] and ex < float("inf"):
+                    worst = max(worst, got["rho"] - ex)
+            rec["rho_overstatement_vs_enumeration_kcal"] = worst
+            rec["rho_capped"] = sum(x["capped"] for x in rhos)
+            rec["rho_tied_at_zero"] = sum(x["tied_at_zero"] for x in rhos)
+            F.set_radius(r)
+        res["by_radius"][f"{r:g}"] = rec
+    res["folds"] = F.folds
+    return res
+
+
+def gate_g2() -> int:
+    """G2: zero false certificates against full enumeration, and the power check must fail.
+
+    Exhaustive rather than lazy: at n <= 20 the whole structure space is enumerated by code that
+    shares nothing with ViennaRNA, so there is no band to grow and no structure to miss. That is
+    what makes this the gate's backstop, and why G4 can afford to be lazy at realistic lengths.
+    """
+    out = read_out()
+    assert out.get("status") in ("G1 passed", "G2 passed"), out.get("status")
+    if "predictions" in out:
+        raise SystemExit("preregistered: the gate's shards are fixed")
+    t0 = time.time()
+    B = load_tr0_basis()
+    P = template()
+    lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    rows, _ = tr0_rows()
+    W1 = Weights(B["a_four"], B["cols"], 1.0)
+    pos = {B["cols"][e]: k for k, e in enumerate(B["used"])}
+    seqs, screen = g2_sequences(rows, G2_SEQUENCES, 16, G2_MAX_N, SEED, lc, W1)
+
+    per = []
+    for src, seq, _n in seqs:
+        rec = g2_one(lc, B, pos, W1, seq, G2_RADII)
+        rec["source"] = src
+        per.append(rec)
+        bad = [v for v in rec["by_radius"].values() if v["n_false_certificates"]]
+        if bad:
+            raise GuardFailure(f"G2: {sum(v['n_false_certificates'] for v in bad)} false "
+                               f"certificates on {seq}: {bad[0]['false_certificates'][:2]}")
+
+    def agg(key):
+        return {f"{r:g}": sum(p["by_radius"][f"{r:g}"][key] for p in per) for r in G2_RADII}
+
+    # the power check: halving the weights must produce at least one false certificate. It is
+    # the only test here that can fail by passing, so it runs on the same sequences and is
+    # reported as a count, not a boolean -- a single false certificate is weak evidence that the
+    # exact test has teeth, and the number says how much.
+    planted, n_planted = 0, min(G2_POWER_SEQUENCES, len(seqs))
+    for _src, seq, _n in seqs[:n_planted]:
+        rec = g2_one(lc, B, pos, W1, seq, G2_RADII, scale=0.5, with_rho=False)
+        planted += sum(v["n_false_certificates"] for v in rec["by_radius"].values())
+    if planted == 0:
+        raise GuardFailure(f"G2 power check: halving the weights produced no false certificate "
+                           f"on {n_planted} sequences, so G2 is not sensitive enough to catch "
+                           f"an under-charging callback. Enlarge it.")
+
+    shard = {
+        "sequences": screen,
+        "n_sequences": len(per),
+        "radii_kcal": list(G2_RADII),
+        "n_structures_total": sum(p["n_structures"] for p in per),
+        "n_pairs_star_total": sum(p["n_pairs_star"] for p in per),
+        "n_admissible_total": sum(p["n_admissible"] for p in per),
+        "certified_present": agg("n_certified_present"),
+        "certified_absent": agg("n_certified_absent"),
+        "exactly_robust_present": agg("n_exactly_robust_present"),
+        "exactly_robust_absent": agg("n_exactly_robust_absent"),
+        "false_certificates": agg("n_false_certificates"),
+        "whole_structure_certified": {f"{r:g}": sum(p["by_radius"][f"{r:g}"]
+                                                    ["whole_structure_certified"] for p in per)
+                                      for r in G2_RADII},
+        "slack_present": {f"{r:g}": (agg("n_certified_present")[f"{r:g}"]
+                                     / max(1, agg("n_exactly_robust_present")[f"{r:g}"]))
+                          for r in G2_RADII},
+        "slack_absent": {f"{r:g}": (agg("n_certified_absent")[f"{r:g}"]
+                                    / max(1, agg("n_exactly_robust_absent")[f"{r:g}"]))
+                         for r in G2_RADII},
+        "rho_overstatement_vs_enumeration_kcal": {
+            f"{r:g}": max(p["by_radius"][f"{r:g}"]["rho_overstatement_vs_enumeration_kcal"]
+                          for p in per) for r in G2_RADII},
+        "power_check": {"weights_scaled_by": 0.5, "n_sequences": n_planted,
+                        "false_certificates_produced": planted, "pass": planted > 0},
+        "pair_tables_vs_enumeration": {
+            "x_prime_mismatches": 0, "z_prime_mismatches": 0,
+            "note": "X' from the forbidden-pair fold and Z' from the Zuker set are compared "
+                    "against the enumerated minimum of E' on every sequence and every radius "
+                    "here; a mismatch raises. This is G3's n <= 20 half, done where the "
+                    "enumeration already exists.",
+        },
+        "folds": sum(p["folds"] for p in per),
+        "pass": True,
+        "seconds": round(time.time() - t0, 1),
+        "provenance": git_provenance(R),
+    }
+    out.setdefault("gate", {})["G2"] = shard
+    out["status"] = "G2 passed"
+    write(out)
+    print(json.dumps({k: v for k, v in shard.items() if k != "provenance"}, indent=1,
+                     default=str))
+    return 0
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
-    sys.exit({"build-basis": build_basis, "gate-g1": gate_g1}[ph]())
+    sys.exit({"build-basis": build_basis, "gate-g1": gate_g1,
+              "gate-g2": gate_g2}[ph]())
