@@ -303,27 +303,37 @@ def table_norms(cols, used, V):
     return dict(sorted(by.items(), key=lambda z: -z[1]["share"]))
 
 
-def compare_spans(V_tr0: np.ndarray, V_ref: np.ndarray) -> dict:
-    """How the TR0-only span relates to the TR0+TS0 one, in shared coordinates.
+def compare_spans(V_tr0: np.ndarray, I_tr0: np.ndarray, V_ref: np.ndarray) -> dict:
+    """How the TR0-only span relates to the TR0+TS0 one, in TR0's used coordinates.
 
     `principal_overlap` answers this only for spans of equal dimension and returns NaN
-    otherwise, and these differ (dropping the TS0 references can only enlarge the null space).
-    The well-posed questions are the two one-sided containments and the principal-angle cosine
-    spectrum. What is expected, and what the numbers have to be read against: a direction no
-    TR0+TS0 reference can see is still invisible to the TR0 subset, so the smaller span should
-    sit inside the larger one up to numerical error, while the larger one should NOT sit inside
-    the smaller -- its extra directions are exactly the ones TS0's references used to pin.
+    otherwise, and these differ: dropping TS0's references can only enlarge the null space, so
+    B_TR0 has more directions than the TR0+TS0 basis.
+
+    The fact that does hold, and the one worth checking, is this. Let v satisfy A_ref v = 0.
+    Every column of A_TR0 for an entry no TR0 reference uses is identically zero, so
+    A_TR0 v = A_TR0 v_used = 0, and v's restriction to TR0's used entries lies in TR0's FULL
+    within-used null space -- nontrivial AND gauge. It need not lie in the nontrivial part
+    alone: v is orthogonal to the gauge in the 4,561 coordinates TR0+TS0 uses, and restricting
+    it to TR0's 4,337 can give it a gauge component. Checking against the nontrivial part alone
+    reports a residual near 1 and means nothing, which is what a first run of this phase did.
+
+    So the containment is tested against [nontrivial | gauge], and the nontrivial-only cosine
+    spectrum is reported separately, as the measure of how much the basis moves.
     """
     Qa, _ = np.linalg.qr(V_tr0)
+    Qfull, _ = np.linalg.qr(np.hstack([V_tr0, I_tr0]))
     Qb, _ = np.linalg.qr(V_ref)
-    resid_ref_in_tr0 = float(np.linalg.norm(Qb - Qa @ (Qa.T @ Qb), axis=0).max())
+    resid_full = float(np.linalg.norm(Qb - Qfull @ (Qfull.T @ Qb), axis=0).max())
+    resid_nt = float(np.linalg.norm(Qb - Qa @ (Qa.T @ Qb), axis=0).max())
     resid_tr0_in_ref = float(np.linalg.norm(Qa - Qb @ (Qb.T @ Qa), axis=0).max())
     cos = np.linalg.svd(Qa.T @ Qb, compute_uv=False)
     return {
-        "residual_tr0ts0_inside_B_TR0": resid_ref_in_tr0,
+        "residual_tr0ts0_inside_B_TR0_plus_gauge": resid_full,
+        "containment_holds": bool(resid_full < 1e-8),
+        "residual_tr0ts0_inside_B_TR0_nontrivial_only": resid_nt,
         "residual_B_TR0_inside_tr0ts0": resid_tr0_in_ref,
-        "containment_holds": bool(resid_ref_in_tr0 < 1e-8),
-        "principal_angle_cosines": {
+        "principal_angle_cosines_nontrivial": {
             "n": int(cos.size),
             "n_at_least_1_minus_1e_8": int((cos >= 1 - 1e-8).sum()),
             "min": float(cos.min()) if cos.size else None,
@@ -427,7 +437,8 @@ def build_basis() -> int:
                   "note": "the TR0+TS0 basis is recomputable by turner_typeb's bases phase; "
                           "its npz is gitignored and was not on disk"}
     else:
-        angles = compare_spans(on_shared(NT, used), on_shared(ref["NT"], ref["used"]))
+        angles = compare_spans(on_shared(NT, used), on_shared(B["I"], used),
+                               on_shared(ref["NT"], ref["used"]))
         angles.update({
             "n_shared_used_columns": int(len(shared)),
             "tr0ts0_used_columns": int(len(ref["used"])),
