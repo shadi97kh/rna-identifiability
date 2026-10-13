@@ -519,6 +519,18 @@ def overlap():
     shared_basis = NT @ Vnull
     ucols = [cols[i] for i in used]
     seen = sv[sv > tol]
+    # review (2026-10-12): are the shared directions shared only because the held-out structures
+    # never use the entries they move? The subspace of the 426 supported off the held-out-used
+    # columns is null for M_h by construction; if its dimension equals the shared dimension, the
+    # two spaces coincide and every shared direction is coverage on the held-out data
+    on_h = nnz[used] > 0
+    svU = np.linalg.svd(NT[on_h], compute_uv=False)
+    # NT's columns are orthonormal to about 1e-12, so a singular value of a row block of it is
+    # zero below the registered TOL (1e-9); the gap is recorded below (the machine-epsilon rule
+    # used elsewhere, max(shape) * eps * s_max, is 6e-13 here and below NT's own round-off)
+    tolU = TOL
+    off_dim = NT.shape[1] - int((svU > tolU).sum())
+    assert off_dim <= shared_proj, (off_dim, shared_proj)  # off-support space lies in the shared
     # post hoc (Claude, to explain why E2's registered test failed): along each folded point,
     # the fraction of held-out reference energies that change at all, from the sha-checked shards
     for f, h in out["run"]["shards_sha256"].items():
@@ -554,6 +566,16 @@ def overlap():
             "projected_largest_null_sv": (float(sv[sv <= tol].max())
                                           if (sv <= tol).any() else None),
             "shared_weight_by_table": table_weights(shared_basis, ucols),
+            "tr0ts0_used_columns_unused_by_heldout": int((~on_h).sum()),
+            "shared_supported_off_heldout_columns": off_dim,
+            "shared_is_coverage_on_heldout": off_dim == shared_proj,
+            "off_support_sv_largest_null": (float(svU[svU <= tolU].max())
+                                            if (svU <= tolU).any() else None),
+            "off_support_sv_smallest_nonnull": float(svU[svU > tolU].min()),
+            "coverage_split_note": "added after the review (2026-10-12): the shared directions "
+                                   "that are supported only on TR0+TS0 columns no held-out "
+                                   "structure uses (coverage on the held-out data), as opposed to "
+                                   "cancellations among entries the held-out structures do use",
             "heldout_reference_change_by_point": ref_change,
             "heldout_reference_change_note": "post hoc (Claude), to explain E2's failure: "
                                              "fraction of held-out reference energies that "

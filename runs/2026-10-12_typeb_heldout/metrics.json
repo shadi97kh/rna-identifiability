@@ -132,6 +132,7 @@
   "method": "held-out counts M_h by the registered Extractor, exact reconstruction on every row (any failure stops); on TR0+TS0's used columns, S = [A_TR0+TS0; M_h] and its null dimension by streamed QR + SVD, by the Gram eigenproblem after exact singleton elimination, and exactly (rank mod two primes after singleton elimination), minus the 2 intrinsic directions (asserted null for M_h); independently, 426 - rank(M_h N_nt). All must agree.",
   "question_user": "how many of the 426 TR0+TS0 nontrivial directions are also invisible to the 46,130 held-out structures: the null space of the two count matrices stacked, with the phase-0 code",
   "results": {
+   "coverage_split_note": "added after the review (2026-10-12): the shared directions that are supported only on TR0+TS0 columns no held-out structure uses (coverage on the held-out data), as opposed to cancellations among entries the held-out structures do use",
    "exact_ranks_mod_p": {
     "1048571": 3029,
     "1048573": 3029
@@ -354,6 +355,8 @@
    "intrinsic_null_for_heldout_max_abs": 3.3306690738754696e-16,
    "n_heldout_rows": 46130,
    "of": 426,
+   "off_support_sv_largest_null": 1.9784225763244388e-12,
+   "off_support_sv_smallest_nonnull": 0.47596314947796853,
    "projected_largest_null_sv": 4.336089269635556e-12,
    "projected_smallest_nonnull_sv": 0.36352263747746427,
    "projected_sv_tol": 8.668979588195959e-11,
@@ -361,17 +364,29 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": true,
     "git_dirty_paths_outside_runs": [
+     "paper/recomb2027/figures/fig2_typeb.json",
+     "paper/recomb2027/figures/fig2_typeb.pdf",
+     "paper/recomb2027/figures/fig2_typeb.py",
+     "paper/recomb2027/figures/fig3_fisher.json",
+     "paper/recomb2027/figures/fig3_fisher.pdf",
+     "paper/recomb2027/figures/figS3_fisher.py",
      "paper/recomb2027/main.tex",
      "paper/recomb2027/pins.json",
+     "paper/recomb2027/references.bib",
      "paper/recomb2027/sections/02_setup.tex",
+     "paper/recomb2027/sections/04_typeb.tex",
      "paper/recomb2027/supplement/body.tex",
      "scripts/typeb_heldout.py",
-     "tests/test_recomb_pins.py"
+     "tests/test_recomb_numbers.py",
+     "tests/test_recomb_pins.py",
+     "paper/recomb2027/figures/figS3_fisher.json",
+     "paper/recomb2027/figures/figS3_fisher.pdf"
     ],
-    "git_sha": "b32b772e97c36cf417610bf710123d0462409fe8"
+    "git_sha": "73d3b40007e97ec0c31defadd00baab2d2a278ae"
    },
    "reconstruction_failures": 0,
    "seconds": 156.2,
+   "shared_is_coverage_on_heldout": true,
    "shared_nontrivial": 154,
    "shared_nontrivial_by_route": {
     "projected_426_minus_rank": 154,
@@ -382,6 +397,7 @@
      "qr_svd": 154
     }
    },
+   "shared_supported_off_heldout_columns": 154,
    "shared_weight_by_table": {
     "ML_cc": 0.0,
     "ML_ci": 0.0,
@@ -430,7 +446,8 @@
    "stacked_shape": [
     58085,
     4561
-   ]
+   ],
+   "tr0ts0_used_columns_unused_by_heldout": 1858
   }
  },
  "predictions": {
