@@ -451,5 +451,139 @@
   "git_sha": "738ab7a5b756b88e795a807073b21da009fc967f"
  },
  "run_id": "2026-10-12_typeb_base_a07",
+ "smoke": {
+  "S1_turner_fold": {
+   "builder_reproduces_fold_points": {
+    "191": true,
+    "5": true,
+    "7": true
+   },
+   "changed_by_fold_point": {
+    "191": 4,
+    "5": 2,
+    "7": 7
+   },
+   "fold_points": [
+    5,
+    7,
+    191
+   ],
+   "mismatches": {
+    "changed": 0,
+    "e0": 0,
+    "f1_base": 0,
+    "f1_ref": 0,
+    "f1_ref_baseline": 0,
+    "genuine": 0,
+    "leak": 0
+   },
+   "n_compared": 60,
+   "n_sequences": 60,
+   "passes": true,
+   "tie_split_vs_baseline_gap": {
+    "n_changed_checked": 13,
+    "n_dE0_zero": 0,
+    "n_gap_above_steps": 0,
+    "n_gap_zero": 3,
+    "violations": []
+   },
+   "workers_exit": [
+    0,
+    0
+   ],
+   "written_turner_is_template": true
+  },
+  "S2_turner_sampler": {
+   "Ix_bitwise_equal": true,
+   "exit": 0,
+   "kT_equal": true,
+   "max_abs_diff": 0.0,
+   "names_equal": true,
+   "passes": true,
+   "rows": [
+    0,
+    8,
+    16,
+    24
+   ],
+   "seed_base": 20261013
+  },
+  "S3_planted_skip_load": {
+   "caught": true,
+   "caught_by": [
+    "GuardFailure: point 0: carry row"
+   ],
+   "exit": 1,
+   "parts_fired": {},
+   "stderr_last_line": "scripts.turner_typeb.GuardFailure: point 0: carry row 10673 evaluates to -256, the written table gives -213"
+  },
+  "S4_planted_stale_boltzmann_point": {
+   "caught": true,
+   "caught_by": [
+    "GuardFailure: point 0: Boltzmann carry row"
+   ],
+   "exit": 1,
+   "parts_fired": {},
+   "stderr_last_line": "scripts.turner_typeb.GuardFailure: point 0: Boltzmann carry row 10673 gives -256, the written table gives -213"
+  },
+  "S4_planted_stale_boltzmann_sampler": {
+   "caught": true,
+   "caught_by": [
+    "GuardFailure: base table: generic Boltzmann check"
+   ],
+   "exit": 1,
+   "parts_fired": {
+    "constrained pf": true,
+    "exp_params": true
+   },
+   "stderr_last_line": "scripts.turner_typeb.GuardFailure: base table: generic Boltzmann check: constrained pf -1050 != counts . theta -543 (generating row 23446); exp_params {'TerminalAU': (11, 50.0), 'expMLclosing': (440, 930.0)} (field: (theta, got) dcal)"
+  },
+  "S5_mini": {
+   "fisher_workers_exit": [
+    0,
+    0
+   ],
+   "fold_workers_exit": [
+    0,
+    0
+   ],
+   "n_points_analysed": 33,
+   "passes": true,
+   "registered_tests_dry_run": {
+    "information_ratio": {
+     "ci95": [
+      8.102463628384521,
+      27.33980917548615
+     ],
+     "contrast_over_null_mean_I": 13.702818166891099,
+     "passes": true,
+     "rule": {
+      "claude": "the ratio is mean I over the 8 contrast directions over mean I over the 8 random null directions (typeb_fisher.directions); the CI is the percentile interval of the 2000 sequence-bootstrap draws; rng default_rng(SeedSequence([20261012, 61]))",
+      "user": "the contrast/null information ratio at A07 (E1's statistic and directions) has a 95% CI lower bound > 1 (2000-draw sequence bootstrap)"
+     }
+    },
+    "mirrored_genuine_fraction": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "genuine_fraction": 0.0,
+     "passes": false,
+     "rule": {
+      "claude": "_boot_mean as the fold uses it: percentile 95% CI, 1000 draws over the 11,970 sequences; rng default_rng(SeedSequence([20261012, 60, 0]))",
+      "user": "the mirrored component's genuine changed-MFE fraction has a 95% CI that excludes 0 (turner_typeb._boot_mean)"
+     }
+    }
+   }
+  },
+  "passes": true,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "21b864a162b8cb39fd198643222518532466ab6a"
+  },
+  "seconds": 37.8
+ },
  "status": "PRE-REGISTERED, nothing folded or sampled"
 }
