@@ -354,12 +354,134 @@ def compare_spans(V_tr0: np.ndarray, I_tr0: np.ndarray, V_ref: np.ndarray) -> di
             (resid_full / np.maximum(norms, 1e-300)).max()),
         "containment_holds": bool(resid_full.max() < 1e-8),
         "abs_residual_in_B_TR0_nontrivial_only_max": float(resid_nt.max()),
-        "reverse_residual_B_TR0_in_tr0ts0": {
-            "max": float(back.max()), "min": float(back.min()),
-            "n_outside_at_1e_8": int((back > 1e-8).sum()),
-            "note": "a TR0 direction outside the TR0+TS0 null space is one TS0's references "
-                    "pinned; the count is the price of removing the leakage",
+        # How much larger the TR0-only space is, stated so that it does not depend on which
+        # basis was drawn: the dimensions, not a count over basis vectors. Every vector of a
+        # 448-dimensional space has a component outside a 399-dimensional subspace of it, so a
+        # per-vector count is always the full 448 and says nothing.
+        "dimension_arithmetic": {
+            "tr0ts0_nontrivial": int(V_ref.shape[1]),
+            "surviving_restriction_to_tr0_entries": int(keep.sum()),
+            "vanishing_on_tr0_entries": int(V_ref.shape[1] - keep.sum()),
+            "B_TR0_nontrivial": int(V_tr0.shape[1]),
+            "new_relative_to_the_restricted_reference_span": int(V_tr0.shape[1] - keep.sum()),
+            "note": "directions that vanish on TR0's entries live entirely on entries only TS0 "
+                    "uses, and are coverage rather than Type B once TS0 is held out; the new "
+                    "ones are what TS0's references had been pinning",
         },
+        "residual_of_B_TR0_basis_against_restricted_reference_span": {
+            "max": float(back.max()), "min": float(back.min()),
+        },
+    }
+
+
+def published_radii(B: dict, B4: np.ndarray) -> dict:
+    """The three published components measured on B_four, which set the evaluation radii.
+
+    delta_X = theta_X - theta_0 in dcal; the radius is the norm in kcal/mol of its component
+    along B_four, i.e. the smallest r whose ball reaches that component. r_cap, which the
+    registered rho edge case needs, is R_CAP_MULTIPLE times the largest of them.
+    """
+    from scripts.typeb_common import full_tables
+
+    cols, used = B["cols"], B["used"]
+    t0 = template()["theta"]
+    out = {}
+    for tb in full_tables():
+        th = tb["theta"]
+        d = np.array([th[k] - t0[k] for k in cols], dtype=np.float64) / 100.0
+        inf = np.array([th[k] >= 100000 for k in cols])          # Langdon 2018 forbids entries
+        d = np.where(inf, 0.0, d)
+        du = d[used]
+        comp = B4 @ (B4.T @ du)
+        out[tb["id"].split(":")[-1]] = {
+            "norm_delta_kcal": float(np.linalg.norm(d)),
+            "radius_on_B_four_kcal": float(np.linalg.norm(comp)),
+            "n_entries_set_to_INF_and_skipped": int(inf.sum()),
+        }
+    out["r_cap_kcal"] = R_CAP_MULTIPLE * max(
+        v["radius_on_B_four_kcal"] for v in out.values() if isinstance(v, dict))
+    out["r_cap_multiple"] = R_CAP_MULTIPLE
+    return out
+
+
+def per_loop_shift(B: dict, B4: np.ndarray, a_four: np.ndarray, radii: dict, rows,
+                   n_seq: int | None = None) -> dict:
+    """What the ball actually permits per loop, beside what a published table actually does.
+
+    The authors' amendment of 2026-10-13. A ball of radius 21 kcal/mol may put its whole norm on
+    a single int22 entry, while the Andronescu component spreads the same norm over hundreds of
+    directions, so the two per-entry scales are nowhere near each other and the certified
+    fractions have to be read against that rather than as a performance number. Measured over
+    the loops of s* on TR0 MFE structures: the worst-case per-loop shift the ball allows,
+    w_L(r)/r = sum_e |c_{L,e}| ||a_e||, at each published radius; and, on the same entries, the
+    shift the published component itself produces.
+    """
+    import RNA
+
+    from scripts.typeb_common import full_tables
+    from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+    P = template()
+    cols = B["cols"]
+    idx = {k: n for n, k in enumerate(cols)}
+    t0 = P["theta"]
+    deltas = {}
+    for tb in full_tables():
+        th = tb["theta"]
+        deltas[tb["id"].split(":")[-1]] = np.array(
+            [0.0 if th[k] >= 100000 else (th[k] - t0[k]) / 100.0 for k in cols])
+
+    lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    md = reference_md()
+    rows = rows if n_seq is None else rows[:n_seq]
+    unit, entry_ball, entry_pub = [], [], {x: [] for x in deltas}
+    n_loops_charged = 0
+    for n, (_tag, _name, seq, _db) in enumerate(rows):
+        fc = RNA.fold_compound(seq, md)
+        if n == 0:
+            assert_turner2004_params(fc)
+        s_star, _e = fc.mfe()
+        for rec in lc.loops(seq, s_star):
+            w = sum(abs(v) * a_four[idx[k]] for k, v in rec["counts"].items() if k in idx)
+            unit.append(w)
+            if w > 0:
+                n_loops_charged += 1
+            for k, v in rec["counts"].items():
+                if k not in idx or a_four[idx[k]] <= 0:
+                    continue
+                entry_ball.append(a_four[idx[k]])
+                for x, d in deltas.items():
+                    entry_pub[x].append(abs(d[idx[k]]) / max(abs(v), 1))
+    unit = np.array(unit)
+    ball = np.array(entry_ball)
+
+    def q(v, scale=1.0):
+        if not len(v):
+            return None
+        return {"median": float(np.median(v) * scale), "p95": float(np.quantile(v, 0.95) * scale),
+                "max": float(v.max() * scale)}
+
+    per_radius = {}
+    for x, v in radii.items():
+        if not isinstance(v, dict):
+            continue
+        r = v["radius_on_B_four_kcal"]
+        per_radius[x] = {
+            "radius_kcal": r,
+            "per_loop_shift_the_ball_allows_kcal": q(unit, r),
+            "per_entry_shift_the_ball_allows_kcal": q(ball, r),
+            "per_entry_shift_this_component_makes_kcal": q(np.array(entry_pub[x])),
+        }
+    return {
+        "n_sequences_folded": len(rows),
+        "n_loops": int(len(unit)),
+        "n_loops_with_any_weight": n_loops_charged,
+        "fraction_of_loops_charged": float(n_loops_charged / len(unit)) if len(unit) else 0.0,
+        "by_radius": per_radius,
+        "expectation_user": "at the published radii, few pairs that depend on an internal loop "
+                            "will be certified, because the set allows the entire norm on one "
+                            "entry; the descriptive label fractions are read against this, not "
+                            "as a performance number",
     }
 
 
@@ -468,6 +590,10 @@ def build_basis() -> int:
             "extra_directions_in_B_TR0": int(NT.shape[1] - ref["NT"].shape[1]),
         })
 
+    # ---- the radii, r_cap, and what the ball permits per loop (the authors' amendment 2)
+    radii = published_radii(B, B4)
+    shifts = per_loop_shift(B, B4, a_four, radii, rows)
+
     files = {}
     np.savez_compressed(SHARDS / "basis_tr0.npz", cols=np.array([repr(k) for k in cols]),
                         used=used, NT=NT, B4=B4, a_tr0=a_tr0, a_four=a_four)
@@ -487,6 +613,8 @@ def build_basis() -> int:
             "weight_by_table_B_four": tabs_four,
             "must_hold": must,
             "basis_quality": quality,
+            "published_radii": radii,
+            "per_loop_shift": shifts,
             "principal_angles": angles,
             "files_sha256": files,
             "seconds": round(time.time() - t0, 1),
@@ -497,6 +625,8 @@ def build_basis() -> int:
     print(json.dumps({"dims": out["build_basis"]["dims"],
                       "four_table_projection": proj,
                       "must_hold": must,
+                      "published_radii": radii,
+                      "per_loop_shift": shifts,
                       "principal_angles": angles}, indent=1, default=str))
     return 0
 
