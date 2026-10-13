@@ -163,3 +163,42 @@ def test_forbidding_a_pair_forbids_only_that_pair(pinned):
     _s, x, _e0 = F.without(*pair)
     assert x == best, (f"the forbidden-pair fold gives {x} dcal, the enumerated minimum over "
                        f"structures without {pair} is {best}")
+
+
+def test_the_shape_fast_path_charges_nothing_it_should_have_charged(pinned):
+    """Every loop whose shape the callback skips must have weight exactly zero, at any radius.
+
+    The callback answers most invocations with one integer test: if the loop's (u1, u2) is not a
+    shape one of the reached tables carries, it returns 0 without computing a weight. That is an
+    8x speedup and it is only correct if those loops really do have zero weight -- otherwise the
+    callback under-charges, the band shrinks, and pairs certify that are not robust.
+
+    This checks it directly, over every interior loop of the generating set, which exercises
+    every vrna_E_internal case, and at a radius four times the largest published one so that any
+    nonzero coefficient would round up to at least one dcal. It needs no fold: the claim is
+    about the weights, so it is tested against the weights.
+    """
+    from scripts.certfold import Weights, il_keys, load_tr0_basis
+    from scripts.turner_nullspace import BCODE
+
+    P, lc = pinned
+    B = load_tr0_basis()
+    W = Weights(B["a_four"], B["cols"], float(B["radii"]["r_cap_kcal"]))
+    skipped, charged, nonzero_skipped = 0, 0, []
+    for _tag, seq, db in generating_set(P["special"]):
+        S = [0] + [BCODE[c] for c in seq] + [0]
+        for d in lc.loops(seq, db):
+            if d["kind"] != "interior":
+                continue
+            i, j, k, ll = d["i"], d["j"], d["k"], d["l"]
+            w = W.dcal(il_keys(S, i, j, k, ll))
+            if (k - i - 1, j - ll - 1) in W.shapes:
+                charged += 1
+            else:
+                skipped += 1
+                if w:
+                    nonzero_skipped.append(((i, j, k, ll), (k - i - 1, j - ll - 1), w))
+    assert not nonzero_skipped, (f"{len(nonzero_skipped)} loops the callback skips carry a "
+                                 f"nonzero weight: {nonzero_skipped[:3]}")
+    assert skipped > 10000 and charged > 1000, (f"the test is vacuous: {skipped} skipped, "
+                                                f"{charged} charged")
