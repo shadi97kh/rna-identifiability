@@ -1,0 +1,16 @@
+[project]
+name = "rna-identifiability"
+version = "0.1.0"
+description = "Code and run artifacts for 'Same Energies, Different Folds: Parameter Non-Identifiability in Thermodynamic and Learned RNA Folding Models'"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+    "ViennaRNA==2.7.2",
+    "numpy==2.4.6",
+    "scipy==1.17.1",
+    "pyyaml==6.0.3",
+]
+
+[project.optional-dependencies]
+mxfold2 = ["torch==2.13.0"]
+test = ["pytest==9.1.1"]
