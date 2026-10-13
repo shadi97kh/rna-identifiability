@@ -414,6 +414,57 @@
   "seconds": 8.2,
   "viennarna_version": "2.7.2"
  },
+ "fisher_run": {
+  "driver_pid": 1424267,
+  "finished": "2026-10-13T03:20:41",
+  "load_at_start": [
+   8.85791015625,
+   11.84228515625,
+   11.51416015625
+  ],
+  "n_workers": 6,
+  "nice": 10,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "07fa2a0d155a4f44256769564054030d9d5f17cf"
+  },
+  "shards_done": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "shards_sha256": {
+   "shard0.npz": "67572dfb46260e9995cd3fb83f9522f9fbb5520cd117f34856ab285bccf65839",
+   "shard1.npz": "01ae73b9840edbc6e101d110cf72950a80ef3d6aa18a7ba6b71ef3d43c375cab",
+   "shard2.npz": "b3648f60a2bbc394a6387502400ebf77f81b23ca68c4ef15e77bec6590686caf",
+   "shard3.npz": "c84fc3c3e5cf8763dd47980958584141fb1128dc1e55952bb6a7b4d791839cc0",
+   "shard4.npz": "8f454202b3167dac43a1d179b940e21ac365dc3c9257fcd773587339be328d8e",
+   "shard5.npz": "e07c5278ccb8a00b1da5be43893c52b7fa0b52b4289031003f347d8c111d93fe"
+  },
+  "started": "2026-10-13T03:09:37",
+  "terminated_after_first_failure": [],
+  "worker_pids": [
+   1424402,
+   1424403,
+   1424404,
+   1424405,
+   1424406,
+   1424407
+  ],
+  "workers_exit": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
  "fold_run": {
   "driver_pid": 1411151,
   "finished": "2026-10-13T03:09:21",
@@ -636,5 +687,5 @@
   },
   "seconds": 37.8
  },
- "status": "folded (workers)"
+ "status": "sampled (workers)"
 }
