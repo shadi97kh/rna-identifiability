@@ -446,12 +446,12 @@ def per_loop_shift(B: dict, B4: np.ndarray, a_four: np.ndarray, radii: dict, row
             unit.append(w)
             if w > 0:
                 n_loops_charged += 1
-            for k, v in rec["counts"].items():
+            for k in rec["counts"]:
                 if k not in idx or a_four[idx[k]] <= 0:
                     continue
                 entry_ball.append(a_four[idx[k]])
                 for x, d in deltas.items():
-                    entry_pub[x].append(abs(d[idx[k]]) / max(abs(v), 1))
+                    entry_pub[x].append(abs(d[idx[k]]))
     unit = np.array(unit)
     ball = np.array(entry_ball)
 
