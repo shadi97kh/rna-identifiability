@@ -323,22 +323,34 @@ def compare_spans(V_tr0: np.ndarray, I_tr0: np.ndarray, V_ref: np.ndarray) -> di
     """
     Qa, _ = np.linalg.qr(V_tr0)
     Qfull, _ = np.linalg.qr(np.hstack([V_tr0, I_tr0]))
+    # The statement is about the UN-NORMALISED restriction v_used, so the residual has to be
+    # absolute. Orthonormalising the restricted reference basis first is what a first run did,
+    # and it reports a residual near 1 for a reason that says nothing about the mathematics: a
+    # TR0+TS0 direction living mostly on the 224 entries only TS0 uses restricts to a nearly
+    # zero vector, and QR renormalises that noise into an arbitrary unit vector.
+    norms = np.linalg.norm(V_ref, axis=0)
+    resid_full = np.linalg.norm(V_ref - Qfull @ (Qfull.T @ V_ref), axis=0)
+    resid_nt = np.linalg.norm(V_ref - Qa @ (Qa.T @ V_ref), axis=0)
+    # the reverse: lift each TR0 direction into the reference's coordinates by zero-padding and
+    # ask whether the reference's own null space contains it. The extra directions should not be.
     Qb, _ = np.linalg.qr(V_ref)
-    resid_full = float(np.linalg.norm(Qb - Qfull @ (Qfull.T @ Qb), axis=0).max())
-    resid_nt = float(np.linalg.norm(Qb - Qa @ (Qa.T @ Qb), axis=0).max())
-    resid_tr0_in_ref = float(np.linalg.norm(Qa - Qb @ (Qb.T @ Qa), axis=0).max())
-    cos = np.linalg.svd(Qa.T @ Qb, compute_uv=False)
+    back = np.linalg.norm(Qa - Qb @ (Qb.T @ Qa), axis=0)
     return {
-        "residual_tr0ts0_inside_B_TR0_plus_gauge": resid_full,
-        "containment_holds": bool(resid_full < 1e-8),
-        "residual_tr0ts0_inside_B_TR0_nontrivial_only": resid_nt,
-        "residual_B_TR0_inside_tr0ts0": resid_tr0_in_ref,
-        "principal_angle_cosines_nontrivial": {
-            "n": int(cos.size),
-            "n_at_least_1_minus_1e_8": int((cos >= 1 - 1e-8).sum()),
-            "min": float(cos.min()) if cos.size else None,
-            "max": float(cos.max()) if cos.size else None,
-            "smallest_five": [float(x) for x in np.sort(cos)[:5]],
+        "restricted_reference_columns": {
+            "n": int(V_ref.shape[1]),
+            "norm_min": float(norms.min()), "norm_max": float(norms.max()),
+            "n_nearly_vanishing_below_1e_6": int((norms < 1e-6).sum()),
+        },
+        "abs_residual_in_B_TR0_plus_gauge_max": float(resid_full.max()),
+        "abs_residual_in_B_TR0_plus_gauge_rel_max": float(
+            (resid_full / np.maximum(norms, 1e-300)).max()),
+        "containment_holds": bool(resid_full.max() < 1e-8),
+        "abs_residual_in_B_TR0_nontrivial_only_max": float(resid_nt.max()),
+        "reverse_residual_B_TR0_in_tr0ts0": {
+            "max": float(back.max()), "min": float(back.min()),
+            "n_outside_at_1e_8": int((back > 1e-8).sum()),
+            "note": "a TR0 direction outside the TR0+TS0 null space is one TS0's references "
+                    "pinned; the count is the price of removing the leakage",
         },
     }
 
