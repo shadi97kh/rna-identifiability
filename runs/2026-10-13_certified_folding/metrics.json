@@ -40,7 +40,7 @@
    }
   },
   "files_sha256": {
-   "basis_tr0.npz": "1fd6a358d034576a8320fe64d78b948e082fb567d966ebea69f1df0909047614"
+   "basis_tr0.npz": "268f757ab9e4dd7a0c9388f606278f587b9065adc22bcebf8668a448380c6393"
   },
   "four_table_projection": {
    "dim_B_TR0": 448,
@@ -161,7 +161,7 @@
    "n_loops_above_the_row_noise_floor": 1235,
    "n_sequences_folded": 10667,
    "row_noise_floor": 1e-09,
-   "what_this_does_not_imply_user": "This counts the loops of s* only, and it does NOT imply that nearly every pair certifies because most of s*'s loops are untouched (a wrong gloss, corrected by the authors on 2026-10-13 before preregistration). The certificate credits every competitor structure -w_L for each touched loop IT contains, up to about 19 kcal/mol at the Andronescu radius, so a pair is uncertain as soon as some structure lacking it, within that allowance of the MFE, forms a touched loop. That depends on the competitors' loops, not on s*'s. The expectation PRED carries is written from the TR0 pilot's measured label fractions instead."
+   "what_this_does_not_imply_user": "This does not mean most pairs certify. The certificate also credits competitor structures for every touched loop they contain, so exposure depends on the competitors, not on s*. The expectation in PRED comes from the TR0 pilot."
   },
   "principal_angles": {
    "abs_residual_in_B_TR0_nontrivial_only_max": 8.394787773192638e-13,
@@ -206,20 +206,50 @@
    "git_dirty": true,
    "git_dirty_excluding_runs": false,
    "git_dirty_paths_outside_runs": [],
-   "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
+   "git_sha": "e11ab60ddfe275b52fa42a3ba749b1daea831181"
+  },
+  "published_envelope": {
+   "components_contained": {
+    "max_excess_over_u_kcal": {
+     "Andronescu2007": 0.0,
+     "Langdon2018": 0.0,
+     "Turner1999": 0.0
+    },
+    "pass": true
+   },
+   "definition": "{theta0 + B t : ||t|| <= r_max, |(B t)_e| <= delta for every e}; per-entry bound u_e = min(delta, r_max * ||a_e||); weights w_L = sum_e |c_{L,e}| u_e, ceiled to dcal as for the ball",
+   "delta_entry": "('int21', 1, 2, 1, 3, 4)",
+   "delta_from": "Turner1999",
+   "delta_kcal": 3.2666666666665813,
+   "lambda_cap": 4,
+   "n_entries_where_the_ball_bound_binds": 0,
+   "r_max_from": "Turner1999",
+   "r_max_kcal": 24.13231091078804,
+   "u_over_reached_entries_kcal": {
+    "max": 3.2666666666665813,
+    "median": 3.2666666666665813,
+    "min": 3.2666666666665813,
+    "n": 923
+   }
   },
   "published_radii": {
    "Andronescu2007": {
+    "argmax_entry": "('int21', 1, 2, 1, 3, 4)",
+    "max_abs_entry_shift_kcal": 3.069999999999912,
     "n_entries_set_to_INF_and_skipped": 0,
     "norm_delta_kcal": 116.61083911884003,
     "radius_on_B_four_kcal": 21.26280733187213
    },
    "Langdon2018": {
+    "argmax_entry": "('int22', 5, 6, 1, 2, 1, 2)",
+    "max_abs_entry_shift_kcal": 1.2400000000000013,
     "n_entries_set_to_INF_and_skipped": 1266,
     "norm_delta_kcal": 43.84586639581893,
     "radius_on_B_four_kcal": 5.215229067044539
    },
    "Turner1999": {
+    "argmax_entry": "('int21', 1, 2, 1, 3, 4)",
+    "max_abs_entry_shift_kcal": 3.2666666666665813,
     "n_entries_set_to_INF_and_skipped": 0,
     "norm_delta_kcal": 132.7279062593847,
     "radius_on_B_four_kcal": 24.13231091078804
@@ -246,7 +276,7 @@
    "n": 10667,
    "tag": "TR0 only"
   },
-  "seconds": 209.2,
+  "seconds": 216.7,
   "weight_by_table_B_TR0": {
    "ML_cc": {
     "max_row_norm": 9.431534028074415e-16,
@@ -453,6 +483,24 @@
      "radius_kcal": 96.52924364315216
     }
    },
+   "il_keys_vs_positional_oracle": {
+    "cases": {
+     "bulge": 378,
+     "generic": 3740,
+     "int11": 576,
+     "int1n": 5760,
+     "int21": 2368,
+     "int22": 9217,
+     "int23": 386,
+     "stack": 93872
+    },
+    "independent_of_il_keys": true,
+    "mismatches": [],
+    "n_interior_loops": 116297,
+    "n_mismatches": 0,
+    "oracle": "fold_compound.eval_int_loop(i, j, k, l) (vrna_eval_int_loop) on the plain pinned compound: positions only",
+    "pass": true
+   },
    "il_keys_vs_viennarna": {
     "both_asymmetry_directions": true,
     "bulge_sizes": {
@@ -470,18 +518,69 @@
      "int23": 386,
      "stack": 93872
     },
+    "how_the_arguments_were_built": "E_IntLoop(n1 = k-i-1, n2 = j-l-1, type = PT[S[i]][S[j]], type_2 = PT[S[l]][S[k]], si1 = S[i+1], sj1 = S[j-1], sp1 = S[k-1], sq1 = S[l+1], P = fc.params), S the BCODE encoding with S[0] = S[n+1] = 0 and PT certfold's pair-type table, built from turner_nullspace.PTYPE -- the table il_keys uses. Shares that convention with il_keys; the independent oracle is the positional one.",
+    "independent_of_il_keys": false,
     "mismatches": [],
     "n_interior_loops": 116297,
     "n_mismatches": 0,
     "oracle": "RNA.E_IntLoop on the pinned compound's own parameters",
     "pass": true
    },
+   "nonzero_offsets_by_radius_explained": {
+    "ceil_w_r1_dcal": {
+     "max": 91,
+     "median": 71,
+     "min": 36,
+     "p25": 64,
+     "p75": 75
+    },
+    "counts": {
+     "current:Andronescu2007": {
+      "nonzero": 2008,
+      "nonzero_only_through_noise_rows": 0,
+      "zero_by_cancellation": 0
+     },
+     "current:r1": {
+      "nonzero": 2008,
+      "nonzero_only_through_noise_rows": 0,
+      "zero_by_cancellation": 0
+     },
+     "current:r_cap": {
+      "nonzero": 2008,
+      "nonzero_only_through_noise_rows": 0,
+      "zero_by_cancellation": 0
+     },
+     "superseded:Andronescu2007": {
+      "nonzero": 17369,
+      "nonzero_only_through_noise_rows": 15361,
+      "zero_by_cancellation": 2566
+     },
+     "superseded:r1": {
+      "nonzero": 9688,
+      "nonzero_only_through_noise_rows": 7680,
+      "zero_by_cancellation": 1446
+     },
+     "superseded:r_cap": {
+      "nonzero": 17370,
+      "nonzero_only_through_noise_rows": 15362,
+      "zero_by_cancellation": 2565
+     }
+    },
+    "line": "The first G1 (e1d7d7c) recorded 9,633 / 17,356 / 17,370 nonzero offsets at r = 1.000 / 21.263 / 96.529 on the basis that still carried 2,933 noise rows (norms <= 2.3e-13); each was charged a full dcal once r*w*100 cleared the ceiling's 1e-12 guard, which more of them do as r grows. Rebuilt from the same B_TR0, that projection gives 9,688 / 17,369 / 17,370, of which 7,680 / 15,361 / 15,362 are nonzero only through noise rows, leaving 2,008 at every radius -- what this G1 records. On the current basis ceil(w) at r = 1 over the 923 reached entries is 36 to 91 dcal (median 71), 0 entries have a row norm below 0.01, and 0 sampled structures have offset zero by exact cancellation at any radius.",
+    "n_entries_row_norm_below_0_01": 0,
+    "recorded_in_superseded_G1": {
+     "Andronescu2007": 17356,
+     "r1": 9633,
+     "r_cap": 17370
+    },
+    "reproduction_note": "the reconstruction matches the superseded record where every noise row clears the guard (r_cap) and differs slightly below it, because which ~1e-14 rows clear a 1e-12 guard depends on rounding a fresh SVD does not reproduce bit for bit"
+   },
    "pass": true,
    "provenance": {
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
+    "git_sha": "e11ab60ddfe275b52fa42a3ba749b1daea831181"
    },
    "radii_kcal": {
     "Andronescu2007": 21.26280733187213,
@@ -581,7 +680,7 @@
     }
    },
    "samples_per_sequence": 1000,
-   "seconds": 33.5,
+   "seconds": 58.2,
    "seed": 20261013,
    "sequences": 20
   },
@@ -595,6 +694,25 @@
     "1": 371,
     "20": 5,
     "5": 323
+   },
+   "envelope": {
+    "n_certified_absent": 7798,
+    "n_certified_present": 349,
+    "n_exactly_robust_absent": 7798,
+    "n_exactly_robust_present": 349,
+    "n_false_certificates": 0,
+    "rho_env": {
+     "cap": 4.0,
+     "capped": 6,
+     "max_overstatement_vs_enumeration": 0.0,
+     "n_compared_against_enumeration": 367,
+     "n_pairs": 373,
+     "tied_at_zero": 2,
+     "unconverged": 1
+    },
+    "set": "the published envelope at lambda = 1 (build_basis.published_envelope)",
+    "test": "the box bound N(s) - sum_e |dc_e| u_e, an UPPER bound on the envelope's worst case (the envelope lies in the box); certified must imply box-robust, and slack is measured against this bound, not against the exact worst case",
+    "whole_structure_certified": 176
    },
    "exactly_robust_absent": {
     "1": 7847,
@@ -611,7 +729,7 @@
     "20": 0,
     "5": 0
    },
-   "folds": 2931,
+   "folds": 4656,
    "n_admissible_total": 8242,
    "n_pairs_star_total": 373,
    "n_sequences": 200,
@@ -624,6 +742,7 @@
    "pass": true,
    "power_check": {
     "false_certificates_produced": 429,
+    "false_certificates_produced_envelope": 27,
     "n_sequences": 50,
     "pass": true,
     "weights_scaled_by": 0.5
@@ -632,23 +751,28 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
+    "git_sha": "e11ab60ddfe275b52fa42a3ba749b1daea831181"
    },
    "radii_kcal": [
     1.0,
     5.0,
     20.0
    ],
+   "recursion_side": {
+    "folds_checked": 4656,
+    "violations": 0,
+    "zuker_structures_checked": 23419
+   },
    "rho": {
+    "cap": 96.52924364315216,
     "capped": 5,
-    "max_overstatement_vs_enumeration_kcal": 0.0,
+    "max_overstatement_vs_enumeration": 0.0,
     "n_compared_against_enumeration": 368,
     "n_pairs": 373,
-    "r_cap_kcal": 96.52924364315216,
     "tied_at_zero": 2,
     "unconverged": 0
    },
-   "seconds": 18.8,
+   "seconds": 26.4,
    "sequences": {
     "lengths": [
      16,
@@ -675,7 +799,7 @@
    }
   },
   "G3": {
-   "folds": 1220,
+   "folds": 1830,
    "lengths": [
     120,
     122,
@@ -691,14 +815,16 @@
    "n_at_most_20_half": "in G2's shard: X' and Z' against the enumerated minimum of E'",
    "n_covered_by_the_zuker_set": {
     "Andronescu2007": 33643,
+    "envelope": 33643,
     "r1": 33643
    },
    "n_omitted": {
     "Andronescu2007": 0,
+    "envelope": 0,
     "r1": 0
    },
    "n_omitted_but_feasible": 0,
-   "n_sampled_covered": 1200,
+   "n_sampled_covered": 1800,
    "n_sampled_omitted": 0,
    "n_sequences": 10,
    "n_zprime_disagreements": 0,
@@ -708,13 +834,20 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
+    "git_sha": "e11ab60ddfe275b52fa42a3ba749b1daea831181"
    },
    "radii_kcal": {
     "Andronescu2007": 21.26280733187213,
+    "envelope": 1.0,
     "r1": 1.0
    },
-   "seconds": 117.2
+   "recursion_side": {
+    "folds_checked": 1830,
+    "violations": 0,
+    "what": "every fold here, mfe and every subopt_zuker structure: the recursion's energy == eval_structure on the same constrained compound == E0 + the checker's offset; any violation stops the run. The same check runs on every fold of G2, G6, the pilot and the run, and each records its own counts.",
+    "zuker_structures_checked": 70042
+   },
+   "seconds": 181.8
   },
   "G6": {
    "gauge": {
@@ -858,15 +991,21 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "e61b6fb2bef646baf84c8f236ace965b930d12d8"
+    "git_sha": "e11ab60ddfe275b52fa42a3ba749b1daea831181"
    },
-   "seconds": 450.8
+   "recursion_side": {
+    "folds_checked": 3448,
+    "violations": 0,
+    "zuker_structures_checked": 155985
+   },
+   "seconds": 427.7
   }
  },
  "gate_shards_dropped_on_rebuild": [
   "G1",
   "G2",
-  "G3"
+  "G3",
+  "G6"
  ],
  "run_id": "2026-10-13_certified_folding",
  "status": "G6 passed",
