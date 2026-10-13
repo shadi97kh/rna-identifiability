@@ -556,9 +556,19 @@ class Folder:
         return self._mfe("free")
 
     def without(self, i: int, j: int) -> tuple[str, int, int]:
-        """X'(i, j): the minimum of E' over structures that do NOT contain the pair."""
+        """X'(i, j): the minimum of E' over structures that do NOT contain the pair.
+
+        NO_REMOVE is load-bearing and was found by G2, not by reading the header. Without it
+        vrna_hc_add_bp also removes the pairs that CROSS (i, j) -- sound when a pair is being
+        enforced, wrong when it is being forbidden -- so the minimisation runs over too small a
+        space, X' comes back too HIGH, and pairs certify that are not robust. That is a false
+        certificate, the one failure this whole gate exists to catch, and on the first sequence
+        where it mattered it cost 0.75 kcal/mol: the DP returned -1013 dcal where the enumerated
+        minimum over (1,18)-free structures was -1088. With the flag the two agree exactly.
+        """
         self.fc.hc_init()
-        self.fc.hc_add_bp(i, j, self.RNA.CONSTRAINT_CONTEXT_NONE)
+        self.fc.hc_add_bp(i, j, self.RNA.CONSTRAINT_CONTEXT_NONE
+                          | self.RNA.CONSTRAINT_CONTEXT_NO_REMOVE)
         s, e, e0 = self._mfe(f"without {(i, j)}")
         if pair_table(s)[i] == j:
             raise GuardFailure(f"forbidding {(i, j)} did not: {s[:60]}")

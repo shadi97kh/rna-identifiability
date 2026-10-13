@@ -117,3 +117,49 @@ def test_a_planted_defect_is_caught(pinned):
     db = "((((((((((((...))))))))))))............"
     with pytest.raises(GuardFailure, match="per-loop decomposition"):
         bad.loops_checked(seq, db)
+
+
+# ----------------------------------------------------------------------------------
+# the forbidden-pair fold, which X' is
+# ----------------------------------------------------------------------------------
+def test_forbidding_a_pair_forbids_only_that_pair(pinned):
+    """A forbidden-pair fold must reach the true minimum over the structures lacking the pair.
+
+    This is a regression test for a real false-certificate bug, found by G2 and not by reading
+    ViennaRNA's header. `vrna_hc_add_bp(i, j, CONSTRAINT_CONTEXT_NONE)` also removes the pairs
+    that CROSS (i, j), which is right when a pair is being enforced and wrong when it is being
+    forbidden: the minimisation then runs over too small a space, X' comes back too high, and
+    pairs certify that are not robust. The fix is CONSTRAINT_CONTEXT_NO_REMOVE, and what this
+    test pins is the consequence rather than the flag -- the fold must agree with brute-force
+    enumeration, whatever ViennaRNA's constraint API does next.
+
+    The sequence is the one G2 failed on, with the pair and radius that failed, so a revert
+    fails here before it reaches the gate.
+    """
+    import RNA
+
+    from scripts.certfold import (
+        Folder,
+        Weights,
+        enumerate_structures,
+        load_tr0_basis,
+        loop_coeff_map,
+        offset_from_map,
+    )
+    from scripts.turner_nullspace import pair_table
+    from thermo.vienna_ref import reference_md
+
+    seq, pair, r = "UGCUAAACUCAGGCUGCAUU", (1, 18), 20.0
+    P, lc = pinned
+    B = load_tr0_basis()
+    W1 = Weights(B["a_four"], B["cols"], 1.0)
+    plain = RNA.fold_compound(seq, reference_md())
+    star, _ = plain.mfe()
+    star_map = loop_coeff_map(lc, seq, star, W1)
+    best = min(int(round(plain.eval_structure(s) * 100))
+               + offset_from_map(star_map, loop_coeff_map(lc, seq, s, W1), r)
+               for s in enumerate_structures(seq) if pair_table(s)[pair[0]] != pair[1])
+    F = Folder(lc, seq, star, Weights(B["a_four"], B["cols"], r))
+    _s, x, _e0 = F.without(*pair)
+    assert x == best, (f"the forbidden-pair fold gives {x} dcal, the enumerated minimum over "
+                       f"structures without {pair} is {best}")
