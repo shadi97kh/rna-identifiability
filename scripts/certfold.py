@@ -2966,43 +2966,60 @@ def gate_g4() -> int:
         adm = admissible_pairs(seq)
         u_star = basis_image(B["B4"], pos, lc.counts(seq, star))
         F = Folder(lc, seq, star, Weights(B["a_four"], B["cols"], G2_RADII[0]))
+        Fe = Folder(lc, seq, star, Weights(B["u_env"], B["cols"], 1.0))
+        c_star = lc.counts(seq, star)
         rec = {"name": nm, "n_nt": len(seq), "n_pairs_star": len(sp), "by_radius": {}}
-        for r in G2_RADII:
-            F.set_radius(r)
-            _s_min, e_min, _e0 = F.free()
-            delta = F.eprime_star - e_min
+        # the ball at the authors' radii, then the published envelope at lambda = 1. For the ball
+        # the witness test is exact (N - r ||B^T dc||); for the envelope it is the box bound
+        # N - lambda sum_e |dc_e| u_e, an upper bound on the envelope's worst case, as in G2:
+        # certified must imply box-robust, so a structure whose box margin is <= 0 may not
+        # lack a certified-present pair nor hold a certified-absent one
+        sets = [(f"{r:g}", "ball", F, r) for r in G2_RADII] + [("envelope", "envelope", Fe, 1.0)]
+        for label, kind, Fx, r in sets:
+            Fx.set_radius(r)
+            _s_min, e_min, _e0 = Fx.free()
+            delta = Fx.eprime_star - e_min
             if delta < 0:
                 raise GuardFailure(f"E'(s*) is below the constrained minimum on {nm}")
             if delta > G4_DELTA_CAP:
-                rec["by_radius"][f"{r:g}"] = {"radius_kcal": r, "skipped": True,
-                                              "band_delta_dcal": int(delta),
-                                              "cap_dcal": G4_DELTA_CAP}
+                rec["by_radius"][label] = {"kind": kind, "scale": r, "skipped": True,
+                                           "band_delta_dcal": int(delta),
+                                           "cap_dcal": G4_DELTA_CAP}
                 continue
             # every structure of the band goes through the recursion-side check, as every
             # other soft-constrained fold does: subopt's energy == eval_structure == E0 + offset
             band = []
-            for z in F.fc.subopt(int(delta)):
-                F._check(z.structure, int(round(z.energy * 100)), "wuchty")
-                F.recursion["subopt_structures_checked"] += 1
+            for z in Fx.fc.subopt(int(delta)):
+                Fx._check(z.structure, int(round(z.energy * 100)), "wuchty")
+                Fx.recursion["subopt_structures_checked"] += 1
                 band.append(z.structure)
             if not band:
-                raise GuardFailure(f"an empty band on {nm} at r = {r} with delta = {delta}")
+                raise GuardFailure(f"an empty band on {nm} at {label} with delta = {delta}")
             # subopt must be honouring the callback: its best structure must reach E'_min
-            best = min(F.eprime(s)[0] for s in band)
+            best = min(Fx.eprime(s)[0] for s in band)
             if best != e_min:
                 raise GuardFailure(f"subopt under E' does not reach the constrained minimum on "
                                    f"{nm}: {best} != {e_min}")
-            c = certify(F, sp, adm)
+            c = certify(Fx, sp, adm)
             cert_p = {p for p, m in c["margins_present_dcal"].items() if m > 0}
             cert_a = {q for q, m in c["margins_absent_dcal"].items() if m is None or m > 0}
             n_witness = 0
             for s in band:
-                ep, e0 = F.eprime(s)
-                if ep > F.eprime_star:
+                if s == star:
+                    continue             # s* has margin exactly 0 and can witness nothing
+                ep, e0 = Fx.eprime(s)
+                if ep > Fx.eprime_star:
                     continue
-                n_s = (e0 - F.e0_star) / 100.0
-                u = basis_image(B["B4"], pos, lc.counts(seq, s))
-                margin = n_s - r * float(np.linalg.norm(u - u_star))
+                n_s = (e0 - Fx.e0_star) / 100.0
+                cs = lc.counts(seq, s)
+                if kind == "ball":
+                    u = basis_image(B["B4"], pos, cs)
+                    margin = n_s - r * float(np.linalg.norm(u - u_star))
+                else:
+                    box = sum(abs(cs.get(k, 0) - c_star.get(k, 0))
+                              * float(B["u_env"][Fe.W.idx[k]])
+                              for k in set(cs) | set(c_star) if k in Fe.W.idx)
+                    margin = n_s - r * box
                 if margin > 0:
                     continue
                 n_witness += 1
@@ -3012,41 +3029,46 @@ def gate_g4() -> int:
                     if p_t[i] > i:
                         here.add((i, p_t[i]))
                 for p in cert_p - here:
-                    viol.append({"name": nm, "radius_kcal": r, "kind": "present", "pair": p,
-                                 "exact_margin_kcal": margin, "structure": s[:60]})
+                    viol.append({"name": nm, "set": label, "kind": "present", "pair": p,
+                                 "margin_kcal": margin, "structure": s[:60]})
                 for q in cert_a & here:
-                    viol.append({"name": nm, "radius_kcal": r, "kind": "absent", "pair": q,
-                                 "exact_margin_kcal": margin, "structure": s[:60]})
-            rec["by_radius"][f"{r:g}"] = {
-                "radius_kcal": r, "skipped": False, "band_delta_dcal": int(delta),
+                    viol.append({"name": nm, "set": label, "kind": "absent", "pair": q,
+                                 "margin_kcal": margin, "structure": s[:60]})
+            rec["by_radius"][label] = {
+                "kind": kind, "scale": r, "skipped": False, "band_delta_dcal": int(delta),
                 "band_size": len(band), "n_exact_witnesses": n_witness,
                 "n_certified_present": len(cert_p), "n_certified_absent": len(cert_a),
             }
-        rec["folds"] = F.folds
-        rec["recursion"] = dict(F.recursion)
+        rec["folds"] = F.folds + Fe.folds
+        rec["recursion"] = {k: F.recursion[k] + Fe.recursion[k] for k in F.recursion}
         per.append(rec)
         if viol:
             raise GuardFailure(f"G4: {len(viol)} false certificates: {viol[:2]}")
 
     def at(r, key, pred=lambda v: True):
+        lab = r if isinstance(r, str) else f"{r:g}"
         return [v[key] for p in per for k, v in p["by_radius"].items()
-                if k == f"{r:g}" and key in v and pred(v)]
+                if k == lab and key in v and pred(v)]
 
     shard = {
         "n_sequences": len(per), "max_n": G4_MAX_N, "radii_kcal": list(G2_RADII),
         "band_cap_dcal": G4_DELTA_CAP,
         "lengths": {"min": min(p["n_nt"] for p in per), "max": max(p["n_nt"] for p in per)},
-        "by_radius": {f"{r:g}": {
+        "by_radius": {(r if isinstance(r, str) else f"{r:g}"): {
             "n_run": len(at(r, "band_size")),
             "n_skipped": sum(1 for p in per
-                             if p["by_radius"].get(f"{r:g}", {}).get("skipped")),
+                             if p["by_radius"].get(r if isinstance(r, str) else f"{r:g}",
+                                                   {}).get("skipped")),
             "band_size_total": sum(at(r, "band_size")),
             "band_size_max": max(at(r, "band_size"), default=0),
             "band_delta_dcal_max": max(at(r, "band_delta_dcal"), default=0),
             "n_exact_witnesses": sum(at(r, "n_exact_witnesses")),
             "n_certified_present": sum(at(r, "n_certified_present")),
             "n_certified_absent": sum(at(r, "n_certified_absent")),
-        } for r in G2_RADII},
+        } for r in (*G2_RADII, "envelope")},
+        "sets": {"ball": "radii in kcal/mol, the exact witness test",
+                 "envelope": "lambda = 1, witnesses by the box bound (an upper bound on its "
+                             "worst case), as in G2"},
         "n_false_certificates": 0,
         "folds": sum(p["folds"] for p in per),
         "recursion_side": {k: sum(p["recursion"][k] for p in per)
