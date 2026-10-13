@@ -468,7 +468,11 @@ def per_loop_shift(B: dict, B4: np.ndarray, a_four: np.ndarray, radii: dict, row
         r = v["radius_on_B_four_kcal"]
         per_radius[x] = {
             "radius_kcal": r,
+            # over every loop of s*, and over the charged ones alone: about nine loops in ten
+            # carry no weight at all (stacks, hairpins, multiloops, exterior stems), so the
+            # unconditional median and 95th percentile are both 0 and say nothing
             "per_loop_shift_the_ball_allows_kcal": q(unit, r),
+            "per_loop_shift_the_ball_allows_kcal_charged_only": q(unit[unit > 0], r),
             "per_entry_shift_the_ball_allows_kcal": q(ball, r),
             "per_entry_shift_this_component_makes_kcal": q(np.array(entry_pub[x])),
         }
