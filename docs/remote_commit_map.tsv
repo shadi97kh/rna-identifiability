@@ -1,145 +1,343 @@
-# Local commit -> commit on origin (github shadi97kh/sirna-thermo).
-# The manuscript (paper/recomb2027/) and its tests (tests/test_recomb_*.py) are not
-# pushed: the commits after 41b24e3 were rewritten without those paths (git
-# filter-branch --prune-empty), so the git_sha recorded in a run artifact is the LOCAL
-# commit; this map gives its pushed counterpart. Paper-only commits were dropped.
-local	origin	subject
-181ae0fe7bed	181ae0fe7bed	Turner null space on TR0+TS0 reference structures, with Rfam control and saturation
-7c9f9d41d43d	7c9f9d41d43d	TR0+TS0 Turner null space: artifact
-02b20cce78e9	02b20cce78e9	TR0 null space: amendment entry point for the joint read (NOT APPLICABLE)
-5c70778d8ef4	5c70778d8ef4	TR0 null space artifact: amendment 1, joint read NOT APPLICABLE
-8c50fe51d0fc	8c50fe51d0fc	Seed study artifact as the 2026-10-09 interruption left it
-22fb42c68197	22fb42c68197	Wait for predecessors by recorded status; rerun the interrupted seed-study runs
-a847a1ef306e	a847a1ef306e	Gauge pre-registration: amendment 3, wait by recorded status
-67e45ef511c7	67e45ef511c7	Seed study: interruption event recorded, fresh rerun of the six launched
-112f626894d4	112f626894d4	MXfold2 weight-space floor against the between-seed signal, per arm
-fab58b8fcba6	fab58b8fcba6	Weight floor: exclude the fixed -inf Turner entries after checking they never differ
-66f948de7a34	66f948de7a34	Weight floor: correct the registered direction note after the reg arm (rule unchanged)
-1589bcb92fd0	1589bcb92fd0	Weight floor artifact: regulariser arm NOT CLEARLY ABOVE (floor/2V = 0.70)
-d6ce41f62258	d6ce41f62258	Which sequences carry the converged SGD run's large v.g steps
-83062c18e110	83062c18e110	SGD v.g steps: the 11 high-|v.g| sequences, all inside the 13 long-run set
-1aae55c955df	1aae55c955df	POST-HOC: the v.w drift carried by the 11 high-|v.g| steps, signed
-5c544bba5129	5c544bba5129	POST-HOC v.w rebuild: the 11 high-|v.g| steps carry 99.996% of the signed drift
-d296ed843cdf	d296ed843cdf	Breaker vs non-breaker: theta shift, scored energies, and the C_HELIX_E traceback
-4cc13df3b00b	4cc13df3b00b	Breaker analysis: score the prediction the DP scored (restore the dropped pair, validated 
-2dc05b8fd25a	2dc05b8fd25a	Breaker artifact: v breaks exactly where a scored helix exceeds 30 pairs
-7582aec29b5b	7582aec29b5b	Breaker analysis: per-helix check of where the DP's returned structure loses the pair
-79b5d25b1784	79b5d25b1784	Breaker artifact: the DP returns every long helix split at the cap (29 | gap | m-30)
-9cbfb8726f67	9cbfb8726f67	v.w rebuild: record median |v.g| and the reconstruction's share of the observed drift
-6177b61dd6e3	6177b61dd6e3	v.w rebuild artifact: median |v.g| 1.30e-8 pooled; reconstruction explains 99.35% of the o
-e59e90c32f2e	e59e90c32f2e	Breaker analysis: configuration dependence of the exception (rescoring at other --max-heli
-c43919c820bf	c43919c820bf	Breaker artifact: the exception set depends on --max-helix-length
-404876fe4833	404876fe4833	Manuscript: Appendix J, MXfold2's helix-length symmetry and its traceback split
-71ce9aa6c431	71ce9aa6c431	Seed study: full COMPLETE (training) after the fresh rerun of the six interrupted runs
-e98c81777faa	e98c81777faa	Weight floor: handle a bitwise-identical duplicate (D = 0) and record its scope
-c1e2ec1587dc	c1e2ec1587dc	Weight floor artifact: all three arms
-4c9f22c6d586	4c9f22c6d586	Gauge pre-registration: how R1/R2 read under the asymmetric duplicate floor (code; amendme
-a2a2c0ca1e04	a2a2c0ca1e04	Gauge pre-registration: amendment 4, R1/R2 reading under the asymmetric floor (before any 
-82d79bd80605	82d79bd80605	Is the regulariser's computation the reg arm's duplicate floor? (bitwise determinism test)
-fefa7fe464c1	fefa7fe464c1	Reg determinism test: a key with no gradient (h not in G) is recorded as None
-76aa9aaf7139	76aa9aaf7139	Reg determinism test: level 2 in train mode, dropout off and dropout on reseeded
-47c4651c216b	47c4651c216b	Reg determinism artifact: the regulariser's computation and the network backward are bitwi
-9f5754b6bbe0	9f5754b6bbe0	Where the reg duplicate first diverges, from the logs (no rerun)
-56060afe70de	56060afe70de	Reg determinism test: add the two sequences at the duplicate's first divergence
-d21d8bc7eac8	d21d8bc7eac8	Reg duplicate: bitwise-deterministic single steps, divergence at epoch 1 step 60
-e662769d767b	e662769d767b	MXfold2 release reproduction: the long-helix pair drop and the loss-augmentation omission
-63d322221277	63d322221277	MXfold2 release reproduction artifact: both long-helix defects on the released weights
-c635a97b1d41	c635a97b1d41	Manuscript: the MXfold2 defect as a property of v0.1.2 at its default, with the released-m
-f93f723cb09f	f93f723cb09f	Gauge evaluation stage 2a: STOPPED, V3 not detected on 1-2 of 1,305 sequences in three epo
-2e7fb90c1b0b	2e7fb90c1b0b	V3 diagnosis for the three epoch-1 models that stopped stage 2a (read-only, evaluator's ow
-421bba652923	421bba652923	V3 diagnosis: the four stage-2a misses are lower-tail draws, not a defect
-084ae2fc0045	084ae2fc0045	V3 d3 on every stage-2a trial, split epoch-1 against epoch-10 models (read-only)
-cb19b4bc6c62	cb19b4bc6c62	Gauge pre-registration: V3 amendment text (three directions, fixed streams, equivalence pr
-06e34588b063	06e34588b063	Gauge pre-registration: amendment 5, V3 with three fixed directions (before any statistic)
-ae5999ac714b	ae5999ac714b	V3 amendment 5: re-draw script, and reduce() reads it (worker unchanged)
-2d2050886c95	2d2050886c95	V3 re-draw for stage 2a: all four direction-0 misses hit on directions 1 and 2
-9196ade8bf11	9196ade8bf11	Gauge evaluation stage 2a: complete under amendment 5 (statistics computed for the first t
-9bbaef4676c5	9bbaef4676c5	V3 d3 split: epoch-1 and epoch-10 models have the same d3 distribution (KS 0.020)
-4d1ac95619c3	4d1ac95619c3	Gauge evaluation stage 2b: complete under amendment 5; reproduces 2a bitwise
-03f414705599	03f414705599	Weight-decay check across both MXfold2 studies (configs, code, every checkpoint's optimise
-85992f0f7fba	85992f0f7fba	Weight-decay check: zero in every run of both MXfold2 studies
-906b550c7b52	906b550c7b52	Shipped MXfold2 on TS0 with the gauge evaluator's scorer, against the CLI run, the arms an
-b3ffa7f05c5c	b3ffa7f05c5c	Shipped TS0 check: record the paper's stated training and the code's defaults, and the gap
-cf2df9c06a6e	cf2df9c06a6e	Shipped TS0 check: parse train.py defaults past a choices tuple
-ae66850bc934	ae66850bc934	Shipped MXfold2 on TS0: the scorer agrees; the retrain gap is half C1, half unattributed
-1b9cf9e8824b	1b9cf9e8824b	Weight-decay ablation: runner (v.w around every optimiser step) and study phases
-09a32a469a40	09a32a469a40	Weight-decay ablation: pre-registration (A1, A2, NC1, NC2, AR(1) confinement with floor ru
-27e171d8b009	27e171d8b009	Weight-decay ablation arms a and b: A1 confirmed, preconditioner 33x the decay
-0bd97d923124	0bd97d923124	Weight-decay ablation: arm c analysis (TS0 F with the arms' scorer, registered AR(1) path 
-7a9e1d2ed969	7a9e1d2ed969	Weight-decay ablation arm c: AR(1) tracks (10/10 epochs), width 5.07; TS0 F 0.5574
-90ce2d94d9da	90ce2d94d9da	Weight-decay ablation: no-decay late-epoch drift bound (computed after arm c, labelled so)
-1e45d4e102a7	1e45d4e102a7	Weight-decay ablation: no-decay late-epoch drift bound recorded (after arm c)
-a14bfe587504	a14bfe587504	Krueger refit release check: upstream jax-rnafold refs and the paper's release statements
-890f66ca9f8c	890f66ca9f8c	Krueger refit release check: not released in jax-rnafold (any ref); paper promises it ther
-296cd6c0e837	296cd6c0e837	Weight-decay ablation: decay rate required for a stated v.w width (post hoc)
-611e2b93ae5b	611e2b93ae5b	Weight-decay ablation: lambda for width 1.0 recorded (arm c sigma_LR: 0.257, 26x)
-ce3f1f622b77	ce3f1f622b77	Type B: ViennaRNA .par writer, the inverse of theta_from_par by construction (probe locato
-004da9e06983	004da9e06983	Type B writer: defeat ViennaRNA's table cache, guard each configuration, label d2 tables n
-5c12b2e8c0f1	5c12b2e8c0f1	Type B writer check: all pass (W1-W5, C1; V1 cache and V2 d2 clip measured)
-c39956ba60f8	c39956ba60f8	Type B writer tests: format round trip, refusals, rounding; slow reader check on 23,741 ro
-b60f94b8e51a	b60f94b8e51a	Weight-decay ablation: lambda-for-width text (linearised estimate) and arm c sigma_LR by e
-cf98a87d0079	cf98a87d0079	Weight-decay ablation: arm c sigma_LR flat across epochs (epoch 1 already 0.023)
-0e3746b2cae8	0e3746b2cae8	Type B: script (preregister, bases, Experiment 1 projection) with the registered design
-3fa965a078a4	3fa965a078a4	Type B: pre-registration (Experiment 1 controls, Experiment 2 grid/floor/claim rules, guar
-1104f4d79614	1104f4d79614	Type B: tests for the orthogonal split and controls; zero-norm guard; project-phase proven
-66ea18e9f68c	66ea18e9f68c	Type B: fold worker, points, smoke test (guards: rebuild, params_match, carry rows, refere
-b7652241f12d	b7652241f12d	Type B: bases recomputed, registered dimensions reproduced exactly (426/428/8046; 214/216/
-b7dc016c5af1	b7dc016c5af1	Type B: Experiment 1 first run (registered control (a) does not fail)
-62df3de42bc8	62df3de42bc8	Type B: record Experiment 1's registered verdict; post-hoc intrinsic fraction with the sam
-5497c8cf1ce3	5497c8cf1ce3	Type B: Experiment 1 verdict recorded (control (a) does not fail anywhere: dimension count
-e35dab609e78	e35dab609e78	Type B: contrast directions built exactly in-table (the null basis's out-of-table entries 
-7ee61614a275	7ee61614a275	turner_par: _rebuild also refreshes ViennaRNA's separate Boltzmann-factor cache; V3 measur
-c7269b443c84	c7269b443c84	Writer check rerun with V3 (Boltzmann-factor cache measured); all pass
-d7eea63a78c9	d7eea63a78c9	Type B: Boltzmann-factor carry check (constrained pf on the top carry row) and its planted
-1fdbef2a50a8	1fdbef2a50a8	Type B: planted stale-Boltzmann control reproduces the hazard (model-A pf under Turner bef
-dcf3b472320b	dcf3b472320b	Type B: fold smoke test passes (guards hold; stale energy table and stale Boltzmann table 
-02f97e4dcd49	02f97e4dcd49	Type B: control (c) restricted to the shared support; null-arm leak asserted per point; am
-2ea781b7a108	2ea781b7a108	Type B: Langdon control (c) corrected to the shared support (rank 3.2 -> 3.8 TR0+TS0, 72.2
-2d66f619824b	2d66f619824b	Type B: amendments written before the fold (Experiment 1 priors failed; amendment 1 'less'
-8677126737ad	8677126737ad	Type B amendment 2: Langdon per-table constant-shift control and gauge canonicaliser (expl
-e2fe045a65e3	e2fe045a65e3	Type B amendment 2 (exploratory): Langdon's intrinsic component is per-table constant shif
-871ca7380126	871ca7380126	Type B: exploratory check of control (c)'s depletion against per-table constant shifts
-b8c0af6e88a0	b8c0af6e88a0	Type B (exploratory): per-table constants explain little of control (c)'s TR0+TS0 low rank
-e5d696dda5bc	e5d696dda5bc	Type B Experiment 2: fold complete (193 points, 12 workers, all guards held) and analysed
-911282611c59	911282611c59	Type B: record-outcomes phase (verdict-reading correction with exact-Beta evidence; regist
-f1878dda3fa4	f1878dda3fa4	Type B: verdict-reading correction (old text kept verbatim) and priors' outcomes recorded:
-b13f10244f46	b13f10244f46	Type B: fold driver status starts with RUNNING (the standard waiter read 'fold RUNNING' as
-ba05e6beece0	ba05e6beece0	vienna_ref guard check: record the reference's values before the Boltzmann guard
-54bdb26bcc99	54bdb26bcc99	vienna_ref guard check: before values recorded
-87d4b2ed9e52	87d4b2ed9e52	vienna_ref: guard the Boltzmann factors behind pf() (separate ViennaRNA cache); two plante
-d5bedbe4086d	d5bedbe4086d	vienna_ref Boltzmann guard: gate rerun, all 7,203 reference values bitwise unchanged
-7bc9ccdb204b	7bc9ccdb204b	Type B Experiment 2: three exploratory analyses of the shards (paired F1 vs reference, cha
-8e1906e5a11f	8e1906e5a11f	Type B Experiment 2 (exploratory): accuracy unchanged (paired dF1 CIs contain 0); changes 
-0c1a6bec5066	620da0d339c3	RECOMB 2027 manuscript directory: LNCS 2.26 template (CC BY 4.0, provenance recorded), DOI
-6e2c5a782013	f4984fece056	RECOMB 2027 manuscript: Type B methods, Experiment 1 and Experiment 2 results, and supplem
-401cc02c57b8	d0a9132be061	Type B tie-split refold (exploratory): script with the reporting rule
-f95f10e148ba	09267230d2a2	Type B tie-split: reporting rule registered before any refold (headline reports real reord
-efbc42fafc8b	d60829c2a6c8	Type B tie split (exploratory): Andronescu point 469 real reorderings (3.9% [3.6, 4.3]) + 
-c984952a6809	not pushed (paper only)	Type B figure: genuine MFE changes vs perturbation norm, null vs contrast arms, published 
-87922468d1d4	e32988e50480	RECOMB: the call's formatting rules verbatim (raw page, sha256); bibliography test moved t
-acef811e2647	4e8007040227	vienna_ref guard check: planted phase (old guard vs new, each version from git history)
-c262b3c3cb37	85041dea7ba5	vienna_ref guard check: the guard was added in 87d4b2e, not d5bedbe (which only recorded t
-cf481b263197	5c08485c9e05	vienna_ref guard check: planted stale Boltzmann table recorded; the old guard returned -25
-6ecc1785f38a	not pushed (paper only)	RECOMB: CLAIM-line check (outline claims tied to tracked artifacts and resolving JSON poin
-0dc769abcedb	not pushed (paper only)	STYLE_PROVENANCE: the manuscript now compiles (tectonic)
-019e800af1b0	not pushed (paper only)	RECOMB: Type B section cut to 2 pages with its figure (compiled: 2 body pages); claim-pinn
-9fb643c11fdf	not pushed (paper only)	RECOMB: one PDF from separate files (sections/*.tex, references, supplement/body.tex as an
-fcfbc236a58c	361a92f248c6	E1: Fisher information by direction class (script); shared loader re-checks the fold's dir
-c32881551e52	6cacd2b11a50	E1: preregistration (registered test: contrast/null mean-I ratio > 1; null I > 0 a reporte
-75873408640f	98127701fc56	Data: Rfam 12.2 family list (CC0), registered by sha256; the release bpRNA-1m drew from (D
-5f580a5d641e	dd307ae25a8e	E3: TR0+TS0 under the whole published tables, and the DNA check (script); shared fold-unde
-5f1dea72b3a0	4203e97343ac	E3 DNA check: test the intrinsic gauge on DNA values directly (writer + ViennaRNA), and cl
-0a0beba7ee21	a3dc856336a5	E3 DNA check: N1 and N2 are null for ViennaRNA's DNA set (0 of 23,741 energies change); lo
-90aa9ba65c9f	2868377b0b22	E1 sampled (8/8 workers, must-holds held); E3 energy identities made exact for tables whos
-fe6631438d6e	dbd7e31ffba8	E1 analysed: registered test passes (contrast/null mean-I ratio 9.41 [9.14, 9.69]); intrin
-8260ebf71b5b	20f75fdfc0e0	E3 analysed: whole published tables change 65.5% (Turner 1999), 81.9% (Andronescu 2007), 8
-8a76a88d05a7	bfaa0ca94145	Ablation arm (c): per-epoch and thinned per-step split of v.w into decay and optimiser con
-318022b911bf	not pushed (paper only)	Figures: shared style and provenance (committed artifacts only, sha256 sidecars); Fig 4, t
-4f7a6476f47c	not pushed (paper only)	Table 1: null-space dimensions by source (model, TR0+TS0, Rfam 15.1 seed) and Type B compo
-7d26615ce59f	not pushed (paper only)	Fig 3 (E1): information by direction class (intrinsic exactly 0, null and published compon
-022ff741486b	not pushed (paper only)	Fig S1: Type B dimension against corpus size (Rfam subsamples, matched size, all Rfam, TR0
-e549ef8c86f7	3836fb6c7ba8	E2: held-out set built (1,641 Rfam 15.1 families absent from Rfam 12.2; 46,130 sequences a
-ee1a7d40a971	not pushed (paper only)	Fig S2: published-component MFE changes by Turner 2004 MFE gap (exploratory, Wilson CIs); 
-6589ebaf806f	0697423bf5d9	E2 analysed: registered test NOT supported (16 kcal/mol: held-out and in-sample noise-corr
-6f2c79ac09b9	not pushed (paper only)	RECOMB manuscript: title, authors and abstract (the authors' text, numbers pinned); Fig 2 
-4779441cc642	72e40b0b677a	E1 exploratory gradient (asked after E1 was registered, sampled and analysed; not register
+# Local commit -> commit in the public artifact (github shadi97kh/rna-identifiability).
+# The artifact keeps only the code and results the paper uses, everywhere in its history
+# (artifact/keep_files.txt, artifact/keep_runs.txt), so EVERY commit was rewritten: the
+# git_sha a run artifact records is the local commit, and this map gives the artifact
+# commit carrying its code. 'dropped' marks a local commit that touched only excluded
+# paths; it maps to the artifact commit that already carried everything it kept. Built by
+# artifact/export.sh and artifact/commit_map.py; the commit adding this file is not in it.
+local	artifact	status	subject
+b5cc23bf6509	dcbb206dd08c	exported	wip: state before setup_all.sh
+8acf54a6ffd7	dcbb206dd08c	dropped	setup: plan of record, status tooling, reconciled scaffold
+3d0e31d4ffd4	dcbb206dd08c	dropped	docs: record blockers found while reconciling setup_all.sh state
+d86099cb0f6c	dcbb206dd08c	dropped	docs: note status.py NEXT ACTION is stale while PHASE 5 path is wrong
+edefc47587c8	dcbb206dd08c	dropped	fix: lint errors in generated scripts/status.py
+045d9dc04d25	98145bd219eb	exported	fix: reconcile LNA role inversion across registry, rules and configs
+e861a39be13c	0a1a4417d1cf	exported	P3: ingest and register the thermodynamic reference tables
+e7fb376be3c9	69061045c564	exported	Kierzek 2006 2'-OMe set is in MELTING after all, under hybridisation type mrnarna
+55e24e9afdc6	69061045c564	dropped	generator: apply and grep-verify the three setup_all.sh patches
+855070916cca	69061045c564	dropped	reorder: P4 is the critical path, the DP becomes an ablation
+915ee9462ee1	69061045c564	dropped	status: add the PHASE 4 gate and mark PHASE 5 an ablation
+561a82edc284	69061045c564	dropped	P7 viability blocked: knockdown sources absent; diagnose signed residual; add salt_na_mola
+6707b2bb59f5	69061045c564	dropped	P4: LearnedNNParams with (dH, dS), delta-delta held-out scoring
+345f526efc72	69061045c564	dropped	first number: McTigue-trained Delta_phi does not transfer to Kierzek
+e6990e581b06	f489dc1796da	exported	RETRACT and correct the transfer reading: the flip pairing was wrong
+a259a9912eb3	810f23d7cd71	exported	reference-state hypothesis: confirmed as a large effect, transfer still unbeaten by a cons
+1293f264c55a	810f23d7cd71	dropped	reference correction as a fixed transform; CMsiRNAdb acquired; manuscript outline
+fc6cabfdc082	b2ebfb320d1c	exported	equivalence via TOST, circularity checked, CMsiRNAdb provenance registered
+edb76de00c3c	b2ebfb320d1c	dropped	draft: sections 1-4 in full prose
+99fd87456ca1	b2ebfb320d1c	dropped	draft: sections 5-8, amplification framing, scope separation
+edaa18bd1836	b2ebfb320d1c	dropped	draft: header reflects complete draft
+300d3e3fc183	077efa225054	exported	two final experiments: Owczarzy control void, unit coefficient holds in both channels
+fd2a065a4978	077efa225054	dropped	audit: no distributed NN table is auditable under the duplex rotation
+965b7f4e00cc	077efa225054	dropped	revert flip averaging: the map it enforced is not a symmetry
+bcdc95b022c8	077efa225054	dropped	paper: retract the symmetry claim, rename 0.168, redo the TOST at n=32
+0d4a44310c89	077efa225054	dropped	runs: audit and recomputation artifacts
+ddecb5f4a73a	077efa225054	dropped	rebuild every section 3-5 figure from registered sources
+bb897ebdec75	077efa225054	dropped	fix the circularity probe, reframe section 4 as a decomposition
+b9147221c062	077efa225054	dropped	figures: generate both manuscript figures from run artifacts
+70908027702f	077efa225054	dropped	figs: render both figures, reference Figure 2 from the text
+797049f2b10b	077efa225054	dropped	pin every manuscript decimal, add PNG figure output
+57cb75072179	46e16a249048	exported	fix two manuscript errors, pin the counts that hid them
+9258ee6b8d05	46e16a249048	dropped	tests: guard the inosine checks on the manuscript being present
+9eb15293171d	46e16a249048	dropped	Delete directory
+41887fc876ac	46e16a249048	dropped	cut the main body from 4.96 to 4.00 pages
+bb0c12133366	46e16a249048	dropped	bound the salt argument in section 6; add BCa intervals on the decomposition
+3cf8dee8d1ec	46e16a249048	dropped	add the bootstrap run artifact
+7bd161cbe385	46e16a249048	dropped	regenerate the bootstrap artifact from a clean tree
+c4cdccd12647	46e16a249048	dropped	bound the heat-capacity limitation instead of naming it
+2a46aa914ea1	46e16a249048	dropped	add the dCp bound artifact
+05e0edb80a0b	46e16a249048	dropped	regenerate the dCp artifact from a clean tree
+7a411dfaebf0	46e16a249048	dropped	position against prior art; move both bounds to appendix D
+3a80cd7e2485	46e16a249048	dropped	add the gauge-invariance probe
+40e7b66d1e68	46e16a249048	dropped	add the gauge-invariance artifact
+a00728b86a4e	46e16a249048	dropped	regenerate the gauge-invariance artifact from a clean tree
+b17522c1357e	46e16a249048	dropped	reframe: the difference between two tables is structured, not constant
+0ccb0ff2c578	46e16a249048	dropped	fix stale claims, references, author block and the LoG footer
+3005d26ab789	46e16a249048	dropped	add the NN design-matrix rank probe
+325b6e8dbc4c	46e16a249048	dropped	add the identifiability artifact
+34bd89070640	46e16a249048	dropped	regenerate the identifiability artifact from a clean tree
+2a30151e7e61	46e16a249048	dropped	add a reusable NN design-matrix conditioning survey
+64de0c3ac318	46e16a249048	dropped	remove the stray git-filter-repo wheel
+8c86e13a669f	d8caa546a8ee	exported	register 12 more MELTING tables and add the verified chem vocabulary
+7828999c6b14	d8caa546a8ee	dropped	carry the SVD gauge fix into the gradient setting, and survey conditioning
+ad454e62738a	d8caa546a8ee	dropped	record blockers 20-23 and close item 19
+e830306857a0	bd04daf7ea2e	exported	use Allawi & SantaLucia 1997 as the DNA:DNA baseline, from one source of truth
+88b5f6020ac7	bd04daf7ea2e	dropped	regenerate section4_numbers against the Allawi 1997 DNA baseline
+2e9ae3f79343	bd04daf7ea2e	dropped	regenerate positional_asymmetry against the Allawi 1997 DNA baseline
+f4f13dfab926	bd04daf7ea2e	dropped	regenerate independence_audit against the Allawi 1997 DNA baseline
+3b1a5b0d53e4	bd04daf7ea2e	dropped	regenerate gauge_invariance from a clean tree
+80974b992675	bd04daf7ea2e	dropped	regenerate bootstrap_decomposition from a clean tree
+fbd8a52078d4	bd04daf7ea2e	dropped	record that the reference state is set by software dispatch, not by the paper
+da077f750fd9	bd04daf7ea2e	dropped	add the stack encoder, the per-table reference head and both supervision modes
+6a61abcf54a9	624c989c8727	exported	close four stale DNA:DNA baseline references and add a guard that enumerates consumers
+95e50f04d837	624c989c8727	dropped	scripts added
+fc183157b45c	624c989c8727	dropped	correct the observable-level evaluation: mismatch rows, and a real null
+848194960b42	624c989c8727	dropped	run the encoder: experiment 4, experiment 7, and the mode (b) sanity check
+46b1b2dd729f	624c989c8727	dropped	migrate the retired measurement paper's findings into docs/
+fff954205ea9	624c989c8727	dropped	retire the MoML measurement paper: remove paper/
+559c01f00f70	dea197357d8d	exported	Merge origin/master: both sides retired paper/
+42db7a5220da	dea197357d8d	dropped	make the manuscript pins fail when their inputs are missing, and retire P9
+f0262ff9dadc	dea197357d8d	dropped	add a README
+c087b5ecbb05	dea197357d8d	dropped	test whether the reference head absorbs the gauge: one untestable, one confirmed
+854b60aca99a	dea197357d8d	dropped	write the paper: manuscript, two generated figures, and rebuilt pins
+ec4372f1cde5	dea197357d8d	dropped	regenerate the conditioning artifact from a clean tree
+6fa94a62452c	dea197357d8d	dropped	regenerate the conditioning artifact from a clean tree
+c5ad3eb8a690	dea197357d8d	dropped	regenerate the reference-head artifact console log
+a43f079a9610	a5b3a8679099	exported	record provenance as committed-code, not whole-tree cleanliness
+ac0437cfeefc	a5b3a8679099	dropped	regenerate the reference-head artifact with committed-code provenance
+abff31796c00	a5b3a8679099	dropped	regenerate the gauge artifact with committed-code provenance
+3da19d46ec02	a5b3a8679099	dropped	correct the collapse figure in docs/gauge.md: 30.7 orders, not ten
+25c3d0a1bfd7	a5b3a8679099	dropped	compile the paper, fit the body to four pages, and clear the bibliography
+ff259710af9e	a5b3a8679099	dropped	measure what the gauge costs, test weight decay, and refute our own epsilon claim
+95e9c9b072c2	a5b3a8679099	dropped	add the experiment that tests the title's claim on a learned model
+3c54fa5d921c	a5b3a8679099	dropped	batch the encoder path and snapshot the gauge fraction as it converges
+a1d04bb8a0cf	a5b3a8679099	dropped	regenerate the encoder gauge run with convergence checkpoints
+b9655ae681a9	a5b3a8679099	dropped	carry four new experiments into the paper, and retract the epsilon mechanism
+0010c8421916	a5b3a8679099	dropped	fix a garbled sentence in section 4
+7c1d59f53f46	a5b3a8679099	dropped	merge the paper's two figures into one legible full-width float
+bd398dbf60e8	a5b3a8679099	dropped	wip: figure fixes
+95fcb72945b7	a5b3a8679099	dropped	rebuild the figures: legible, honest captions, and a new appendix figure
+784dc990d053	a5b3a8679099	dropped	wip: real labels for the gauge experiments
+2932b59f120c	a5b3a8679099	dropped	wip: fix pairwise zip
+eb36393ddc2b	a5b3a8679099	dropped	wip: real-label figures and epsilon magnitude metric
+a34488e7a91d	a5b3a8679099	dropped	wip: appendix gauge-coordinate panel
+8ec964204601	9c3f20f81d78	exported	wip: real-label paper, pins and provenance fix
+29c840e455e9	9c3f20f81d78	dropped	retire synthetic labels: refit the gauge experiments on measured Kierzek data
+083b11877076	9c3f20f81d78	dropped	require every figure to be generated or recorded as asserting nothing
+2d7bdb305bf9	9c3f20f81d78	dropped	fix two stale panel letters, and stop panel (b) reading backwards
+1bd41d4cfbad	9c3f20f81d78	dropped	stop the main figure printing its legends on top of its data
+c638041c59ad	9c3f20f81d78	dropped	widen panel (c): equal aspect was collapsing it to two thirds of its slot
+86b18c5de246	9c3f20f81d78	dropped	put every panel key back on the diagram, at one type size
+fef90b555e4e	9c3f20f81d78	dropped	scope the minimum-norm distance, and test for floats nothing points at
+fad6f15ff7e0	9c3f20f81d78	dropped	adopt the restructured manuscript; fix a swapped column in Table 2
+a60e4ade6fe8	9c3f20f81d78	dropped	adopt the restructured manuscript; correct the gauge-fraction claim
+6376fc635a1f	9c3f20f81d78	dropped	README: the paper's title, the overview figure, and current numbers
+85d96bc10f08	9c3f20f81d78	dropped	add the anti-fabrication hook that status.py has always checked for
+dff347b33364	bf0ae1ce6cb8	exported	pooled gauge alignment: six arms over the published stack tables
+ab51e10555b5	e8b05369137f	exported	encode each distinct molecule once per step, not once per slot
+31f714e8e76d	6bcf91e38754	exported	Turner-gauge direction: model-level null spaces of Turner 2004 and MXfold2
+64bbc2619df8	d15e7c44a1b7	exported	Register Rfam 15.1 seed (CC0); data-restricted Turner null space on it
+25f088fdf24d	51e83c56407f	exported	Rfam null space: exact GF(p) rank by blocked LU with exact float64 GEMMs
+ad67313c86a9	05efb0091b4f	exported	Rfam null space r2: take the basis from QR of A, not eigh of A^T A
+2aa05b0a24e7	a9e31ebbede0	exported	Rfam projection robustness: low-drop subset vs matched random subsamples
+273e7ca99135	16185acbc926	exported	Rfam effective rank: keep the whole singular spectrum, not just its zeros
+6da70a514b06	cbb218c5fbc9	exported	MXfold2 seed study, phase epoch1: registered data, timed runner, pre-registration
+05876d960500	602819d3075e	exported	MXfold2 pin-override check: shipped weights on TS0, ours vs a pinned environment
+a8d9fb161e6b	fd8425e91aca	exported	Step 2: the regulariser pins exactly one direction per sequence (correction)
+605ee494797f	cf80856736aa	exported	MXfold2 seed study: OOM re-runs, determinism control, full-study phase
+5c1828e7f287	d6bee443b7c8	exported	Rfam robustness: random control matched on row count AND family membership
+8c1f2fa6f5a7	3ed02fd6630d	exported	MXfold2 decomposition evaluator; empty-interval correction; constant lower triangle
+a85e995c4fdb	d1e5263b5a2a	exported	Step 2: note that C3 has no power when the count matrix has full row rank
+320055b16b12	71c78a13a6eb	exported	MXfold2 gauge methods: head as post-hoc canonicaliser, v-tracking, regulariser, launcher
+e7c1ef09a470	71c78a13a6eb	dropped	Pre-register the MXfold2 gauge methods study
+7ed9b2632978	71ea6bfcd1f6	exported	PREREG: correct G3 -- the determinism floor is measured, not bitwise zero
+5a35084a0b71	71ea6bfcd1f6	dropped	Amendment 1 to the MXfold2 gauge study pre-registration (G3 floor)
+536cb5d7971d	d9e5bc2b68b6	exported	PREREG: make S1 well-posed before any SGD run (amendment 2)
+c75c107a3409	d9e5bc2b68b6	dropped	Amendment 2 to the MXfold2 gauge study pre-registration (S1 criteria)
+63e65d4f2e47	f7d2c77c2e8a	exported	MXfold2 gauge study: Phase 2 evaluator (adversarially reviewed)
+71f85df0f0bb	9cf3201ac85d	exported	README and docs: the folding-model direction, its results so far, and its status
+6307d0f0ebe4	f144c391d562	exported	Run artifacts for the folding-model work (October 2026)
+1b8ec801fabf	f144c391d562	dropped	Lambda pilot artifact: lambda* = 0.237 (f = 0.01) by the registered rule
+41b24e388c2d	77f7e8c4434c	exported	Gauge launcher: require 'make gpu' to report OK after the live-study wait
+181ae0fe7bed	568ba801f0c8	exported	Turner null space on TR0+TS0 reference structures, with Rfam control and saturation
+7c9f9d41d43d	af620457b166	exported	TR0+TS0 Turner null space: artifact
+02b20cce78e9	7d5f02f38148	exported	TR0 null space: amendment entry point for the joint read (NOT APPLICABLE)
+5c70778d8ef4	672c164c78de	exported	TR0 null space artifact: amendment 1, joint read NOT APPLICABLE
+8c50fe51d0fc	976d5d652c5f	exported	Seed study artifact as the 2026-10-09 interruption left it
+22fb42c68197	277430771e44	exported	Wait for predecessors by recorded status; rerun the interrupted seed-study runs
+a847a1ef306e	277430771e44	dropped	Gauge pre-registration: amendment 3, wait by recorded status
+67e45ef511c7	d55a5c983e8b	exported	Seed study: interruption event recorded, fresh rerun of the six launched
+112f626894d4	d55a5c983e8b	dropped	MXfold2 weight-space floor against the between-seed signal, per arm
+fab58b8fcba6	d55a5c983e8b	dropped	Weight floor: exclude the fixed -inf Turner entries after checking they never differ
+66f948de7a34	d55a5c983e8b	dropped	Weight floor: correct the registered direction note after the reg arm (rule unchanged)
+1589bcb92fd0	d55a5c983e8b	dropped	Weight floor artifact: regulariser arm NOT CLEARLY ABOVE (floor/2V = 0.70)
+d6ce41f62258	60731b19fb61	exported	Which sequences carry the converged SGD run's large v.g steps
+83062c18e110	0837c7ce83e7	exported	SGD v.g steps: the 11 high-|v.g| sequences, all inside the 13 long-run set
+1aae55c955df	6888c4c5ef59	exported	POST-HOC: the v.w drift carried by the 11 high-|v.g| steps, signed
+5c544bba5129	4889b7061e8d	exported	POST-HOC v.w rebuild: the 11 high-|v.g| steps carry 99.996% of the signed drift
+d296ed843cdf	67e1ff6b0d0c	exported	Breaker vs non-breaker: theta shift, scored energies, and the C_HELIX_E traceback
+4cc13df3b00b	44bfdb059318	exported	Breaker analysis: score the prediction the DP scored (restore the dropped pair, validated 
+2dc05b8fd25a	c2ca95236d90	exported	Breaker artifact: v breaks exactly where a scored helix exceeds 30 pairs
+7582aec29b5b	1df521e43a6f	exported	Breaker analysis: per-helix check of where the DP's returned structure loses the pair
+79b5d25b1784	63e3d0543e8b	exported	Breaker artifact: the DP returns every long helix split at the cap (29 | gap | m-30)
+9cbfb8726f67	aa33efbc9e38	exported	v.w rebuild: record median |v.g| and the reconstruction's share of the observed drift
+6177b61dd6e3	9ee414ce0613	exported	v.w rebuild artifact: median |v.g| 1.30e-8 pooled; reconstruction explains 99.35% of the o
+e59e90c32f2e	db0c9966e886	exported	Breaker analysis: configuration dependence of the exception (rescoring at other --max-heli
+c43919c820bf	465541c0c6ec	exported	Breaker artifact: the exception set depends on --max-helix-length
+404876fe4833	465541c0c6ec	dropped	Manuscript: Appendix J, MXfold2's helix-length symmetry and its traceback split
+71ce9aa6c431	554c5aeae65e	exported	Seed study: full COMPLETE (training) after the fresh rerun of the six interrupted runs
+e98c81777faa	554c5aeae65e	dropped	Weight floor: handle a bitwise-identical duplicate (D = 0) and record its scope
+c1e2ec1587dc	554c5aeae65e	dropped	Weight floor artifact: all three arms
+4c9f22c6d586	d6b0169a1fc8	exported	Gauge pre-registration: how R1/R2 read under the asymmetric duplicate floor (code; amendme
+a2a2c0ca1e04	d6b0169a1fc8	dropped	Gauge pre-registration: amendment 4, R1/R2 reading under the asymmetric floor (before any 
+82d79bd80605	d6b0169a1fc8	dropped	Is the regulariser's computation the reg arm's duplicate floor? (bitwise determinism test)
+fefa7fe464c1	d6b0169a1fc8	dropped	Reg determinism test: a key with no gradient (h not in G) is recorded as None
+76aa9aaf7139	d6b0169a1fc8	dropped	Reg determinism test: level 2 in train mode, dropout off and dropout on reseeded
+47c4651c216b	d6b0169a1fc8	dropped	Reg determinism artifact: the regulariser's computation and the network backward are bitwi
+9f5754b6bbe0	d6b0169a1fc8	dropped	Where the reg duplicate first diverges, from the logs (no rerun)
+56060afe70de	d6b0169a1fc8	dropped	Reg determinism test: add the two sequences at the duplicate's first divergence
+d21d8bc7eac8	d6b0169a1fc8	dropped	Reg duplicate: bitwise-deterministic single steps, divergence at epoch 1 step 60
+e662769d767b	6ab003183083	exported	MXfold2 release reproduction: the long-helix pair drop and the loss-augmentation omission
+63d322221277	c1e6d55e9297	exported	MXfold2 release reproduction artifact: both long-helix defects on the released weights
+c635a97b1d41	c1e6d55e9297	dropped	Manuscript: the MXfold2 defect as a property of v0.1.2 at its default, with the released-m
+f93f723cb09f	137b328c7e35	exported	Gauge evaluation stage 2a: STOPPED, V3 not detected on 1-2 of 1,305 sequences in three epo
+2e7fb90c1b0b	137b328c7e35	dropped	V3 diagnosis for the three epoch-1 models that stopped stage 2a (read-only, evaluator's ow
+421bba652923	137b328c7e35	dropped	V3 diagnosis: the four stage-2a misses are lower-tail draws, not a defect
+084ae2fc0045	137b328c7e35	dropped	V3 d3 on every stage-2a trial, split epoch-1 against epoch-10 models (read-only)
+cb19b4bc6c62	c631aeb60e65	exported	Gauge pre-registration: V3 amendment text (three directions, fixed streams, equivalence pr
+06e34588b063	c631aeb60e65	dropped	Gauge pre-registration: amendment 5, V3 with three fixed directions (before any statistic)
+ae5999ac714b	9bcc16bcdc61	exported	V3 amendment 5: re-draw script, and reduce() reads it (worker unchanged)
+2d2050886c95	4adeb6b84132	exported	V3 re-draw for stage 2a: all four direction-0 misses hit on directions 1 and 2
+9196ade8bf11	af87dd18bfd1	exported	Gauge evaluation stage 2a: complete under amendment 5 (statistics computed for the first t
+9bbaef4676c5	af87dd18bfd1	dropped	V3 d3 split: epoch-1 and epoch-10 models have the same d3 distribution (KS 0.020)
+4d1ac95619c3	013346dd11e7	exported	Gauge evaluation stage 2b: complete under amendment 5; reproduces 2a bitwise
+03f414705599	013346dd11e7	dropped	Weight-decay check across both MXfold2 studies (configs, code, every checkpoint's optimise
+85992f0f7fba	013346dd11e7	dropped	Weight-decay check: zero in every run of both MXfold2 studies
+906b550c7b52	1747b662fcdf	exported	Shipped MXfold2 on TS0 with the gauge evaluator's scorer, against the CLI run, the arms an
+b3ffa7f05c5c	89f6443905e4	exported	Shipped TS0 check: record the paper's stated training and the code's defaults, and the gap
+cf2df9c06a6e	c4f4fb775343	exported	Shipped TS0 check: parse train.py defaults past a choices tuple
+ae66850bc934	c4f4fb775343	dropped	Shipped MXfold2 on TS0: the scorer agrees; the retrain gap is half C1, half unattributed
+1b9cf9e8824b	652a8005a579	exported	Weight-decay ablation: runner (v.w around every optimiser step) and study phases
+09a32a469a40	1e59cbf479cc	exported	Weight-decay ablation: pre-registration (A1, A2, NC1, NC2, AR(1) confinement with floor ru
+27e171d8b009	158f47083fa8	exported	Weight-decay ablation arms a and b: A1 confirmed, preconditioner 33x the decay
+0bd97d923124	ccf9fb2759e6	exported	Weight-decay ablation: arm c analysis (TS0 F with the arms' scorer, registered AR(1) path 
+7a9e1d2ed969	676656f5c1fe	exported	Weight-decay ablation arm c: AR(1) tracks (10/10 epochs), width 5.07; TS0 F 0.5574
+90ce2d94d9da	322d8a6c42e5	exported	Weight-decay ablation: no-decay late-epoch drift bound (computed after arm c, labelled so)
+1e45d4e102a7	6ca5bd1197c8	exported	Weight-decay ablation: no-decay late-epoch drift bound recorded (after arm c)
+a14bfe587504	6ca5bd1197c8	dropped	Krueger refit release check: upstream jax-rnafold refs and the paper's release statements
+890f66ca9f8c	6ca5bd1197c8	dropped	Krueger refit release check: not released in jax-rnafold (any ref); paper promises it ther
+296cd6c0e837	adf805923568	exported	Weight-decay ablation: decay rate required for a stated v.w width (post hoc)
+611e2b93ae5b	b8eff5afbf15	exported	Weight-decay ablation: lambda for width 1.0 recorded (arm c sigma_LR: 0.257, 26x)
+ce3f1f622b77	d32378acc050	exported	Type B: ViennaRNA .par writer, the inverse of theta_from_par by construction (probe locato
+004da9e06983	112666169510	exported	Type B writer: defeat ViennaRNA's table cache, guard each configuration, label d2 tables n
+5c12b2e8c0f1	63e7c0ecfed8	exported	Type B writer check: all pass (W1-W5, C1; V1 cache and V2 d2 clip measured)
+c39956ba60f8	24d667963408	exported	Type B writer tests: format round trip, refusals, rounding; slow reader check on 23,741 ro
+b60f94b8e51a	ef447f0fc341	exported	Weight-decay ablation: lambda-for-width text (linearised estimate) and arm c sigma_LR by e
+cf98a87d0079	2ac5367cc5b9	exported	Weight-decay ablation: arm c sigma_LR flat across epochs (epoch 1 already 0.023)
+0e3746b2cae8	5773297c62ff	exported	Type B: script (preregister, bases, Experiment 1 projection) with the registered design
+3fa965a078a4	66aa8e3f8710	exported	Type B: pre-registration (Experiment 1 controls, Experiment 2 grid/floor/claim rules, guar
+1104f4d79614	aead7d53ed9a	exported	Type B: tests for the orthogonal split and controls; zero-norm guard; project-phase proven
+66ea18e9f68c	b9e14ab58817	exported	Type B: fold worker, points, smoke test (guards: rebuild, params_match, carry rows, refere
+b7652241f12d	fa4c73e7ceed	exported	Type B: bases recomputed, registered dimensions reproduced exactly (426/428/8046; 214/216/
+b7dc016c5af1	c5fc9201ec55	exported	Type B: Experiment 1 first run (registered control (a) does not fail)
+62df3de42bc8	64f468bb5f3e	exported	Type B: record Experiment 1's registered verdict; post-hoc intrinsic fraction with the sam
+5497c8cf1ce3	4d8498af6f43	exported	Type B: Experiment 1 verdict recorded (control (a) does not fail anywhere: dimension count
+e35dab609e78	e5b01c7148b9	exported	Type B: contrast directions built exactly in-table (the null basis's out-of-table entries 
+7ee61614a275	cbeaa08247a3	exported	turner_par: _rebuild also refreshes ViennaRNA's separate Boltzmann-factor cache; V3 measur
+c7269b443c84	7f4d0e1f1c09	exported	Writer check rerun with V3 (Boltzmann-factor cache measured); all pass
+d7eea63a78c9	0c8999c20fd2	exported	Type B: Boltzmann-factor carry check (constrained pf on the top carry row) and its planted
+1fdbef2a50a8	4ba8366a613b	exported	Type B: planted stale-Boltzmann control reproduces the hazard (model-A pf under Turner bef
+dcf3b472320b	bee0576bdecb	exported	Type B: fold smoke test passes (guards hold; stale energy table and stale Boltzmann table 
+02f97e4dcd49	7ede7dc86a3e	exported	Type B: control (c) restricted to the shared support; null-arm leak asserted per point; am
+2ea781b7a108	fe9781068fe6	exported	Type B: Langdon control (c) corrected to the shared support (rank 3.2 -> 3.8 TR0+TS0, 72.2
+2d66f619824b	a9ecf8652542	exported	Type B: amendments written before the fold (Experiment 1 priors failed; amendment 1 'less'
+8677126737ad	293aa9f4a2de	exported	Type B amendment 2: Langdon per-table constant-shift control and gauge canonicaliser (expl
+e2fe045a65e3	c52d8e1c03c4	exported	Type B amendment 2 (exploratory): Langdon's intrinsic component is per-table constant shif
+871ca7380126	dec61989ac71	exported	Type B: exploratory check of control (c)'s depletion against per-table constant shifts
+b8c0af6e88a0	d2e1afbcae9e	exported	Type B (exploratory): per-table constants explain little of control (c)'s TR0+TS0 low rank
+e5d696dda5bc	5fbf5458aeeb	exported	Type B Experiment 2: fold complete (193 points, 12 workers, all guards held) and analysed
+911282611c59	be42b201b076	exported	Type B: record-outcomes phase (verdict-reading correction with exact-Beta evidence; regist
+f1878dda3fa4	40ebe98079ac	exported	Type B: verdict-reading correction (old text kept verbatim) and priors' outcomes recorded:
+b13f10244f46	e7bdfb07b30d	exported	Type B: fold driver status starts with RUNNING (the standard waiter read 'fold RUNNING' as
+ba05e6beece0	3793f8084c0c	exported	vienna_ref guard check: record the reference's values before the Boltzmann guard
+54bdb26bcc99	3793f8084c0c	dropped	vienna_ref guard check: before values recorded
+87d4b2ed9e52	3d2cffbd4684	exported	vienna_ref: guard the Boltzmann factors behind pf() (separate ViennaRNA cache); two plante
+d5bedbe4086d	3d2cffbd4684	dropped	vienna_ref Boltzmann guard: gate rerun, all 7,203 reference values bitwise unchanged
+7bc9ccdb204b	3d2cffbd4684	dropped	Type B Experiment 2: three exploratory analyses of the shards (paired F1 vs reference, cha
+8e1906e5a11f	3d2cffbd4684	dropped	Type B Experiment 2 (exploratory): accuracy unchanged (paired dF1 CIs contain 0); changes 
+0c1a6bec5066	3d2cffbd4684	dropped	RECOMB 2027 manuscript directory: LNCS 2.26 template (CC BY 4.0, provenance recorded), DOI
+6e2c5a782013	93da6006d9f6	exported	RECOMB 2027 manuscript: Type B methods, Experiment 1 and Experiment 2 results, and supplem
+401cc02c57b8	6ebfc1254e86	exported	Type B tie-split refold (exploratory): script with the reporting rule
+f95f10e148ba	4566a5348571	exported	Type B tie-split: reporting rule registered before any refold (headline reports real reord
+efbc42fafc8b	9178a69b8027	exported	Type B tie split (exploratory): Andronescu point 469 real reorderings (3.9% [3.6, 4.3]) + 
+c984952a6809	9178a69b8027	dropped	Type B figure: genuine MFE changes vs perturbation norm, null vs contrast arms, published 
+87922468d1d4	d9d43e7c40e2	exported	RECOMB: the call's formatting rules verbatim (raw page, sha256); bibliography test moved t
+acef811e2647	ee4379e2afad	exported	vienna_ref guard check: planted phase (old guard vs new, each version from git history)
+c262b3c3cb37	b7ea2c084a89	exported	vienna_ref guard check: the guard was added in 87d4b2e, not d5bedbe (which only recorded t
+cf481b263197	b7ea2c084a89	dropped	vienna_ref guard check: planted stale Boltzmann table recorded; the old guard returned -25
+6ecc1785f38a	b7ea2c084a89	dropped	RECOMB: CLAIM-line check (outline claims tied to tracked artifacts and resolving JSON poin
+0dc769abcedb	b7ea2c084a89	dropped	STYLE_PROVENANCE: the manuscript now compiles (tectonic)
+019e800af1b0	b7ea2c084a89	dropped	RECOMB: Type B section cut to 2 pages with its figure (compiled: 2 body pages); claim-pinn
+9fb643c11fdf	b7ea2c084a89	dropped	RECOMB: one PDF from separate files (sections/*.tex, references, supplement/body.tex as an
+fcfbc236a58c	dba3f021e3e4	exported	E1: Fisher information by direction class (script); shared loader re-checks the fold's dir
+c32881551e52	be1b578b9f30	exported	E1: preregistration (registered test: contrast/null mean-I ratio > 1; null I > 0 a reporte
+75873408640f	fb1fb9991b7b	exported	Data: Rfam 12.2 family list (CC0), registered by sha256; the release bpRNA-1m drew from (D
+5f580a5d641e	cc15aab3316b	exported	E3: TR0+TS0 under the whole published tables, and the DNA check (script); shared fold-unde
+5f1dea72b3a0	6f1552b5210e	exported	E3 DNA check: test the intrinsic gauge on DNA values directly (writer + ViennaRNA), and cl
+0a0beba7ee21	4d88b8cf6a93	exported	E3 DNA check: N1 and N2 are null for ViennaRNA's DNA set (0 of 23,741 energies change); lo
+90aa9ba65c9f	f72875b7e368	exported	E1 sampled (8/8 workers, must-holds held); E3 energy identities made exact for tables whos
+fe6631438d6e	04b96cfbebe5	exported	E1 analysed: registered test passes (contrast/null mean-I ratio 9.41 [9.14, 9.69]); intrin
+8260ebf71b5b	c14c6151e191	exported	E3 analysed: whole published tables change 65.5% (Turner 1999), 81.9% (Andronescu 2007), 8
+8a76a88d05a7	0a33b9552d3c	exported	Ablation arm (c): per-epoch and thinned per-step split of v.w into decay and optimiser con
+318022b911bf	0a33b9552d3c	dropped	Figures: shared style and provenance (committed artifacts only, sha256 sidecars); Fig 4, t
+4f7a6476f47c	0a33b9552d3c	dropped	Table 1: null-space dimensions by source (model, TR0+TS0, Rfam 15.1 seed) and Type B compo
+7d26615ce59f	0a33b9552d3c	dropped	Fig 3 (E1): information by direction class (intrinsic exactly 0, null and published compon
+022ff741486b	0a33b9552d3c	dropped	Fig S1: Type B dimension against corpus size (Rfam subsamples, matched size, all Rfam, TR0
+e549ef8c86f7	29d0e3a6b908	exported	E2: held-out set built (1,641 Rfam 15.1 families absent from Rfam 12.2; 46,130 sequences a
+ee1a7d40a971	29d0e3a6b908	dropped	Fig S2: published-component MFE changes by Turner 2004 MFE gap (exploratory, Wilson CIs); 
+6589ebaf806f	89e5fbd08741	exported	E2 analysed: registered test NOT supported (16 kcal/mol: held-out and in-sample noise-corr
+6f2c79ac09b9	89e5fbd08741	dropped	RECOMB manuscript: title, authors and abstract (the authors' text, numbers pinned); Fig 2 
+4779441cc642	f21fe1898f8d	exported	E1 exploratory gradient (asked after E1 was registered, sampled and analysed; not register
+b32b772e97c3	ed0ca69e4383	exported	Commit map for the pushed history: local commit -> origin commit (the manuscript and its t
+73d3b40007e9	709570227594	exported	E2 exploratory overlap (asked after E2 was analysed; PRED unchanged): 154 of TR0+TS0's 426
+4e7a30df30b4	0b1081d6df63	exported	E2 overlap, coverage split (after review): all 154 shared directions are supported only on
+e58716ec5071	0b1081d6df63	dropped	RECOMB: Type B cut to 2.5 pages (Fig 3's class panel merged into Fig 2 as (c); spectrum to
+471c152c85f9	0b1081d6df63	dropped	PLAN: RECOMB ablations A1-A3 under P10 (decoders, Andronescu 2007 base table, MXfold2 trai
+39e0f7ef617f	0b1081d6df63	dropped	Certified folding design doc, saved verbatim as supplied by the user (its benchmark paths 
+985efa549b38	785c2b8a4be2	exported	A1-A3 code (approved plan, implemented and adversarially reviewed): A1 decoder ablation (M
+0ea431fa81cb	4c9a81d2ba46	exported	MXfold2 gauge runs artifact (2026-10-08, finished with failed or diverged runs): committed
+7d4804e9c248	cffd4b03be40	exported	A3 preregistration (MXfold2 training ablation): rows SGD/Adam/AdamW wd 0.01/gauge penalty/
+8d09534a15ae	0dfa2e8ef6ca	exported	A3 collect-existing: existing rows (Adam, w = 0.125, gauge penalty, SGD) recomputed and re
+9f749542b550	478478f11745	exported	A1 preregistration (decoder ablation): T1 under MEA, Andronescu point minus the +-1 dcal r
+d5e30273cdca	e2d800e63918	exported	A1 smoke and mini passed: the three planted failures caught (skipped load, stale Boltzmann
+738ab7a5b756	76ba601ad47c	exported	A2 build: Andronescu 2007 written on the Turner template (12,849 shared keys); B1-B9 pass 
+21b864a162b8	01dad0aea38d	exported	A2 preregistration (Andronescu 2007 base table): mirrored component P_nt(theta_T04 - theta
+f3b543eaf3f7	bf6bc4cae11e	exported	A2 smoke passed: S1 Turner-mode fold reproduces the Type B fold shards, S2 Turner-mode sam
+789e27f28b91	7a94d5c03b6f	exported	A3 GPU smoke: G1 passed (two concurrent projection epochs, one per card, bound held), G2 b
+0440ce0b1b08	7a94d5c03b6f	dropped	References: Sacco et al. 2026, MERGE-RNA (NAR 54(18), gkag917), fetched from its DOI, for 
+304f702eeead	08829938e67b	exported	A1 analysed: registered T1 passes under MEA (Andronescu point changes 13.4% of MEA structu
+07fa2a0d155a	94308dae3cc8	exported	A2 fold complete (Andronescu 2007 base, 33 points, 6 workers; guards held), before the E1-
+b60c05f6d3bd	f2d096ba946d	exported	A2 Fisher sampling complete (E1 at the Andronescu 2007 base, 6 workers, 11 min), before th
+cd7bb87fe405	dde82cb60845	exported	A2 analysed: both registered tests pass at the Andronescu 2007 base
+03d7d671f469	dde82cb60845	dropped	Table 2 and the robustness paragraph: A1 decoders and A2's second base table
+13ed762ec4e8	dde82cb60845	dropped	CALL.md: record the conference's own call page, and correct the LNCS proceedings line
+1120492900f3	dde82cb60845	dropped	Draft the five unwritten sections; Table 2 narrowed to fit at the body font size
+2d2bb2ff347e	dde82cb60845	dropped	Setup states all three propositions; Type B drops the duplicated setup and the restated He
+cb15bf813093	dde82cb60845	dropped	Ledger corrections the writers flagged as the lead's, and Fig 3's panel-b labels
+6ecc8362d4a8	dde82cb60845	dropped	Discussion: the ensemble-data point, with D_bpp at the three published points pinned
+a0a865be7bdc	dde82cb60845	dropped	Supplementary Section S5: the per-point detail behind Table 2, with Tables S8 and S9
+03d8faf4fe55	dde82cb60845	dropped	PLAN: A1 and A2 results, where Table 2 and S5 landed, and the Algorithm 1 page-budget devi
+c502e614a2aa	dde82cb60845	dropped	Apply the adversarial review: registration scoping, the two misstated definitions, S5 pins
+a6392f01cf68	dde82cb60845	dropped	Two review nits: tie "nontrivial" to Type B at first use, and give the lambda estimate a l
+71e112728d37	dde82cb60845	dropped	G(x) is the closed-form part everywhere, and the Table 3 generator is in place
+f606ebada4a0	dde82cb60845	dropped	Table 3 and Supplementary Table S10 generators, written against A3's registered output sha
+4de76f917207	f53f96b41b3a	exported	A3 training complete: all 6 new runs (AdamW wd 0.01 and projection, seeds 20261006-08) fin
+29d7ba5774a3	f45b2459dba6	exported	A3 scored: 9 epoch-10 models on TS0, and the scorer reproduces the evaluator for the Adam 
+0ab1b7e1e07c	8bc2e470f757	exported	A3 analysed: the weight projection holds v.w at float32 noise with no accuracy cost (regis
+be86808783a5	8bc2e470f757	dropped	Table 3, Supplementary Section S6, and the page-budget pass that brings the body to 10 pag
+faeb0c3fe40b	8bc2e470f757	dropped	PLAN: A3's result and the page-budget outcome (body at 10 pages exactly)
+4a6c814db895	8bc2e470f757	dropped	Captions beneath tables as well as figures (the authors' convention)
+789cebf0464c	cb4dbfad0ac6	exported	certfold: the per-loop feature map, exact against the validated count model
+24383f603b43	cb4dbfad0ac6	dropped	Fix two defects the caption audit found: "Table ??" in the submitted supplement, and a lat
+d432b7b37e6f	defdd06b5770	exported	certfold build-basis: compare spans of unequal dimension, and make B_four exactly four-tab
+9f526e6849fa	e5b1b665a277	exported	certfold: test the containment that actually holds, against nontrivial AND gauge
+c9c580183bec	713a2b81af65	exported	certfold: absolute residuals for the basis comparison; a near-vanishing restriction must n
+b4012b774d7e	0860b7d7f631	exported	certfold: the restricted reference basis loses rank; measure it instead of letting QR pad 
+c3cc282ce789	831dbee2bb17	exported	certfold build-basis: the published radii on B_four, r_cap, and what the ball permits per 
+1641416f44e9	45af1955791f	exported	certfold: the component's per-entry shift is |delta_e|, not divided by the loop multiplici
+62fe2248a975	c823b2d92f12	exported	certfold: report the per-loop ball allowance over charged loops too; nine in ten carry non
+9c8fccc0472f	f2daf7c4d512	exported	certfold: a physical bar for which loops the ball can actually move
+f861c6752ae5	6dfed31139d6	exported	certfold build-basis: record which entries B_four reaches, by table
+9149000b55ad	1243b329d994	exported	certfold build-basis: B_TR0 built, must-holds hold, and what the ball permits is measured
+77e4c63b90d0	836fdeb7a13b	exported	certfold: the callback, the certificate's weights, and G1 with its constructed-case extens
+e1d7d7cd0db7	bc7a083d00f3	exported	G1 passed: the callback identity, at three radii, sampled and constructed, zero mismatches
+42beb9e47cc6	bc7a083d00f3	dropped	paper: the artifact repo URL in the abstract, and a verified TeX zip
+27687bf5ad5b	ca75fdf3c150	exported	certfold: the certificate core, G2, and the basis's noise rows zeroed exactly
+6f3914a1c59d	220dc3f7fa05	exported	certfold: the rebuilt basis, and rho computed once per pair
+93c326511bac	c2232ecddc5a	exported	certfold G1: re-passed on the rebuilt basis
+e3aeb6b09322	20ab88a617f2	exported	certfold: forbidding a pair was forbidding its crossing pairs too
+af52d056178b	e66715faafa8	exported	certfold: G3 and G6, and no numpy scalars in the artifact
+e61b6fb2bef6	46b42e11b4f2	exported	certfold: the callback answers the common case with one integer test
+583d27d3a3ce	7440dc5c8a8d	exported	certfold gate: G1, G2, G3 and G6 re-passed on the frozen code
+da7033b9460e	aa81a74c68d8	exported	certfold: the TR0 pilot and G4
+2940845bb06d	cff0dfd04015	exported	artifact: the public repository's README, licence, and the export that builds it
