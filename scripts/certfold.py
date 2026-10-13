@@ -328,18 +328,26 @@ def compare_spans(V_tr0: np.ndarray, I_tr0: np.ndarray, V_ref: np.ndarray) -> di
     # and it reports a residual near 1 for a reason that says nothing about the mathematics: a
     # TR0+TS0 direction living mostly on the 224 entries only TS0 uses restricts to a nearly
     # zero vector, and QR renormalises that noise into an arbitrary unit vector.
+    # The restricted reference basis loses rank -- 426 directions of the TR0+TS0 space do not
+    # stay independent once confined to TR0's entries -- so its orthonormal basis comes from an
+    # SVD with an explicit tolerance. np.linalg.qr pads a rank-deficient matrix with arbitrary
+    # directions, and a residual taken against those is what produced a meaningless 0.999 and a
+    # count of 448 on the first two runs of this phase.
+    U_ref, s_ref, _ = np.linalg.svd(V_ref, full_matrices=False)
+    keep = s_ref > 1e-8 * s_ref.max()
+    Qb = U_ref[:, keep]
+    back = np.linalg.norm(Qa - Qb @ (Qb.T @ Qa), axis=0)
     norms = np.linalg.norm(V_ref, axis=0)
     resid_full = np.linalg.norm(V_ref - Qfull @ (Qfull.T @ V_ref), axis=0)
     resid_nt = np.linalg.norm(V_ref - Qa @ (Qa.T @ V_ref), axis=0)
-    # the reverse: lift each TR0 direction into the reference's coordinates by zero-padding and
-    # ask whether the reference's own null space contains it. The extra directions should not be.
-    Qb, _ = np.linalg.qr(V_ref)
-    back = np.linalg.norm(Qa - Qb @ (Qb.T @ Qa), axis=0)
     return {
         "restricted_reference_columns": {
             "n": int(V_ref.shape[1]),
             "norm_min": float(norms.min()), "norm_max": float(norms.max()),
             "n_nearly_vanishing_below_1e_6": int((norms < 1e-6).sum()),
+            "rank_at_1e_8": int(keep.sum()),
+            "rank_lost_by_restriction": int(V_ref.shape[1] - keep.sum()),
+            "singular_values_smallest_five": [float(x) for x in np.sort(s_ref)[:5]],
         },
         "abs_residual_in_B_TR0_plus_gauge_max": float(resid_full.max()),
         "abs_residual_in_B_TR0_plus_gauge_rel_max": float(
