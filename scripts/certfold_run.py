@@ -47,6 +47,7 @@ R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R))
 
 import scripts.certfold as cf  # noqa: E402
+from scripts.certfold_baselines import GAMMAS  # noqa: E402
 from scripts.certfold_metrics import (  # noqa: E402
     P_HI,
     aurc,
@@ -732,7 +733,7 @@ def describe(seq_recs: list[dict], label_sets: list[str]) -> dict:
                 cyc += bool(e["cycle"])
         return {"status": dict(st), "finite": _quantiles(vals), "verify_moved": moved,
                 "cycles": cyc,
-                "coverage_by_stratum": {str(s): {"n_with_rho": c[0], "n_pairs": c[1],
+                "coverage_by_stratum": {str(s): {"n_with_verified_rho": c[0], "n_pairs": c[1],
                                                  "fraction": c[0] / c[1] if c[1] else None}
                                         for s, c in sorted(cover.items())}}
 
@@ -784,8 +785,18 @@ def _matched_point(mfe: list[dict], key: str, tb: str, fam: bool) -> dict:
     if tb == "tiebreak":
         return m
     b = matched_coverage_comparison(mfe, key, "rho_env", _p_hi, tiebreak_key=tb, by_family=fam)
-    return {**m, "ppv_baseline": b["ppv_score"], "difference": m["ppv_score"] - b["ppv_score"],
-            "baseline_tiebreak": tb}
+    out = {**m, "ppv_baseline": b["ppv_score"], "difference": m["ppv_score"] - b["ppv_score"],
+           "baseline_tiebreak": tb}
+    if fam:
+        # the baseline's families are those ITS selection (the second call's score) reaches
+        out["n_families"] = {"score": m["n_families"]["score"],
+                             "baseline": b["n_families"]["score"]}
+    return out
+
+
+AURC_WEIGHTING = ("pairs pooled: the frozen risk-coverage curve has no family weighting, so on "
+                  "the held-out set each family weighs by its pair count; the bootstrap still "
+                  "resamples families there")
 
 
 def _aurc_point(pool: list[dict], key: str, tb: str) -> dict:
@@ -793,17 +804,31 @@ def _aurc_point(pool: list[dict], key: str, tb: str) -> dict:
     a = aurc(risk_coverage(pool, "rho_env", "tiebreak")[0])
     b = aurc(risk_coverage(pool, key, tb)[0])
     return {"aurc_rho_env": a, "aurc_baseline": b, "difference": a - b,
-            "baseline_tiebreak": tb, "n": len(pool)}
+            "baseline_tiebreak": tb, "n": len(pool), "weighting": AURC_WEIGHTING}
+
+
+POINT_SCORES = (("p", "p"), ("nominal_gap", "gap"), ("freq_envelope", "freq_env"),
+                ("freq_noise", "freq_noise"))
 
 
 def _prediction_point(own: list[dict], pool: list[dict], fam: bool) -> dict:
-    """An MEA or centroid point: its PPV over its own k pairs, and rho_env's over its top k."""
+    """An MEA or centroid point: its PPV over its own k pairs, and rho_env's over its top k.
+
+    Beside rho_env, the PPV of the top k MFE pairs by each other registered score, as points
+    without intervals: PRED's "PPV of the top-k pairs by each score ... and at each MEA/centroid
+    point" can be read as asking for those too (the review of 2026-10-14), so both readings are
+    reported and the registered comparison stays rho_env's.
+    """
     k = len(own)
     pt = {"k": k, "n_rho_pool": len(pool), "ppv_own_pairs": _ppv(own, fam)}
     if k <= len(pool):
         m = matched_coverage_comparison(pool, "rho_env", "p", k / len(pool), by_family=fam)
+        others = {name: matched_coverage_comparison(pool, key, "rho_env", k / len(pool),
+                                                    by_family=fam)["ppv_score"]
+                  for name, key in POINT_SCORES}
         return {**pt, "matched": True, "ppv_rho_env_top_k": m["ppv_score"],
-                "difference": m["ppv_score"] - pt["ppv_own_pairs"]}
+                "difference": m["ppv_score"] - pt["ppv_own_pairs"],
+                "ppv_top_k_by_other_scores_points_only": others}
     # PRED: reported beside rho_env's whole-pool PPV with the coverage gap stated, and not a
     # matched comparison, so it gets no interval
     return {**pt, "matched": False, "ppv_rho_env_whole_pool": _ppv(pool, fam),
@@ -812,7 +837,7 @@ def _prediction_point(own: list[dict], pool: list[dict], fam: bool) -> dict:
 
 def _curve_points(pool: list[dict], key: str, tb: str, grid: list[float]) -> dict:
     curve = risk_coverage(pool, key, tb)[0]
-    return {"ppv": [ppv_at_coverage(curve, c) for c in grid]}
+    return {"ppv": [ppv_at_coverage(curve, c) for c in grid], "weighting": AURC_WEIGHTING}
 
 
 def analyse_set(tset: str, recs: list[dict], mine: list[dict], label_sets: list[str],
@@ -822,8 +847,11 @@ def analyse_set(tset: str, recs: list[dict], mine: list[dict], label_sets: list[
     mfe, pool = _mfe(recs), _rho_pool(recs)
     d1, d2 = disagreement_sets(mfe)
     st: dict = {
-        "weighting": "families weighted equally; families resampled" if fam else
-                     "pairs pooled; sequences resampled",
+        "weighting": {
+            "matched_ppv_points_disagreement": "families weighted equally" if fam else
+                                               "pairs pooled",
+            "aurc_and_curves": AURC_WEIGHTING if fam else "pairs pooled",
+            "bootstrap_unit": "family" if fam else "sequence"},
         "n_sequences": len(mine), "n_mfe_pairs": len(mfe), "n_rho_pool": len(pool),
         "rho_env_unscored": dict(collections.Counter(
             r["rho_status"] for r in mfe if r["rho_env"] is None)),
@@ -836,7 +864,9 @@ def analyse_set(tset: str, recs: list[dict], mine: list[dict], label_sets: list[
         st["aurc"][name] = _defined(
             lambda key=key, tb=tb: _aurc_point(pool, key, tb), tasks,
             (f"{tset}|aurc|{name}", tset, "aurc", (key, tb)))
-    for kind in sorted({r["kind"] for r in recs} - {"mfe", "unit"}):
+    # every registered prediction, so one with no pair in this set is reported undefined rather
+    # than missing (the review of 2026-10-14)
+    for kind in [f"{p}:{g:g}" for p in ("mea", "centroid") for g in GAMMAS]:
         own = [r for r in recs if r["kind"] == kind]
         pt = _defined(lambda own=own: _prediction_point(own, pool, fam), [], None)
         if pt.get("matched"):
@@ -904,8 +934,72 @@ def analyse_records(seq_recs: list[dict], freq_by_index: dict, label_sets: list[
     return res
 
 
+# the functions and constants the run phase executed. analyse requires them IDENTICAL (by AST,
+# so a moved line does not count) to the run's commit; anything else may have been amended
+# between the run's folds and the analysis -- before any accuracy existed -- and every such
+# amendment is listed in the analysis record
+RUN_SIDE = ("RUN_WORKERS", "RHO_ORDER_TAG", "N_DRAWS", "SETS", "PRIMARY", "ZUKER_NOISE",
+            "test_rows", "shard_of", "_in_certfold_env", "sequence_record", "_done_indices",
+            "run_worker", "sampling_baselines", "_pump", "read_shards", "run")
+
+
+def _top_level(src: str) -> dict[str, str]:
+    """{name: ast.dump} of every top-level function, class and named assignment in `src`."""
+    import ast
+
+    out = {}
+    for node in ast.parse(src).body:
+        if isinstance(node, ast.FunctionDef | ast.ClassDef):
+            out[node.name] = ast.dump(node)
+        elif isinstance(node, ast.Assign | ast.AnnAssign):
+            for t in node.targets if isinstance(node, ast.Assign) else [node.target]:
+                if isinstance(t, ast.Name):
+                    out[t.id] = ast.dump(node)
+    return out
+
+
+def code_amendments(run_sha: str, now_src: str | None = None) -> dict:
+    """Which top-level names of this module differ between the run's commit and now, and which
+    of those are on the run side."""
+    then = _top_level(cf._git("show", f"{run_sha}:{ME}").stdout)
+    now = _top_level((R / ME).read_text() if now_src is None else now_src)
+    changed = sorted(k for k in set(then) | set(now) if then.get(k) != now.get(k))
+    return {"amended_since_run": changed,
+            "run_side_changed": [k for k in changed if k in RUN_SIDE],
+            "run_side_checked": list(RUN_SIDE)}
+
+
+def deviations(res: dict, code: dict) -> list[dict]:
+    """What the analysis does differently from PRED's text, each stated once (the authors'
+    fresh-context review of 2026-10-14 found them; none changes a computed number's own
+    definition)."""
+    out = [{
+        "what": "held-out AURC and risk-coverage curves are pooled over pairs, not "
+                "family-weighted",
+        "why": "PRED R3 asks for families weighted equally on the held-out set; the frozen "
+               "risk_coverage/aurc have no family weighting. Matched-coverage PPVs, the "
+               "MEA/centroid points and D1/D2 ARE family-weighted; the bootstrap resamples "
+               "families everywhere on the held-out set"}, {
+        "what": "the matched-coverage pool is the MFE pairs carrying a rho_env, for every score",
+        "why": "PRED's text puts p, the gap and the frequencies over all MFE pairs; the frozen "
+               "matched_coverage_comparison takes the pool both rankings score, so k is the "
+               "p >= 0.99 count within that pool",
+        "size_mfe_pairs_without_rho": {t: sum(s["rho_env_unscored"].values())
+                                       for t, s in res["sets"].items()}}]
+    if code["amended_since_run"]:
+        out.append({
+            "what": "the analysis wiring was amended after the run's folds",
+            "why": "the authors' launch conditions (a fresh-context review of this module, "
+                   "fixes committed before launch) arrived after the run had been launched; "
+                   "the review's analysis-side findings were fixed before any accuracy existed. "
+                   "The run-side functions are identical to the run's (AST-checked)",
+            "amended": code["amended_since_run"]})
+    return out
+
+
 def analyse() -> int:
-    """R1 to R3 and the descriptive results, from the committed run, on the run's code."""
+    """R1 to R3 and the descriptive results, from the committed run; the run-side code must be
+    the run's, and any analysis-side amendment since the run is recorded."""
     out = cf.read_out()
     if out.get("status") != "run done":
         raise SystemExit(f"analyse follows the run; status is {out.get('status')!r}")
@@ -919,9 +1013,9 @@ def analyse() -> int:
     if prov["git_dirty_excluding_runs"]:
         raise SystemExit(f"commit first: {prov.get('git_dirty_paths_outside_runs')}")
     cf._same_code(run_rec["provenance"], "run")
-    d = cf._git("diff", "--name-only", run_rec["provenance"]["git_sha"], "HEAD", "--", ME)
-    if d.stdout.strip():
-        raise SystemExit(f"{ME} changed since the run")
+    code = code_amendments(run_rec["provenance"]["git_sha"])
+    if code["run_side_changed"]:
+        raise SystemExit(f"{ME}'s run side changed since the run: {code['run_side_changed']}")
     for f, h in run_rec["files_sha256"].items():
         if cf._sha(cf.SHARDS / f) != h:
             raise GuardFailure(f"{f} changed since the run")
@@ -932,14 +1026,20 @@ def analyse() -> int:
     gate = head["gate"]
     r1 = {"G2_false_certificates_ball_by_radius": gate["G2"]["false_certificates"],
           "G2_false_certificates_envelope": gate["G2"]["envelope"]["n_false_certificates"],
+          "G3_zprime_disagreements": gate["G3"]["n_zprime_disagreements"],
+          "G3_omitted_but_feasible": gate["G3"]["n_omitted_but_feasible"],
           "G4_false_certificates": gate["G4"]["n_false_certificates"],
           "G5_violations": gate["G5"]["n_violations"]}
     counts = (list(r1["G2_false_certificates_ball_by_radius"].values())
-              + [r1[k] for k in ("G2_false_certificates_envelope", "G4_false_certificates",
-                                 "G5_violations")])
-    r1["pass"] = (all(gate[g]["pass"] for g in ("G2", "G4", "G5"))
+              + [r1[k] for k in r1 if k != "G2_false_certificates_ball_by_radius"])
+    r1["pass"] = (all(gate[g]["pass"] for g in ("G2", "G3", "G4", "G5"))
                   and all(c == 0 for c in counts))
     res["R1"] = r1
+    res["code"] = {**code, "module_blob_at_run": run_rec["module_blob"],
+                   "module_blob_at_analysis": cf._git("rev-parse", f"HEAD:{ME}").stdout.strip(),
+                   "exploratory_spec_commit": cf._git("log", "-1", "--format=%H", "--",
+                                                      "docs/certfold_exploratory.md").stdout.strip()}
+    res["deviations"] = deviations(res, code)
     res["relaxation_loss"] = {
         "from": "gate.G4: TR0, n <= 150 (decision 7)",
         "note": gate["G4"]["relaxation_loss_note"],

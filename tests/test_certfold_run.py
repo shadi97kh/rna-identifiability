@@ -156,3 +156,32 @@ def test_task_records_change_no_statistic_and_keep_every_unit():
                 cr.STATS[stat](sub, *args)
             continue
         assert cr.STATS[stat](sub, *args) == want
+
+
+def test_run_side_guard_flags_a_run_side_edit_and_ignores_moved_lines():
+    src = (R / cr.ME).read_text()
+    a = cr._top_level(src)
+    assert cr._top_level(src.replace("\n\n\ndef shard_of", "\n\n\n\ndef shard_of")) == a
+    edited = src.replace('order = sorted(rows, key=lambda r: (-len(r["seq"]), r["index"]))',
+                         'order = sorted(rows, key=lambda r: (len(r["seq"]), r["index"]))')
+    assert edited != src
+    head = cr.cf._git("rev-parse", "HEAD").stdout.strip()
+    got = cr.code_amendments(head, now_src=edited)
+    assert "shard_of" in got["run_side_changed"]
+    analysis_only = src.replace('"weighting": AURC_WEIGHTING}',
+                                '"weighting": AURC_WEIGHTING, "x": 1}')
+    assert analysis_only != src
+    got = cr.code_amendments(head, now_src=analysis_only)
+    assert got["run_side_changed"] == [] and "_aurc_point" in got["amended_since_run"]
+
+
+def test_flat_reading_counts_the_baselines_own_families():
+    # held-out style: one sequence per family. k = 2 (two p >= 0.99 pairs). rho_env's top 2 are
+    # both in family A; under flat ties the baseline's block spans A, B and C.
+    def r(fam, correct, rho, p):
+        return {**mfe(fam, correct, rho, gap=1.0, p=p, family=fam), "unit": fam}
+    recs = [r("A", True, 3.0, 0.995), r("A", True, 2.0, 0.995), r("B", False, 1.0, 0.5),
+            r("C", False, 0.5, 0.5)]
+    out = cr._matched_point(recs, "freq_env", "flat", True)
+    assert out["n_families"]["score"] == 1
+    assert out["n_families"]["baseline"] == 3
