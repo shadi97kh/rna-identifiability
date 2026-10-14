@@ -1038,7 +1038,1048 @@
   "G3",
   "G6"
  ],
+ "pilot": {
+  "G3_recursion_side_on_the_pilot": {
+   "folds_checked": 171674,
+   "violations": 0,
+   "what": "every soft-constrained fold the pilot made: the recursion's energy == eval_structure on the same compound == E0 + the checker's offset",
+   "zuker_structures_checked": 4560966
+  },
+  "budget_seconds_per_sequence": 1800,
+  "by_set": {
+   "ball:Andronescu2007": {
+    "certified_absent": {
+     "fraction": 0.00024661319192082615,
+     "n": 314,
+     "of": 1273249,
+     "sequences_not_done_timeout": 0,
+     "unreachable": 0
+    },
+    "certified_present": {
+     "fraction": 0.0,
+     "n": 0,
+     "of_labelled": 11886,
+     "pairs_not_labelled_timeout": 234
+    },
+    "certified_present_by_stratum": {
+     "0": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 502
+     },
+     "1": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 641
+     },
+     "2": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 742
+     },
+     "3": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 856
+     },
+     "4": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 881
+     },
+     "5": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 1070
+     },
+     "6": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 1161
+     },
+     "7": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 1395
+     },
+     "8": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 1781
+     },
+     "9": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 2857
+     }
+    },
+    "certified_present_over_completed_sequences": {
+     "fraction": 0.0,
+     "n": 0,
+     "n_sequences": 294,
+     "of": 11295
+    },
+    "kind": "ball",
+    "scale": 21.26280733187213,
+    "uncertain_absent_fraction": 0.9997533868080791,
+    "uncertain_present_fraction": 1.0,
+    "whole_structure_certified": {
+     "fraction": 0.0,
+     "n": 0,
+     "of_determined": 294,
+     "undetermined_timeout": 6
+    }
+   },
+   "ball:Langdon2018": {
+    "certified_absent": {
+     "fraction": 0.8891167399306813,
+     "n": 1132067,
+     "of": 1273249,
+     "sequences_not_done_timeout": 0,
+     "unreachable": 0
+    },
+    "certified_present": {
+     "fraction": 0.3508329126703685,
+     "n": 4170,
+     "of_labelled": 11886,
+     "pairs_not_labelled_timeout": 234
+    },
+    "certified_present_by_stratum": {
+     "0": {
+      "certified": 285,
+      "fraction": 0.5677290836653387,
+      "labelled": 502
+     },
+     "1": {
+      "certified": 343,
+      "fraction": 0.5351014040561622,
+      "labelled": 641
+     },
+     "2": {
+      "certified": 502,
+      "fraction": 0.6765498652291105,
+      "labelled": 742
+     },
+     "3": {
+      "certified": 476,
+      "fraction": 0.5560747663551402,
+      "labelled": 856
+     },
+     "4": {
+      "certified": 376,
+      "fraction": 0.4267877412031782,
+      "labelled": 881
+     },
+     "5": {
+      "certified": 592,
+      "fraction": 0.5532710280373832,
+      "labelled": 1070
+     },
+     "6": {
+      "certified": 473,
+      "fraction": 0.4074074074074074,
+      "labelled": 1161
+     },
+     "7": {
+      "certified": 495,
+      "fraction": 0.3548387096774194,
+      "labelled": 1395
+     },
+     "8": {
+      "certified": 429,
+      "fraction": 0.24087591240875914,
+      "labelled": 1781
+     },
+     "9": {
+      "certified": 199,
+      "fraction": 0.06965348267413371,
+      "labelled": 2857
+     }
+    },
+    "certified_present_over_completed_sequences": {
+     "fraction": 0.35980522355024347,
+     "n": 4064,
+     "n_sequences": 294,
+     "of": 11295
+    },
+    "kind": "ball",
+    "scale": 5.215229067044539,
+    "uncertain_absent_fraction": 0.11088326006931873,
+    "uncertain_present_fraction": 0.6491670873296315,
+    "whole_structure_certified": {
+     "fraction": 0.1360544217687075,
+     "n": 40,
+     "of_determined": 294,
+     "undetermined_timeout": 6
+    }
+   },
+   "ball:Turner1999": {
+    "certified_absent": {
+     "fraction": 6.0475209483769476e-05,
+     "n": 77,
+     "of": 1273249,
+     "sequences_not_done_timeout": 0,
+     "unreachable": 0
+    },
+    "certified_present": {
+     "fraction": 0.0,
+     "n": 0,
+     "of_labelled": 11886,
+     "pairs_not_labelled_timeout": 234
+    },
+    "certified_present_by_stratum": {
+     "0": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 502
+     },
+     "1": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 641
+     },
+     "2": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 742
+     },
+     "3": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 856
+     },
+     "4": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 881
+     },
+     "5": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 1070
+     },
+     "6": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 1161
+     },
+     "7": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 1395
+     },
+     "8": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 1781
+     },
+     "9": {
+      "certified": 0,
+      "fraction": 0.0,
+      "labelled": 2857
+     }
+    },
+    "certified_present_over_completed_sequences": {
+     "fraction": 0.0,
+     "n": 0,
+     "n_sequences": 294,
+     "of": 11295
+    },
+    "kind": "ball",
+    "scale": 24.13231091078804,
+    "uncertain_absent_fraction": 0.9999395247905162,
+    "uncertain_present_fraction": 1.0,
+    "whole_structure_certified": {
+     "fraction": 0.0,
+     "n": 0,
+     "of_determined": 294,
+     "undetermined_timeout": 6
+    }
+   },
+   "ball:r1": {
+    "certified_absent": {
+     "fraction": 0.9991902605067823,
+     "n": 1272218,
+     "of": 1273249,
+     "sequences_not_done_timeout": 0,
+     "unreachable": 0
+    },
+    "certified_present": {
+     "fraction": 0.9358909641595154,
+     "n": 11124,
+     "of_labelled": 11886,
+     "pairs_not_labelled_timeout": 234
+    },
+    "certified_present_by_stratum": {
+     "0": {
+      "certified": 483,
+      "fraction": 0.9621513944223108,
+      "labelled": 502
+     },
+     "1": {
+      "certified": 589,
+      "fraction": 0.9188767550702028,
+      "labelled": 641
+     },
+     "2": {
+      "certified": 729,
+      "fraction": 0.9824797843665768,
+      "labelled": 742
+     },
+     "3": {
+      "certified": 779,
+      "fraction": 0.9100467289719626,
+      "labelled": 856
+     },
+     "4": {
+      "certified": 820,
+      "fraction": 0.9307604994324631,
+      "labelled": 881
+     },
+     "5": {
+      "certified": 1019,
+      "fraction": 0.9523364485981308,
+      "labelled": 1070
+     },
+     "6": {
+      "certified": 1082,
+      "fraction": 0.9319552110249785,
+      "labelled": 1161
+     },
+     "7": {
+      "certified": 1354,
+      "fraction": 0.9706093189964158,
+      "labelled": 1395
+     },
+     "8": {
+      "certified": 1654,
+      "fraction": 0.9286917462099944,
+      "labelled": 1781
+     },
+     "9": {
+      "certified": 2615,
+      "fraction": 0.9152957647882394,
+      "labelled": 2857
+     }
+    },
+    "certified_present_over_completed_sequences": {
+     "fraction": 0.9405046480743692,
+     "n": 10623,
+     "n_sequences": 294,
+     "of": 11295
+    },
+    "kind": "ball",
+    "scale": 1.0,
+    "uncertain_absent_fraction": 0.0008097394932177445,
+    "uncertain_present_fraction": 0.06410903584048461,
+    "whole_structure_certified": {
+     "fraction": 0.5850340136054422,
+     "n": 172,
+     "of_determined": 294,
+     "undetermined_timeout": 6
+    }
+   },
+   "envelope": {
+    "certified_absent": {
+     "fraction": 0.9440227323956273,
+     "n": 1201976,
+     "of": 1273249,
+     "sequences_not_done_timeout": 0,
+     "unreachable": 0
+    },
+    "certified_present": {
+     "fraction": 0.4374894834258792,
+     "n": 5200,
+     "of_labelled": 11886,
+     "pairs_not_labelled_timeout": 234
+    },
+    "certified_present_by_stratum": {
+     "0": {
+      "certified": 323,
+      "fraction": 0.6434262948207171,
+      "labelled": 502
+     },
+     "1": {
+      "certified": 421,
+      "fraction": 0.656786271450858,
+      "labelled": 641
+     },
+     "2": {
+      "certified": 561,
+      "fraction": 0.7560646900269542,
+      "labelled": 742
+     },
+     "3": {
+      "certified": 564,
+      "fraction": 0.6588785046728972,
+      "labelled": 856
+     },
+     "4": {
+      "certified": 429,
+      "fraction": 0.4869466515323496,
+      "labelled": 881
+     },
+     "5": {
+      "certified": 710,
+      "fraction": 0.6635514018691588,
+      "labelled": 1070
+     },
+     "6": {
+      "certified": 577,
+      "fraction": 0.49698535745047373,
+      "labelled": 1161
+     },
+     "7": {
+      "certified": 630,
+      "fraction": 0.45161290322580644,
+      "labelled": 1395
+     },
+     "8": {
+      "certified": 633,
+      "fraction": 0.3554183043234138,
+      "labelled": 1781
+     },
+     "9": {
+      "certified": 352,
+      "fraction": 0.1232061603080154,
+      "labelled": 2857
+     }
+    },
+    "certified_present_over_completed_sequences": {
+     "fraction": 0.4493138556883577,
+     "n": 5075,
+     "n_sequences": 294,
+     "of": 11295
+    },
+    "kind": "envelope",
+    "scale": 1.0,
+    "uncertain_absent_fraction": 0.05597726760437275,
+    "uncertain_present_fraction": 0.5625105165741208,
+    "whole_structure_certified": {
+     "fraction": 0.19047619047619047,
+     "n": 56,
+     "of_determined": 294,
+     "undetermined_timeout": 6
+    }
+   }
+  },
+  "envelope": {
+   "components_contained": {
+    "max_over_reached_of_abs_shift_minus_u_kcal": {
+     "Andronescu2007": -0.19666666666666943,
+     "Langdon2018": -2.0266666666665802,
+     "Turner1999": 0.0
+    },
+    "n_reached_entries_INF_in_the_component": {
+     "Andronescu2007": 0,
+     "Langdon2018": 84,
+     "Turner1999": 0
+    },
+    "pass": true,
+    "what_this_checks": "a consistency check, not evidence: |B4 B4^T d| <= u_e holds by Cauchy-Schwarz and the definition of delta, so this can fail only through code drift. A component's INF entries (Langdon 2018 forbids some loops) are set to a zero shift before projecting, as for the radii, so 'contains' means contains that INF-zeroed projection; the count above says how many reached entries that concerns."
+   },
+   "definition": "{theta0 + B t : ||t|| <= r_max, |(B t)_e| <= delta for every e}; per-entry bound u_e = min(delta, r_max * ||a_e||); weights w_L = sum_e |c_{L,e}| u_e, ceiled to dcal as for the ball",
+   "delta_entry": "('int21', 1, 2, 1, 3, 4)",
+   "delta_from": "Turner1999",
+   "delta_kcal": 3.2666666666665813,
+   "lambda_cap": 4,
+   "n_entries_where_the_ball_bound_binds": 0,
+   "r_max_from": "Turner1999",
+   "r_max_kcal": 24.13231091078804,
+   "u_over_reached_entries_kcal": {
+    "max": 3.2666666666665813,
+    "median": 3.2666666666665813,
+    "min": 3.2666666666665813,
+    "n": 923
+   }
+  },
+  "exposure": {
+   "n_reachable_admissible_interior_loops": {
+    "max": 77506.0,
+    "median": 1976.5,
+    "min": 63.0,
+    "n": 300,
+    "p25": 867.5,
+    "p75": 4672.25,
+    "p95": 25655.75
+   },
+   "n_sequences_with_none": 0,
+   "uncertain_present_by_exposure_quartile": {
+    "ball:Andronescu2007": [
+     {
+      "exposure_median": 612.0,
+      "n_sequences": 75,
+      "quartile": 0,
+      "uncertain_present_fraction": 1.0
+     },
+     {
+      "exposure_median": 1316.0,
+      "n_sequences": 75,
+      "quartile": 1,
+      "uncertain_present_fraction": 1.0
+     },
+     {
+      "exposure_median": 3052.0,
+      "n_sequences": 75,
+      "quartile": 2,
+      "uncertain_present_fraction": 1.0
+     },
+     {
+      "exposure_median": 10165.0,
+      "n_sequences": 75,
+      "quartile": 3,
+      "uncertain_present_fraction": 1.0
+     }
+    ],
+    "envelope": [
+     {
+      "exposure_median": 612.0,
+      "n_sequences": 75,
+      "quartile": 0,
+      "uncertain_present_fraction": 0.32907991940899933
+     },
+     {
+      "exposure_median": 1316.0,
+      "n_sequences": 75,
+      "quartile": 1,
+      "uncertain_present_fraction": 0.3992467043314501
+     },
+     {
+      "exposure_median": 3052.0,
+      "n_sequences": 75,
+      "quartile": 2,
+      "uncertain_present_fraction": 0.4577854671280277
+     },
+     {
+      "exposure_median": 10165.0,
+      "n_sequences": 75,
+      "quartile": 3,
+      "uncertain_present_fraction": 0.7477243172951885
+     }
+    ]
+   },
+   "weighted_loops_of_star": {
+    "max": 4.0,
+    "median": 0.0,
+    "min": 0.0,
+    "n": 300,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p95": 1.0
+   },
+   "what": "admissible interior loops, both closing pairs canonical, that read one of the reached entries: the competitor-side exposure behind the labels"
+  },
+  "files_sha256": {
+   "pilot_0.jsonl": "f3d586ad283c95b338c3677a6e8d4b47d2dc71a6cd23690ac1d31889900f8402",
+   "pilot_1.jsonl": "aa76234ca8deed56c089b2fffb8d5a51478b2a3c7d11a8acfc5c41ab8fb63638",
+   "pilot_2.jsonl": "29e9df2c1de5a43e0e520813dda8afb7180658a51049f7ca3efae017b5934e56",
+   "pilot_3.jsonl": "17208bf37b97a1d2f943d52bfaae2f1c6e38e2ff1f728869d7cb173c096619e9",
+   "pilot_4.jsonl": "d630e998ce50bd8164fb5ad10ff81e0d8477c6560b1d8e2ecff083e65f3b8533",
+   "pilot_5.jsonl": "8421eea17bfe606d27a78c4bbc22bd78c71f3b5709bb03755b50377405902804",
+   "pilot_6.jsonl": "21adea5609cc3741d956ef6d37e8a41f49df401a377d57e1e56ba2ef610aea87",
+   "pilot_7.jsonl": "115d2e9c78896ac5a6ac5ebcbd84f685e3cb2a522be313ca22fc5170706ed9f4"
+  },
+  "label": "PILOT on TR0 training data, not a registered test",
+  "lengths": {
+   "max": 498.0,
+   "median": 104.5,
+   "min": 41.0,
+   "n": 300,
+   "p25": 79.75,
+   "p75": 149.0,
+   "p95": 305.1
+  },
+  "load_at_start": [
+   0.51,
+   1.1,
+   1.41
+  ],
+  "n_sequences": 300,
+  "n_timed_out": 23,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "a66ed5b5a1c3972154b0ab3c9afbb91254e10b70"
+  },
+  "rho_ball": {
+   "cap": 96.52924364315216,
+   "capped": 0,
+   "finite": {
+    "max": 12.965338,
+    "median": 4.624114,
+    "min": 0.147196,
+    "n": 10012,
+    "p25": 3.184337,
+    "p75": 6.123724,
+    "p95": 8.242986
+   },
+   "n_pairs_total": 12120,
+   "n_pairs_with_rho": 10240,
+   "tied_at_zero": 228,
+   "unconverged": 1
+  },
+  "rho_env": {
+   "cap": 4.0,
+   "capped": 0,
+   "finite": {
+    "max": 2.80102,
+    "median": 0.994898,
+    "min": 0.030612,
+    "n": 10012,
+    "p25": 0.704082,
+    "p75": 1.331633,
+    "p95": 1.785714
+   },
+   "n_pairs_total": 12120,
+   "n_pairs_with_rho": 10240,
+   "tied_at_zero": 228,
+   "unconverged": 0
+  },
+  "runtime": {
+   "callback_invocations_total": 381892576515,
+   "folds_total": 171674,
+   "seconds_per_sequence": {
+    "max": 1805.06,
+    "median": 58.120000000000005,
+    "min": 0.81,
+    "n": 300,
+    "p25": 19.08,
+    "p75": 204.39249999999998,
+    "p95": 1800.9925
+   },
+   "slowest": [
+    {
+     "n_nt": 498,
+     "name": "bpRNA_RFAM_10418.bpseq",
+     "seconds": 1805.06,
+     "timed_out": true
+    },
+    {
+     "n_nt": 420,
+     "name": "bpRNA_RFAM_2621.bpseq",
+     "seconds": 1803.42,
+     "timed_out": true
+    },
+    {
+     "n_nt": 371,
+     "name": "bpRNA_tmRNA_8.bpseq",
+     "seconds": 1803.04,
+     "timed_out": true
+    },
+    {
+     "n_nt": 396,
+     "name": "bpRNA_RFAM_2576.bpseq",
+     "seconds": 1802.61,
+     "timed_out": true
+    },
+    {
+     "n_nt": 358,
+     "name": "bpRNA_RFAM_35956.bpseq",
+     "seconds": 1802.13,
+     "timed_out": true
+    }
+   ],
+   "total_cpu_seconds": 82393.84000000001,
+   "wall_seconds": 11282.2
+  },
+  "seed": [
+   20261013,
+   10
+  ],
+  "sets": {
+   "ball:Andronescu2007": {
+    "kind": "ball",
+    "scale": 21.26280733187213
+   },
+   "ball:Langdon2018": {
+    "kind": "ball",
+    "scale": 5.215229067044539
+   },
+   "ball:Turner1999": {
+    "kind": "ball",
+    "scale": 24.13231091078804
+   },
+   "ball:r1": {
+    "kind": "ball",
+    "scale": 1.0
+   },
+   "envelope": {
+    "kind": "envelope",
+    "scale": 1.0
+   }
+  },
+  "strata": [
+   {
+    "max_len": 69,
+    "min_len": 33,
+    "n_in_TR0": 1066,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     41,
+     69
+    ],
+    "seconds_median": 5.02,
+    "stratum": 0,
+    "timed_out": []
+   },
+   {
+    "max_len": 77,
+    "min_len": 69,
+    "n_in_TR0": 1067,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     70,
+     76
+    ],
+    "seconds_median": 13.7,
+    "stratum": 1,
+    "timed_out": []
+   },
+   {
+    "max_len": 84,
+    "min_len": 77,
+    "n_in_TR0": 1067,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     77,
+     84
+    ],
+    "seconds_median": 19.66,
+    "stratum": 2,
+    "timed_out": []
+   },
+   {
+    "max_len": 94,
+    "min_len": 84,
+    "n_in_TR0": 1066,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     85,
+     94
+    ],
+    "seconds_median": 32.425,
+    "stratum": 3,
+    "timed_out": []
+   },
+   {
+    "max_len": 105,
+    "min_len": 94,
+    "n_in_TR0": 1067,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     94,
+     104
+    ],
+    "seconds_median": 42.71,
+    "stratum": 4,
+    "timed_out": []
+   },
+   {
+    "max_len": 120,
+    "min_len": 105,
+    "n_in_TR0": 1067,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     105,
+     120
+    ],
+    "seconds_median": 76.38499999999999,
+    "stratum": 5,
+    "timed_out": []
+   },
+   {
+    "max_len": 138,
+    "min_len": 120,
+    "n_in_TR0": 1066,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     121,
+     137
+    ],
+    "seconds_median": 119.795,
+    "stratum": 6,
+    "timed_out": []
+   },
+   {
+    "max_len": 172,
+    "min_len": 138,
+    "n_in_TR0": 1067,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     139,
+     171
+    ],
+    "seconds_median": 206.35500000000002,
+    "stratum": 7,
+    "timed_out": []
+   },
+   {
+    "max_len": 225,
+    "min_len": 172,
+    "n_in_TR0": 1067,
+    "n_sampled": 30,
+    "n_timed_out": 0,
+    "sampled_len_range": [
+     172,
+     221
+    ],
+    "seconds_median": 541.94,
+    "stratum": 8,
+    "timed_out": []
+   },
+   {
+    "max_len": 498,
+    "min_len": 226,
+    "n_in_TR0": 1067,
+    "n_sampled": 30,
+    "n_timed_out": 23,
+    "sampled_len_range": [
+     227,
+     498
+    ],
+    "seconds_median": 1801.0149999999999,
+    "stratum": 9,
+    "timed_out": [
+     {
+      "n_nt": 299,
+      "name": "bpRNA_SRP_639.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 333,
+      "name": "bpRNA_RFAM_2257.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 396,
+      "name": "bpRNA_RFAM_2576.bpseq",
+      "stages_completed": [
+       "absent"
+      ]
+     },
+     {
+      "n_nt": 300,
+      "name": "bpRNA_SRP_237.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 343,
+      "name": "bpRNA_RFAM_2643.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 420,
+      "name": "bpRNA_RFAM_2621.bpseq",
+      "stages_completed": [
+       "absent"
+      ]
+     },
+     {
+      "n_nt": 301,
+      "name": "bpRNA_RFAM_25060.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 347,
+      "name": "bpRNA_RFAM_10394.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 422,
+      "name": "bpRNA_RFAM_38971.bpseq",
+      "stages_completed": [
+       "absent"
+      ]
+     },
+     {
+      "n_nt": 303,
+      "name": "bpRNA_RFAM_35777.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 358,
+      "name": "bpRNA_RFAM_35956.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 498,
+      "name": "bpRNA_RFAM_10418.bpseq",
+      "stages_completed": [
+       "absent"
+      ]
+     },
+     {
+      "n_nt": 266,
+      "name": "bpRNA_RFAM_24780.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 305,
+      "name": "bpRNA_RFAM_36290.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 359,
+      "name": "bpRNA_tmRNA_265.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 307,
+      "name": "bpRNA_SRP_460.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 371,
+      "name": "bpRNA_tmRNA_8.bpseq",
+      "stages_completed": [
+       "absent"
+      ]
+     },
+     {
+      "n_nt": 294,
+      "name": "bpRNA_tmRNA_144.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 316,
+      "name": "bpRNA_RNP_90.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 380,
+      "name": "bpRNA_RFAM_2756.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 295,
+      "name": "bpRNA_RFAM_15037.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 328,
+      "name": "bpRNA_RFAM_6663.bpseq",
+      "stages_completed": [
+       "absent",
+       "present"
+      ]
+     },
+     {
+      "n_nt": 388,
+      "name": "bpRNA_RFAM_2768.bpseq",
+      "stages_completed": [
+       "absent"
+      ]
+     }
+    ]
+   }
+  ],
+  "superseded_attempt": {
+   "n_sequences_completed": 247,
+   "shards": "runs/2026-10-13_certified_folding/shards/pilot_attempt1_superseded",
+   "why": "stopped at the authors' amendments of 2026-10-13 (the published envelope as a second set, the recursion-side check on every fold, strata reaching the TR0 maximum, a per-sequence time budget); its design is not this one, so its numbers are disclosed here and not pooled"
+  },
+  "timeouts_by_50nt_band": {
+   "0-49": {
+    "n": 6,
+    "n_timed_out": 0
+   },
+   "100-149": {
+    "n": 88,
+    "n_timed_out": 0
+   },
+   "150-199": {
+    "n": 30,
+    "n_timed_out": 0
+   },
+   "200-249": {
+    "n": 16,
+    "n_timed_out": 0
+   },
+   "250-299": {
+    "n": 8,
+    "n_timed_out": 4
+   },
+   "300-349": {
+    "n": 10,
+    "n_timed_out": 10
+   },
+   "350-399": {
+    "n": 6,
+    "n_timed_out": 6
+   },
+   "400-449": {
+    "n": 2,
+    "n_timed_out": 2
+   },
+   "450-499": {
+    "n": 1,
+    "n_timed_out": 1
+   },
+   "50-99": {
+    "n": 133,
+    "n_timed_out": 0
+   }
+  },
+  "workers": 8
+ },
  "run_id": "2026-10-13_certified_folding",
- "status": "G6 passed",
+ "status": "pilot done",
  "viennarna": "2.7.2"
 }
