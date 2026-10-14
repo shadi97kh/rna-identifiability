@@ -213,7 +213,7 @@
    "git_dirty": true,
    "git_dirty_excluding_runs": false,
    "git_dirty_paths_outside_runs": [],
-   "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+   "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
   },
   "published_envelope": {
    "components_contained": {
@@ -289,7 +289,7 @@
    "n": 10667,
    "tag": "TR0 only"
   },
-  "seconds": 210.0,
+  "seconds": 215.0,
   "weight_by_table_B_TR0": {
    "ML_cc": {
     "max_row_norm": 9.431534028074415e-16,
@@ -481,11 +481,11 @@
    "git_dirty": true,
    "git_dirty_excluding_runs": false,
    "git_dirty_paths_outside_runs": [],
-   "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+   "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
   },
   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
   "same_version_as_venv": 20,
-  "seconds": 61.4,
+  "seconds": 61.1,
   "tr0ts0_nontrivial_rebuilt": 426,
   "venv_untouched": "only uv pip freeze was run against .venv",
   "viennarna": "2.7.2"
@@ -630,7 +630,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+    "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
    },
    "radii_kcal": {
     "Andronescu2007": 21.26280733187213,
@@ -730,7 +730,7 @@
     }
    },
    "samples_per_sequence": 1000,
-   "seconds": 87.5,
+   "seconds": 87.2,
    "seed": 20261013,
    "sequences": 20
   },
@@ -818,7 +818,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+    "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
    },
    "radii_kcal": [
     1.0,
@@ -843,7 +843,7 @@
     "unconverged": 0,
     "verify_moved": 313
    },
-   "seconds": 25.3,
+   "seconds": 25.7,
    "sequences": {
     "lengths": [
      16,
@@ -912,7 +912,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+    "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
    },
    "recursion_side": {
     "folds_checked": 1830,
@@ -920,7 +920,7 @@
     "what": "every fold here, mfe and every subopt_zuker structure: the recursion's energy == eval_structure on the same constrained compound == E0 + the checker's offset; any violation stops the run. The same check runs on every fold of G2, G6, the pilot and the run, and each records its own counts.",
     "zuker_structures_checked": 70042
    },
-   "seconds": 30.2,
+   "seconds": 30.4,
    "sets": {
     "Andronescu2007": {
      "kind": "ball",
@@ -1023,7 +1023,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+    "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
    },
    "radii_kcal": [
     1.0,
@@ -1037,7 +1037,7 @@
     "zuker_structures_checked": 346612
    },
    "relaxation_loss_note": "pairs robust over the set but not certified, on the sequences whose band was enumerated: exact for the ball; for the envelope robustness is the box bound's, so its loss is a lower bound on the true one",
-   "seconds": 260.1,
+   "seconds": 261.3,
    "sets": {
     "ball": "radii in kcal/mol, the exact witness test",
     "envelope": "lambda = 1, witnesses by the box bound (an upper bound on its worst case), as in G2"
@@ -1193,14 +1193,14 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+    "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
    },
    "recursion_side": {
     "folds_checked": 3448,
     "violations": 0,
     "zuker_structures_checked": 155985
    },
-   "seconds": 65.0
+   "seconds": 65.3
   }
  },
  "gate_shards_dropped_on_rebuild": [
@@ -2314,7 +2314,7 @@
    "git_dirty": true,
    "git_dirty_excluding_runs": false,
    "git_dirty_paths_outside_runs": [],
-   "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+   "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
   }
  },
  "run_id": "2026-10-13_certified_folding",
