@@ -2317,7 +2317,71 @@
    "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
   }
  },
+ "predictions": {
+  "G5_claude": "after this registration, on every test sequence: the primary set's labels, then three attacks -- the three published data-invisible components themselves (inside E by construction), 200 envelope draws (seed tag 50), and for the 20 lowest-E' Zuker alternatives the box-corner shift on each one's differing entries realised at minimum norm and scaled into E. A violation counts only if exact float energies from counts give a structure lacking a certified pair (or holding a certified-absent one) with E(s) <= E(s*). Violation counts only; no accuracy, coverage or PPV.",
+  "R1": "zero false certificates across G2 to G5 (must hold)",
+  "R2": "among MFE pairs with p >= 0.99 on TS0 that carry a rho_env, the slip-PPV of the pairs in the lowest rho_env quartile is lower than that of the rest; passes iff the 95% paired-bootstrap interval (sequences resampled) of PPV(lowest quartile) - PPV(rest) lies ENTIRELY BELOW 0. The quartile boundary is recomputed on each resample, ties at it by the nominal gap then fractional weights. If more than 75% of those pairs are capped, compare capped against uncapped instead: passes iff the interval of PPV(uncapped) - PPV(capped) lies entirely below 0. The capped fraction is reported either way.",
+  "R3": "reported, no direction predicted: AURC and PPV at matched coverage of rho_env against every baseline, rho_env against p and against the nominal gap, with paired-bootstrap intervals, on TS0 (sequences resampled), the held-out set (families resampled, families weighted equally) and bpRNA-new (sequences resampled)",
+  "ablations_claude": "cut in this order if late: Fisher-ellipsoid weights; Gram weights; the independent-noise baseline; the held-out set (TS0 stays). Always run: the ball as secondary, lambda 0.5 and 2. Never cut: the gate, B_TR0, the matched-coverage comparison.",
+  "accuracy_test_claude": {
+   "baselines": "p (Turner 2004 base-pair probability, plain compound); MEA at gamma 0.5, 1, 2, 4; Hamada et al. 2009's gamma-centroid estimator at the same gammas -- the pairs with p > 1/(gamma+1) for gamma <= 1, Hamada's maximum-gain structure for gamma > 1, where that threshold set is often not a structure (27 of 40 TR0 sequences at gamma = 2); MEA and centroid are predictions whose own pair counts set the matched coverage; pair frequency over 200 envelope draws (rejection sampling into E at lambda = 1, seed tag 30); pair frequency over 200 draws of independent N(0, 0.3 kcal/mol) noise per PHYSICAL parameter (turner_nullspace.tie_map classes, so both ends of a stacking parameter move together and the 180-degree symmetry survives; seed tag 31)",
+   "correct": "one-nucleotide slip: (i, j) is correct iff (i, j), (i+-1, j) or (i, j+-1) is a reference pair",
+   "disagreement_sets": "D1: MFE pairs with p >= 0.99 not certified at lambda = 1; D2: MFE pairs certified at lambda = 1 with p < 0.5; their slip-PPV with intervals, on each test set",
+   "expectation": "large overlap with p; the claim is a guarantee with stated meaning at matched PPV, not a win over p (Layton and Bundschuh 2005; Zuber et al. 2018, cited in the design doc)",
+   "intervals": "95% percentile intervals from 10,000 paired bootstrap resamples (seed tag 40) of sequences or families",
+   "matched_coverage": "the pool is the MFE pairs that carry the score (all of them for p and the frequencies; those with a rho for rho_env). PPV of the top-k pairs by each score at k = the number of MFE pairs with p >= 0.99 in the same set; and at each MEA/centroid point, whose PPV is over ITS OWN pairs (not MFE pairs), at k = its pair count -- read only where k <= the pool's size; where k exceeds it (MEA at gamma = 2 and 4 has more pairs than the MFE on TR0) the point is reported beside rho_env's whole-pool PPV with the coverage gap stated, and is not a matched comparison",
+   "pairs_ranked": "the Turner 2004 MFE pairs of each test sequence",
+   "risk_coverage": "PPV against coverage along the full ranking, and its area (AURC, risk = 1 - PPV)",
+   "score": "rho_env (verified); pairs without a rho (budget) are excluded from rho's curve and counted",
+   "ties": "EVERY ranking, the baselines' included, breaks ties by the nominal gap X0(p) - E0(s*) -- recorded for every MFE pair in the label stage, never budgeted -- and pairs still tied take fractional weights (the expectation over orderings), never an arbitrary order. Because most pairs share the frequency 1.0 under both sampling baselines (85% under envelope draws on 30 TR0 sequences), those two baselines are ALSO reported with fractional weights alone, beside the registered nominal-gap reading.",
+   "weighting": "the held-out set: families weighted equally (PPV per family, then the mean; families resampled). TS0 and bpRNA-new: pairs pooled within the set -- a global ranking of pairs has no per-sequence weighting -- with sequences as the bootstrap unit"
+  },
+  "code_claude": "the gate, this registration and G5 live in scripts/certfold.py; certfold_data, certfold_baselines and certfold_metrics (the accuracy test's metrics) are in its frozen code closure, so every gate shard and this registration carry them. The test-set run's driver and the analysis's wiring are in a module that imports certfold and is not imported by it, written after this registration and before any test-set fold beyond G5's, its commit recorded in the run's record; it may only call the frozen metrics",
+  "data_claude": {
+   "TS0": "1,288 sequences: the count turner_nullspace_tr0.tr0_ts0_rows() yields, which is the loader the basis was built from. Reconciled once: TS0-canonicals.lst lists 1,305 BPSEQ paths; 17 non-ACGU sequences are dropped, and pairs enclosing fewer than three unpaired bases are stripped. No other TS0 number appears.",
+   "bprna_new": "a seeded subsample of 2500 from MXfold2's bpRNA-new nr500 list (5,401 entries; same filters as TS0; exact duplicates of TR0/TS0 dropped; seed tag 21). Family-held-out from bpRNA-1m by construction, but its files carry no Rfam family labels, so its pairs are pooled with sequences as the bootstrap unit, a stated limitation; its families may overlap Experiment 2's, so it is a second family-held-out sample, not independent evidence. ~18 CPU-h on the compiled route.",
+   "held_out": "one seeded sequence per family (seed tag 20) from Experiment 2's 1,641 Rfam families (heldout_rows, sha256-checked), families weighted equally"
+  },
+  "decision_1_primary_set_user": "Primary set: the published envelope at lambda = 1, with rho_env as the per-pair score. Reason: chosen on TR0 pilot label fractions alone, before any accuracy was computed. The ball at the Andronescu and Turner 1999 radii certifies 0% of MFE pairs, so it carries no information at published scale. The ball stays as a secondary set (r = 1 and the three published radii). The set-size arm is lambda = 0.5, 1 and 2, each labeled directly. Wording everywhere: the envelope contains the data-invisible parts of the Turner 1999 and Andronescu 2007 differences from Turner 2004. Langdon 2018 forbids 84 of the 923 reached entries (INF), so its part is defined only with those entries set to zero, and is contained under that convention. Never write \"contains the published tables\". Confirm Experiment 2 and E3 used the same convention for those 84 entries; state it once in the supplement.",
+  "decision_2_rho_cycles_user": "rho cycles: approved, take the smaller ratio. Also add a final check to every rho: run the certificate itself (ceiled weights) at 0.999 * rho; it must certify. If it does not, bisect down until it does and record the verified value. This makes rho a lower bound by construction, not only by G2. Record how many pairs the check moved.",
+  "decision_3_runtime_user": "Runtime. First profile one TR0 sequence of 400 to 500 nt: time in the callback, the label phase and Dinkelbach. Then: a. Labels always run to completion, no timeout. Only rho gets the per-sequence budget, with pairs processed in seeded random order so the rho subset is a random sample within each sequence. Record rho coverage by length stratum. b. If the callback dominates, build .venv-certfold now (uv freeze + numba, same ViennaRNA wheel sha256, cross-environment eval check, 426-direction rebuild). Add a test that the compiled and Python callbacks give identical weights on all 116,297 loops. Run the final frozen gate in that environment; TS0 runs in the same one. Report the profile and the choice before the final gate run.",
+  "decision_4_accuracy_test_user": "PRED carries the accuracy test from docs/certified_folding_design.md: rank MFE pairs by rho_env; compare PPV at matched coverage against base-pair probability, MEA (gamma sweep), gamma-centroid, pair frequency under null-space sampling, and pair frequency under independent noise; risk-coverage curves; one-nucleotide slip; families weighted equally; paired bootstrap intervals. Plus the disagreement sets: pairs with p >= 0.99 not certified at lambda = 1, and pairs certified at lambda = 1 with p < 0.5. Expectation, from the literature in the design doc: large overlap with p; the claim is a guarantee at matched PPV, not a win over p. For power only, report the size of both disagreement sets on the TR0 pilot. Compute no accuracy on the pilot.",
+  "decision_5_absent_labels_user": "Absent labels are reported over contested pairs (non-MFE pairs with Turner 2004 p >= 0.01), with the all-admissible-pairs number beside it.",
+  "decision_6_length_user": "Every certified fraction is reported by length stratum; any pooled number sits next to the length profile it came from.",
+  "decision_7_relaxation_loss_user": "From G4's bands, report relaxation loss at n <= 150: pairs exactly robust but not certified, for the ball at r = 1 and 5 and for the envelope.",
+  "decision_8_bprna_new_user": "If bpRNA-new is on disk, add a seeded subsample as a family-held-out secondary test set, sized to the CPU left after step 3. If not, it goes in Limitations.",
+  "expectation_from_pilot_claude": "derived from the TR0 pilot (300 sequences, not a registered test): the envelope at lambda = 1 certifies about 44% of MFE pairs (64-76% in the short strata, 12% in the longest), the ball at the Andronescu and Turner 1999 radii certifies none, rho_env has median about 1.0; uncertainty rises with the competitors' reachable loops",
+  "reporting_claude": {
+   "absent": "certified-absent fractions over contested pairs (non-MFE, p >= 0.01) with the all-admissible fraction beside them",
+   "relaxation_loss": "from G4: pairs robust but not certified, ball r = 1 and 5 (exact) and the envelope (against the box bound, so a lower bound)",
+   "strata": "every certified fraction by the ten TR0 length strata of the pilot, and every pooled number beside its length profile; rho coverage by stratum; the equal-count strata share eight boundary lengths (69, 77, 84, 94, 105, 120, 138, 172), and a test sequence at one goes to the LOWER stratum",
+   "wording": "the envelope contains the data-invisible parts of the Turner 1999 and Andronescu 2007 differences from Turner 2004, and Langdon 2018's under the convention that its 84 INF entries are set to zero; never 'contains the published tables'"
+  },
+  "rho_edge_cases_claude": "Dinkelbach on min N(s)/D(s) from s0, the best structure without p at scale 0. D(s0) = 0: start at the cap; margin >= 0 at the cap: rho >= cap, recorded as capped. A nominal tie (N = 0) gives rho = 0, reported separately. A two-structure cycle takes the cycle's smaller ratio and is flagged. 20 iterations without convergence or a cycle: recorded as non-converged, no value. Every finite or capped rho is then VERIFIED: the certificate itself (ceiled weights) must certify at 0.999 rho; if not, the radius is bracketed by stepping down (0.99, 0.95, 0.9, 0.75, 0.5, 0.25 of rho) and bisected to 0.1%, and the verified value is the score. Certification is monotone in the scale. Ties in the score, capped values included, are ordered by the nominal gap X0(p) - E0(s*).",
+  "runtime_claude": "labels run to completion under every set; rho has a 1800 s budget per sequence, its pairs in a seeded random order ([SEED, 12, index]); rho coverage is reported by length stratum; the compiled callback in .venv-certfold, held equal to the Python one on all 116,297 loops by test and by G1",
+  "sequence_user": "Then: final gate re-run on frozen code, PRED, G5.",
+  "sets_claude": {
+   "arm": "the envelope at lambda = 0.5 and 2, labelled directly",
+   "primary": "the published envelope E at lambda = 1: {theta0 + B t : ||t|| <= r_max, |(B t)_e| <= delta}, delta = 3.267 kcal/mol (Turner 1999, entry int21 (1,2,1,3,4)), r_max = 24.132 kcal/mol (Turner 1999), u_e = min(delta, r_max ||a_e||) = delta on all 923 reached entries; weights w_L = lambda sum_e |c_{L,e}| u_e ceiled to dcal",
+   "score": "rho_env(p): the largest multiple lambda of E at which p stays certified, cap lambda = 4; rho_ball(p) secondary, cap r = 96.53 kcal/mol",
+   "secondary": "the ball {||t|| <= r} at r = 1, 5.215 (Langdon 2018), 21.263 (Andronescu 2007), 24.132 (Turner 1999); B = B_four from TR0 only"
+  },
+  "version": "certified folding, registration 1"
+ },
+ "registration_environment": {
+  "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+  "callback_backend": "compiled",
+  "numba": "0.68.0",
+  "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+  "viennarna": "2.7.2"
+ },
+ "registration_provenance": {
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "3bec8e62cd56b1296d1994d14a1651ec05b72139"
+ },
  "run_id": "2026-10-13_certified_folding",
- "status": "env checked",
+ "status": "PRE-REGISTERED: the gate passed; nothing on a test set folded yet",
  "viennarna": "2.7.2"
 }
