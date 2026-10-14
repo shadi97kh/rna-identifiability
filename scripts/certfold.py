@@ -4008,12 +4008,16 @@ def preregister() -> int:
     if git_provenance(R)["git_dirty_excluding_runs"]:
         raise SystemExit("the tree is not clean outside runs/: commit the code first")
     _same_code(head["build_basis"]["provenance"], "build-basis")
-    venv_cf = str((R / ".venv-certfold").resolve())
+    # the venv's own directory, NOT resolved: a venv's bin/python is a symlink to the shared
+    # interpreter, so resolving it leaves the venv and this check could never pass (it refused
+    # the first registration attempt, failing closed)
+    venv_cf = (R / ".venv-certfold").absolute()
     for g in GATE_SHARDS:
         _same_code(gate[g]["provenance"], g)
         genv = gate[g].get("environment", {})
+        exe = pathlib.Path(genv.get("python", "")).absolute()
         if (genv.get("callback_backend") != "compiled" or genv.get("numba") is None
-                or not str(pathlib.Path(genv.get("python", "")).resolve()).startswith(venv_cf)):
+                or exe.parent.parent != venv_cf):
             raise SystemExit(f"{g} did not run in .venv-certfold with the compiled callback")
     _same_code(head["environment"]["provenance"], "env-check")
     _same_code(head["pilot_power"]["provenance"], "pilot-power")
