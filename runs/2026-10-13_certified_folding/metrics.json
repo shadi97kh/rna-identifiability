@@ -880,6 +880,83 @@
     }
    }
   },
+  "G4": {
+   "band_cap_dcal": 600,
+   "by_radius": {
+    "1": {
+     "band_delta_dcal_max": 52,
+     "band_size_max": 11,
+     "band_size_total": 182,
+     "n_certified_absent": 173763,
+     "n_certified_present": 2665,
+     "n_exact_witnesses": 81,
+     "n_run": 100,
+     "n_skipped": 0
+    },
+    "20": {
+     "band_delta_dcal_max": 14626,
+     "band_size_max": 0,
+     "band_size_total": 0,
+     "n_certified_absent": 0,
+     "n_certified_present": 0,
+     "n_exact_witnesses": 0,
+     "n_run": 0,
+     "n_skipped": 100
+    },
+    "5": {
+     "band_delta_dcal_max": 773,
+     "band_size_max": 57082,
+     "band_size_total": 164007,
+     "n_certified_absent": 157969,
+     "n_certified_present": 1312,
+     "n_exact_witnesses": 8746,
+     "n_run": 96,
+     "n_skipped": 4
+    },
+    "envelope": {
+     "band_delta_dcal_max": 738,
+     "band_size_max": 12393,
+     "band_size_total": 58469,
+     "n_certified_absent": 166448,
+     "n_certified_present": 1566,
+     "n_exact_witnesses": 55585,
+     "n_run": 99,
+     "n_skipped": 1
+    }
+   },
+   "folds": 8890,
+   "lengths": {
+    "max": 149,
+    "min": 37
+   },
+   "max_n": 150,
+   "n_false_certificates": 0,
+   "n_sequences": 100,
+   "pass": true,
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "a338666096b46868f113889a357853e0ff778f0b"
+   },
+   "radii_kcal": [
+    1.0,
+    5.0,
+    20.0
+   ],
+   "recursion_side": {
+    "folds_checked": 8890,
+    "subopt_structures_checked": 222658,
+    "violations": 0,
+    "zuker_structures_checked": 346612
+   },
+   "seconds": 1066.2,
+   "sets": {
+    "ball": "radii in kcal/mol, the exact witness test",
+    "envelope": "lambda = 1, witnesses by the box bound (an upper bound on its worst case), as in G2"
+   },
+   "the_gap_this_cannot_close": "the band comes from the callback, so an under-charging callback would shrink it and pass vacuously; G1's constructed cases and G2's independent enumeration are what close that"
+  },
   "G6": {
    "gauge": {
     "directions": {
@@ -2080,6 +2157,6 @@
   "workers": 8
  },
  "run_id": "2026-10-13_certified_folding",
- "status": "pilot done",
+ "status": "G4 passed",
  "viennarna": "2.7.2"
 }
