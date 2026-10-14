@@ -481,6 +481,182 @@ def make_callback(S: list[int], star: set, W: Weights, counter: list | None = No
     return cb
 
 
+# ----------------------------------------------------------------------------------
+# the compiled callback (the production path in .venv-certfold)
+# ----------------------------------------------------------------------------------
+CB_HEADER = 2 + 32 * 32          # n1, n_shapes, then a 32 x 32 map (u1, u2) -> shape index or -1
+_CFUNC = None
+_RNA_LIB = None
+
+
+def callback_backend() -> str:
+    """Which callback a Folder registers: 'compiled' where numba imports, else 'python'.
+
+    The authors' choice of 2026-10-13: the Python callback is 96% of a fold's time at n = 459
+    (23.4 M invocations at 156 ns), so the final gate and the test-set runs use the compiled one,
+    in .venv-certfold. CERTFOLD_CALLBACK overrides it; every phase records which it used. The two
+    are held equal by G1 and by tests/test_certfold.py on all 116,297 generating-set loops.
+    """
+    forced = os.environ.get("CERTFOLD_CALLBACK")
+    if forced in ("compiled", "python"):
+        return forced
+    try:
+        import numba  # noqa: F401
+    except ImportError:
+        return "python"
+    return "compiled"
+
+
+def compiled_cfunc():
+    """The numba cfunc, compiled once per process.
+
+    Signature int (*)(int i, int j, int k, int l, unsigned char d, void *data), the one
+    vrna_sc_add_f takes (DWARF-confirmed). It reads a weight TABLE through `data` and computes
+    nothing: 0 for every decomposition code but PAIR_IL, 0 for every shape no reached table
+    carries, else the signed ceiled weight of the closing pair and shape. Pure -- no state of its
+    own -- so a parallel region cannot race on it.
+    """
+    global _CFUNC
+    if _CFUNC is None:
+        import RNA
+        from numba import carray, cfunc, types
+
+        il = int(RNA.DECOMP_PAIR_IL)
+        hdr = CB_HEADER
+
+        @cfunc(types.int32(types.int32, types.int32, types.int32, types.int32, types.uint8,
+                           types.voidptr), nopython=True)
+        def cb(i, j, k, l, d, data):  # noqa: E741
+            if d != il:
+                return 0
+            u1 = k - i - 1
+            u2 = j - l - 1
+            if u1 < 0 or u2 < 0 or u1 >= 32 or u2 >= 32:
+                return 0
+            head = carray(data, (hdr,), dtype=np.int32)
+            s = head[2 + u1 * 32 + u2]
+            if s < 0:
+                return 0
+            n1 = head[0]
+            ns = head[1]
+            full = carray(data, (hdr + n1 * n1 * ns,), dtype=np.int32)
+            return full[hdr + (i * n1 + j) * ns + s]
+
+        _CFUNC = cb
+    return _CFUNC
+
+
+def rna_lib():
+    """ViennaRNA's own shared object, for vrna_sc_add_f and vrna_sc_add_data by address."""
+    global _RNA_LIB
+    if _RNA_LIB is None:
+        import ctypes
+
+        import RNA
+
+        lib = ctypes.CDLL(RNA._RNA.__file__)
+        lib.vrna_sc_add_f.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+        lib.vrna_sc_add_f.restype = ctypes.c_int
+        lib.vrna_sc_add_data.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
+        lib.vrna_sc_add_data.restype = ctypes.c_int
+        _RNA_LIB = lib
+    return _RNA_LIB
+
+
+class CompiledWeights:
+    """The compiled callback's table for one sequence and one Weights: what it charges, by
+    closing pair and shape, at the current scale.
+
+    D (the unit-scale coefficient) and the sign (+ for a loop of s*, - otherwise) are computed
+    once, through il_keys and Weights.kcal -- the Python callback's own path -- over every
+    canonical closing pair and every reached shape whose enclosed pair is canonical and can
+    close a loop: exactly the (i, j, k, l) the DP can hand the callback. A rescale writes
+    sign * ceil(r D 100 - 1e-12) into the buffer IN PLACE, which is Weights.dcal's arithmetic
+    operation for operation, so the two agree bit for bit; the buffer never moves, because
+    ViennaRNA holds its address.
+    """
+
+    def __init__(self, seq: str, S: list[int], star: set, W: Weights):
+        import copy
+
+        W1 = copy.copy(W)
+        W1.r = 1.0
+        self.shapes = sorted(W.shapes)
+        ns, n = len(self.shapes), len(seq)
+        self.n1 = n + 1
+        self.buf = np.zeros(CB_HEADER + self.n1 * self.n1 * ns, dtype=np.int32)
+        self.buf[0], self.buf[1] = self.n1, ns
+        self.buf[2:CB_HEADER] = -1
+        for s, (a, b) in enumerate(self.shapes):
+            if a < 32 and b < 32:
+                self.buf[2 + a * 32 + b] = s
+        self.D = np.zeros(self.n1 * self.n1 * ns)
+        self.sign = np.zeros(self.n1 * self.n1 * ns, dtype=np.int32)
+        for i in range(1, n + 1):
+            for j in range(i + 4, n + 1):
+                if not PT[S[i]][S[j]]:
+                    continue
+                for s, (a, b) in enumerate(self.shapes):
+                    k, l = i + a + 1, j - b - 1  # noqa: E741
+                    if l - k < 4 or not PT[S[k]][S[l]]:
+                        continue
+                    pos = (i * self.n1 + j) * ns + s
+                    self.D[pos] = W1.kcal(il_keys(S, i, j, k, l))
+                    self.sign[pos] = 1 if (i, j, k, l) in star else -1
+        self.rescale(W.r)
+
+    def rescale(self, r: float) -> None:
+        w = float(r) * self.D
+        dc = np.where(w > 0, np.ceil(w * 100.0 - 1e-12), 0.0).astype(np.int32)
+        self.buf[CB_HEADER:] = self.sign * dc
+
+    def lookup(self, i: int, j: int, k: int, l: int, d: int) -> int:  # noqa: E741
+        """What the compiled callback returns, by calling its machine code through ctypes."""
+        import ctypes
+
+        return int(compiled_cfunc().ctypes(i, j, k, l, d,
+                                           ctypes.c_void_p(self.buf.ctypes.data)))
+
+
+def register_callback(fc, S: list[int], star: set, W: Weights, backend: str,
+                      counter: list | None = None):
+    """Register the soft-constraint callback on `fc`; returns what must be kept alive.
+
+    Python: SWIG's sc_add_f with make_callback. Compiled: vrna_sc_add_f with the cfunc's address
+    and vrna_sc_add_data with the table's, by fc.this -- the route proven on this box to give the
+    identical MFE structure, energy, Zuker set and eval_structure as the SWIG path.
+    """
+    if backend == "python":
+        cb = make_callback(S, star, W, counter)
+        if not fc.sc_add_f(cb):
+            raise GuardFailure("sc_add_f refused the Python callback")
+        return cb
+    cw = CompiledWeights("".join("_ACGU"[c] for c in S[1:-1]), S, star, W)
+    lib, ptr = rna_lib(), int(fc.this)
+    if not lib.vrna_sc_add_f(ptr, compiled_cfunc().address):
+        raise GuardFailure("vrna_sc_add_f refused the compiled callback")
+    if not lib.vrna_sc_add_data(ptr, cw.buf.ctypes.data, None):
+        raise GuardFailure("vrna_sc_add_data refused the weight table")
+    return cw
+
+
+def env_record() -> dict:
+    """The environment a phase ran in: interpreter, callback backend, numba, ViennaRNA's .so."""
+    import hashlib
+
+    import RNA
+
+    try:
+        import numba
+        nb = numba.__version__
+    except ImportError:
+        nb = None
+    return {"python": sys.executable, "callback_backend": callback_backend(), "numba": nb,
+            "viennarna": RNA.__version__,
+            "RNA_so_sha256": hashlib.sha256(pathlib.Path(RNA._RNA.__file__).read_bytes())
+            .hexdigest()}
+
+
 def eprime_offset(lc: LoopCounts, seq: str, s: str, star: set, W: Weights) -> int:
     """E'(s) - E0(s) in dcal, summed over the loops of s from the checker's side.
 
@@ -570,7 +746,7 @@ class Folder:
     """
 
     def __init__(self, lc: LoopCounts, seq: str, star_db: str, W: Weights,
-                 pinned: bool = True):
+                 pinned: bool = True, backend: str | None = None):
         import RNA
 
         from thermo.vienna_ref import assert_turner2004_params, reference_md
@@ -586,11 +762,10 @@ class Folder:
         if pinned:
             assert_turner2004_params(self.plain)
         self.fc = RNA.fold_compound(seq, reference_md())
-        self.calls = [0]
-        self._cb = make_callback(self.S, self.star, W, self.calls)
-        rc = self.fc.sc_add_f(self._cb)
-        if not rc:
-            raise GuardFailure(f"sc_add_f refused the callback on {seq[:20]}... (rc = {rc})")
+        self.backend = backend or callback_backend()
+        # invocations are counted on the Python path only: the compiled callback holds no state
+        self.calls = [0] if self.backend == "python" else None
+        self._cb = register_callback(self.fc, self.S, self.star, W, self.backend, self.calls)
         self.e0_star = int(round(self.plain.eval_structure(star_db) * 100))
         self.folds = 0
         self.deadline: float | None = None
@@ -610,6 +785,8 @@ class Folder:
         someone else's code.
         """
         self.W.r = float(r)
+        if self.backend == "compiled":
+            self._cb.rescale(self.W.r)
         self.eprime_star = self.e0_star + eprime_offset(
             self.lc, self.seq, self.star_db, self.star, self.W)
 
@@ -766,23 +943,36 @@ def certify(F: Folder, star_pairs: list, adm: list, zuker: bool = True) -> dict:
     }
 
 
+def certified_at(F: Folder, i: int, j: int, r: float) -> bool:
+    """The certificate itself, ceiled weights and all: is the pair certified present at r?"""
+    F.set_radius(r)
+    _s, x, _e0 = F.without(i, j)
+    return x - F.eprime_star > 0
+
+
 def rho_of_pair(F: Folder, star_map: dict, W1: Weights, i: int, j: int, r_cap: float,
                 max_iter: int = 20) -> dict:
-    """rho(i, j): the largest radius at which the pair is still certified, by Dinkelbach.
+    """rho(i, j): the largest scale at which the pair is still certified -- a verified lower bound.
 
-    rho = min over structures s without the pair of N(s)/D(s), with N(s) = E0(s) - E0(s*) >= 0
-    and D(s) the symmetric-difference coefficient, both exact in kcal from the counts. Dinkelbach
-    iterates r <- N(s_r)/D(s_r) for s_r the minimiser of N - r D, which is one constrained fold.
+    Dinkelbach first: rho is min over structures s without the pair of N(s)/D(s), with
+    N(s) = E0(s) - E0(s*) >= 0 and D(s) the symmetric-difference coefficient, both exact in kcal
+    from the counts, and the iteration is r <- N(s_r)/D(s_r) for s_r the minimiser of N - r D,
+    one constrained fold. The inner minimisation uses the CEILED integer weights, because that is
+    what a callback can return.
 
-    The inner minimisation uses the CEILED integer weights, because that is what a callback can
-    return, so it searches with a slightly over-charged D. The bias is toward structures with
-    larger D and hence smaller ratios, which is the conservative direction, and G2 measures what
-    it costs against the exact minimum over an enumerated structure space.
+    Then the authors' check (2026-10-13): a ratio from a witness structure is an UPPER bound on
+    the true radius, and if rounding ever made the fold miss a structure with a smaller ratio,
+    the Dinkelbach value would overstate. So the certificate itself is run at 0.999 rho; if it
+    certifies, 0.999 rho is the recorded value, and if not the value is bisected down until it
+    does. Every rho is therefore a lower bound by construction, not only where G2 can enumerate.
+    `verify_moved` says whether the check had to bisect.
 
-    Edge cases are the registered ones. A nominal tie (N = 0 at r = 0) gives rho = 0 and is
-    reported separately rather than averaged in. A minimiser with D = 0 is insensitive to the
-    ball along every direction, so the iteration restarts at r_cap; if the margin there is still
-    positive the pair is recorded as rho >= r_cap, capped, and never given a number.
+    Edge cases, registered. A nominal tie (N = 0 at r = 0) gives rho = 0 and is reported
+    separately. A minimiser with D = 0 is insensitive to the set, so the iteration restarts at the
+    cap; a margin >= 0 at the cap records rho >= cap, capped (and that too is verified at
+    0.999 cap). A two-structure cycle -- the ceiled inner fold alternating between competitors --
+    takes the cycle's smaller ratio (approved 2026-10-13) and is flagged. Twenty iterations with
+    neither convergence nor a cycle record non-convergence and no value.
     """
     if W1 is F.W or W1.r != 1.0:
         # set_radius mutates the Weights object in place, so the unit-radius coefficients must
@@ -792,39 +982,80 @@ def rho_of_pair(F: Folder, star_map: dict, W1: Weights, i: int, j: int, r_cap: f
     F.set_radius(0.0)
     s0, x0, _e0_0 = F.without(i, j)
     nominal_gap = (x0 - F.e0_star) / 100.0
+    base = {"nominal_gap_kcal": nominal_gap, "cycle": False, "verify_moved": False,
+            "verify_folds": 0}
     if x0 <= F.e0_star:
-        return {"rho": 0.0, "tied_at_zero": True, "capped": False, "converged": True,
-                "iterations": 0, "nominal_gap_kcal": nominal_gap}
+        return {**base, "rho": 0.0, "rho_dinkelbach": 0.0, "tied_at_zero": True,
+                "capped": False, "converged": True, "iterations": 0}
     d0 = d_coeff(star_map, loop_coeff_map(F.lc, F.seq, s0, W1))
     r = r_cap if d0 <= 0 else min(nominal_gap / d0, r_cap)
     jumped = d0 <= 0
+    order, ratio = [], {}
+    raw, capped, conv, cycle, n_it = None, False, False, False, 0
     for it in range(1, max_iter + 1):
+        n_it = it
         F.set_radius(r)
         s, _x, e0 = F.without(i, j)
         n_s = (e0 - F.e0_star) / 100.0
         d_s = d_coeff(star_map, loop_coeff_map(F.lc, F.seq, s, W1))
         if d_s <= 0:
             if jumped or r >= r_cap:
-                return {"rho": r_cap, "tied_at_zero": False, "capped": True, "converged": True,
-                        "iterations": it, "nominal_gap_kcal": nominal_gap}
+                raw, capped, conv = r_cap, True, True
+                break
             r, jumped = r_cap, True
             continue
         margin = n_s - r * d_s
         r_new = n_s / d_s
         if r >= r_cap and margin >= 0:
-            # the registered edge case: the pair is still certified at the cap, so it is
-            # recorded as rho >= r_cap. Without this exit the iteration clamps back to the cap
-            # and refolds the same structure until max_iter, reporting "unconverged" for a pair
-            # that is simply robust beyond the cap -- G2 found one (envelope rho 4.22, cap 4)
-            return {"rho": r_cap, "tied_at_zero": False, "capped": True, "converged": True,
-                    "iterations": it, "nominal_gap_kcal": nominal_gap}
+            # still certified at the cap: rho >= cap. Without this exit the iteration clamps
+            # back to the cap and refolds the same structure until max_iter (G2 found one)
+            raw, capped, conv = r_cap, True, True
+            break
         if abs(margin) <= 1e-9 * max(1.0, abs(n_s)) or abs(r_new - r) <= 1e-9 * max(1.0, r):
-            return {"rho": min(r, r_new), "tied_at_zero": False,
-                    "capped": min(r, r_new) >= r_cap, "converged": True, "iterations": it,
-                    "nominal_gap_kcal": nominal_gap}
+            raw, conv = min(r, r_new), True
+            capped = raw >= r_cap
+            break
+        if s in ratio:
+            # a cycle: the ceiled inner fold alternates between competitors (the pilot found one,
+            # ratios 5.80948 and 5.81116). Every ratio here is an actual competitor's, so the
+            # cycle's smallest is the tightest upper bound it offers; verification follows.
+            cyc = order[order.index(s):]
+            raw, conv, cycle = min(ratio[x] for x in cyc), True, True
+            break
+        order.append(s)
+        ratio[s] = r_new
         r = min(r_new, r_cap)
-    return {"rho": r, "tied_at_zero": False, "capped": r >= r_cap, "converged": False,
-            "iterations": max_iter, "nominal_gap_kcal": nominal_gap}
+    if not conv:
+        return {**base, "rho": None, "rho_dinkelbach": None, "tied_at_zero": False,
+                "capped": False, "converged": False, "iterations": max_iter}
+    # the verification: the certificate itself must hold at 0.999 * rho
+    target = 0.999 * raw
+    folds0 = F.folds
+    if certified_at(F, i, j, target):
+        val, moved = target, False
+    else:
+        # certification is monotone in r (ceiled weights never decrease with r), so the
+        # certificate's own radius is bracketed by stepping down, then bisected to 0.1% -- the
+        # precision the 0.999 step already sets. Measured on TR0: the check moves most pairs,
+        # because each differing loop's weight is ceiled up by as much as 1 dcal and at 0.999 rho
+        # the real-weight margin is only 0.1% of the competitor's charge.
+        lo, hi = 0.0, target                    # certified at 0 (no tie), not at `target`
+        for f in (0.99, 0.95, 0.9, 0.75, 0.5, 0.25):
+            x = f * raw
+            if certified_at(F, i, j, x):
+                lo = x
+                break
+            hi = x
+        while hi - lo > max(1e-6, 1e-3 * hi):
+            mid = 0.5 * (lo + hi)
+            if certified_at(F, i, j, mid):
+                lo = mid
+            else:
+                hi = mid
+        val, moved, capped = lo, True, False
+    return {**base, "rho": val, "rho_dinkelbach": raw, "tied_at_zero": False,
+            "capped": capped and not moved, "converged": True, "iterations": n_it,
+            "cycle": cycle, "verify_moved": moved, "verify_folds": F.folds - folds0}
 
 
 # ----------------------------------------------------------------------------------
@@ -1051,7 +1282,8 @@ def sample_structures(seq: str, k: int, seed: int) -> list[str]:
     return [s for s in (out if isinstance(out, (list, tuple)) else [out]) if s]
 
 
-def g1_identity(lc: LoopCounts, W: Weights, seq: str, structures, star_db: str) -> dict:
+def g1_identity(lc: LoopCounts, W: Weights, seq: str, structures, star_db: str,
+                backend: str | None = None) -> dict:
     """eval_structure on the constrained compound == E0(s) + the checker's signed ceil weights.
 
     The left side is ViennaRNA's own decomposition driving the callback; the right side is the
@@ -1068,9 +1300,10 @@ def g1_identity(lc: LoopCounts, W: Weights, seq: str, structures, star_db: str) 
     plain = RNA.fold_compound(seq, reference_md())
     assert_turner2004_params(plain)
     con = RNA.fold_compound(seq, reference_md())
-    calls = [0]
-    cb = make_callback(S, star, W, calls)
-    rc = con.sc_add_f(cb)
+    backend = backend or callback_backend()
+    calls = [0] if backend == "python" else None
+    keep = register_callback(con, S, star, W, backend, calls)  # noqa: F841  kept alive
+    rc = 1
     bad, n, nonzero = [], 0, 0
     for s in structures:
         e0 = int(round(plain.eval_structure(s) * 100))
@@ -1083,7 +1316,8 @@ def g1_identity(lc: LoopCounts, W: Weights, seq: str, structures, star_db: str) 
             bad.append({"structure": s[:60], "eval_constrained": got, "expected": want,
                         "E0": e0})
     return {"n": n, "n_with_a_nonzero_offset": nonzero, "sc_add_f_rc": int(rc),
-            "callback_invocations": calls[0], "n_mismatches": len(bad),
+            "backend": backend, "callback_invocations": calls[0] if calls else None,
+            "n_mismatches": len(bad),
             "mismatches": bad[:5], "pass": not bad}
 
 
@@ -1600,6 +1834,7 @@ def build_basis() -> int:
             "files_sha256": files,
             "seconds": round(time.time() - t0, 1),
             "provenance": git_provenance(R),
+            "environment": env_record(),
         },
     })
     write(out)
@@ -1803,7 +2038,9 @@ def gate_g1() -> int:
             "radius_kcal": r, "n_sequences": len(per_seq),
             "n_structures": sum(x["n"] for x in per_seq),
             "n_with_a_nonzero_offset": sum(x["n_with_a_nonzero_offset"] for x in per_seq),
-            "callback_invocations": sum(x["callback_invocations"] for x in per_seq),
+            "callback_invocations": (sum(x["callback_invocations"] for x in per_seq)
+                                     if per_seq[0]["callback_invocations"] is not None
+                                     else None),
             "lengths": [x["n_nt"] for x in per_seq], "pass": True,
         }
         # The constructed half: every row of the generating set, under two reference structures.
@@ -1839,6 +2076,7 @@ def gate_g1() -> int:
         "pass": True,
         "seconds": round(time.time() - t0, 1),
         "provenance": git_provenance(R),
+        "environment": env_record(),
     }
     out["status"] = "G1 passed"
     write(out)
@@ -2034,17 +2272,21 @@ def g2_one(lc: LoopCounts, B: dict, pos: dict, W1: Weights, seq: str, radii,
         # pair. A positive difference would mean rho overstates robustness, the one direction
         # that matters: it is what the ceiled inner minimisation could cost.
         rhos = [rho_of_pair(F, smap, W1x, i, j, cap) for i, j in star_pairs]
-        worst, n_cmp = 0.0, 0
+        worst, worst_raw, n_cmp = 0.0, 0.0, 0
         for (i, j), got in zip(star_pairs, rhos, strict=True):
             keep = np.ones(len(allS), bool)
             keep[holds.get((i, j), [])] = False
             m = (Dx > 0) & keep
             ex = float((N[m] / Dx[m]).min()) if m.any() else float("inf")
-            if not got["capped"] and ex < float("inf"):
+            if got["rho"] is not None and not got["capped"] and ex < float("inf"):
                 worst = max(worst, got["rho"] - ex)
+                worst_raw = max(worst_raw, got["rho_dinkelbach"] - ex)
                 n_cmp += 1
         return {"n_pairs": len(rhos), "n_compared_against_enumeration": n_cmp,
                 "overstatement_vs_enumeration": worst,
+                "dinkelbach_overstatement_vs_enumeration": worst_raw,
+                "verify_moved": sum(1 for x in rhos if x["verify_moved"]),
+                "cycles": sum(1 for x in rhos if x["cycle"]),
                 "capped": sum(x["capped"] for x in rhos),
                 "tied_at_zero": sum(x["tied_at_zero"] for x in rhos),
                 "unconverged": sum(not x["converged"] for x in rhos), "cap": cap}
@@ -2102,6 +2344,10 @@ def gate_g2() -> int:
                     sum(p[key]["n_compared_against_enumeration"] for p in per),
                 "max_overstatement_vs_enumeration":
                     max(p[key]["overstatement_vs_enumeration"] for p in per),
+                "max_dinkelbach_overstatement_vs_enumeration":
+                    max(p[key]["dinkelbach_overstatement_vs_enumeration"] for p in per),
+                "verify_moved": sum(p[key]["verify_moved"] for p in per),
+                "cycles": sum(p[key]["cycles"] for p in per),
                 "capped": sum(p[key]["capped"] for p in per),
                 "tied_at_zero": sum(p[key]["tied_at_zero"] for p in per),
                 "unconverged": sum(p[key]["unconverged"] for p in per),
@@ -2178,6 +2424,7 @@ def gate_g2() -> int:
         "pass": True,
         "seconds": round(time.time() - t0, 1),
         "provenance": git_provenance(R),
+        "environment": env_record(),
     }
     out.setdefault("gate", {})["G2"] = shard
     out["status"] = "G2 passed"
@@ -2291,6 +2538,7 @@ def gate_g3() -> int:
         "folds": sum(p["folds"] for p in per),
         "pass": True, "seconds": round(time.time() - t0, 1),
         "provenance": git_provenance(R),
+        "environment": env_record(),
     }
     out.setdefault("gate", {})["G3"] = shard
     out["status"] = "G3 passed"
@@ -2486,6 +2734,7 @@ def gate_g6() -> int:
                            for k in ("folds_checked", "zuker_structures_checked", "violations")},
         "pass": True, "seconds": round(time.time() - t0, 1),
         "provenance": git_provenance(R),
+        "environment": env_record(),
     }
     out.setdefault("gate", {})["G6"] = shard
     out["status"] = "G6 passed"
@@ -2671,12 +2920,15 @@ def pilot_one(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, stratum:
         rec["rho"][kind] = {
             "n_done": len(rhos),
             "finite_values": sorted(round(x["rho"], 6) for x in rhos
-                                    if not x["capped"] and not x["tied_at_zero"]),
+                                    if x["rho"] is not None and not x["capped"]
+                                    and not x["tied_at_zero"]),
             "capped": sum(1 for x in rhos if x["capped"]),
             "tied_at_zero": sum(1 for x in rhos if x["tied_at_zero"]),
             "unconverged": sum(1 for x in rhos if not x["converged"])}
     rec["folds"] = sum(F.folds for F in folders.values())
-    rec["callback_invocations"] = sum(F.calls[0] for F in folders.values())
+    rec["callback_invocations"] = (sum(F.calls[0] for F in folders.values())
+                                   if all(F.calls is not None for F in folders.values())
+                                   else None)
     rec["recursion"] = {k: sum(F.recursion[k] for F in folders.values())
                         for k in ("folds_checked", "zuker_structures_checked", "violations")}
     rec["seconds"] = round(time.time() - t0, 2)
@@ -2886,7 +3138,9 @@ def pilot() -> int:
                                         "seconds": p["seconds"], "timed_out": p["timed_out"]}
                                        for p in per), key=lambda z: -z["seconds"])[:5],
                     "folds_total": sum(p["folds"] for p in per),
-                    "callback_invocations_total": sum(p["callback_invocations"] for p in per),
+                    "callback_invocations_total": (
+                        sum(p["callback_invocations"] for p in per)
+                        if all(p["callback_invocations"] is not None for p in per) else None),
                     "wall_seconds": round(time.time() - t0, 1)},
         "G3_recursion_side_on_the_pilot": {
             **{k: sum(p["recursion"][k] for p in per)
@@ -2911,6 +3165,140 @@ def pilot() -> int:
                       if k not in ("provenance", "files_sha256", "envelope")}, indent=1,
                      default=str))
     return 0
+
+
+# ----------------------------------------------------------------------------------
+# the run's per-sequence certificate (the authors' design of 2026-10-13)
+# ----------------------------------------------------------------------------------
+CONTESTED_P = 0.01               # an absent pair is contested if Turner 2004 gives it p >= 0.01
+LAMBDAS = (0.5, 1.0, 2.0)        # the set-size arm: the envelope at half, once, twice its size
+
+
+def run_sets(B: dict) -> dict:
+    """The primary set and the rest, decided by the authors on the TR0 pilot (2026-10-13).
+
+    PRIMARY: the published envelope at lambda = 1, scored by rho_env. SECONDARY: the ball at
+    r = 1 and at the three published radii. THE ARM: the envelope at lambda = 0.5 and 2, each
+    labelled directly, testing whether the set's size matters.
+    """
+    rad = B["radii"]
+    out = {f"envelope:{lam:g}": ("envelope", lam) for lam in LAMBDAS}
+    out["ball:r1"] = ("ball", 1.0)
+    for k in ("Langdon2018", "Andronescu2007", "Turner1999"):
+        out[f"ball:{k}"] = ("ball", float(rad[k]["radius_on_B_four_kcal"]))
+    return out
+
+
+def certify_sequence(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, ref_db: str | None,
+                     stratum: int | None, rho_budget_s: float, index: int,
+                     seed_tag: int = 12) -> dict:
+    """Every label under every set, to completion; then rho within a budget. One sequence.
+
+    The authors' rules of 2026-10-13. LABELS ALWAYS COMPLETE: no time budget touches them, so no
+    pair is ever missing a label. ONLY RHO IS BUDGETED, and its pairs are visited in a seeded
+    random order, so the pairs that get a rho are a random sample of the sequence's pairs; the
+    coverage is recorded. Absent labels are counted over CONTESTED pairs (non-MFE pairs with
+    Turner 2004 p >= 0.01) beside all admissible ones, because most admissible pairs were never
+    in play. Base-pair probabilities come from the PLAIN compound: pf() ignores the callback.
+
+    Per pair it records what the accuracy analysis needs and nothing it computes: the pair, its
+    Turner 2004 p, its label margin under every set, rho_env and rho_ball. The reference
+    structure is carried as given (`ref_db`), never compared here.
+    """
+    import RNA
+
+    from thermo.vienna_ref import (
+        assert_turner2004_boltzmann,
+        assert_turner2004_params,
+        reference_md,
+    )
+
+    t0 = time.time()
+    plain = RNA.fold_compound(seq, reference_md())
+    assert_turner2004_params(plain)
+    star, e_mfe = plain.mfe()
+    plain.exp_params_rescale(e_mfe)
+    plain.pf()
+    assert_turner2004_boltzmann(plain)
+    bpp = np.array(plain.bpp(), dtype=np.float64)
+    pt = pair_table(star)
+    sp = [(i, pt[i]) for i in range(1, len(seq) + 1) if pt[i] > i]
+    star_set = set(sp)
+    order = np.random.default_rng(np.random.SeedSequence([SEED, seed_tag, index])) \
+        .permutation(len(sp))
+    sp = [sp[k] for k in order]
+    adm = admissible_pairs(seq)
+    outside = [q for q in adm if q not in star_set]
+    contested = [q for q in outside if bpp[q[0], q[1]] >= CONTESTED_P]
+    W1b = Weights(B["a_four"], B["cols"], 1.0)
+    W1e = Weights(B["u_env"], B["cols"], 1.0)
+    smap = {"ball": loop_coeff_map(lc, seq, star, W1b),
+            "envelope": loop_coeff_map(lc, seq, star, W1e)}
+    folders = {"ball": Folder(lc, seq, star, Weights(B["a_four"], B["cols"], 1.0)),
+               "envelope": Folder(lc, seq, star, Weights(B["u_env"], B["cols"], 1.0))}
+    rec = {"name": name, "index": index, "n_nt": len(seq), "stratum": stratum,
+           "star": star, "ref_db": ref_db, "e0_star_dcal": int(round(e_mfe * 100)),
+           "n_pairs_star": len(sp), "n_admissible_outside_star": len(outside),
+           "n_contested": len(contested), "pair_order_seed": [SEED, seed_tag, index],
+           "exposure": exposure(seq, W1b, W1b.shapes), "sets": {}, "pairs": []}
+    ts = time.time()
+    margins = {k: {} for k in sets}
+    contested_set = set(contested)
+    for k, (kind, x) in sets.items():
+        F = folders[kind]
+        F.set_radius(x)
+        zmap = zprime_map(F, F.zuker())
+        ma = {q: (None if zmap.get(q) is None else zmap[q] - F.eprime_star) for q in outside}
+        cert = {q for q, m in ma.items() if m is None or m > 0}
+        for (i, j) in sp:
+            F.set_radius(x)
+            _s, xp, _e0 = F.without(i, j)
+            margins[k][(i, j)] = int(xp - F.eprime_star)
+        n_p = sum(1 for m in margins[k].values() if m > 0)
+        rec["sets"][k] = {
+            "kind": kind, "scale": x, "n_certified_present": n_p,
+            "n_certified_absent_admissible": len(cert),
+            "n_certified_absent_contested": len(cert & contested_set),
+            "whole_structure_certified": n_p == len(sp) and len(cert) == len(outside),
+        }
+    rec["seconds_labels"] = round(time.time() - ts, 2)
+    ts = time.time()
+    caps = {"ball": float(B["radii"]["r_cap_kcal"]), "envelope": float(LAMBDA_CAP)}
+    w1 = {"ball": W1b, "envelope": W1e}
+    deadline = time.time() + rho_budget_s
+    for F in folders.values():
+        F.deadline = deadline
+    rhos = {"envelope": {}, "ball": {}}
+    timed_out = False
+    try:
+        for (i, j) in sp:
+            got = {kind: rho_of_pair(folders[kind], smap[kind], w1[kind], i, j, caps[kind])
+                   for kind in ("envelope", "ball")}
+            for kind in got:
+                rhos[kind][(i, j)] = got[kind]
+    except Timeout:
+        timed_out = True
+    for F in folders.values():
+        F.deadline = None
+    rec["seconds_rho"] = round(time.time() - ts, 2)
+    for (i, j) in sp:
+        e, b = rhos["envelope"].get((i, j)), rhos["ball"].get((i, j))
+        rec["pairs"].append({
+            "pair": [i, j], "p": float(bpp[i, j]),
+            "margins_dcal": {k: margins[k][(i, j)] for k in sets},
+            "rho_env": None if e is None else {kk: e[kk] for kk in (
+                "rho", "rho_dinkelbach", "capped", "tied_at_zero", "converged", "cycle",
+                "verify_moved", "nominal_gap_kcal")},
+            "rho_ball": None if b is None else {kk: b[kk] for kk in (
+                "rho", "rho_dinkelbach", "capped", "tied_at_zero", "converged", "cycle",
+                "verify_moved")}})
+    rec["rho_coverage"] = {"n_with_rho": len(rhos["envelope"]), "n_pairs": len(sp),
+                           "timed_out": timed_out}
+    rec["folds"] = sum(F.folds for F in folders.values())
+    rec["recursion"] = {kk: sum(F.recursion[kk] for F in folders.values())
+                        for kk in ("folds_checked", "zuker_structures_checked", "violations")}
+    rec["seconds"] = round(time.time() - t0, 2)
+    return rec
 
 
 # ----------------------------------------------------------------------------------
@@ -3004,6 +3392,7 @@ def gate_g4() -> int:
             cert_p = {p for p, m in c["margins_present_dcal"].items() if m > 0}
             cert_a = {q for q, m in c["margins_absent_dcal"].items() if m is None or m > 0}
             n_witness = 0
+            lack, hold = set(), set()    # pairs some witness lacks / outside pairs it holds
             for s in band:
                 if s == star:
                     continue             # s* has margin exactly 0 and can witness nothing
@@ -3028,16 +3417,28 @@ def gate_g4() -> int:
                 for i in range(1, len(seq) + 1):
                     if p_t[i] > i:
                         here.add((i, p_t[i]))
+                lack |= set(sp) - here
+                hold |= here - set(sp)
                 for p in cert_p - here:
                     viol.append({"name": nm, "set": label, "kind": "present", "pair": p,
                                  "margin_kcal": margin, "structure": s[:60]})
                 for q in cert_a & here:
                     viol.append({"name": nm, "set": label, "kind": "absent", "pair": q,
                                  "margin_kcal": margin, "structure": s[:60]})
+            # the band holds every structure that could witness against a pair (outside it
+            # the certified gap is already positive), so these are exact for the ball; for the
+            # envelope robustness is judged by the box bound, an upper bound on its worst case,
+            # so its robust count is a lower bound and so is its relaxation loss
+            robust_p = set(sp) - lack
+            robust_a = set(c["margins_absent_dcal"]) - hold
             rec["by_radius"][label] = {
                 "kind": kind, "scale": r, "skipped": False, "band_delta_dcal": int(delta),
                 "band_size": len(band), "n_exact_witnesses": n_witness,
                 "n_certified_present": len(cert_p), "n_certified_absent": len(cert_a),
+                "n_robust_present": len(robust_p), "n_robust_absent": len(robust_a),
+                "relaxation_loss_present": len(robust_p - cert_p),
+                "relaxation_loss_absent": len(robust_a - cert_a),
+                "n_pairs_star": len(sp),
             }
         rec["folds"] = F.folds + Fe.folds
         rec["recursion"] = {k: F.recursion[k] + Fe.recursion[k] for k in F.recursion}
@@ -3065,7 +3466,16 @@ def gate_g4() -> int:
             "n_exact_witnesses": sum(at(r, "n_exact_witnesses")),
             "n_certified_present": sum(at(r, "n_certified_present")),
             "n_certified_absent": sum(at(r, "n_certified_absent")),
+            "n_robust_present": sum(at(r, "n_robust_present")),
+            "n_robust_absent": sum(at(r, "n_robust_absent")),
+            "relaxation_loss_present": sum(at(r, "relaxation_loss_present")),
+            "relaxation_loss_absent": sum(at(r, "relaxation_loss_absent")),
+            "n_pairs_star_in_run_sequences": sum(at(r, "n_pairs_star")),
         } for r in (*G2_RADII, "envelope")},
+        "relaxation_loss_note": "pairs robust over the set but not certified, on the sequences "
+                                "whose band was enumerated: exact for the ball; for the "
+                                "envelope robustness is the box bound's, so its loss is a lower "
+                                "bound on the true one",
         "sets": {"ball": "radii in kcal/mol, the exact witness test",
                  "envelope": "lambda = 1, witnesses by the box bound (an upper bound on its "
                              "worst case), as in G2"},
@@ -3080,6 +3490,7 @@ def gate_g4() -> int:
                                      "what close that",
         "pass": True, "seconds": round(time.time() - t0, 1),
         "provenance": git_provenance(R),
+        "environment": env_record(),
     }
     out.setdefault("gate", {})["G4"] = shard
     out["status"] = "G4 passed"
@@ -3088,9 +3499,470 @@ def gate_g4() -> int:
                      default=str))
     return 0
 
+# ----------------------------------------------------------------------------------
+# PRED: the registration, committed before any test-set fold
+# ----------------------------------------------------------------------------------
+REGISTERED = "PRE-REGISTERED: the gate passed; nothing on a test set folded yet"
+G5_SEED_TAG = 50                  # the attacks' envelope draws; the baselines' draws use 30
+G5_DRAWS = 200
+G5_TOP_ALTERNATIVES = 20
+RHO_BUDGET_S = 1800               # per sequence, rho only; labels always run to completion
+BPRNA_NEW_N = 2500                # the bpRNA-new subsample: ~18 CPU-h of the compiled route
+
+PRED = {
+    "version": "certified folding, registration 1",
+    # ---- the authors' decisions of 2026-10-13, verbatim
+    "decision_1_primary_set_user": (
+        "Primary set: the published envelope at lambda = 1, with rho_env as the per-pair score. "
+        "Reason: chosen on TR0 pilot label fractions alone, before any accuracy was computed. The "
+        "ball at the Andronescu and Turner 1999 radii certifies 0% of MFE pairs, so it carries no "
+        "information at published scale. The ball stays as a secondary set (r = 1 and the three "
+        "published radii). The set-size arm is lambda = 0.5, 1 and 2, each labeled directly. "
+        "Wording everywhere: the envelope contains the data-invisible parts of the Turner 1999 and "
+        "Andronescu 2007 differences from Turner 2004. Langdon 2018 forbids 84 of the 923 reached "
+        "entries (INF), so its part is defined only with those entries set to zero, and is "
+        "contained under that convention. Never write \"contains the published tables\". Confirm "
+        "Experiment 2 and E3 used the same convention for those 84 entries; state it once in the "
+        "supplement."),
+    "decision_2_rho_cycles_user": (
+        "rho cycles: approved, take the smaller ratio. Also add a final check to every rho: run "
+        "the certificate itself (ceiled weights) at 0.999 * rho; it must certify. If it does not, "
+        "bisect down until it does and record the verified value. This makes rho a lower bound by "
+        "construction, not only by G2. Record how many pairs the check moved."),
+    "decision_3_runtime_user": (
+        "Runtime. First profile one TR0 sequence of 400 to 500 nt: time in the callback, the label "
+        "phase and Dinkelbach. Then: a. Labels always run to completion, no timeout. Only rho gets "
+        "the per-sequence budget, with pairs processed in seeded random order so the rho subset is "
+        "a random sample within each sequence. Record rho coverage by length stratum. b. If the "
+        "callback dominates, build .venv-certfold now (uv freeze + numba, same ViennaRNA wheel "
+        "sha256, cross-environment eval check, 426-direction rebuild). Add a test that the "
+        "compiled and Python callbacks give identical weights on all 116,297 loops. Run the final "
+        "frozen gate in that environment; TS0 runs in the same one. Report the profile and the "
+        "choice before the final gate run."),
+    "decision_4_accuracy_test_user": (
+        "PRED carries the accuracy test from docs/certified_folding_design.md: rank MFE pairs by "
+        "rho_env; compare PPV at matched coverage against base-pair probability, MEA (gamma "
+        "sweep), gamma-centroid, pair frequency under null-space sampling, and pair frequency "
+        "under independent noise; risk-coverage curves; one-nucleotide slip; families weighted "
+        "equally; paired bootstrap intervals. Plus the disagreement sets: pairs with p >= 0.99 not "
+        "certified at lambda = 1, and pairs certified at lambda = 1 with p < 0.5. Expectation, "
+        "from the literature in the design doc: large overlap with p; the claim is a guarantee at "
+        "matched PPV, not a win over p. For power only, report the size of both disagreement sets "
+        "on the TR0 pilot. Compute no accuracy on the pilot."),
+    "decision_5_absent_labels_user": (
+        "Absent labels are reported over contested pairs (non-MFE pairs with Turner 2004 p >= "
+        "0.01), with the all-admissible-pairs number beside it."),
+    "decision_6_length_user": (
+        "Every certified fraction is reported by length stratum; any pooled number sits next to "
+        "the length profile it came from."),
+    "decision_7_relaxation_loss_user": (
+        "From G4's bands, report relaxation loss at n <= 150: pairs exactly robust but not "
+        "certified, for the ball at r = 1 and 5 and for the envelope."),
+    "decision_8_bprna_new_user": (
+        "If bpRNA-new is on disk, add a seeded subsample as a family-held-out secondary test set, "
+        "sized to the CPU left after step 3. If not, it goes in Limitations."),
+    "sequence_user": "Then: final gate re-run on frozen code, PRED, G5.",
+
+    # ---- what the decisions mean operationally (Claude's, checked against the code)
+    "sets_claude": {
+        "primary": "the published envelope E at lambda = 1: {theta0 + B t : ||t|| <= r_max, "
+                   "|(B t)_e| <= delta}, delta = 3.267 kcal/mol (Turner 1999, entry int21 "
+                   "(1,2,1,3,4)), r_max = 24.132 kcal/mol (Turner 1999), u_e = min(delta, "
+                   "r_max ||a_e||) = delta on all 923 reached entries; weights "
+                   "w_L = lambda sum_e |c_{L,e}| u_e ceiled to dcal",
+        "arm": "the envelope at lambda = 0.5 and 2, labelled directly",
+        "secondary": "the ball {||t|| <= r} at r = 1, 5.215 (Langdon 2018), 21.263 "
+                     "(Andronescu 2007), 24.132 (Turner 1999); B = B_four from TR0 only",
+        "score": "rho_env(p): the largest multiple lambda of E at which p stays certified, cap "
+                 "lambda = 4; rho_ball(p) secondary, cap r = 96.53 kcal/mol",
+    },
+    "rho_edge_cases_claude": (
+        "Dinkelbach on min N(s)/D(s) from s0, the best structure without p at scale 0. D(s0) = 0: "
+        "start at the cap; margin >= 0 at the cap: rho >= cap, recorded as capped. A nominal tie "
+        "(N = 0) gives rho = 0, reported separately. A two-structure cycle takes the cycle's "
+        "smaller ratio and is flagged. 20 iterations without convergence or a cycle: recorded as "
+        "non-converged, no value. Every finite or capped rho is then VERIFIED: the certificate "
+        "itself (ceiled weights) must certify at 0.999 rho; if not, the radius is bracketed by "
+        "stepping down (0.99, 0.95, 0.9, 0.75, 0.5, 0.25 of rho) and bisected to 0.1%, and the "
+        "verified value is the score. Certification is monotone in the scale. Ties in the score, "
+        "capped values included, are ordered by the nominal gap X0(p) - E0(s*)."),
+    "runtime_claude": (
+        f"labels run to completion under every set; rho has a {RHO_BUDGET_S} s budget per "
+        "sequence, its pairs in a seeded random order ([SEED, 12, index]); rho coverage is "
+        "reported by length stratum; the compiled callback in .venv-certfold, held equal to the "
+        "Python one on all 116,297 loops by test and by G1"),
+    "data_claude": {
+        "TS0": "1,288 sequences: the count turner_nullspace_tr0.tr0_ts0_rows() yields, which is "
+               "the loader the basis was built from. Reconciled once: TS0-canonicals.lst lists "
+               "1,305 BPSEQ paths; 17 non-ACGU sequences are dropped, and pairs enclosing fewer "
+               "than three unpaired bases are stripped. No other TS0 number appears.",
+        "held_out": "one seeded sequence per family from Experiment 2's 1,641 Rfam families "
+                    "(heldout_rows, sha256-checked), families weighted equally",
+        "bprna_new": f"a seeded subsample of {BPRNA_NEW_N} from MXfold2's bpRNA-new nr500 list "
+                     "(5,401 entries; same filters as TS0; exact duplicates of TR0/TS0 dropped). "
+                     "Family-held-out from bpRNA-1m by construction, but its files carry no Rfam "
+                     "family labels, so it is weighted per sequence, a stated limitation; its "
+                     "families may overlap Experiment 2's, so it is a second family-held-out "
+                     "sample, not independent evidence. ~18 CPU-h on the compiled route.",
+    },
+    "R1": "zero false certificates across G2 to G5 (must hold)",
+    "R2": ("among MFE pairs with p >= 0.99 on TS0, the slip-PPV of the pairs in the lowest "
+           "rho_env quartile is lower than that of the rest; passes iff the 95% paired-bootstrap "
+           "interval of the difference (over sequences) excludes 0. If more than 75% of those "
+           "pairs are capped, compare capped against uncapped instead, same rule. The capped "
+           "fraction is reported either way."),
+    "R3": ("reported, no direction predicted: AURC and PPV at matched coverage of rho_env against "
+           "every baseline, rho_env against p and against the nominal gap, with paired-bootstrap "
+           "intervals, on TS0 (sequences resampled), the held-out set (families resampled, "
+           "families weighted equally) and bpRNA-new (sequences resampled)"),
+    "accuracy_test_claude": {
+        "pairs_ranked": "the Turner 2004 MFE pairs of each test sequence",
+        "score": "rho_env (verified), ties by the nominal gap; pairs without a rho (budget) are "
+                 "excluded from rho's curve and counted",
+        "baselines": "p (Turner 2004 base-pair probability, plain compound); MEA at gamma "
+                     "0.5, 1, 2, 4 and the gamma-centroid at the same gammas (pairs with "
+                     "p > 1/(gamma+1)), each a prediction whose own pair count sets the matched "
+                     "coverage; pair frequency over 200 envelope draws (rejection sampling into "
+                     "E at lambda = 1, seed tag 30); pair frequency over 200 draws of independent "
+                     "N(0, 0.3 kcal/mol) noise on every finite entry (seed tag 31)",
+        "correct": "one-nucleotide slip: (i, j) is correct iff (i, j), (i+-1, j) or (i, j+-1) is "
+                   "a reference pair",
+        "matched_coverage": "PPV of the top-k pairs by each score at k = the number of MFE pairs "
+                            "with p >= 0.99 in the same set, and at each MEA/centroid point's own "
+                            "pair count",
+        "risk_coverage": "PPV against coverage along the full ranking, and its area (AURC, risk = "
+                         "1 - PPV)",
+        "weighting": "families weighted equally on the held-out set; sequences elsewhere",
+        "intervals": "95% percentile intervals from 10,000 paired bootstrap resamples (seed tag "
+                     "40) of sequences or families",
+        "disagreement_sets": "D1: MFE pairs with p >= 0.99 not certified at lambda = 1; D2: MFE "
+                             "pairs certified at lambda = 1 with p < 0.5; their slip-PPV with "
+                             "intervals, on each test set",
+        "expectation": "large overlap with p; the claim is a guarantee with stated meaning at "
+                       "matched PPV, not a win over p (Layton and Bundschuh 2005; Zuber et al. "
+                       "2018, cited in the design doc)",
+    },
+    "reporting_claude": {
+        "absent": "certified-absent fractions over contested pairs (non-MFE, p >= 0.01) with the "
+                  "all-admissible fraction beside them",
+        "strata": "every certified fraction by the ten TR0 length strata of the pilot, and every "
+                  "pooled number beside its length profile; rho coverage by stratum",
+        "relaxation_loss": "from G4: pairs robust but not certified, ball r = 1 and 5 (exact) "
+                           "and the envelope (against the box bound, so a lower bound)",
+        "wording": "the envelope contains the data-invisible parts of the Turner 1999 and "
+                   "Andronescu 2007 differences from Turner 2004, and Langdon 2018's under the "
+                   "convention that its 84 INF entries are set to zero; never 'contains the "
+                   "published tables'",
+    },
+    "G5_claude": (
+        f"after this registration, on every test sequence: the primary set's labels, then three "
+        f"attacks -- the three published data-invisible components themselves (inside E by "
+        f"construction), {G5_DRAWS} envelope draws (seed tag {G5_SEED_TAG}), and for the "
+        f"{G5_TOP_ALTERNATIVES} lowest-E' Zuker alternatives the box-corner shift on each one's "
+        f"differing entries realised at minimum norm and scaled into E. A violation counts only "
+        f"if exact float energies from counts give a structure lacking a certified pair (or "
+        f"holding a certified-absent one) with E(s) <= E(s*). Violation counts only; no accuracy, "
+        f"coverage or PPV."),
+    "expectation_from_pilot_claude": (
+        "derived from the TR0 pilot (300 sequences, not a registered test): the envelope at "
+        "lambda = 1 certifies about 44% of MFE pairs (64-76% in the short strata, 12% in the "
+        "longest), the ball at the Andronescu and Turner 1999 radii certifies none, rho_env has "
+        "median about 1.0; uncertainty rises with the competitors' reachable loops"),
+    "ablations_claude": (
+        "cut in this order if late: Fisher-ellipsoid weights; Gram weights; the independent-noise "
+        "baseline; the held-out set (TS0 stays). Always run: the ball as secondary, lambda 0.5 "
+        "and 2. Never cut: the gate, B_TR0, the matched-coverage comparison."),
+    "code_claude": (
+        "the gate, this registration and G5 live in scripts/certfold.py with certfold_data and "
+        "certfold_baselines in its import closure, frozen before the final gate run; the test-set "
+        "run and the analysis are in a module that imports certfold and is not imported by it, "
+        "written after this registration and before any test-set fold beyond G5's, its commit "
+        "recorded in the run's record"),
+}
+
+
+def _pred_ok(out) -> bool:
+    return out.get("predictions") == json.loads(json.dumps(PRED))
+
+
+def _committed(unmodified: bool) -> dict:
+    """The artifact is tracked; with `unmodified`, the working copy equals the committed one."""
+    rel = str((OUT / "metrics.json").relative_to(R))
+    if _git("ls-files", "--error-unmatch", rel).returncode != 0:
+        raise SystemExit(f"{rel} is not tracked: commit it first")
+    if unmodified and _git("diff", "--quiet", "HEAD", "--", rel).returncode != 0:
+        raise SystemExit(f"{rel} has uncommitted changes: commit it first")
+    return json.loads(_git("show", f"HEAD:{rel}").stdout)
+
+
+def _code_paths() -> list[str]:
+    """This script's static import closure over scripts/ and thermo/ (ast, so imports inside
+    functions count), as typeb_base_a07 computes it."""
+    import ast
+
+    me = pathlib.Path(__file__).resolve().relative_to(R)
+    todo, seen = [me], set()
+
+    def target(name):
+        p = pathlib.Path(*name.split("."))
+        for f in (p.with_suffix(".py"), p / "__init__.py"):
+            if (R / f).exists():
+                return f
+        return None
+
+    while todo:
+        rel = todo.pop()
+        if rel in seen:
+            continue
+        seen.add(rel)
+        for node in ast.walk(ast.parse((R / rel).read_text())):
+            mods = []
+            if isinstance(node, ast.Import):
+                mods = [a.name for a in node.names]
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                mods = [node.module] + [f"{node.module}.{a.name}" for a in node.names]
+            for m in mods:
+                if m.split(".")[0] in ("scripts", "thermo"):
+                    for k in range(1, len(m.split(".")) + 1):
+                        t = target(".".join(m.split(".")[:k]))
+                        if t is not None:
+                            todo.append(t)
+    return sorted(str(p) for p in seen)
+
+
+def _same_code(prov: dict, label: str) -> None:
+    """Refuse unless phase `label` ran on a tree clean outside runs/ and HEAD carries its code."""
+    if not prov or prov.get("git_dirty_excluding_runs") is not False:
+        raise SystemExit(f"the {label} did not run on a tree clean outside runs/")
+    paths = _code_paths()
+    sha = prov["git_sha"]
+    bad = [f"{p} (absent at {c[:12]})" for c in (sha, "HEAD") for p in paths
+           if _git("cat-file", "-e", f"{c}:{p}").returncode != 0]
+    d = _git("diff", "--name-only", sha, "HEAD", "--", *paths)
+    bad += d.stdout.split()
+    if bad:
+        raise SystemExit(f"the code is not the {label}'s ({sha[:12]}): {bad}")
+
+
+# ----------------------------------------------------------------------------------
+# env-check: .venv-certfold against .venv, the authors' two cross-environment checks
+# ----------------------------------------------------------------------------------
+def g1_energies() -> int:
+    """Helper phase, run under EITHER interpreter: E0 of the G1 structure set, to a JSON file."""
+    import RNA
+
+    from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+    dst = pathlib.Path(sys.argv[sys.argv.index("--out") + 1])
+    rows, _ = tr0_rows()
+    seqs = gate_sequences(rows, G1_SEQUENCES, 50, 500, SEED)
+    res = []
+    for n, (_t, nm, seq, _db) in enumerate(seqs):
+        fc = RNA.fold_compound(seq, reference_md())
+        assert_turner2004_params(fc)
+        star = fc.mfe()[0]
+        for s in sample_structures(seq, G1_SAMPLES, SEED + n) + [star]:
+            res.append([nm, s, int(round(fc.eval_structure(s) * 100))])
+    dst.write_text(json.dumps({"python": sys.executable, "energies": res}))
+    return 0
+
+
+def env_check() -> int:
+    """The authors' conditions for .venv-certfold (2026-10-13), run under .venv-certfold.
+
+    (1) eval_structure energies equal .venv's exactly on the G1 structure set: the same
+    20,020 sampled structures plus the MFEs, computed by this phase here and by the g1-energies
+    helper under .venv's interpreter, compared entry by entry. (2) The TR0+TS0 basis rebuilt in
+    this environment gives 426 nontrivial directions, as it did in .venv. (3) The ViennaRNA
+    extension's sha256 is the one .venv carries. Recorded with the environment, the numba
+    version and the freeze diff against .venv.
+    """
+    out = read_out()
+    assert out.get("status") in ("basis built", "G1 passed", "G2 passed", "G3 passed",
+                                 "G6 passed", "G4 passed", "env checked"), out.get("status")
+    if "predictions" in out:
+        raise SystemExit("preregistered: the environment record is fixed")
+    t0 = time.time()
+    env = env_record()
+    if env["callback_backend"] != "compiled":
+        raise SystemExit("run env-check under .venv-certfold, where the compiled callback lives")
+    venv_so = R / ".venv" / "lib" / "python3.11" / "site-packages" / "RNA"
+    so = sorted(venv_so.glob("_RNA*.so"))
+    if not so or _sha(so[0]) != env["RNA_so_sha256"]:
+        raise GuardFailure("the ViennaRNA extension differs between .venv and this environment")
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as td:
+        here, there = pathlib.Path(td) / "here.json", pathlib.Path(td) / "there.json"
+        for py, dst in ((sys.executable, here), (str(R / ".venv" / "bin" / "python"), there)):
+            r = subprocess.run([py, str(R / "scripts" / "certfold.py"), "--phase", "g1-energies",
+                                "--out", str(dst)], cwd=R, capture_output=True, text=True)
+            if r.returncode != 0:
+                raise GuardFailure(f"g1-energies failed under {py}: {r.stderr[-400:]}")
+        a = json.loads(here.read_text())["energies"]
+        b = json.loads(there.read_text())["energies"]
+    diff = [x for x, y in zip(a, b, strict=True) if x != y]
+    if len(a) != len(b) or diff:
+        raise GuardFailure(f"eval_structure differs between environments on {len(diff)} of "
+                           f"{len(a)} structures: {diff[:2]}")
+    from scripts.turner_typeb import structure_rows
+
+    rebuilt = compute_basis(structure_rows()["tr0ts0"], template())
+    dim = int(rebuilt["NT"].shape[1])
+    if dim != 426:
+        raise GuardFailure(f"the TR0+TS0 basis rebuilt here has {dim} nontrivial directions")
+    freeze = subprocess.run(["uv", "pip", "freeze"], cwd=R, capture_output=True, text=True,
+                            env=dict(os.environ, VIRTUAL_ENV=str(R / ".venv-certfold")))
+    base = subprocess.run(["uv", "pip", "freeze"], cwd=R, capture_output=True, text=True,
+                          env=dict(os.environ, VIRTUAL_ENV=str(R / ".venv")))
+    mine = dict(ln.split("==", 1) for ln in freeze.stdout.split() if "==" in ln)
+    theirs = dict(ln.split("==", 1) for ln in base.stdout.split() if "==" in ln)
+    changed = {k: [theirs[k], v] for k, v in mine.items() if k in theirs and theirs[k] != v}
+    if changed:
+        raise GuardFailure(f"packages differ in version from .venv: {changed}")
+    out["environment"] = {
+        **env, "eval_structure_identical": {"n_structures": len(a), "n_differing": 0},
+        "tr0ts0_nontrivial_rebuilt": dim,
+        "added_relative_to_venv": {k: v for k, v in mine.items() if k not in theirs},
+        "same_version_as_venv": len([k for k in mine if k in theirs]),
+        "venv_untouched": "only uv pip freeze was run against .venv",
+        "seconds": round(time.time() - t0, 1), "provenance": git_provenance(R)}
+    out["status"] = "env checked"
+    write(out)
+    print(json.dumps({k: v for k, v in out["environment"].items() if k != "provenance"},
+                     indent=1, default=str))
+    return 0
+
+
+# ----------------------------------------------------------------------------------
+# pilot-power: the disagreement sets' sizes on the TR0 pilot, for power only
+# ----------------------------------------------------------------------------------
+def pilot_power() -> int:
+    """The authors' item 4: for power only, the size of both disagreement sets on the TR0 pilot.
+    Computes NO accuracy: no reference structure is read.
+
+    The pilot recorded each pair's margin under the envelope at lambda = 1 in its seeded visiting
+    order ([SEED, 11, index]); that order is rebuilt here, each margin re-attached to its pair,
+    and the pair's Turner 2004 p computed on the plain compound. D1: p >= 0.99 and not certified;
+    D2: certified and p < 0.5. Also every pilot fraction by stratum that the pilot's record did
+    not already carry (absent and whole-structure), so PRED's expectation sits beside its length
+    profile.
+    """
+    import RNA
+
+    from thermo.vienna_ref import (
+        assert_turner2004_boltzmann,
+        assert_turner2004_params,
+        reference_md,
+    )
+
+    out = read_out()
+    if "predictions" in out:
+        raise SystemExit("preregistered: the pilot's power numbers are fixed")
+    pil = out["pilot"]
+    for f, h in pil["files_sha256"].items():
+        if _sha(SHARDS / f) != h:
+            raise GuardFailure(f"{f} changed since the pilot")
+    per = []
+    for f in sorted(pil["files_sha256"]):
+        per += [json.loads(ln) for ln in (SHARDS / f).read_text().splitlines() if ln.strip()]
+    rows, _ = tr0_rows()
+    seqs, _bounds = pilot_sequences(rows)
+    d1 = d2 = n_hi = n_cert = n_pairs = 0
+    by_stratum: dict[int, dict] = {}
+    for rec in per:
+        name, seq, stratum = seqs[rec["index"]]
+        if name != rec["name"]:
+            raise GuardFailure(f"pilot index {rec['index']} is {rec['name']}, expected {name}")
+        fc = RNA.fold_compound(seq, reference_md())
+        assert_turner2004_params(fc)
+        star, e = fc.mfe()
+        fc.exp_params_rescale(e)
+        fc.pf()
+        assert_turner2004_boltzmann(fc)
+        bpp = np.array(fc.bpp(), dtype=np.float64)
+        pt = pair_table(star)
+        sp = [(i, pt[i]) for i in range(1, len(seq) + 1) if pt[i] > i]
+        order = np.random.default_rng(np.random.SeedSequence([SEED, 11, rec["index"]])) \
+            .permutation(len(sp))
+        sp = [sp[k] for k in order]
+        margins = rec["sets"]["envelope"]["present_margins_dcal"]
+        for (i, j), m in zip(sp, margins, strict=False):
+            p = float(bpp[i, j])
+            cert = m > 0
+            n_pairs += 1
+            n_hi += p >= 0.99
+            n_cert += cert
+            d1 += p >= 0.99 and not cert
+            d2 += cert and p < 0.5
+        s = by_stratum.setdefault(stratum, {"n": 0, "absent_cert": 0, "absent_of": 0,
+                                            "whole": 0, "whole_of": 0})
+        s["n"] += 1
+        env = rec["sets"]["envelope"]
+        if env["absent"] is not None:
+            s["absent_cert"] += env["absent"]["n_certified_absent"]
+            s["absent_of"] += rec["n_admissible_outside_star"]
+        if env["whole_structure_certified"] is not None:
+            s["whole"] += int(env["whole_structure_certified"])
+            s["whole_of"] += 1
+    out["pilot_power"] = {
+        "label": "TR0 pilot, for power only; no accuracy computed, no reference read",
+        "n_pairs_labelled": n_pairs, "n_p_ge_0_99": n_hi, "n_certified_lambda_1": n_cert,
+        "D1_p_ge_0_99_not_certified": d1, "D2_certified_p_lt_0_5": d2,
+        "envelope_lambda_1_by_stratum": {
+            str(k): {"n_sequences": v["n"],
+                     "absent_certified_fraction": (v["absent_cert"] / v["absent_of"]
+                                                   if v["absent_of"] else None),
+                     "whole_structure_fraction": (v["whole"] / v["whole_of"]
+                                                  if v["whole_of"] else None)}
+            for k, v in sorted(by_stratum.items())},
+        "provenance": git_provenance(R)}
+    write(out)
+    print(json.dumps({k: v for k, v in out["pilot_power"].items() if k != "provenance"},
+                     indent=1, default=str))
+    return 0
+
+
+# ----------------------------------------------------------------------------------
+# preregister
+# ----------------------------------------------------------------------------------
+GATE_SHARDS = ("G1", "G2", "G3", "G4", "G6")
+
+
+def preregister() -> int:
+    """Commit PRED, refusing unless the whole gate passed on the code HEAD carries, in the
+    environment the test sets will run in, and the artifact is committed and unmodified."""
+    out = read_out()
+    if "predictions" in out:
+        raise SystemExit("the registration exists")
+    head = _committed(unmodified=True)
+    gate = head.get("gate", {})
+    missing = [g for g in GATE_SHARDS if not gate.get(g, {}).get("pass")]
+    if missing:
+        raise SystemExit(f"the gate is incomplete: {missing}")
+    if "environment" not in head or "pilot_power" not in head:
+        raise SystemExit("env-check and pilot-power must be committed first")
+    if git_provenance(R)["git_dirty_excluding_runs"]:
+        raise SystemExit("the tree is not clean outside runs/: commit the code first")
+    _same_code(head["build_basis"]["provenance"], "build-basis")
+    for g in GATE_SHARDS:
+        _same_code(gate[g]["provenance"], g)
+        if gate[g].get("environment", {}).get("callback_backend") != "compiled":
+            raise SystemExit(f"{g} did not run with the compiled callback")
+    _same_code(head["environment"]["provenance"], "env-check")
+    out.update({"status": REGISTERED, "predictions": PRED,
+                "registration_provenance": git_provenance(R),
+                "registration_environment": env_record()})
+    write(out)
+    print(REGISTERED)
+    return 0
+
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
     sys.exit({"build-basis": build_basis, "gate-g1": gate_g1,
               "gate-g2": gate_g2, "gate-g3": gate_g3,
               "gate-g6": gate_g6, "gate-g4": gate_g4,
-              "pilot": pilot, "pilot-worker": pilot_worker}[ph]())
+              "pilot": pilot, "pilot-worker": pilot_worker,
+              "g1-energies": g1_energies, "env-check": env_check,
+              "pilot-power": pilot_power, "preregister": preregister}[ph]())

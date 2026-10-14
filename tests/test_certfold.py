@@ -202,3 +202,56 @@ def test_the_shape_fast_path_charges_nothing_it_should_have_charged(pinned):
                                  f"nonzero weight: {nonzero_skipped[:3]}")
     assert skipped > 10000 and charged > 1000, (f"the test is vacuous: {skipped} skipped, "
                                                 f"{charged} charged")
+
+
+def test_the_compiled_callback_returns_the_python_callbacks_weights(pinned):
+    """The compiled callback charges every loop exactly what the Python callback charges.
+
+    The authors' condition of 2026-10-13 for using the compiled callback in the final gate and
+    the test-set runs: identical weights on all 116,297 interior loops of the generating set.
+    This calls the cfunc's MACHINE CODE through ctypes, not a Python mirror of its logic, at
+    both signs (s* = the row's own structure, so every loop is a loop of s*; and s* = the open
+    chain, so none is) and at scales that cover both sets: the ball at r = 1, the Andronescu
+    radius and r_cap, and the envelope at lambda = 0.5, 1 and 2.
+
+    The compiled callback lives in .venv-certfold, where numba is installed (`make
+    test-certfold`); in .venv there is nothing to compare, and the test says so.
+    """
+    pytest.importorskip("numba", reason="the compiled callback lives in .venv-certfold: run "
+                                        "make test-certfold")
+    import RNA
+
+    from scripts.certfold import CompiledWeights, Weights, load_tr0_basis, star_interior_loops
+    from scripts.turner_nullspace import BCODE
+
+    P, lc = pinned
+    B = load_tr0_basis()
+    il = int(RNA.DECOMP_PAIR_IL)
+    scales = [("ball", B["a_four"], r) for r in
+              (1.0, float(B["radii"]["Andronescu2007"]["radius_on_B_four_kcal"]),
+               float(B["radii"]["r_cap_kcal"]))]
+    scales += [("envelope", B["u_env"], lam) for lam in (0.5, 1.0, 2.0)]
+    n_loops, n_nonzero, bad = 0, 0, []
+    rows = list(generating_set(P["special"]))
+    for _tag, seq, db in rows:
+        S = [0] + [BCODE[c] for c in seq] + [0]
+        loops = [(d["i"], d["j"], d["k"], d["l"]) for d in lc.loops(seq, db)
+                 if d["kind"] == "interior"]
+        if not loops:
+            continue
+        n_loops += len(loops)
+        for star_db in (db, "." * len(seq)):
+            star = star_interior_loops(lc, seq, star_db)
+            for _kind, a, x in scales:
+                W = Weights(a, B["cols"], x)
+                cw = CompiledWeights(seq, S, star, W)
+                for q in loops:
+                    w = W.loop_dcal(S, *q)
+                    want = (w if q in star else -w) if w else 0
+                    got = cw.lookup(*q, il)
+                    n_nonzero += want != 0
+                    if got != want:
+                        bad.append((seq[:20], q, x, want, got))
+    assert n_loops == 116297, f"the generating set has {n_loops} interior loops, not 116,297"
+    assert n_nonzero > 10000, f"the comparison is vacuous: {n_nonzero} nonzero weights"
+    assert not bad, f"{len(bad)} compiled weights differ from the Python callback's: {bad[:3]}"
