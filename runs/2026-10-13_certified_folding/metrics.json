@@ -39,6 +39,13 @@
     "min": 0.35729480050524615
    }
   },
+  "environment": {
+   "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+   "callback_backend": "compiled",
+   "numba": "0.68.0",
+   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+   "viennarna": "2.7.2"
+  },
   "files_sha256": {
    "basis_tr0.npz": "268f757ab9e4dd7a0c9388f606278f587b9065adc22bcebf8668a448380c6393"
   },
@@ -206,7 +213,7 @@
    "git_dirty": true,
    "git_dirty_excluding_runs": false,
    "git_dirty_paths_outside_runs": [],
-   "git_sha": "b36501423b5d5531528f382ad126fb9dedfbc496"
+   "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
   },
   "published_envelope": {
    "components_contained": {
@@ -282,7 +289,7 @@
    "n": 10667,
    "tag": "TR0 only"
   },
-  "seconds": 209.8,
+  "seconds": 210.0,
   "weight_by_table_B_TR0": {
    "ML_cc": {
     "max_row_norm": 9.431534028074415e-16,
@@ -458,6 +465,31 @@
    }
   }
  },
+ "environment": {
+  "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+  "added_relative_to_venv": {
+   "llvmlite": "0.50.0",
+   "numba": "0.68.0"
+  },
+  "callback_backend": "compiled",
+  "eval_structure_identical": {
+   "n_differing": 0,
+   "n_structures": 20020
+  },
+  "numba": "0.68.0",
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+  },
+  "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+  "same_version_as_venv": 20,
+  "seconds": 61.4,
+  "tr0ts0_nontrivial_rebuilt": 426,
+  "venv_untouched": "only uv pip freeze was run against .venv",
+  "viennarna": "2.7.2"
+ },
  "gate": {
   "G1": {
    "constructed": {
@@ -488,6 +520,13 @@
      "pass": true,
      "radius_kcal": 96.52924364315216
     }
+   },
+   "environment": {
+    "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+    "callback_backend": "compiled",
+    "numba": "0.68.0",
+    "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+    "viennarna": "2.7.2"
    },
    "il_keys_vs_positional_oracle": {
     "cases": {
@@ -591,7 +630,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "b36501423b5d5531528f382ad126fb9dedfbc496"
+    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
    },
    "radii_kcal": {
     "Andronescu2007": 21.26280733187213,
@@ -600,7 +639,7 @@
    },
    "sampled": {
     "Andronescu2007": {
-     "callback_invocations": 769766,
+     "callback_invocations": null,
      "lengths": [
       53,
       69,
@@ -630,7 +669,7 @@
      "radius_kcal": 21.26280733187213
     },
     "r1": {
-     "callback_invocations": 769766,
+     "callback_invocations": null,
      "lengths": [
       53,
       69,
@@ -660,7 +699,7 @@
      "radius_kcal": 1.0
     },
     "r_cap": {
-     "callback_invocations": 769766,
+     "callback_invocations": null,
      "lengths": [
       53,
       69,
@@ -691,7 +730,7 @@
     }
    },
    "samples_per_sequence": 1000,
-   "seconds": 58.2,
+   "seconds": 87.5,
    "seed": 20261013,
    "sequences": 20
   },
@@ -715,15 +754,25 @@
     "rho_env": {
      "cap": 4.0,
      "capped": 6,
+     "cycles": 0,
+     "max_dinkelbach_overstatement_vs_enumeration": 0.0,
      "max_overstatement_vs_enumeration": 0.0,
      "n_compared_against_enumeration": 367,
      "n_pairs": 373,
      "tied_at_zero": 2,
-     "unconverged": 0
+     "unconverged": 0,
+     "verify_moved": 325
     },
     "set": "the published envelope at lambda = 1 (build_basis.published_envelope)",
     "test": "the box bound N(s) - sum_e |dc_e| u_e, an UPPER bound on the envelope's worst case (the envelope lies in the box); certified must imply box-robust, and slack is measured against this bound, not against the exact worst case",
     "whole_structure_certified": 176
+   },
+   "environment": {
+    "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+    "callback_backend": "compiled",
+    "numba": "0.68.0",
+    "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+    "viennarna": "2.7.2"
    },
    "exactly_robust_absent": {
     "1": 7847,
@@ -740,7 +789,7 @@
     "20": 0,
     "5": 0
    },
-   "folds": 4637,
+   "folds": 8569,
    "n_admissible_total": 8242,
    "n_pairs_star_total": 373,
    "n_sequences": 200,
@@ -769,7 +818,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "b36501423b5d5531528f382ad126fb9dedfbc496"
+    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
    },
    "radii_kcal": [
     1.0,
@@ -777,7 +826,7 @@
     20.0
    ],
    "recursion_side": {
-    "folds_checked": 4637,
+    "folds_checked": 8569,
     "subopt_structures_checked": 0,
     "violations": 0,
     "zuker_structures_checked": 23419
@@ -785,13 +834,16 @@
    "rho": {
     "cap": 96.52924364315216,
     "capped": 5,
+    "cycles": 0,
+    "max_dinkelbach_overstatement_vs_enumeration": 0.0,
     "max_overstatement_vs_enumeration": 0.0,
     "n_compared_against_enumeration": 368,
     "n_pairs": 373,
     "tied_at_zero": 2,
-    "unconverged": 0
+    "unconverged": 0,
+    "verify_moved": 313
    },
-   "seconds": 25.8,
+   "seconds": 25.3,
    "sequences": {
     "lengths": [
      16,
@@ -818,6 +870,13 @@
    }
   },
   "G3": {
+   "environment": {
+    "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+    "callback_backend": "compiled",
+    "numba": "0.68.0",
+    "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+    "viennarna": "2.7.2"
+   },
    "folds": 1830,
    "lengths": [
     120,
@@ -853,7 +912,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "b36501423b5d5531528f382ad126fb9dedfbc496"
+    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
    },
    "recursion_side": {
     "folds_checked": 1830,
@@ -861,7 +920,7 @@
     "what": "every fold here, mfe and every subopt_zuker structure: the recursion's energy == eval_structure on the same constrained compound == E0 + the checker's offset; any violation stops the run. The same check runs on every fold of G2, G6, the pilot and the run, and each records its own counts.",
     "zuker_structures_checked": 70042
    },
-   "seconds": 182.6,
+   "seconds": 30.2,
    "sets": {
     "Andronescu2007": {
      "kind": "ball",
@@ -890,8 +949,13 @@
      "n_certified_absent": 173763,
      "n_certified_present": 2665,
      "n_exact_witnesses": 81,
+     "n_pairs_star_in_run_sequences": 2787,
+     "n_robust_absent": 173781,
+     "n_robust_present": 2682,
      "n_run": 100,
-     "n_skipped": 0
+     "n_skipped": 0,
+     "relaxation_loss_absent": 18,
+     "relaxation_loss_present": 17
     },
     "20": {
      "band_delta_dcal_max": 14626,
@@ -900,8 +964,13 @@
      "n_certified_absent": 0,
      "n_certified_present": 0,
      "n_exact_witnesses": 0,
+     "n_pairs_star_in_run_sequences": 0,
+     "n_robust_absent": 0,
+     "n_robust_present": 0,
      "n_run": 0,
-     "n_skipped": 100
+     "n_skipped": 100,
+     "relaxation_loss_absent": 0,
+     "relaxation_loss_present": 0
     },
     "5": {
      "band_delta_dcal_max": 773,
@@ -910,8 +979,13 @@
      "n_certified_absent": 157969,
      "n_certified_present": 1312,
      "n_exact_witnesses": 8746,
+     "n_pairs_star_in_run_sequences": 2655,
+     "n_robust_absent": 160581,
+     "n_robust_present": 1597,
      "n_run": 96,
-     "n_skipped": 4
+     "n_skipped": 4,
+     "relaxation_loss_absent": 2612,
+     "relaxation_loss_present": 285
     },
     "envelope": {
      "band_delta_dcal_max": 738,
@@ -920,9 +994,21 @@
      "n_certified_absent": 166448,
      "n_certified_present": 1566,
      "n_exact_witnesses": 55585,
+     "n_pairs_star_in_run_sequences": 2753,
+     "n_robust_absent": 166473,
+     "n_robust_present": 1568,
      "n_run": 99,
-     "n_skipped": 1
+     "n_skipped": 1,
+     "relaxation_loss_absent": 25,
+     "relaxation_loss_present": 2
     }
+   },
+   "environment": {
+    "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+    "callback_backend": "compiled",
+    "numba": "0.68.0",
+    "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+    "viennarna": "2.7.2"
    },
    "folds": 8890,
    "lengths": {
@@ -937,7 +1023,7 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "a338666096b46868f113889a357853e0ff778f0b"
+    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
    },
    "radii_kcal": [
     1.0,
@@ -950,7 +1036,8 @@
     "violations": 0,
     "zuker_structures_checked": 346612
    },
-   "seconds": 1066.2,
+   "relaxation_loss_note": "pairs robust over the set but not certified, on the sequences whose band was enumerated: exact for the ball; for the envelope robustness is the box bound's, so its loss is a lower bound on the true one",
+   "seconds": 260.1,
    "sets": {
     "ball": "radii in kcal/mol, the exact witness test",
     "envelope": "lambda = 1, witnesses by the box bound (an upper bound on its worst case), as in G2"
@@ -958,6 +1045,13 @@
    "the_gap_this_cannot_close": "the band comes from the callback, so an under-charging callback would shrink it and pass vacuously; G1's constructed cases and G2's independent enumeration are what close that"
   },
   "G6": {
+   "environment": {
+    "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+    "callback_backend": "compiled",
+    "numba": "0.68.0",
+    "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+    "viennarna": "2.7.2"
+   },
    "gauge": {
     "directions": {
      "N1_hairpin_mismatch_vs_init": {
@@ -1099,20 +1193,21 @@
     "git_dirty": true,
     "git_dirty_excluding_runs": false,
     "git_dirty_paths_outside_runs": [],
-    "git_sha": "b36501423b5d5531528f382ad126fb9dedfbc496"
+    "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
    },
    "recursion_side": {
     "folds_checked": 3448,
     "violations": 0,
     "zuker_structures_checked": 155985
    },
-   "seconds": 433.9
+   "seconds": 65.0
   }
  },
  "gate_shards_dropped_on_rebuild": [
   "G1",
   "G2",
   "G3",
+  "G4",
   "G6"
  ],
  "pilot": {
@@ -2156,7 +2251,73 @@
   },
   "workers": 8
  },
+ "pilot_power": {
+  "D1_p_ge_0_99_not_certified": 761,
+  "D2_certified_p_lt_0_5": 163,
+  "envelope_lambda_1_by_stratum": {
+   "0": {
+    "absent_certified_fraction": 0.9801727957465662,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.36666666666666664
+   },
+   "1": {
+    "absent_certified_fraction": 0.9796695862707399,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.3
+   },
+   "2": {
+    "absent_certified_fraction": 0.986612922207838,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.4666666666666667
+   },
+   "3": {
+    "absent_certified_fraction": 0.9738551363519122,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.16666666666666666
+   },
+   "4": {
+    "absent_certified_fraction": 0.9677346229409097,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.16666666666666666
+   },
+   "5": {
+    "absent_certified_fraction": 0.9794110571820742,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.16666666666666666
+   },
+   "6": {
+    "absent_certified_fraction": 0.972710897304527,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.06666666666666667
+   },
+   "7": {
+    "absent_certified_fraction": 0.971451279605786,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.1
+   },
+   "8": {
+    "absent_certified_fraction": 0.9632770377984305,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.06666666666666667
+   },
+   "9": {
+    "absent_certified_fraction": 0.9134529710211553,
+    "n_sequences": 30,
+    "whole_structure_fraction": 0.0
+   }
+  },
+  "label": "TR0 pilot, for power only; no accuracy computed, no reference read",
+  "n_certified_lambda_1": 5200,
+  "n_p_ge_0_99": 3225,
+  "n_pairs_labelled": 11886,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "c7188822bba1426a72a64c8402cd5725080c8897"
+  }
+ },
  "run_id": "2026-10-13_certified_folding",
- "status": "G4 passed",
+ "status": "env checked",
  "viennarna": "2.7.2"
 }
