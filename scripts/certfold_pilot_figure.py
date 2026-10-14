@@ -148,7 +148,7 @@ def main() -> int:
     b.set_xlabel("sequence length (stratum median, nt)")
     b.set_ylabel("certified present")
     b.set_ylim(-0.02, 1.02)
-    b.legend(fontsize=5.5, loc="center left")
+    b.legend(fontsize=5.5, loc="center right", bbox_to_anchor=(1.0, 0.64))
     style.panel(b, "b")
 
     # (c) rho, ball
