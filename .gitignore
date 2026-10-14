@@ -3,6 +3,14 @@
 .venv-jax/
 .venv-mxfold2/
 .venv-mxfold2-pins/
+.venv-certfold/
+#   certified folding's compiled callback; .venv is never modified (authors, 2026-10-13):
+#   VIRTUAL_ENV=.venv uv pip freeze > /tmp/venv-freeze.txt      (the constraints: .venv's versions)
+#   uv venv .venv-certfold --python 3.11.15
+#   uv pip install --python .venv-certfold -c /tmp/venv-freeze.txt viennarna numpy scipy pytest \
+#       ruff pyyaml matplotlib charset_normalizer numba
+#   then: .venv-certfold/bin/python scripts/certfold.py --phase env-check (same RNA .so sha256,
+#   identical eval_structure on the G1 set, the 426-direction rebuild, no version differs)
 
 # Vendored third-party source, not committed. Re-create with:
 #   git clone https://github.com/rkruegs123/jax-rnafold vendor/jax-rnafold
