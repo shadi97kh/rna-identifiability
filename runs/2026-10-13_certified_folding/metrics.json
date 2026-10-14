@@ -1044,6 +1044,133 @@
    },
    "the_gap_this_cannot_close": "the band comes from the callback, so an under-charging callback would shrink it and pass vacuously; G1's constructed cases and G2's independent enumeration are what close that"
   },
+  "G5": {
+   "attacks": {
+    "components": 3,
+    "draw_seed": [
+     20261013,
+     50
+    ],
+    "envelope_draws": 200,
+    "worst_case_alternatives": 20
+   },
+   "by_test_set": {
+    "TS0": {
+     "n_sequences": 1288,
+     "n_tested": {
+      "component:Andronescu2007": 1288,
+      "component:Langdon2018": 1288,
+      "component:Turner1999": 1288,
+      "draw": 257600,
+      "worst_case": 25760,
+      "worst_case_touching": 13791
+     },
+     "violations": {}
+    },
+    "bpRNA-new": {
+     "n_sequences": 2500,
+     "n_tested": {
+      "component:Andronescu2007": 2500,
+      "component:Langdon2018": 2500,
+      "component:Turner1999": 2500,
+      "draw": 500000,
+      "worst_case": 50000,
+      "worst_case_touching": 32224
+     },
+     "violations": {}
+    },
+    "held-out": {
+     "n_sequences": 1641,
+     "n_tested": {
+      "component:Andronescu2007": 1641,
+      "component:Langdon2018": 1641,
+      "component:Turner1999": 1641,
+      "draw": 328200,
+      "worst_case": 32820,
+      "worst_case_touching": 24248
+     },
+     "violations": {}
+    }
+   },
+   "envelope_draws": {
+    "acceptance_rate": 0.8888888888888888,
+    "definition": "uniform on {t : ||t|| <= lam r_max, |(B4 t)_e| <= lam delta for every e} by rejection from the uniform k-ball (Gaussian direction, radius r_max U^(1/k)); the box is tested at lam = 1 and the accepted t scaled by lam; shift = B4 t on B['used'], 0 elsewhere, kcal/mol",
+    "delta_kcal": 3.2666666666665813,
+    "k": 448,
+    "kind": "envelope",
+    "lam": 1.0,
+    "max_abs_entry_over_lam_delta": {
+     "max": 0.9988843252667992,
+     "median": 0.8458368905781052,
+     "min": 0.7009115921719585
+    },
+    "max_over_draws_abs_shift_over_lam_u_env": 0.9988843252667992,
+    "n_draws": 200,
+    "n_entries_reached": 923,
+    "n_proposals": 225,
+    "norm_t_over_lam_r_max": {
+     "max": 0.9999855868056666,
+     "median": 0.9985720700365711,
+     "min": 0.9904305886622066
+    },
+    "r_max_kcal": 24.13231091078804,
+    "seed": [
+     20261013,
+     50
+    ]
+   },
+   "environment": {
+    "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+    "callback_backend": "compiled",
+    "numba": "0.68.0",
+    "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+    "viennarna": "2.7.2"
+   },
+   "files_sha256": {
+    "g5_0.jsonl": "4aaaad3afac959248a5d86887076251fefe86f21bbbc4a849432a55e1e743620",
+    "g5_1.jsonl": "01e9aaca9b9c0ec50892a27cf16ecf88fdec12642926d02fdc871e5dc8a58079",
+    "g5_2.jsonl": "a53d972298824f54584b29c77f86a42a32c8370780d47b79bb2d6720460e3025",
+    "g5_3.jsonl": "7f6a32539b97f8d93ce00cb5301b6c5e510359d52a5eb95a7e8390c765997e87",
+    "g5_4.jsonl": "f40a56f8039ef4cbc3c7cf1ef7c192ba643bb9443f9909c1cd41325135ac6ae2",
+    "g5_5.jsonl": "4ae77e6c020674754d55b4395f61f6d7444913094177153bda5674a6f8639175",
+    "g5_6.jsonl": "7976f25375c4e83978dbb528381a195dffd9f32409b4912cdda6e379982b216d",
+    "g5_7.jsonl": "c462f5b790b7f4e96a8b39d5edeaef61123e7aab085c68c3d3e2d6ddb88d53f8"
+   },
+   "load_at_start": [
+    0.43,
+    0.89,
+    1.14
+   ],
+   "n_violations": 0,
+   "pass": true,
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "231cccda1e56fee50bd81bc5ef9ff9000ed29986"
+   },
+   "rule": "violation counts only; no accuracy, coverage or PPV",
+   "seconds": 4630.8,
+   "test_set_draws": {
+    "bprna_new": {
+     "n": 2500,
+     "n_pool": 5388,
+     "names_sha256": "87db8825293625c7fa3295aac4cc176b59fb5d1fbeb5ace37e69d05f1c53544c",
+     "seed": [
+      20261013,
+      21
+     ]
+    },
+    "held_out": {
+     "family_name_sha256": "0c68f65ce510fd78331d565bb68607f2672ba20e57c95b165e5bfbbf7f522637",
+     "n_families": 1641,
+     "seed": [
+      20261013,
+      20
+     ]
+    }
+   }
+  },
   "G6": {
    "environment": {
     "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
@@ -2382,6 +2509,6 @@
   "git_sha": "3bec8e62cd56b1296d1994d14a1651ec05b72139"
  },
  "run_id": "2026-10-13_certified_folding",
- "status": "PRE-REGISTERED: the gate passed; nothing on a test set folded yet",
+ "status": "G5 passed",
  "viennarna": "2.7.2"
 }
