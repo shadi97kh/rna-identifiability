@@ -58,6 +58,7 @@ Guards raise GuardFailure and are never repaired.
 
 from __future__ import annotations
 
+import collections
 import json
 import math
 import os
@@ -126,6 +127,19 @@ PILOT_SEQUENCES = 300            # the authors' pilot size, TR0 only
 PILOT_WORKERS = 8                # of 16 cores, at nice 10
 PILOT_STRATA = 10                # equal-count length strata; the top one reaches the TR0 max
 PILOT_BUDGET_S = 1800            # per-sequence time budget; a timeout is recorded, not dropped
+
+
+def _clean_start() -> dict:
+    """The provenance a phase STARTS with, refusing a tree that is dirty outside runs/.
+
+    Recording provenance at the end would let a commit made while a phase runs be recorded as the
+    code it ran, and preregister's code check would then accept a shard that ran other code (the
+    review of 2026-10-13). Every phase that records provenance takes it here, at entry.
+    """
+    prov = git_provenance(R)
+    if prov.get("git_dirty_excluding_runs"):
+        raise SystemExit(f"commit first: {prov.get('git_dirty_paths_outside_runs')}")
+    return prov
 
 
 def _sha(p: pathlib.Path) -> str:
@@ -1702,8 +1716,7 @@ def build_basis() -> int:
     out = read_out()
     if "predictions" in out:
         raise SystemExit("preregistered: the basis is fixed")
-    if git_provenance(R)["git_dirty_excluding_runs"]:
-        raise SystemExit("the tree is not clean outside runs/: commit the code first")
+    prov = _clean_start()
     t0 = time.time()
     SHARDS.mkdir(parents=True, exist_ok=True)
 
@@ -1833,7 +1846,7 @@ def build_basis() -> int:
             "principal_angles": angles,
             "files_sha256": files,
             "seconds": round(time.time() - t0, 1),
-            "provenance": git_provenance(R),
+            "provenance": prov,
             "environment": env_record(),
         },
     })
@@ -1994,6 +2007,7 @@ def gate_g1() -> int:
     assert out.get("status") == "basis built", out.get("status")
     if "predictions" in out:
         raise SystemExit("preregistered: the gate's shards are fixed")
+    prov = _clean_start()
     t0 = time.time()
     B = load_tr0_basis()
     P = template()
@@ -2075,7 +2089,7 @@ def gate_g1() -> int:
         "radii_kcal": radii,
         "pass": True,
         "seconds": round(time.time() - t0, 1),
-        "provenance": git_provenance(R),
+        "provenance": prov,
         "environment": env_record(),
     }
     out["status"] = "G1 passed"
@@ -2315,6 +2329,7 @@ def gate_g2() -> int:
     assert out.get("status") in ("G1 passed", "G2 passed"), out.get("status")
     if "predictions" in out:
         raise SystemExit("preregistered: the gate's shards are fixed")
+    prov = _clean_start()
     t0 = time.time()
     B = load_tr0_basis()
     P = template()
@@ -2423,7 +2438,7 @@ def gate_g2() -> int:
         "folds": sum(p["folds"] for p in per),
         "pass": True,
         "seconds": round(time.time() - t0, 1),
-        "provenance": git_provenance(R),
+        "provenance": prov,
         "environment": env_record(),
     }
     out.setdefault("gate", {})["G2"] = shard
@@ -2453,6 +2468,7 @@ def gate_g3() -> int:
     assert out.get("status") in ("G2 passed", "G3 passed"), out.get("status")
     if "predictions" in out:
         raise SystemExit("preregistered: the gate's shards are fixed")
+    prov = _clean_start()
     t0 = time.time()
     B = load_tr0_basis()
     P = template()
@@ -2537,7 +2553,7 @@ def gate_g3() -> int:
                                    "pilot and the run, and each records its own counts."},
         "folds": sum(p["folds"] for p in per),
         "pass": True, "seconds": round(time.time() - t0, 1),
-        "provenance": git_provenance(R),
+        "provenance": prov,
         "environment": env_record(),
     }
     out.setdefault("gate", {})["G3"] = shard
@@ -2596,6 +2612,7 @@ def gate_g6() -> int:
     assert out.get("status") in ("G3 passed", "G6 passed"), out.get("status")
     if "predictions" in out:
         raise SystemExit("preregistered: the gate's shards are fixed")
+    prov = _clean_start()
     t0 = time.time()
     B = load_tr0_basis()
     P = template()
@@ -2733,7 +2750,7 @@ def gate_g6() -> int:
         "recursion_side": {k: sum(F.recursion[k] for F in g6_folders)
                            for k in ("folds_checked", "zuker_structures_checked", "violations")},
         "pass": True, "seconds": round(time.time() - t0, 1),
-        "provenance": git_provenance(R),
+        "provenance": prov,
         "environment": env_record(),
     }
     out.setdefault("gate", {})["G6"] = shard
@@ -3242,6 +3259,14 @@ def certify_sequence(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, r
            "n_contested": len(contested), "pair_order_seed": [SEED, seed_tag, index],
            "exposure": exposure(seq, W1b, W1b.shapes), "sets": {}, "pairs": []}
     ts = time.time()
+    # the registered tiebreak for EVERY ranking: X0(p) - E0(s*), one scale-0 forbidden fold per
+    # pair, in the label stage so no budget can cut it (the review of 2026-10-13)
+    F0 = folders["envelope"]
+    F0.set_radius(0.0)
+    nominal = {}
+    for (i, j) in sp:
+        _s, x0, _e0 = F0.without(i, j)
+        nominal[(i, j)] = (x0 - F0.e0_star) / 100.0
     margins = {k: {} for k in sets}
     contested_set = set(contested)
     for k, (kind, x) in sets.items():
@@ -3284,7 +3309,7 @@ def certify_sequence(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, r
     for (i, j) in sp:
         e, b = rhos["envelope"].get((i, j)), rhos["ball"].get((i, j))
         rec["pairs"].append({
-            "pair": [i, j], "p": float(bpp[i, j]),
+            "pair": [i, j], "p": float(bpp[i, j]), "nominal_gap_kcal": nominal[(i, j)],
             "margins_dcal": {k: margins[k][(i, j)] for k in sets},
             "rho_env": None if e is None else {kk: e[kk] for kk in (
                 "rho", "rho_dinkelbach", "capped", "tied_at_zero", "converged", "cycle",
@@ -3332,6 +3357,7 @@ def gate_g4() -> int:
     assert out.get("status") in ("G6 passed", "pilot done", "G4 passed"), out.get("status")
     if "predictions" in out:
         raise SystemExit("preregistered: the gate's shards are fixed")
+    prov = _clean_start()
     t0 = time.time()
     B = load_tr0_basis()
     P = template()
@@ -3489,7 +3515,7 @@ def gate_g4() -> int:
                                      "constructed cases and G2's independent enumeration are "
                                      "what close that",
         "pass": True, "seconds": round(time.time() - t0, 1),
-        "provenance": git_provenance(R),
+        "provenance": prov,
         "environment": env_record(),
     }
     out.setdefault("gate", {})["G4"] = shard
@@ -3596,43 +3622,68 @@ PRED = {
                "the loader the basis was built from. Reconciled once: TS0-canonicals.lst lists "
                "1,305 BPSEQ paths; 17 non-ACGU sequences are dropped, and pairs enclosing fewer "
                "than three unpaired bases are stripped. No other TS0 number appears.",
-        "held_out": "one seeded sequence per family from Experiment 2's 1,641 Rfam families "
-                    "(heldout_rows, sha256-checked), families weighted equally",
+        "held_out": "one seeded sequence per family (seed tag 20) from Experiment 2's 1,641 "
+                    "Rfam families (heldout_rows, sha256-checked), families weighted equally",
         "bprna_new": f"a seeded subsample of {BPRNA_NEW_N} from MXfold2's bpRNA-new nr500 list "
-                     "(5,401 entries; same filters as TS0; exact duplicates of TR0/TS0 dropped). "
-                     "Family-held-out from bpRNA-1m by construction, but its files carry no Rfam "
-                     "family labels, so it is weighted per sequence, a stated limitation; its "
+                     "(5,401 entries; same filters as TS0; exact duplicates of TR0/TS0 dropped; "
+                     "seed tag 21). Family-held-out from bpRNA-1m by construction, but its files "
+                     "carry no Rfam family labels, so its pairs are pooled with sequences as the "
+                     "bootstrap unit, a stated limitation; its "
                      "families may overlap Experiment 2's, so it is a second family-held-out "
                      "sample, not independent evidence. ~18 CPU-h on the compiled route.",
     },
     "R1": "zero false certificates across G2 to G5 (must hold)",
-    "R2": ("among MFE pairs with p >= 0.99 on TS0, the slip-PPV of the pairs in the lowest "
-           "rho_env quartile is lower than that of the rest; passes iff the 95% paired-bootstrap "
-           "interval of the difference (over sequences) excludes 0. If more than 75% of those "
-           "pairs are capped, compare capped against uncapped instead, same rule. The capped "
-           "fraction is reported either way."),
+    "R2": ("among MFE pairs with p >= 0.99 on TS0 that carry a rho_env, the slip-PPV of the "
+           "pairs in the lowest rho_env quartile is lower than that of the rest; passes iff the "
+           "95% paired-bootstrap interval (sequences resampled) of PPV(lowest quartile) - "
+           "PPV(rest) lies ENTIRELY BELOW 0. The quartile boundary is recomputed on each "
+           "resample, ties at it by the nominal gap then fractional weights. If more than 75% of "
+           "those pairs are capped, compare capped against uncapped instead: passes iff the "
+           "interval of PPV(uncapped) - PPV(capped) lies entirely below 0. The capped fraction is "
+           "reported either way."),
     "R3": ("reported, no direction predicted: AURC and PPV at matched coverage of rho_env against "
            "every baseline, rho_env against p and against the nominal gap, with paired-bootstrap "
            "intervals, on TS0 (sequences resampled), the held-out set (families resampled, "
            "families weighted equally) and bpRNA-new (sequences resampled)"),
     "accuracy_test_claude": {
         "pairs_ranked": "the Turner 2004 MFE pairs of each test sequence",
-        "score": "rho_env (verified), ties by the nominal gap; pairs without a rho (budget) are "
-                 "excluded from rho's curve and counted",
+        "score": "rho_env (verified); pairs without a rho (budget) are excluded from rho's "
+                 "curve and counted",
+        "ties": "EVERY ranking, the baselines' included, breaks ties by the nominal gap "
+                "X0(p) - E0(s*) -- recorded for every MFE pair in the label stage, never "
+                "budgeted -- and pairs still tied take fractional weights (the expectation over "
+                "orderings), never an arbitrary order. Because most pairs share the frequency "
+                "1.0 under both sampling baselines (85% under envelope draws on 30 TR0 "
+                "sequences), those two baselines are ALSO reported with fractional weights "
+                "alone, beside the registered nominal-gap reading.",
         "baselines": "p (Turner 2004 base-pair probability, plain compound); MEA at gamma "
-                     "0.5, 1, 2, 4 and the gamma-centroid at the same gammas (pairs with "
-                     "p > 1/(gamma+1)), each a prediction whose own pair count sets the matched "
-                     "coverage; pair frequency over 200 envelope draws (rejection sampling into "
-                     "E at lambda = 1, seed tag 30); pair frequency over 200 draws of independent "
-                     "N(0, 0.3 kcal/mol) noise on every finite entry (seed tag 31)",
+                     "0.5, 1, 2, 4; Hamada et al. 2009's gamma-centroid estimator at the same "
+                     "gammas -- the pairs with p > 1/(gamma+1) for gamma <= 1, Hamada's maximum-"
+                     "gain structure for gamma > 1, where that threshold set is often not a "
+                     "structure (27 of 40 TR0 sequences at gamma = 2); MEA and centroid are "
+                     "predictions whose own pair counts set the matched coverage; pair frequency "
+                     "over 200 envelope draws (rejection sampling into E at lambda = 1, seed tag "
+                     "30); pair frequency over 200 draws of independent N(0, 0.3 kcal/mol) noise "
+                     "per PHYSICAL parameter (turner_nullspace.tie_map classes, so both ends of a "
+                     "stacking parameter move together and the 180-degree symmetry survives; "
+                     "seed tag 31)",
         "correct": "one-nucleotide slip: (i, j) is correct iff (i, j), (i+-1, j) or (i, j+-1) is "
                    "a reference pair",
-        "matched_coverage": "PPV of the top-k pairs by each score at k = the number of MFE pairs "
-                            "with p >= 0.99 in the same set, and at each MEA/centroid point's own "
-                            "pair count",
+        "matched_coverage": "the pool is the MFE pairs that carry the score (all of them for "
+                            "p and the frequencies; those with a rho for rho_env). PPV of the "
+                            "top-k pairs by each score at k = the number of MFE pairs with p >= "
+                            "0.99 in the same set; and at each MEA/centroid point, whose PPV is "
+                            "over ITS OWN pairs (not MFE pairs), at k = its pair count -- read "
+                            "only where k <= the pool's size; where k exceeds it (MEA at gamma = "
+                            "2 and 4 has more pairs than the MFE on TR0) the point is reported "
+                            "beside rho_env's whole-pool PPV with the coverage gap stated, and "
+                            "is not a matched comparison",
         "risk_coverage": "PPV against coverage along the full ranking, and its area (AURC, risk = "
                          "1 - PPV)",
-        "weighting": "families weighted equally on the held-out set; sequences elsewhere",
+        "weighting": "the held-out set: families weighted equally (PPV per family, then the "
+                     "mean; families resampled). TS0 and bpRNA-new: pairs pooled within the set "
+                     "-- a global ranking of pairs has no per-sequence weighting -- with "
+                     "sequences as the bootstrap unit",
         "intervals": "95% percentile intervals from 10,000 paired bootstrap resamples (seed tag "
                      "40) of sequences or families",
         "disagreement_sets": "D1: MFE pairs with p >= 0.99 not certified at lambda = 1; D2: MFE "
@@ -3646,7 +3697,9 @@ PRED = {
         "absent": "certified-absent fractions over contested pairs (non-MFE, p >= 0.01) with the "
                   "all-admissible fraction beside them",
         "strata": "every certified fraction by the ten TR0 length strata of the pilot, and every "
-                  "pooled number beside its length profile; rho coverage by stratum",
+                  "pooled number beside its length profile; rho coverage by stratum; the equal-"
+                  "count strata share eight boundary lengths (69, 77, 84, 94, 105, 120, 138, "
+                  "172), and a test sequence at one goes to the LOWER stratum",
         "relaxation_loss": "from G4: pairs robust but not certified, ball r = 1 and 5 (exact) "
                            "and the envelope (against the box bound, so a lower bound)",
         "wording": "the envelope contains the data-invisible parts of the Turner 1999 and "
@@ -3673,11 +3726,12 @@ PRED = {
         "baseline; the held-out set (TS0 stays). Always run: the ball as secondary, lambda 0.5 "
         "and 2. Never cut: the gate, B_TR0, the matched-coverage comparison."),
     "code_claude": (
-        "the gate, this registration and G5 live in scripts/certfold.py with certfold_data and "
-        "certfold_baselines in its import closure, frozen before the final gate run; the test-set "
-        "run and the analysis are in a module that imports certfold and is not imported by it, "
-        "written after this registration and before any test-set fold beyond G5's, its commit "
-        "recorded in the run's record"),
+        "the gate, this registration and G5 live in scripts/certfold.py; certfold_data, "
+        "certfold_baselines and certfold_metrics (the accuracy test's metrics) are in its frozen "
+        "code closure, so every gate shard and this registration carry them. The test-set run's "
+        "driver and the analysis's wiring are in a module that imports certfold and is not "
+        "imported by it, written after this registration and before any test-set fold beyond "
+        "G5's, its commit recorded in the run's record; it may only call the frozen metrics"),
 }
 
 
@@ -3701,7 +3755,9 @@ def _code_paths() -> list[str]:
     import ast
 
     me = pathlib.Path(__file__).resolve().relative_to(R)
-    todo, seen = [me], set()
+    # certfold_metrics is the accuracy test's implementation: it is not imported here, but the
+    # registration must freeze it, so the closure starts from it too (the review of 2026-10-13)
+    todo, seen = [me, pathlib.Path("scripts/certfold_metrics.py")], set()
 
     def target(name):
         p = pathlib.Path(*name.split("."))
@@ -3782,10 +3838,14 @@ def env_check() -> int:
                                  "G6 passed", "G4 passed", "env checked"), out.get("status")
     if "predictions" in out:
         raise SystemExit("preregistered: the environment record is fixed")
+    prov = _clean_start()
     t0 = time.time()
     env = env_record()
-    if env["callback_backend"] != "compiled":
-        raise SystemExit("run env-check under .venv-certfold, where the compiled callback lives")
+    if (pathlib.Path(sys.prefix).resolve() != (R / ".venv-certfold").resolve()
+            or env["numba"] is None or env["callback_backend"] != "compiled"):
+        raise SystemExit("run env-check under .venv-certfold, where numba and the compiled "
+                         "callback live (CERTFOLD_CALLBACK=compiled in .venv is not enough)")
+    compiled_cfunc()                     # the backend is proven by compiling it, not by its name
     venv_so = R / ".venv" / "lib" / "python3.11" / "site-packages" / "RNA"
     so = sorted(venv_so.glob("_RNA*.so"))
     if not so or _sha(so[0]) != env["RNA_so_sha256"]:
@@ -3815,6 +3875,8 @@ def env_check() -> int:
                             env=dict(os.environ, VIRTUAL_ENV=str(R / ".venv-certfold")))
     base = subprocess.run(["uv", "pip", "freeze"], cwd=R, capture_output=True, text=True,
                           env=dict(os.environ, VIRTUAL_ENV=str(R / ".venv")))
+    if freeze.returncode or base.returncode or not freeze.stdout or not base.stdout:
+        raise GuardFailure("uv pip freeze failed in one of the environments")
     mine = dict(ln.split("==", 1) for ln in freeze.stdout.split() if "==" in ln)
     theirs = dict(ln.split("==", 1) for ln in base.stdout.split() if "==" in ln)
     changed = {k: [theirs[k], v] for k, v in mine.items() if k in theirs and theirs[k] != v}
@@ -3826,7 +3888,7 @@ def env_check() -> int:
         "added_relative_to_venv": {k: v for k, v in mine.items() if k not in theirs},
         "same_version_as_venv": len([k for k in mine if k in theirs]),
         "venv_untouched": "only uv pip freeze was run against .venv",
-        "seconds": round(time.time() - t0, 1), "provenance": git_provenance(R)}
+        "seconds": round(time.time() - t0, 1), "provenance": prov}
     out["status"] = "env checked"
     write(out)
     print(json.dumps({k: v for k, v in out["environment"].items() if k != "provenance"},
@@ -3859,6 +3921,7 @@ def pilot_power() -> int:
     out = read_out()
     if "predictions" in out:
         raise SystemExit("preregistered: the pilot's power numbers are fixed")
+    prov = _clean_start()
     pil = out["pilot"]
     for f, h in pil["files_sha256"].items():
         if _sha(SHARDS / f) != h:
@@ -3916,7 +3979,7 @@ def pilot_power() -> int:
                      "whole_structure_fraction": (v["whole"] / v["whole_of"]
                                                   if v["whole_of"] else None)}
             for k, v in sorted(by_stratum.items())},
-        "provenance": git_provenance(R)}
+        "provenance": prov}
     write(out)
     print(json.dumps({k: v for k, v in out["pilot_power"].items() if k != "provenance"},
                      indent=1, default=str))
@@ -3945,17 +4008,278 @@ def preregister() -> int:
     if git_provenance(R)["git_dirty_excluding_runs"]:
         raise SystemExit("the tree is not clean outside runs/: commit the code first")
     _same_code(head["build_basis"]["provenance"], "build-basis")
+    venv_cf = str((R / ".venv-certfold").resolve())
     for g in GATE_SHARDS:
         _same_code(gate[g]["provenance"], g)
-        if gate[g].get("environment", {}).get("callback_backend") != "compiled":
-            raise SystemExit(f"{g} did not run with the compiled callback")
+        genv = gate[g].get("environment", {})
+        if (genv.get("callback_backend") != "compiled" or genv.get("numba") is None
+                or not str(pathlib.Path(genv.get("python", "")).resolve()).startswith(venv_cf)):
+            raise SystemExit(f"{g} did not run in .venv-certfold with the compiled callback")
     _same_code(head["environment"]["provenance"], "env-check")
+    _same_code(head["pilot_power"]["provenance"], "pilot-power")
     out.update({"status": REGISTERED, "predictions": PRED,
                 "registration_provenance": git_provenance(R),
                 "registration_environment": env_record()})
     write(out)
     print(REGISTERED)
     return 0
+
+
+# ----------------------------------------------------------------------------------
+# G5: attacks on the test sets, after the registration; violation counts only
+# ----------------------------------------------------------------------------------
+G5_WORKERS = 8
+
+
+def published_component_shifts(B: dict) -> list[tuple[str, np.ndarray]]:
+    """The three published data-invisible components themselves, in kcal/mol over B['cols'].
+
+    Pi delta_X on B_four, with a table's INF entries set to a zero shift first (Langdon 2018's
+    convention, the same as the radii and the envelope). Each lies inside the envelope at
+    lambda = 1 by construction -- build-basis checks it on every entry.
+    """
+    from scripts.typeb_common import full_tables
+
+    cols, used, B4 = B["cols"], B["used"], B["B4"]
+    t0 = template()["theta"]
+    out = []
+    for tb in full_tables():
+        th = tb["theta"]
+        d = np.array([th[k] - t0[k] for k in cols], dtype=np.float64) / 100.0
+        d = np.where(np.array([th[k] >= 100000 for k in cols]), 0.0, d)
+        comp = np.zeros(len(cols))
+        comp[used] = B4 @ (B4.T @ d[used])
+        out.append((tb["id"].split(":")[-1], comp))
+    return out
+
+
+def g5_test_rows(with_records: bool = False):
+    """(test set, name, sequence) for TS0, the held-out one-per-family set and bpRNA-new; with
+    `with_records`, also the two draws' records (seed tags 20 and 21 and their digests), which G5
+    stores so its record names exactly the draw it attacked."""
+    from scripts.certfold_data import bprna_new_subsample, heldout_one_per_family, ts0_rows
+
+    ts0 = ts0_rows()
+    ho, ho_rec = heldout_one_per_family()
+    bn, bn_rec = bprna_new_subsample(BPRNA_NEW_N)
+    rows = ([("TS0", r[1], r[2]) for r in ts0] + [("held-out", r[1], r[2]) for r in ho]
+            + [("bpRNA-new", r[1], r[2]) for r in bn])
+    if not with_records:
+        return rows
+    draws = {"held_out": {k: ho_rec[k] for k in ("seed", "family_name_sha256", "n_families")
+                          if k in ho_rec},
+             "bprna_new": {k: bn_rec[k] for k in ("seed", "names_sha256", "n", "n_pool")
+                           if k in bn_rec}}
+    return rows, draws
+
+
+def _turner_energy(lc: LoopCounts, seq: str, s: str) -> int:
+    """E0(s) in dcal from the count model at Turner 2004 -- never from a compound, because during
+    the table attacks a drawn table is loaded globally and a fresh compound would read it."""
+    from scripts.certfold_baselines import _energy, _ninio_correction
+
+    t0 = template()["theta"]
+    return _energy(lc.counts(seq, s), t0) + _ninio_correction(
+        s, t0[("ninio_m",)], t0[("ninio_max",)])
+
+
+def gate_attacks_worker() -> int:
+    out = read_out()
+    if out.get("status") != REGISTERED or not _pred_ok(out):
+        raise SystemExit("G5 workers run only under gate-attacks, after the registration")
+    if env_record()["callback_backend"] != "compiled":
+        raise SystemExit("G5 workers run with the compiled callback")
+    w = int(sys.argv[sys.argv.index("--shard") + 1])
+    n_w = int(sys.argv[sys.argv.index("--of") + 1])
+    from scripts.certfold_baselines import envelope_draws, pair_frequencies
+
+    B = load_tr0_basis()
+    P = template()
+    lc = LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    cols, used, B4 = B["cols"], B["used"], B["B4"]
+    idx = {k: n for n, k in enumerate(cols)}
+    pos = {cols[e]: n for n, e in enumerate(used)}
+    u = B["u_env"]
+    delta = float(B["envelope"]["delta_kcal"])
+    r_max = float(B["envelope"]["r_max_kcal"])
+    rows = [r for k, r in enumerate(g5_test_rows()) if k % n_w == w]
+    comps = published_component_shifts(B)
+    draws, drec = envelope_draws(B, G5_DRAWS, seed_tag=G5_SEED_TAG, lam=1.0)
+    shifts = [c for _n, c in comps] + list(draws)
+    kinds = [f"component:{n}" for n, _c in comps] + ["draw"] * len(draws)
+
+    def pairs_of(s):
+        pt = pair_table(s)
+        return {(i, pt[i]) for i in range(1, len(s) + 1) if pt[i] > i}
+
+    def margin(k, s, shift):
+        """E_theta(s) - E_theta(s*) in dcal, exact float, theta = theta0 + shift (unrounded)."""
+        r = per[k]
+        cs = lc.counts(r["seq"], s)
+        dc = {kk: cs.get(kk, 0) - r["c_star"].get(kk, 0)
+              for kk in set(cs) | set(r["c_star"]) if kk in idx}
+        return (_turner_energy(lc, r["seq"], s) - r["e0_star"]
+                + 100.0 * sum(v * shift[idx[kk]] for kk, v in dc.items() if v))
+
+    per = []
+    for tset, name, seq in rows:
+        import RNA
+
+        from thermo.vienna_ref import assert_turner2004_params, reference_md
+
+        plain = RNA.fold_compound(seq, reference_md())
+        assert_turner2004_params(plain)
+        star = plain.mfe()[0]
+        pt = pair_table(star)
+        sp = [(i, pt[i]) for i in range(1, len(seq) + 1) if pt[i] > i]
+        F = Folder(lc, seq, star, Weights(B["u_env"], B["cols"], 1.0))
+        c = certify(F, sp, admissible_pairs(seq))
+        cert_p = {p for p, m in c["margins_present_dcal"].items() if m > 0}
+        cert_a = {q for q, m in c["margins_absent_dcal"].items() if m is None or m > 0}
+        e0_star = _turner_energy(lc, seq, star)
+        if e0_star != F.e0_star:
+            raise GuardFailure(f"{name}: the count model and eval_structure disagree on E0(s*)")
+        rec = {"set": tset, "name": name, "seq": seq, "star": star, "cert_p": cert_p,
+               "cert_a": cert_a, "c_star": lc.counts(seq, star), "e0_star": e0_star,
+               "viol": collections.Counter(), "n_tested": collections.Counter()}
+        per.append(rec)
+        # the worst case for each of the 20 lowest-E' alternatives: the box corner that most
+        # favours the alternative on its differing reached entries, realised at minimum norm
+        # in span(B_four) and scaled into the envelope
+        alts = sorted((e, s) for s, e in F.zuker() if s != star)[:G5_TOP_ALTERNATIVES]
+        for _e, s in alts:
+            cs = lc.counts(seq, s)
+            dc = [(kk, cs.get(kk, 0) - rec["c_star"].get(kk, 0))
+                  for kk in set(cs) | set(rec["c_star"]) if kk in pos]
+            supp = [(kk, v) for kk, v in dc if v and u[idx[kk]] > 0]
+            shift = np.zeros(len(cols))
+            if supp:
+                M = np.array([B4[pos[kk]] for kk, _v in supp])
+                target = np.array([-u[idx[kk]] * np.sign(v) for kk, v in supp])
+                t, *_ = np.linalg.lstsq(M, target, rcond=None)
+                shift[used] = B4 @ t
+                nt, mx = float(np.linalg.norm(t)), float(np.abs(shift).max())
+                scale = min(1.0, r_max / nt if nt > 0 else 1.0, delta / mx if mx > 0 else 1.0)
+                shift *= scale
+            # an alternative the set cannot move is still tested, at its nominal margin
+            rec["n_tested"]["worst_case"] += 1
+            here = pairs_of(s)
+            touching = bool((cert_p - here) or (cert_a & here))
+            rec["n_tested"]["worst_case_touching"] += touching
+            if touching and margin(len(per) - 1, s, shift) <= 0:
+                rec["viol"]["worst_case"] += 1
+
+    def on_fold(d, k, s):
+        r = per[k]
+        r["n_tested"][kinds[d]] += 1
+        here = pairs_of(s)
+        if (r["cert_p"] - here) or (r["cert_a"] & here):
+            if margin(k, s, shifts[d]) <= 0:
+                r["viol"][kinds[d]] += 1
+
+    scratch = SHARDS / f"g5_tables_{w}"
+    scratch.mkdir(parents=True, exist_ok=True)
+    _freq, frec = pair_frequencies([r["seq"] for r in per], shifts, P["theta"], scratch,
+                                   cols=cols, on_fold=on_fold)
+    with open(SHARDS / f"g5_{w}.jsonl", "w") as fh:
+        for r in per:
+            fh.write(json.dumps({"set": r["set"], "name": r["name"],
+                                 "violations": dict(r["viol"]),
+                                 "n_tested": dict(r["n_tested"])}) + "\n")
+    (SHARDS / f"g5_{w}.meta.json").write_text(json.dumps({
+        "envelope_draws": {k: v for k, v in drec.items() if k != "draws"},
+        "tables": {k: v for k, v in frec.items() if k != "draws"},
+        "n_tables": len(shifts)}, default=str))
+    return 0
+
+
+def gate_attacks() -> int:
+    """G5: after the registration, attack every certificate the primary set issues on the test
+    sets. Records VIOLATION COUNTS ONLY -- no accuracy, coverage or PPV (the authors' rule).
+
+    Three attacks per test sequence: the three published data-invisible components themselves,
+    G5_DRAWS envelope draws, and the worst case for each of the 20 lowest-E' alternatives. A
+    violation counts only if exact float energies from counts give a structure lacking a
+    certified pair, or holding a certified-absent one, at or below E(s*). Any violation: fix the
+    code, rerun G1 to G6 in full, register again as a new PRED commit, and keep this
+    registration and disclose it (the authors' rule of 2026-10-13).
+    """
+    out = read_out()
+    if out.get("status") != REGISTERED:
+        raise SystemExit(f"G5 runs only on a registration; status is {out.get('status')}")
+    if not _pred_ok(out):
+        raise SystemExit("PRED changed since the registration")
+    head = _committed(unmodified=True)
+    if head.get("predictions") != json.loads(json.dumps(PRED)):
+        raise SystemExit("the committed artifact does not carry this registration")
+    if git_provenance(R)["git_dirty_excluding_runs"]:
+        raise SystemExit("the tree is not clean outside runs/")
+    _same_code(head["registration_provenance"], "registration")
+    here_env, reg_env = env_record(), head["registration_environment"]
+    keys = ("python", "callback_backend", "numba", "viennarna", "RNA_so_sha256")
+    if here_env["callback_backend"] != "compiled" or any(here_env[k] != reg_env[k] for k in keys):
+        raise SystemExit(f"G5 must run in the registered environment: "
+                         f"{ {k: (here_env[k], reg_env[k]) for k in keys} }")
+    prov, load, t0 = git_provenance(R), os.getloadavg(), time.time()
+    env = dict(os.environ, OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1",
+               CUDA_VISIBLE_DEVICES="")
+    procs = [subprocess.Popen(
+        ["nice", "-n", "10", sys.executable, str(R / "scripts" / "certfold.py"), "--phase",
+         "gate-attacks-worker", "--shard", str(w), "--of", str(G5_WORKERS)],
+        cwd=R, env=env, stdout=(SHARDS / f"g5_{w}.log").open("w"), stderr=subprocess.STDOUT)
+        for w in range(G5_WORKERS)]
+    while True:
+        codes = [p.poll() for p in procs]
+        if any(c not in (None, 0) for c in codes):
+            for q in procs:
+                if q.poll() is None:
+                    q.terminate()
+            codes = [q.wait() for q in procs]
+            break
+        if all(c == 0 for c in codes):
+            break
+        time.sleep(10)
+    if any(codes):
+        raise GuardFailure(f"G5 workers exited {codes}; shards kept at {SHARDS}")
+    per = []
+    for w in range(G5_WORKERS):
+        per += [json.loads(ln) for ln in (SHARDS / f"g5_{w}.jsonl").read_text().splitlines()
+                if ln.strip()]
+    meta = json.loads((SHARDS / "g5_0.meta.json").read_text())
+    rows_all, draw_records = g5_test_rows(with_records=True)
+    expected = len(rows_all)
+    if len(per) != expected:
+        raise GuardFailure(f"G5 attacked {len(per)} of {expected} test sequences")
+    by_set: dict[str, dict] = {}
+    for r in per:
+        s = by_set.setdefault(r["set"], {"n_sequences": 0, "violations": collections.Counter(),
+                                         "n_tested": collections.Counter()})
+        s["n_sequences"] += 1
+        s["violations"].update(r["violations"])
+        s["n_tested"].update(r["n_tested"])
+    total = sum(sum(v["violations"].values()) for v in by_set.values())
+    out = read_out()
+    out.setdefault("gate", {})["G5"] = {
+        "rule": "violation counts only; no accuracy, coverage or PPV",
+        "by_test_set": {k: {"n_sequences": v["n_sequences"],
+                            "violations": dict(v["violations"]),
+                            "n_tested": dict(v["n_tested"])} for k, v in by_set.items()},
+        "n_violations": total, "attacks": {"components": 3, "envelope_draws": G5_DRAWS,
+                                           "worst_case_alternatives": G5_TOP_ALTERNATIVES,
+                                           "draw_seed": [SEED, G5_SEED_TAG]},
+        "envelope_draws": meta["envelope_draws"],
+        "test_set_draws": draw_records,
+        "pass": total == 0, "load_at_start": [round(x, 2) for x in load],
+        "seconds": round(time.time() - t0, 1),
+        "files_sha256": {f"g5_{w}.jsonl": _sha(SHARDS / f"g5_{w}.jsonl")
+                         for w in range(G5_WORKERS)},
+        "provenance": prov, "environment": env_record(),
+    }
+    out["status"] = "G5 passed" if total == 0 else "G5 FAILED: violations found"
+    write(out)
+    print(json.dumps({k: v for k, v in out["gate"]["G5"].items()
+                      if k not in ("provenance", "files_sha256")}, indent=1, default=str))
+    return 0 if total == 0 else 1
 
 
 if __name__ == "__main__":
@@ -3965,4 +4289,6 @@ if __name__ == "__main__":
               "gate-g6": gate_g6, "gate-g4": gate_g4,
               "pilot": pilot, "pilot-worker": pilot_worker,
               "g1-energies": g1_energies, "env-check": env_check,
-              "pilot-power": pilot_power, "preregister": preregister}[ph]())
+              "pilot-power": pilot_power, "preregister": preregister,
+              "gate-attacks": gate_attacks,
+              "gate-attacks-worker": gate_attacks_worker}[ph]())
