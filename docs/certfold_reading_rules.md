@@ -28,3 +28,43 @@ projections) and bpRNA-new are secondary: a result in the same direction as TS0 
 4. D1: its PPV against the certified p >= 0.99 pairs, raw and within strata, is read by rule 2's
    logic. D2 gets its PPV and interval, and no claim beyond that.
 5. Nothing is called better or worse on a point estimate alone.
+
+---
+
+## Addendum, 2026-10-15: one post hoc check (the authors)
+
+Written and committed before the check runs. It is **post hoc**: it comes after R2, E1 and R3
+were read (`docs/certfold_reading_report.md`), and it may only **qualify** the rule-2a sentence,
+never strengthen it.
+
+**The check.** R2's statistic with the nominal gap $X_0(p)-E_0(s^*)$ in place of rho_env:
+PPV(lowest gap quartile) $-$ PPV(rest), among the TS0 MFE pairs with $p\ge0.99$ that carry a
+rho_env, which is R2's own pool of 13,878 pairs. It uses R2's tie rules: the reversed ranking at
+coverage 1/4, the forward ranking for the rest, and a block tied across the boundary shared by
+fractional weights. With the gap as both score and tiebreak, ties on it are fractional. It uses
+the same 10,000 bootstrap draws: the frozen `paired_bootstrap`, seed tag 40, over the same unit
+universe (every TS0 sequence). The paired difference between the two statistics is also
+reported:
+
+$\Delta = d_\rho - d_{\text{gap}}$, on each resample.
+
+Both $d$ are negative when the lower-ranked pairs are less accurate. $\Delta<0$ means rho's
+effect is the larger.
+
+**The reading.** By rule 5, "larger" is decided by $\Delta$'s paired interval, not by point
+estimates.
+
+- **$\Delta$'s interval lies entirely below 0** (rho's difference is larger): report it in the
+  supplement as a post hoc observation, and change nothing in the main text.
+- **Otherwise, with $d_{\text{gap}}$'s own interval entirely below 0** (the gap's difference is
+  as large or larger): the main text adds *"the energy gap alone shows the same pattern, so this
+  signal is not specific to the certificate"*, and the abstract adds *"a pattern the energy gap
+  alone also shows"* after "within length strata".
+- **Otherwise** ($d_{\text{gap}}$'s interval includes 0 and $\Delta$'s does not lie below 0):
+  - This case is not in the authors' instruction. The agent added it, qualifying only, for the
+    authors to confirm.
+  - The main text adds *"whether the signal is specific to the certificate is unresolved: the
+    energy gap's pattern cannot be told apart from it"*. The supplement reports both.
+
+**Check before reading.** The bootstrap of $d_\rho$ must reproduce R2's committed point and
+interval exactly. That is the evidence that the draws are R2's.
