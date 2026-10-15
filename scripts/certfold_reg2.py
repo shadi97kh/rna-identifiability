@@ -361,8 +361,506 @@ def preregister2() -> int:
     return 0
 
 
+# ----------------------------------------------------------------------------------
+# after the registration
+# ----------------------------------------------------------------------------------
+G2_MEASURED = "G2 on the measured sets passed"
+C_FOLDED = "C folded"
+C_ANALYSED = "C analysed"
+D_LABELLED = "D labelled"
+D_ANALYSED = "D analysed"
+
+
+def registered2(status) -> tuple[dict, dict, dict]:
+    """(record, committed record, provenance): PRED2 unchanged and committed with the record
+    unmodified, the status one of `status`, a clean tree, and registration 1's shards exactly as
+    its run recorded them."""
+    out = read_out2()
+    st = (status,) if isinstance(status, str) else tuple(status)
+    if out.get("status") not in st:
+        raise SystemExit(f"status is {out.get('status')!r}; this phase needs one of {st}")
+    head2 = committed2(unmodified=True)
+    if head2.get("predictions") != json.loads(json.dumps(PRED2)):
+        raise SystemExit("PRED2 changed since the registration")
+    prov = clean()
+    for f, h in out["registration1"]["run_files_sha256"].items():
+        if cf._sha(cf.SHARDS / f) != h:
+            raise GuardFailure(f"registration 1's {f} changed since its run")
+    return out, head2, prov
+
+
+def reached_entries(B: dict) -> list[tuple]:
+    """The reached entries (u_e > 0), in B['cols'] order: the population D's draws come from."""
+    return [k for k, u in zip(B["cols"], B["u_env"], strict=True) if u > 0]
+
+
+def measured_sets(B: dict, ranked: list) -> dict[str, list[tuple]]:
+    """{set id: the entries measured exactly (u_e = 0)}. top:K, the frozen ranking's first K;
+    random:K:d, d < 20, K entries drawn without replacement from the reached entries in
+    B['cols'] order, by one generator SeedSequence([SEED, 62]) drawing K = 10's twenty sets and
+    then K = 50's."""
+    by_str = {str(k): k for k in B["cols"]}
+    reached = reached_entries(B)
+    rs = set(reached)
+    out = {}
+    for K in K_VALUES:
+        top = [by_str[k] for k, _c in ranked[:K]]
+        if len(top) != K or not set(top) <= rs:
+            raise GuardFailure(f"top {K}: an entry is not a reached column")
+        out[f"top:{K}"] = top
+    rng = np.random.default_rng(np.random.SeedSequence([cf.SEED, TAG_RANDOM_K]))
+    for K in K_VALUES:
+        for d in range(N_RANDOM):
+            pick = rng.choice(len(reached), size=K, replace=False)
+            out[f"random:{K}:{d}"] = [reached[i] for i in sorted(pick.tolist())]
+    return out
+
+
+def measured_u(B: dict, entries) -> np.ndarray:
+    """u with the measured entries set to 0 and every other entry as the envelope has it."""
+    idx = {k: n for n, k in enumerate(B["cols"])}
+    u = np.array(B["u_env"], dtype=np.float64, copy=True)
+    for e in entries:
+        u[idx[e]] = 0.0
+    return u
+
+
+def _touching(lc, seq: str, zero: set) -> int:
+    """How many of seq's enumerated structures hold an interior loop reading a zeroed entry."""
+    S = _codes(seq)
+    n = 0
+    for s in cf.enumerate_structures(seq):
+        for d in lc.loops(seq, s):
+            if d["kind"] == "interior" and set(cf.il_keys(S, d["i"], d["j"], d["k"],
+                                                          d["l"])) & zero:
+                n += 1
+                break
+    return n
+
+
+def gate_g2_measured() -> int:
+    """G2's n <= 20 enumeration on the measured sets at K = 10 and 50 (top, and the first
+    random draw of each), after PRED2 and before any TS0 fold.
+
+    The same 200 sequences as registration 1's G2 (g2_sequences, same seed), each labelled at
+    lambda = 1 under the measured set and held to the box bound with the measured u: zero false
+    certificates required. Recorded beside it: how many sequences and structures read a zeroed
+    entry at all (a set no G2 structure reads would test nothing new), the certified-present
+    count under the unmeasured envelope on the same sequences, and the halved-weights power
+    check on the first 50, which must still produce false certificates.
+    """
+    out, head2, prov = registered2(REGISTERED2)
+    t0 = time.time()
+    B = cf.load_tr0_basis()
+    P = cf.template()
+    lc = cf.LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    rows, _ = cf.tr0_rows()
+    W1 = cf.Weights(B["a_four"], B["cols"], 1.0)
+    pos = {B["cols"][e]: k for k, e in enumerate(B["used"])}
+    seqs, screen = cf.g2_sequences(rows, cf.G2_SEQUENCES, 16, cf.G2_MAX_N, cf.SEED, lc, W1)
+    sets = measured_sets(B, head2["ranking"]["ranked"])
+    base = {"n_certified_present": 0, "n_exactly_robust_present": 0}
+    for _src, seq, _n in seqs:
+        env = cf.g2_one(lc, B, pos, W1, seq, (1.0,), with_rho=False)["envelope"]
+        if env["n_false_certificates"]:
+            raise GuardFailure(f"the unmeasured envelope fails G2 on {seq}")
+        for k in base:
+            base[k] += env[k]
+    rec = {"sequences": screen, "n_sequences": len(seqs),
+           "unmeasured_envelope_lambda1": base, "sets": {}}
+    for sid in [f"top:{K}" for K in K_VALUES] + [f"random:{K}:0" for K in K_VALUES]:
+        ents = sets[sid]
+        Bm = dict(B, u_env=measured_u(B, ents))
+        tot = {"n_certified_present": 0, "n_certified_absent": 0,
+               "n_exactly_robust_present": 0, "n_exactly_robust_absent": 0,
+               "n_false_certificates": 0}
+        n_seq_touch = n_struct_touch = n_struct = 0
+        for _src, seq, _n in seqs:
+            r = cf.g2_one(lc, Bm, pos, W1, seq, (1.0,), with_rho=False)
+            bad = r["envelope"]["n_false_certificates"] + r["by_radius"]["1"][
+                "n_false_certificates"]
+            if bad:
+                raise GuardFailure(f"G2 on {sid}: {bad} false certificates on {seq}: "
+                                   f"{r['envelope']['false_certificates'][:2]}")
+            for k in tot:
+                tot[k] += r["envelope"][k]
+            t = _touching(lc, seq, set(ents))
+            n_struct_touch += t
+            n_seq_touch += t > 0
+            n_struct += r["n_structures"]
+        planted = 0
+        for _src, seq, _n in seqs[:cf.G2_POWER_SEQUENCES]:
+            planted += cf.g2_one(lc, Bm, pos, W1, seq, (1.0,), scale=0.5,
+                                 with_rho=False)["envelope"]["n_false_certificates"]
+        if planted == 0:
+            raise GuardFailure(f"G2 on {sid}: halving the weights produced no false "
+                               f"certificate on {cf.G2_POWER_SEQUENCES} sequences")
+        rec["sets"][sid] = {"entries": [str(e) for e in ents], **tot,
+                            "n_sequences_reading_a_zeroed_entry": n_seq_touch,
+                            "n_structures_reading_a_zeroed_entry": n_struct_touch,
+                            "n_structures": n_struct,
+                            "power_check_false_certificates_at_half_weights": planted,
+                            "power_check_sequences": cf.G2_POWER_SEQUENCES}
+        print(sid, json.dumps(rec["sets"][sid] | {"entries": len(ents)}), flush=True)
+    rec.update({"pass": True, "test": "certified present or absent at lambda = 1 under the "
+                "measured set must be robust under the box bound N(s) - sum_e |dc_e| u_e with "
+                "the measured u, on every enumerated structure (certfold.g2_one)",
+                "random_draws_recorded": {k: [str(e) for e in v] for k, v in sets.items()},
+                "seconds": round(time.time() - t0, 1), "provenance": prov})
+    out["gate_g2_measured"] = rec
+    out["status"] = G2_MEASURED
+    write2(out)
+    return 0
+
+
+# ----------------------------------------------------------------------------------
+# C: TS0 under the six tables
+# ----------------------------------------------------------------------------------
+def ts0_rows_with_stars() -> list[dict]:
+    """TS0's 1,288 rows in registration 1's order, each with its Turner 2004 MFE structure and
+    MFE-pair records as registration 1's run wrote them."""
+    rows, _ = cr.test_rows()
+    seq_recs, _ = cr.read_shards(cf.read_out()["run"]["workers"])
+    by = {s["index"]: s for s in seq_recs}
+    out = []
+    for r in rows:
+        if r["set"] != "TS0":
+            continue
+        s = by[r["index"]]
+        if s["name"] != r["name"] or len(s["star"]) != len(r["seq"]):
+            raise GuardFailure(f"registration 1's record {r['index']} is not row {r['name']}")
+        out.append({**r, "star": s["star"], "pairs": s["pairs"], "stratum": s["stratum"]})
+    if len(out) != 1288:
+        raise GuardFailure(f"{len(out)} TS0 rows, not 1,288")
+    return out
+
+
+def visible_shifts(B: dict) -> list[tuple[str, np.ndarray, dict]]:
+    """[(table, delta_X - Pi delta_X in kcal/mol over B['cols'], its parts' norms)].
+
+    delta_X = theta_X - theta0 with the table's INF entries set to a zero shift first, and Pi
+    the orthogonal projection onto B_four on the used columns: exactly
+    certfold.published_component_shifts's construction, of which this is the complement. The
+    parts: Pi delta (the set's, whose norm must equal build-basis's radius), the shift on columns
+    no TR0 reference reads, and on the used columns the two gauge directions and the rest."""
+    from scripts.turner_nullspace import analytic_directions
+    from scripts.typeb_common import full_tables
+
+    cols, used, B4 = B["cols"], B["used"], B["B4"]
+    t0 = cf.template()["theta"]
+    unused = np.setdiff1d(np.arange(len(cols)), used)
+    G = np.array([g[used] for g in analytic_directions(cols, 0, 0).values()]).T
+    Qg, _ = np.linalg.qr(G)
+    out = []
+    for tb in full_tables():
+        X = tb["id"].split(":")[-1]
+        th = tb["theta"]
+        d = np.array([th[k] - t0[k] for k in cols], dtype=np.float64) / 100.0
+        inf = np.array([th[k] >= 100000 for k in cols])
+        d = np.where(inf, 0.0, d)
+        comp = np.zeros(len(cols))
+        comp[used] = B4 @ (B4.T @ d[used])
+        vis = d - comp
+        want = float(B["radii"][X]["radius_on_B_four_kcal"])
+        if abs(float(np.linalg.norm(comp)) - want) > 1e-9:
+            raise GuardFailure(f"{X}: Pi delta has norm {np.linalg.norm(comp)}, build-basis "
+                               f"recorded {want}")
+        vu = vis[used]
+        gauge = Qg @ (Qg.T @ vu)
+        out.append((X, vis, {
+            "norm_delta_kcal": float(np.linalg.norm(d)),
+            "norm_set_part_kcal": float(np.linalg.norm(comp)),
+            "norm_outside_the_set_kcal": float(np.linalg.norm(vis)),
+            "of_which_on_columns_no_TR0_reference_reads_kcal":
+                float(np.linalg.norm(vis[unused])),
+            "of_which_gauge_kcal": float(np.linalg.norm(gauge)),
+            "of_which_the_rest_on_used_columns_kcal": float(np.linalg.norm(vu - gauge)),
+            "n_INF_entries_set_to_0": int(inf.sum())}))
+    return out
+
+
+def generating_counts(cols: list[tuple]):
+    """The generating set and its count matrix over `cols`, for the whole-table carry guard
+    (typeb_common.fold_rows_under_tables builds the same; E3's folds used it)."""
+    from scripts.turner_nullspace import Extractor, build_matrix, generating_set
+
+    special = cf.template()["special"]
+    gen = generating_set(special)
+    return gen, build_matrix([Extractor(special, 0, 0).counts(s, d) for _, s, d in gen], cols)
+
+
+def fold_whole(seqs: list[str], tb: dict, cols: list[tuple], gen, G) -> tuple[list[str], dict]:
+    """Every sequence's MFE under one whole published table as shipped, with E3's fold guards:
+    the shipped loader, params_match on the first compound, the five generating rows the table
+    moves most (typeb_common._carry, over the count columns: the pinned model has no special
+    hairpins, so the tables' own special-loop lists never enter), and on every fold ViennaRNA's
+    MFE energy equal to counts . theta under the table's own lxc plus the exact Ninio
+    correction. Turner 2004 is restored and asserted afterwards, energies and Boltzmann factors
+    both."""
+    import RNA
+
+    from scripts.certfold_baselines import _energy, _ninio_correction
+    from scripts.turner_nullspace import Extractor
+    from scripts.turner_par import _rebuild, params_match
+    from scripts.typeb_common import _carry
+    from thermo.vienna_ref import (
+        assert_turner2004_boltzmann,
+        assert_turner2004_params,
+        reference_md,
+    )
+
+    th = tb["theta"]
+    ex = Extractor(cf.template()["special"], 0, 0, lxc=tb["lxc"])
+    m, cap = th[("ninio_m",)], th[("ninio_max",)]
+    out = []
+    getattr(RNA, tb["loader"])()
+    _rebuild()
+    try:
+        md = reference_md()
+        first = RNA.fold_compound(seqs[0], md)
+        bad = params_match(first, th, 0, 0)
+        if bad:
+            raise GuardFailure(f"{tb['id']}: the loaded table is not the shipped one: {bad}")
+        carry = _carry(tb, G, cols, cf.template()["theta"])
+        for r, want in carry:
+            _t, s, d = gen[r]
+            got = int(round(RNA.fold_compound(s, md).eval_structure(d) * 100))
+            if got != want:
+                raise GuardFailure(f"{tb['id']}: carry row {r}: {got} != {want}")
+        for k, seq in enumerate(seqs):
+            fc = first if k == 0 else RNA.fold_compound(seq, md)
+            s, e = fc.mfe()
+            want = _energy(ex.counts(seq, s), th) + _ninio_correction(s, m, cap)
+            if want != int(round(e * 100)):
+                raise GuardFailure(f"{tb['id']}, sequence {k}: ViennaRNA's MFE energy "
+                                   f"{int(round(e * 100))} dcal, counts . theta {want}")
+            out.append(s)
+    finally:
+        RNA.params_load_RNA_Turner2004()
+        _rebuild()
+    fc = RNA.fold_compound("GGGGAAACCCC", reference_md())
+    assert_turner2004_params(fc)
+    _s, e = fc.mfe()
+    fc.exp_params_rescale(e)
+    fc.pf()
+    assert_turner2004_boltzmann(fc)
+    return out, {"loader": tb["loader"], "par_sha256": tb["par_sha256"],
+                 "params_match": bad, "carry_rows": carry,
+                 "mfe_energy_identity": {"n_folds": len(out), "n_mismatch": 0},
+                 "turner2004_restored": True}
+
+
+def fold_tables_worker() -> int:
+    import tempfile
+
+    from scripts.certfold_baselines import pair_frequencies
+    from scripts.typeb_common import full_tables
+
+    w, n_w = shard_args()
+    rows = ts0_rows_with_stars()
+    assign = cr.shard_of(rows, n_w)
+    mine = [r for r in rows if assign[r["index"]] == w]
+    seqs = [r["seq"] for r in mine]
+    B = cf.load_tr0_basis()
+    gen, G = generating_counts(B["cols"])
+    mfe = {r["index"]: {} for r in mine}
+    guards = {}
+    for tb in full_tables():
+        X = tb["id"].split(":")[-1]
+        ss, guards[f"whole:{X}"] = fold_whole(seqs, tb, B["cols"], gen, G)
+        for r, s in zip(mine, ss, strict=True):
+            mfe[r["index"]][f"whole:{X}"] = s
+    vis = visible_shifts(B)
+    got: dict = {}
+
+    def keep(d, k, s):
+        got[(d, k)] = s
+
+    with tempfile.TemporaryDirectory(dir=SHARDS2) as t:
+        _freq, guards["visible"] = pair_frequencies(
+            seqs, [v for _X, v, _p in vis], cf.template()["theta"], t, cols=B["cols"],
+            on_fold=keep)
+    for d, (X, _v, _p) in enumerate(vis):
+        for k, r in enumerate(mine):
+            mfe[r["index"]][f"visible:{X}"] = got[(d, k)]
+    with open(SHARDS2 / f"tables_{w}.jsonl", "w") as fh:
+        for r in mine:
+            fh.write(json.dumps({"index": r["index"], "name": r["name"],
+                                 "mfe": mfe[r["index"]]}) + "\n")
+    (SHARDS2 / f"tables_guard_{w}.json").write_text(json.dumps(guards, default=str))
+    return 0
+
+
+TABLE_IDS = tuple(f"{k}:{X}" for k in ("whole", "visible") for X in TABLES)
+
+
+def fold_tables() -> int:
+    """C's folds: TS0 under the three whole tables and the three data-visible ones."""
+    out, _head2, prov = registered2(G2_MEASURED)
+    if "fold_tables" in out:
+        raise SystemExit("C's folds exist")
+    t0 = time.time()
+    rows = ts0_rows_with_stars()
+    vis = visible_shifts(cf.load_tr0_basis())
+    load = os.getloadavg()
+    pids = drive("fold-tables-worker", WORKERS)
+    recs, guards = [], {}
+    for w in range(WORKERS):
+        recs += [json.loads(ln) for ln in (SHARDS2 / f"tables_{w}.jsonl").read_text()
+                 .splitlines() if ln.strip()]
+        guards[w] = json.loads((SHARDS2 / f"tables_guard_{w}.json").read_text())
+    by = {r["index"]: r for r in recs}
+    if sorted(by) != sorted(r["index"] for r in rows):
+        raise GuardFailure("the folds do not cover TS0 exactly once")
+    differs = collections.Counter()
+    for r in rows:
+        got = by[r["index"]]["mfe"]
+        if set(got) != set(TABLE_IDS) or any(len(s) != len(r["seq"]) for s in got.values()):
+            raise GuardFailure(f"sequence {r['index']}: tables {sorted(got)}")
+        for t, s in got.items():
+            differs[t] += s != r["star"]
+    out["fold_tables"] = {
+        "tables": list(TABLE_IDS), "n_sequences": len(rows),
+        "visible_parts": {X: p for X, _v, p in vis},
+        "n_sequences_mfe_differs_from_turner2004": dict(differs),
+        "guards": {"whole_params_match_pass": all(not g[t]["params_match"] for g in
+                                                  guards.values() for t in g if t != "visible"),
+                   "visible_params_match_pass": all(g["visible"]["all_params_match_pass"]
+                                                    for g in guards.values()),
+                   "visible_max_rounding_kcal": max(g["visible"]["max_rounding_kcal"]
+                                                    for g in guards.values()),
+                   "mfe_energy_identity_folds": sum(
+                       g[t]["mfe_energy_identity"]["n_folds"] for g in guards.values()
+                       for t in g),
+                   "per_worker": guards},
+        "files_sha256": {f.name: cf._sha(f) for w in range(WORKERS)
+                         for f in (SHARDS2 / f"tables_{w}.jsonl",
+                                   SHARDS2 / f"tables_guard_{w}.json")},
+        "workers": WORKERS, "pids": pids, "load_at_start": load,
+        "seconds": round(time.time() - t0, 1), "provenance": prov}
+    out["status"] = C_FOLDED
+    write2(out)
+    print(json.dumps({k: out["fold_tables"][k] for k in
+                      ("n_sequences_mfe_differs_from_turner2004", "seconds")}, indent=1))
+    return 0
+
+
+# ----------------------------------------------------------------------------------
+# D: TS0 labels under the measured sets
+# ----------------------------------------------------------------------------------
+def readable_entries(seq: str, wanted: set) -> set:
+    """The entries of `wanted` that some admissible interior loop of seq reads.
+
+    Every canonical (i, j) with every loop shape the wanted entries have, (k, l) =
+    (i + u1 + 1, j - u2 - 1) canonical with at least three unpaired bases inside. That is a
+    superset of the loops any structure can hold, so a sequence it clears reads no zeroed
+    entry, its weights are all unchanged, and its labels are registration 1's."""
+    shapes = cf.reached_shapes(list(wanted), np.ones(len(wanted)))
+    S = _codes(seq)
+    adm = set(cf.admissible_pairs(seq))
+    found = set()
+    for (i, j) in adm:
+        for (u1, u2) in shapes:
+            k, l_ = i + u1 + 1, j - u2 - 1
+            if (k, l_) in adm:
+                found.update(set(cf.il_keys(S, i, j, k, l_)) & wanted)
+    return found
+
+
+def measured_labels_worker() -> int:
+    """Shard w: for every TS0 sequence and every measured set whose zeroed entries it can read,
+    the pairs uncertain at lambda = 1 in registration 1 refolded under the measured set. Each
+    refolded margin must be at least registration 1's (lowering u lowers every charge)."""
+    w, n_w = shard_args()
+    head2 = committed2(unmodified=True)
+    B = cf.load_tr0_basis()
+    P = cf.template()
+    lc = cf.LoopCounts(P["special"], 0, 0, lxc=P["lxc"])
+    sets = measured_sets(B, head2["ranking"]["ranked"])
+    union = set().union(*map(set, sets.values()))
+    rows = ts0_rows_with_stars()
+    assign = cr.shard_of(rows, n_w)
+    mine = sorted((r for r in rows if assign[r["index"]] == w),
+                  key=lambda r: (-len(r["seq"]), r["index"]))
+    done = set()
+    path = SHARDS2 / f"measured_{w}.jsonl"
+    if path.exists():
+        done = {json.loads(ln)["index"] for ln in path.read_text().splitlines() if ln.strip()}
+    with open(path, "a") as fh:
+        for r in mine:
+            if r["index"] in done:
+                continue
+            ts = time.time()
+            reads = readable_entries(r["seq"], union)
+            unc = [q for q in r["pairs"] if q["margins_dcal"][cr.PRIMARY] <= 0]
+            rec = {"index": r["index"], "n_nt": len(r["seq"]), "stratum": r["stratum"],
+                   "n_pairs": len(r["pairs"]), "n_uncertain": len(unc), "sets": {}}
+            folds = 0
+            for sid, ents in sets.items():
+                if not (reads & set(ents)) or not unc:
+                    rec["sets"][sid] = {"refolded": False, "newly_certified": []}
+                    continue
+                F = cf.Folder(lc, r["seq"], r["star"],
+                              cf.Weights(measured_u(B, ents), B["cols"], 1.0))
+                new = []
+                for q in unc:
+                    i, j = q["pair"]
+                    _s, x, _e0 = F.without(i, j)
+                    m = x - F.eprime_star
+                    if m < q["margins_dcal"][cr.PRIMARY]:
+                        raise GuardFailure(f"{r['index']} {sid} {(i, j)}: margin {m} below "
+                                           f"registration 1's {q['margins_dcal'][cr.PRIMARY]}")
+                    if m > 0:
+                        new.append([i, j])
+                folds += F.folds
+                rec["sets"][sid] = {"refolded": True, "newly_certified": new,
+                                    "recursion": F.recursion}
+            rec.update({"folds": folds, "seconds": round(time.time() - ts, 2)})
+            fh.write(json.dumps(rec) + "\n")
+            fh.flush()
+    return 0
+
+
+def measured_labels() -> int:
+    """D's labels: TS0 under every measured set (2 top, 40 random), uncertain pairs refolded."""
+    out, head2, prov = registered2((C_ANALYSED, D_LABELLED))
+    if "measured_labels" in out and "--resume" not in sys.argv:
+        raise SystemExit("D's labels exist")
+    t0 = time.time()
+    load = os.getloadavg()
+    pids = drive("measured-labels-worker", WORKERS)
+    recs = []
+    for w in range(WORKERS):
+        recs += [json.loads(ln) for ln in (SHARDS2 / f"measured_{w}.jsonl").read_text()
+                 .splitlines() if ln.strip()]
+    rows = ts0_rows_with_stars()
+    if sorted(r["index"] for r in recs) != sorted(r["index"] for r in rows):
+        raise GuardFailure("D's labels do not cover TS0 exactly once")
+    viol = sum(s.get("recursion", {}).get("violations", 0) for r in recs
+               for s in r["sets"].values())
+    out["measured_labels"] = {
+        "n_sequences": len(recs), "n_sets": len(measured_sets(cf.load_tr0_basis(),
+                                                               head2["ranking"]["ranked"])),
+        "n_refolded_sequence_sets": sum(s["refolded"] for r in recs for s in r["sets"].values()),
+        "folds": sum(r["folds"] for r in recs), "recursion_violations": viol,
+        "files_sha256": {f"measured_{w}.jsonl": cf._sha(SHARDS2 / f"measured_{w}.jsonl")
+                         for w in range(WORKERS)},
+        "workers": WORKERS, "pids": pids, "load_at_start": load,
+        "seconds": round(time.time() - t0, 1), "provenance": prov}
+    out["status"] = D_LABELLED
+    write2(out)
+    print(json.dumps({k: out["measured_labels"][k] for k in
+                      ("n_refolded_sequence_sets", "folds", "seconds")}, indent=1))
+    return 0
+
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
     sys.exit({"rank-entries": rank_entries,
               "rank-entries-worker": rank_entries_worker,
-              "preregister2": preregister2}[ph]())
+              "preregister2": preregister2,
+              "gate-g2-measured": gate_g2_measured,
+              "fold-tables": fold_tables,
+              "fold-tables-worker": fold_tables_worker,
+              "measured-labels": measured_labels,
+              "measured-labels-worker": measured_labels_worker}[ph]())
