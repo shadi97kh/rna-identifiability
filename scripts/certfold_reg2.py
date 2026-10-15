@@ -746,6 +746,204 @@ def fold_tables() -> int:
 
 
 # ----------------------------------------------------------------------------------
+# C: the analysis
+# ----------------------------------------------------------------------------------
+_JOB: dict = {}                  # set in the parent before the pool forks
+
+
+def mxfold2_structures(rows: list[dict], frozen: dict) -> dict[int, str]:
+    """{TS0 index: the released MXfold2's predicted structure}, from the file PRED2 pinned."""
+    p = R / frozen["path"]
+    if cf._sha(p) != frozen["sha256"]:
+        raise GuardFailure(f"{frozen['path']} changed since the registration")
+    pred = {}
+    for ln in p.read_text().splitlines():
+        if ln.strip():
+            d = json.loads(ln)
+            pred[d["name"]] = d["structure"]
+    out = {}
+    for r in rows:
+        s = pred[r["name"].removesuffix(".bpseq")]
+        if len(s) != len(r["seq"]) or set(s) - set("()."):
+            raise GuardFailure(f"MXfold2's structure for {r['name']} does not fit the sequence")
+        out[r["index"]] = s
+    return out
+
+
+def kept_records(rows: list[dict], tables: dict[int, dict], mx: dict[int, str]) -> list[dict]:
+    """Registration 1's TS0 records (certfold_run.pair_records), each MFE pair given kept(p, X)
+    for the six tables and MXfold2, its retention over the three whole tables and over the three
+    data-visible ones, and neg_len for the length score. Unit records pass through."""
+    seq_recs, freqs = cr.read_shards(cf.read_out()["run"]["workers"])
+    fbi = {int(k): v for w in freqs.values() for k, v in w["by_index"].items()}
+    recs = cr.pair_records([s for s in seq_recs if s["set"] == "TS0"], fbi)["TS0"]
+    n_nt = {r["index"]: len(r["seq"]) for r in rows}
+    pairs = {i: {t: set(cr._pairs_of(s)) for t, s in tables[i].items()} for i in tables}
+    for i, s in mx.items():
+        pairs[i]["mxfold2"] = set(cr._pairs_of(s))
+    out = []
+    for r in recs:
+        if r["kind"] != "mfe":
+            if r["kind"] == "unit":
+                out.append(r)
+            continue
+        k = {t: r["pair"] in pairs[r["index"]][t] for t in (*TABLE_IDS, "mxfold2")}
+        out.append({**r, **{f"kept:{t}": v for t, v in k.items()},
+                    "ret_primary": sum(k[f"whole:{X}"] for X in TABLES) / len(TABLES),
+                    "ret_visible": sum(k[f"visible:{X}"] for X in TABLES) / len(TABLES),
+                    "ret_mxfold2": float(k["mxfold2"]),
+                    "neg_len": -float(n_nt[r["index"]])})
+    return out
+
+
+def _r4_spec(key: str) -> dict:
+    """R4's statistic on `key`: mean over p >= 0.99 MFE pairs certified at lambda = 1 minus mean
+    over the uncertified ones, pooled weights the stratum's p >= 0.99 pair count."""
+    def hi(rs):
+        return [r for r in rs if r["kind"] == "mfe" and r["p"] >= cr.P_HI]
+
+    def split(rs):
+        h = hi(rs)
+        return [r[key] for r in h if r["certified_l1"]], [r[key] for r in h
+                                                          if not r["certified_l1"]]
+
+    def stat(rs):
+        c, u = split(rs)
+        return sum(c) / len(c) - sum(u) / len(u)
+
+    def defined(rs):
+        c, u = split(rs)
+        return bool(c) and bool(u)
+
+    def extra(rs):
+        c, u = split(rs)
+        return {"n_certified": len(c), "n_uncertified": len(u),
+                "mean_certified": sum(c) / len(c) if c else None,
+                "mean_uncertified": sum(u) / len(u) if u else None}
+
+    return {"stat": stat, "weight": lambda rs: len(hi(rs)), "defined": defined,
+            "extra": extra, "merge": {1: 0}}
+
+
+R4_SPECS = (("R4_primary", "ret_primary"), ("R4_secondary", "ret_visible"),
+            ("R4_tertiary", "ret_mxfold2"))
+R5_BASELINES = (("p", "p", "tiebreak"), ("nominal_gap", "gap", "tiebreak"),
+                ("length", "neg_len", "tiebreak"))
+
+
+def _c_task(tid: str):
+    import scripts.certfold_exploratory as cx
+    from scripts.certfold_metrics import paired_bootstrap
+
+    recs = _JOB["recs"]
+    if tid == "R4":
+        hi = [r for r in recs if r["kind"] == "unit"
+              or (r["kind"] == "mfe" and r["p"] >= cr.P_HI)]
+        groups = cx.strata_groups(hi, _JOB["stratum_of"])
+        return tid, cx.stratified_bootstrap(groups, n_boot=N_BOOT, seed_tag=TAG_R4,
+                                            specs={n: _r4_spec(k) for n, k in R4_SPECS})
+    _r5, X, name = tid.split("|")
+    key, tb = next((k, t) for n, k, t in R5_BASELINES if n == name)
+    rx = [{**r, "correct": r[f"kept:whole:{X}"]} if r["kind"] == "mfe" else r for r in recs]
+    got = cr._matched_point(cr._mfe(rx), key, tb, False)
+    sub = cr.task_records(rx, "matched", (key, tb, False))
+    try:
+        p, lo, hi = paired_bootstrap(sub, lambda rs: cr.stat_matched(rs, key, tb, False),
+                                     n_boot=N_BOOT, seed_tag=TAG_R5)
+    except GuardFailure as e:
+        return tid, {**got, "interval": None, "interval_undefined_because": str(e)}
+    if p != got["difference"]:
+        raise GuardFailure(f"{tid}: the bootstrap's point {p} is not {got['difference']}")
+    return tid, {**got, "interval": [lo, hi], "baseline_key": key}
+
+
+def rule3(iv) -> str:
+    """Reading rule 3: higher or lower only if the interval excludes 0."""
+    if iv is None:
+        return "interval undefined"
+    return "higher" if iv[0] > 0 else "lower" if iv[1] < 0 else "no difference shown"
+
+
+def analyse_c() -> int:
+    """R4 (primary, secondary), R5 per primary table, the tertiary consistency; then the
+    reading by registration 2's rules."""
+    import multiprocessing
+
+    out, head2, prov = registered2(C_FOLDED)
+    t0 = time.time()
+    for f, h in out["fold_tables"]["files_sha256"].items():
+        if cf._sha(SHARDS2 / f) != h:
+            raise GuardFailure(f"{f} changed since the folds")
+    rows = ts0_rows_with_stars()
+    tables = {}
+    for w in range(out["fold_tables"]["workers"]):
+        for ln in (SHARDS2 / f"tables_{w}.jsonl").read_text().splitlines():
+            if ln.strip():
+                d = json.loads(ln)
+                tables[d["index"]] = d["mfe"]
+    mx = mxfold2_structures(rows, head2["frozen"]["mxfold2_predictions"])
+    recs = kept_records(rows, tables, mx)
+    mfe = [r for r in recs if r["kind"] == "mfe"]
+    _JOB.update(recs=recs, stratum_of={r["index"]: r["stratum"] for r in rows})
+    tids = ["R4"] + [f"R5|{X}|{n}" for X in TABLES for n, _k, _t in R5_BASELINES]
+    with multiprocessing.get_context("fork").Pool(len(tids)) as pool:
+        got = dict(pool.map(_c_task, tids, chunksize=1))
+    r4 = got["R4"]
+    res = {"R4": {n: r4[n] for n, _k in R4_SPECS}, "R4_bootstrap": r4["bootstrap"],
+           "R5": {X: {n: got[f"R5|{X}|{n}"] for n, _k, _t in R5_BASELINES} for X in TABLES}}
+
+    # descriptive: what each table keeps
+    hi = [r for r in mfe if r["p"] >= cr.P_HI]
+    desc = {}
+    for t in (*TABLE_IDS, "mxfold2"):
+        k = f"kept:{t}"
+        desc[t] = {"kept_fraction_all_mfe_pairs": sum(r[k] for r in mfe) / len(mfe),
+                   "kept_fraction_p_ge_0.99": sum(r[k] for r in hi) / len(hi),
+                   "kept_fraction_certified_p_ge_0.99":
+                       _mean([r[k] for r in hi if r["certified_l1"]]),
+                   "kept_fraction_uncertified_p_ge_0.99":
+                       _mean([r[k] for r in hi if not r["certified_l1"]])}
+    res["describe"] = {"n_mfe_pairs": len(mfe), "n_p_ge_0.99": len(hi),
+                       "n_certified_p_ge_0.99": sum(r["certified_l1"] for r in hi),
+                       "by_table": desc}
+
+    # the reading, registration 2's rules
+    def iv(n):
+        return res["R4"][n]["pooled_interval"]
+
+    p_iv, s_iv, t_iv = iv("R4_primary"), iv("R4_secondary"), iv("R4_tertiary")
+    p_pass = p_iv is not None and p_iv[0] > 0
+    s_pass = s_iv is not None and s_iv[0] > 0
+    reading = {"R4_primary_pass": p_pass, "R4_secondary_pass": s_pass}
+    rr = PRED2["reading_rules_user"]
+    reading["R4_sentence"] = rr[0] if p_pass else rr[1]
+    if p_pass and not s_pass:
+        reading["R4_secondary_clause"] = rr[2]
+    sign = np.sign(res["R4"]["R4_primary"]["pooled_point"])
+    tp = res["R4"]["R4_tertiary"]["pooled_point"]
+    other_side = t_iv is not None and ((sign > 0 and t_iv[1] < 0) or (sign < 0 and t_iv[0] > 0))
+    reading["tertiary"] = ("consistent" if np.sign(tp) == sign and sign != 0 and not other_side
+                           else "not consistent")
+    reading["R5_rule3"] = {X: {n: rule3(res["R5"][X][n].get("interval"))
+                               for n, _k, _t in R5_BASELINES} for X in TABLES}
+    beats = all(reading["R5_rule3"][X]["p"] == "higher" for X in TABLES)
+    reading["R5_claim_allowed"] = beats
+    reading["R5_claim"] = (rr[3].split("may the paper say ")[1].strip('".')
+                           if beats else None)
+    res["reading"] = reading
+    out["analysis_c"] = {**res, "seed_tags": {"R4": TAG_R4, "R5": TAG_R5}, "n_boot": N_BOOT,
+                         "seconds": round(time.time() - t0, 1), "provenance": prov}
+    out["status"] = C_ANALYSED
+    write2(out)
+    print(json.dumps(reading, indent=1))
+    return 0
+
+
+def _mean(xs: list) -> float | None:
+    return sum(xs) / len(xs) if xs else None
+
+
+# ----------------------------------------------------------------------------------
 # D: TS0 labels under the measured sets
 # ----------------------------------------------------------------------------------
 def readable_entries(seq: str, wanted: set) -> set:
@@ -862,5 +1060,6 @@ if __name__ == "__main__":
               "gate-g2-measured": gate_g2_measured,
               "fold-tables": fold_tables,
               "fold-tables-worker": fold_tables_worker,
+              "analyse-c": analyse_c,
               "measured-labels": measured_labels,
               "measured-labels-worker": measured_labels_worker}[ph]())
