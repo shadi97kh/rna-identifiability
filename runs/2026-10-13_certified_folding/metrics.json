@@ -1,4 +1,98 @@
 {
+ "additions": {
+  "A_uncertain_change": {
+   "beside_G4_relaxation_loss": {
+    "1": {
+     "robust": 2682,
+     "robust_not_certified": 17
+    },
+    "20": {
+     "robust": 0,
+     "robust_not_certified": 0
+    },
+    "5": {
+     "robust": 1597,
+     "robust_not_certified": 285
+    },
+    "envelope": {
+     "robust": 1568,
+     "robust_not_certified": 2
+    }
+   },
+   "by_stratum": {
+    "0": {
+     "changed_in_a_draw": 126,
+     "fraction": 0.21212121212121213,
+     "uncertain": 594
+    },
+    "1": {
+     "changed_in_a_draw": 441,
+     "fraction": 0.3795180722891566,
+     "uncertain": 1162
+    },
+    "2": {
+     "changed_in_a_draw": 207,
+     "fraction": 0.2593984962406015,
+     "uncertain": 798
+    },
+    "3": {
+     "changed_in_a_draw": 308,
+     "fraction": 0.238574748257165,
+     "uncertain": 1291
+    },
+    "4": {
+     "changed_in_a_draw": 287,
+     "fraction": 0.23163841807909605,
+     "uncertain": 1239
+    },
+    "5": {
+     "changed_in_a_draw": 602,
+     "fraction": 0.2551928783382789,
+     "uncertain": 2359
+    },
+    "6": {
+     "changed_in_a_draw": 662,
+     "fraction": 0.2474766355140187,
+     "uncertain": 2675
+    },
+    "7": {
+     "changed_in_a_draw": 919,
+     "fraction": 0.2851380701210053,
+     "uncertain": 3223
+    },
+    "8": {
+     "changed_in_a_draw": 1013,
+     "fraction": 0.2077948717948718,
+     "uncertain": 4875
+    },
+    "9": {
+     "changed_in_a_draw": 3863,
+     "fraction": 0.2914152082076041,
+     "uncertain": 13256
+    }
+   },
+   "certified_pairs": 21776,
+   "certified_pairs_with_frequency_below_1": 0,
+   "label": "DESCRIPTIVE: uncertain is not unstable",
+   "n_le_150": {
+    "changed_in_a_draw": 3096,
+    "fraction": 0.2704638769983402,
+    "uncertain": 11447
+   },
+   "pooled": {
+    "changed_in_a_draw": 8428,
+    "fraction": 0.2677935943060498,
+    "uncertain": 31472
+   },
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "c54491314ae8a8ae99a67f1cc3c932ba3770cc31"
+   },
+   "what": "TS0 MFE pairs uncertain under the envelope at lambda = 1; 'changed' = pair frequency below 1 under the run's 200 envelope draws (seed tag 30, inside E_1, tables written at 0.01 kcal/mol): the pair left the MFE under at least one random table of the set. A LOWER bound on the uncertain pairs that change somewhere in the set: 200 random tables need not find a change that exists."
+  }
+ },
  "analysis": {
   "R1": {
    "G2_false_certificates_ball_by_radius": {
