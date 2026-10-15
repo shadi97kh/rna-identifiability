@@ -66,5 +66,24 @@ estimates.
   - The main text adds *"whether the signal is specific to the certificate is unresolved: the
     energy gap's pattern cannot be told apart from it"*. The supplement reports both.
 
+**Confirmed by the authors, 2026-10-15** (committed before the result landed). This supersedes the
+wording of the three branches above; it is read by intervals only.
+
+- **(a)** The paired difference's interval favors rho (it excludes 0 on rho's side): report it in
+  the supplement only, as a post hoc observation, and leave the main text unchanged.
+- **(b)** Otherwise, if the gap's own interval lies entirely below 0:
+  - Section 6 adds *"a pattern the energy gap alone also shows, so this signal is not specific to
+    the certificate"*.
+  - The abstract adds *", a pattern the energy gap alone also shows"* after "within length
+    strata".
+- **(c)** Otherwise:
+  - Section 6 and Limitations say *"whether this signal is specific to the certificate is
+    unresolved"*.
+  - The abstract is unchanged, since its sentence claims no specificity.
+
+`scripts/certfold_posthoc.py` was committed before this confirmation, so the reading text it
+writes into its record carries the earlier wording. The branch it selects is the same one, and the
+paper follows the wording here.
+
 **Check before reading.** The bootstrap of $d_\rho$ must reproduce R2's committed point and
 interval exactly. That is the evidence that the draws are R2's.
