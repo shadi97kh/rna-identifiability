@@ -13081,6 +13081,64 @@
    "git_sha": "288205877c60cf7070ea17cc26f7e1940eb9387b"
   }
  },
+ "posthoc": {
+  "bootstrap": {
+   "draws": "paired_bootstrap over the unit universe certfold_run.task_records gives R2: R2's own draws, checked by reproducing R2",
+   "n_boot": 10000,
+   "seed": [
+    20261013,
+    40
+   ]
+  },
+  "label": "POST HOC, not a registered test: may only qualify the 2a sentence",
+  "module_commit": "d561856b9990387adb4c400a853307a532a4f571",
+  "pool": {
+   "n_pairs": 13878,
+   "set": "TS0",
+   "what": "MFE pairs with p >= 0.99 carrying a rho_env (R2's pool)"
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "d561856b9990387adb4c400a853307a532a4f571"
+  },
+  "reading": {
+   "abstract": "add after 'within length strata': a pattern the energy gap alone also shows",
+   "branch": "the gap's difference is as large or larger (Delta's interval not below 0; the gap's own interval entirely below 0)",
+   "main_text": "add: the energy gap alone shows the same pattern, so this signal is not specific to the certificate"
+  },
+  "reproduces_R2": true,
+  "rule": {
+   "commit": "60af83d29281d48888d668df198497f96a06e106",
+   "path": "docs/certfold_reading_rules.md",
+   "time": "2026-10-15T18:20:37-04:00"
+  },
+  "seconds": 1235.5,
+  "statistics": {
+   "d_gap": {
+    "interval": [
+     -0.15336272652086977,
+     -0.09358152731452574
+    ],
+    "point": -0.12338307669003279
+   },
+   "d_rho": {
+    "interval": [
+     -0.1337872911849364,
+     -0.034022178621439705
+    ],
+    "point": -0.08054555684277442
+   },
+   "delta": {
+    "interval": [
+     -0.011266436828333013,
+     0.08990371964216481
+    ],
+    "point": 0.042837519847258365
+   }
+  }
+ },
  "predictions": {
   "G5_claude": "after this registration, on every test sequence: the primary set's labels, then three attacks -- the three published data-invisible components themselves (inside E by construction), 200 envelope draws (seed tag 50), and for the 20 lowest-E' Zuker alternatives the box-corner shift on each one's differing entries realised at minimum norm and scaled into E. A violation counts only if exact float energies from counts give a structure lacking a certified pair (or holding a certified-absent one) with E(s) <= E(s*). Violation counts only; no accuracy, coverage or PPV.",
   "R1": "zero false certificates across G2 to G5 (must hold)",
