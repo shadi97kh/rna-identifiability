@@ -1052,6 +1052,106 @@ def measured_labels() -> int:
     return 0
 
 
+CANON = (("C", "G"), ("G", "C"), ("G", "U"), ("U", "G"), ("A", "U"), ("U", "A"))
+SHAPES = {"int11": ((1, 1),), "int21": ((1, 2), (2, 1)), "int22": ((2, 2),)}
+
+
+def motifs(entry: tuple) -> list[str]:
+    """The loops that read `entry`, found through il_keys itself (the callback's own map from
+    positions and bases to entries), so the decoding shares no convention with a hand-written
+    table. Each as its two strands, 5'-closing base, 5'-side loop bases, enclosed base-3' over
+    3'-closing base, 3'-side loop bases, enclosed base-5'. A bulge entry depends on its size
+    alone."""
+    import itertools
+
+    if entry[0] == "bulge":
+        return [f"bulge of {entry[1]} nt (any closing pairs and bases)"]
+    out = []
+    for u1, u2 in SHAPES[entry[0]]:
+        for a, b in CANON:
+            for c, d in CANON:
+                for left in itertools.product("ACGU", repeat=u1):
+                    for right in itertools.product("ACGU", repeat=u2):
+                        seq = a + "".join(left) + c + "AAAA" + d + "".join(right) + b
+                        k = 2 + u1
+                        l_ = k + 5
+                        if entry in cf.il_keys(_codes(seq), 1, len(seq), k, l_):
+                            out.append(f"5'-{a}{''.join(left)}{c}-3'/3'-{b}"
+                                       f"{''.join(reversed(right))}{d}-5'")
+    if not out:
+        raise GuardFailure(f"no loop reads {entry}")
+    return sorted(set(out))
+
+
+def analyse_d() -> int:
+    """R6, the gain by stratum, and the top entries as motifs."""
+    out, head2, prov = registered2(D_LABELLED)
+    t0 = time.time()
+    for f, h in out["measured_labels"]["files_sha256"].items():
+        if cf._sha(SHARDS2 / f) != h:
+            raise GuardFailure(f"{f} changed since D's labels")
+    recs = []
+    for w in range(out["measured_labels"]["workers"]):
+        recs += [json.loads(ln) for ln in (SHARDS2 / f"measured_{w}.jsonl").read_text()
+                 .splitlines() if ln.strip()]
+    rows = {r["index"]: r for r in ts0_rows_with_stars()}
+    B = cf.load_tr0_basis()
+    sets = measured_sets(B, head2["ranking"]["ranked"])
+    n_all = sum(r["n_pairs"] for r in recs)
+    n_by = collections.Counter()
+    base_by = collections.Counter()
+    for r in recs:
+        n_by[r["stratum"]] += r["n_pairs"]
+        base_by[r["stratum"]] += sum(q["margins_dcal"][cr.PRIMARY] > 0
+                                     for q in rows[r["index"]]["pairs"])
+    strata = sorted(n_by)
+    gain, gain_by = {}, {}
+    for sid in sets:
+        new_by = collections.Counter()
+        for r in recs:
+            new_by[r["stratum"]] += len(r["sets"][sid]["newly_certified"])
+        gain[sid] = sum(new_by.values()) / n_all
+        gain_by[sid] = {str(s): new_by[s] / n_by[s] for s in strata}
+    r6 = {}
+    for K in K_VALUES:
+        rnd = [gain[f"random:{K}:{d}"] for d in range(N_RANDOM)]
+        p95 = float(np.percentile(rnd, 95))
+        r6[str(K)] = {
+            "top_gain": gain[f"top:{K}"], "random_gains": rnd, "random_p95": p95,
+            "random_mean": float(np.mean(rnd)), "pass": gain[f"top:{K}"] > p95,
+            "top_gain_by_stratum": gain_by[f"top:{K}"],
+            "random_p95_by_stratum": {str(s): float(np.percentile(
+                [gain_by[f"random:{K}:{d}"][str(s)] for d in range(N_RANDOM)], 95))
+                for s in strata},
+            "random_mean_by_stratum": {str(s): float(np.mean(
+                [gain_by[f"random:{K}:{d}"][str(s)] for d in range(N_RANDOM)]))
+                for s in strata}}
+    count = dict((k, c) for k, c in head2["ranking"]["ranked"])
+    by_str = {str(k): k for k in B["cols"]}
+    top = [{"rank": n + 1, "entry": k, "witness_count": count[k],
+            "u_kcal": float(B["u_env"][B["cols"].index(by_str[k])]),
+            "motifs": motifs(by_str[k])}
+           for n, (k, _c) in enumerate(head2["ranking"]["ranked"][:max(K_VALUES)])]
+    out["analysis_d"] = {
+        "n_mfe_pairs": n_all,
+        "certified_present_under_E_lambda1": sum(base_by.values()),
+        "certified_present_fraction_under_E_lambda1": sum(base_by.values()) / n_all,
+        "n_mfe_pairs_by_stratum": {str(s): n_by[s] for s in strata},
+        "gain": gain, "gain_by_stratum": gain_by, "R6": r6,
+        "R6_pass_every_K": all(v["pass"] for v in r6.values()),
+        "top_entries_as_motifs": top,
+        "percentile_rule": "numpy percentile, linear, at 95, over the 20 random-K gains; pass "
+                           "iff the top-K gain is strictly greater",
+        "wording": "\"if these motifs were measured exactly\"; exact measurement is an "
+                   "idealization",
+        "seconds": round(time.time() - t0, 1), "provenance": prov}
+    out["status"] = D_ANALYSED
+    write2(out)
+    print(json.dumps({K: {k: v for k, v in r6[K].items() if "stratum" not in k}
+                      for K in r6}, indent=1))
+    return 0
+
+
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
     sys.exit({"rank-entries": rank_entries,
@@ -1062,4 +1162,5 @@ if __name__ == "__main__":
               "fold-tables-worker": fold_tables_worker,
               "analyse-c": analyse_c,
               "measured-labels": measured_labels,
-              "measured-labels-worker": measured_labels_worker}[ph]())
+              "measured-labels-worker": measured_labels_worker,
+              "analyse-d": analyse_d}[ph]())
