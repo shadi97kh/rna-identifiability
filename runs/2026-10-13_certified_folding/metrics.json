@@ -10546,6 +10546,587 @@
   "venv_untouched": "only uv pip freeze was run against .venv",
   "viennarna": "2.7.2"
  },
+ "exploratory": {
+  "amendments_to_the_specification": [
+   "E2 reports strata 0 and 1 merged (the authors, 2026-10-14, blind, from D1-holder counts: 8 of 124 stratum-0 sequences); the resampling stays within the ten TR0 strata",
+   "E2_raw added: reading rule 4 asks for D1 against the certified p >= 0.99 pairs 'raw and within strata', and the specification had only the within-strata form",
+   "the fresh-context review of a6409f9 (requested by the authors): explicit definedness, a gate tying this code to the analysis's, strict ancestry, the capped count per stratum, the strata bounds and the module blob in the record, MFE-only resampling (no number changes), 'baseline_score' for E3's length score"
+  ],
+  "analysis_record_commit": {
+   "commit": "c37338f3479f1d6d3503f6812fcb2484aaf00f3b",
+   "time": "2026-10-15T10:24:21-04:00"
+  },
+  "analysis_started_on": "100c0e09657a6d566b51204483ac04f811198bff",
+  "analysis_written_at": "2026-10-14T22:05:55.072804-04:00",
+  "analysis_written_at_source": "metrics.json's mtime when this phase began, before its first write; the working copy equalled the committed analysis record, so the analysis was its last writer",
+  "commits": {
+   "docs/certfold_exploratory.md": {
+    "commit": "5b6f109aee104e19bb662a78c776dffdb66575da",
+    "time": "2026-10-14T12:52:15-04:00"
+   },
+   "docs/certfold_reading_rules.md": {
+    "commit": "292afc9e20e40c33ce889e48d980c3d4c8d0da97",
+    "time": "2026-10-14T17:27:45-04:00"
+   },
+   "scripts/certfold_exploratory.py": {
+    "commit": "d4a5c310f0be10460fd253dad74dcd4e48f70f2e",
+    "time": "2026-10-14T19:15:22-04:00"
+   }
+  },
+  "complete": true,
+  "cross_check": {
+   "E1_pairs": 13878,
+   "E2_d1": 3200,
+   "R2_pairs": 13878,
+   "registered_D1": 3200
+  },
+  "label": "EXPLORATORY, not registered tests (docs/certfold_exploratory.md, read by docs/certfold_reading_rules.md)",
+  "module_blob": "fc51857463fe99575c26462603b2cc42409f90f3",
+  "numpy": "2.4.6",
+  "pending": [],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "c37338f3479f1d6d3503f6812fcb2484aaf00f3b"
+  },
+  "results": {
+   "E1_E2:TS0": {
+    "E1_r2_within_strata": {
+     "by_stratum": {
+      "0": {
+       "interval": [
+        -0.21651933931995546,
+        0.04222804130433797
+       ],
+       "members": [
+        0
+       ],
+       "n_capped": 0,
+       "n_pairs": 598,
+       "n_sequences": 124,
+       "point": -0.085922619047619,
+       "resamples_undefined": 0
+      },
+      "1": {
+       "interval": [
+        -0.20353194795617355,
+        0.023493866862960098
+       ],
+       "members": [
+        1
+       ],
+       "n_capped": 0,
+       "n_pairs": 980,
+       "n_sequences": 165,
+       "point": -0.08843537414965985,
+       "resamples_undefined": 0
+      },
+      "2": {
+       "interval": [
+        -0.19958008536702718,
+        0.029362967986489345
+       ],
+       "members": [
+        2
+       ],
+       "n_capped": 0,
+       "n_pairs": 819,
+       "n_sequences": 96,
+       "point": -0.07460872328592982,
+       "resamples_undefined": 0
+      },
+      "3": {
+       "interval": [
+        -0.1092859900124741,
+        0.11233449867404253
+       ],
+       "members": [
+        3
+       ],
+       "n_capped": 0,
+       "n_pairs": 1181,
+       "n_sequences": 122,
+       "point": 0.015319132692014015,
+       "resamples_undefined": 0
+      },
+      "4": {
+       "interval": [
+        -0.18305435596189476,
+        0.0357461182519493
+       ],
+       "members": [
+        4
+       ],
+       "n_capped": 0,
+       "n_pairs": 1125,
+       "n_sequences": 113,
+       "point": -0.05839075237878899,
+       "resamples_undefined": 0
+      },
+      "5": {
+       "interval": [
+        -0.20194345631439664,
+        -0.0124253138256897
+       ],
+       "members": [
+        5
+       ],
+       "n_capped": 0,
+       "n_pairs": 1723,
+       "n_sequences": 154,
+       "point": -0.1111857369642203,
+       "resamples_undefined": 0
+      },
+      "6": {
+       "interval": [
+        -0.16709151481287135,
+        0.06248859061973406
+       ],
+       "members": [
+        6
+       ],
+       "n_capped": 0,
+       "n_pairs": 1439,
+       "n_sequences": 135,
+       "point": -0.04787869426423641,
+       "resamples_undefined": 0
+      },
+      "7": {
+       "interval": [
+        -0.19840219594003056,
+        0.09146027152841299
+       ],
+       "members": [
+        7
+       ],
+       "n_capped": 0,
+       "n_pairs": 1250,
+       "n_sequences": 120,
+       "point": -0.06323628192757114,
+       "resamples_undefined": 0
+      },
+      "8": {
+       "interval": [
+        -0.1965959416392153,
+        0.05615276564653631
+       ],
+       "members": [
+        8
+       ],
+       "n_capped": 0,
+       "n_pairs": 1912,
+       "n_sequences": 120,
+       "point": -0.07112970711297073,
+       "resamples_undefined": 0
+      },
+      "9": {
+       "interval": [
+        -0.2293370962692822,
+        0.009262767651040685
+       ],
+       "members": [
+        9
+       ],
+       "n_capped": 0,
+       "n_pairs": 2851,
+       "n_sequences": 139,
+       "point": -0.12421591793197817,
+       "resamples_undefined": 0
+      }
+     },
+     "merge": {},
+     "pooled_interval": [
+      -0.1156930881040751,
+      -0.0336544345353368
+     ],
+     "pooled_interval_entirely_below_0": true,
+     "pooled_point": -0.07756204339345077,
+     "pooled_resamples_undefined": 0,
+     "strata_left_out": [],
+     "strata_pooled": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+     ]
+    },
+    "E2_d1_within_strata": {
+     "by_stratum": {
+      "0+1": {
+       "interval": [
+        -0.16072454519842558,
+        0.09942424156876487
+       ],
+       "members": [
+        0,
+        1
+       ],
+       "n_certified": 1505,
+       "n_d1": 73,
+       "n_pairs": 1578,
+       "n_sequences": 289,
+       "point": -0.02357438674737178,
+       "resamples_undefined": 0
+      },
+      "2": {
+       "interval": [
+        -0.2952839365280447,
+        0.07710864284496803
+       ],
+       "members": [
+        2
+       ],
+       "n_certified": 781,
+       "n_d1": 38,
+       "n_pairs": 819,
+       "n_sequences": 96,
+       "point": -0.07992452321585009,
+       "resamples_undefined": 0
+      },
+      "3": {
+       "interval": [
+        -0.1538782012588472,
+        0.12330186787437201
+       ],
+       "members": [
+        3
+       ],
+       "n_certified": 1073,
+       "n_d1": 108,
+       "n_pairs": 1181,
+       "n_sequences": 122,
+       "point": 0.003132442787615264,
+       "resamples_undefined": 0
+      },
+      "4": {
+       "interval": [
+        -0.19611587119239574,
+        0.23057221464098596
+       ],
+       "members": [
+        4
+       ],
+       "n_certified": 1071,
+       "n_d1": 54,
+       "n_pairs": 1125,
+       "n_sequences": 113,
+       "point": 0.031434796140678456,
+       "resamples_undefined": 0
+      },
+      "5": {
+       "interval": [
+        -0.2594602227264126,
+        0.08574222448165272
+       ],
+       "members": [
+        5
+       ],
+       "n_certified": 1590,
+       "n_d1": 133,
+       "n_pairs": 1723,
+       "n_sequences": 154,
+       "point": -0.07985529862391827,
+       "resamples_undefined": 0
+      },
+      "6": {
+       "interval": [
+        -0.2105383437465764,
+        0.126719313056719
+       ],
+       "members": [
+        6
+       ],
+       "n_certified": 1288,
+       "n_d1": 151,
+       "n_pairs": 1439,
+       "n_sequences": 135,
+       "point": -0.03883530089260001,
+       "resamples_undefined": 0
+      },
+      "7": {
+       "interval": [
+        -0.1913348622139118,
+        0.0979196918244087
+       ],
+       "members": [
+        7
+       ],
+       "n_certified": 967,
+       "n_d1": 283,
+       "n_pairs": 1250,
+       "n_sequences": 120,
+       "point": -0.04398142227061952,
+       "resamples_undefined": 0
+      },
+      "8": {
+       "interval": [
+        -0.20217327625450893,
+        0.031473748955474175
+       ],
+       "members": [
+        8
+       ],
+       "n_certified": 1348,
+       "n_d1": 564,
+       "n_pairs": 1912,
+       "n_sequences": 120,
+       "point": -0.08511690552854767,
+       "resamples_undefined": 0
+      },
+      "9": {
+       "interval": [
+        -0.10518051746508758,
+        0.11992372243952999
+       ],
+       "members": [
+        9
+       ],
+       "n_certified": 1055,
+       "n_d1": 1796,
+       "n_pairs": 2851,
+       "n_sequences": 139,
+       "point": 0.008210451873040703,
+       "resamples_undefined": 0
+      }
+     },
+     "merge": {
+      "1": 0
+     },
+     "pooled_interval": [
+      -0.08296275444080296,
+      0.01796897373176983
+     ],
+     "pooled_interval_entirely_below_0": false,
+     "pooled_point": -0.03252500264036447,
+     "pooled_resamples_undefined": 0,
+     "strata_left_out": [],
+     "strata_pooled": [
+      "0+1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+     ]
+    },
+    "bootstrap": {
+     "level": 95.0,
+     "n_boot": 10000,
+     "rule": "within each TR0 stratum, its sequences drawn with replacement, as many as it holds; strata in order, units sorted, one draw per stratum per resample; a merged reporting stratum uses the union of its members' draws; pooled weights from the resample's own pair counts; the pooled interval is undefined if any full-data-defined reporting stratum is undefined on some resample (counted, never dropped)",
+     "seed": [
+      20261013,
+      41
+     ]
+    },
+    "module_blob": "fc51857463fe99575c26462603b2cc42409f90f3",
+    "written_at": "2026-10-15T10:50:54-0400"
+   },
+   "E2_raw:TS0": {
+    "difference": -0.0801534112193294,
+    "interval": [
+     -0.13185326989007928,
+     -0.030001451018869047
+    ],
+    "interval_entirely_below_0": true,
+    "module_blob": "fc51857463fe99575c26462603b2cc42409f90f3",
+    "n_certified": 10678,
+    "n_d1": 3200,
+    "ppv_certified": 0.7379659112193294,
+    "ppv_d1": 0.6578125,
+    "weighting": "pairs pooled",
+    "written_at": "2026-10-15T10:49:16-0400"
+   },
+   "E2_raw:bpRNA-new": {
+    "difference": -0.16660039773975266,
+    "interval": [
+     -0.20865808225900753,
+     -0.12484278995191533
+    ],
+    "interval_entirely_below_0": true,
+    "module_blob": "fc51857463fe99575c26462603b2cc42409f90f3",
+    "n_certified": 18279,
+    "n_d1": 2948,
+    "ppv_certified": 0.8175501942119372,
+    "ppv_d1": 0.6509497964721845,
+    "weighting": "pairs pooled",
+    "written_at": "2026-10-15T11:01:44-0400"
+   },
+   "E2_raw:held-out": {
+    "difference": -0.0772299805001273,
+    "interval": [
+     -0.10961650803654356,
+     -0.04507312910067096
+    ],
+    "interval_entirely_below_0": true,
+    "module_blob": "fc51857463fe99575c26462603b2cc42409f90f3",
+    "n_certified": 22731,
+    "n_d1": 2194,
+    "ppv_certified": 0.9272444162006802,
+    "ppv_d1": 0.8500144357005529,
+    "weighting": "families weighted equally",
+    "written_at": "2026-10-15T10:55:09-0400"
+   },
+   "E3:TS0": {
+    "baseline_key": "neg_len",
+    "baseline_score": "-n_nt",
+    "baseline_tiebreak": "tiebreak",
+    "coverage": 0.26063929684858955,
+    "difference": 0.13840611039054618,
+    "interval": [
+     0.11066830340989146,
+     0.16522897312465865
+    ],
+    "k": 13878,
+    "module_blob": "fc51857463fe99575c26462603b2cc42409f90f3",
+    "n": 53246,
+    "n_in_coverage_set": 13878,
+    "n_unscored": {
+     "baseline": 0,
+     "score": 2
+    },
+    "ppv_baseline": 0.5067156650814238,
+    "ppv_score": 0.64512177547197,
+    "score_key": "rho_env",
+    "weighting": "pooled",
+    "written_at": "2026-10-15T11:02:17-0400"
+   },
+   "E3:bpRNA-new": {
+    "baseline_key": "neg_len",
+    "baseline_score": "-n_nt",
+    "baseline_tiebreak": "tiebreak",
+    "coverage": 0.25696680628525775,
+    "difference": 0.17129127997361848,
+    "interval": [
+     0.14783420071374703,
+     0.18593476242478546
+    ],
+    "k": 21227,
+    "module_blob": "fc51857463fe99575c26462603b2cc42409f90f3",
+    "n": 82606,
+    "n_in_coverage_set": 21227,
+    "n_unscored": {
+     "baseline": 0,
+     "score": 0
+    },
+    "ppv_baseline": 0.5623969472841193,
+    "ppv_score": 0.7336882272577377,
+    "score_key": "rho_env",
+    "weighting": "pooled",
+    "written_at": "2026-10-15T11:14:36-0400"
+   },
+   "E3:held-out": {
+    "baseline_key": "neg_len",
+    "baseline_score": "-n_nt",
+    "baseline_tiebreak": "tiebreak",
+    "coverage": 0.44859796263633417,
+    "difference": 0.06577126900868957,
+    "interval": [
+     0.05335864790387201,
+     0.08063496917801673
+    ],
+    "k": 24925,
+    "module_blob": "fc51857463fe99575c26462603b2cc42409f90f3",
+    "n": 55562,
+    "n_families": {
+     "baseline": 1005,
+     "score": 1240
+    },
+    "n_in_coverage_set": 24925,
+    "n_unscored": {
+     "baseline": 0,
+     "score": 0
+    },
+    "ppv_baseline": 0.8293176632717946,
+    "ppv_score": 0.8950889322804841,
+    "score_key": "rho_env",
+    "weighting": "family",
+    "written_at": "2026-10-15T11:10:49-0400"
+   }
+  },
+  "seconds_at_last_write": 2999.9,
+  "strata": {
+   "E2_merge": {
+    "1": 0
+   },
+   "TS0_outside_TR0_range": [
+    {
+     "index": 502,
+     "n_nt": 22,
+     "stratum": 0
+    },
+    {
+     "index": 548,
+     "n_nt": 28,
+     "stratum": 0
+    },
+    {
+     "index": 832,
+     "n_nt": 27,
+     "stratum": 0
+    },
+    {
+     "index": 1264,
+     "n_nt": 499,
+     "stratum": 9
+    }
+   ],
+   "bounds_TR0": [
+    [
+     33,
+     69
+    ],
+    [
+     69,
+     77
+    ],
+    [
+     77,
+     84
+    ],
+    [
+     84,
+     94
+    ],
+    [
+     94,
+     105
+    ],
+    [
+     105,
+     120
+    ],
+    [
+     120,
+     138
+    ],
+    [
+     138,
+     172
+    ],
+    [
+     172,
+     225
+    ],
+    [
+     226,
+     498
+    ]
+   ],
+   "rule": "certfold_data.length_stratum: a boundary length goes to the lower stratum; a length beyond TR0's range to the nearest end stratum"
+  },
+  "timing": "the specification (5b6f109) and the reading rules (292afc9) were committed before the analysis wrote anything; this module was amended while the analysis ran, after the authors' review of it, and committed strictly before the analysis record; the test-set run itself was launched at 01:39 on 2026-10-14, before the authors' launch conditions arrived",
+  "wording": "the held-out set's references are Rfam consensus structures projected onto each sequence, not structures determined per molecule; TS0 is the primary accuracy set and R2 runs on TS0"
+ },
  "gate": {
   "G1": {
    "constructed": {
