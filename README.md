@@ -56,6 +56,7 @@ Python 3.11, and the versions every result here was produced with:
 | torch | 2.13.0 | the MXfold2 experiments |
 | pyyaml | 6.0.3 | the data ingest scripts |
 | pytest | 9.1.1 | the tests |
+| numba | 0.68.0 | certified folding's compiled callback, in `.venv-certfold` only |
 
 The MXfold2 experiments additionally need [MXfold2](https://github.com/mxfold/mxfold2) at
 commit `51b2136`, installed in its own environment. It is an external dependency and is not
@@ -120,14 +121,70 @@ keeps only the code and results the paper uses, so its commits have different ha
 `docs/remote_commit_map.tsv` maps each working-repository commit to the commit here that
 carries its code.
 
-## Certified folding: status
+## Certified folding
 
-`scripts/certfold.py` carries a soundness gate that must pass before any certificate is
-reported, and `runs/2026-10-13_certified_folding/metrics.json` records each part as it passes:
-the callback identity against ViennaRNA's own interior-loop energy (G1), exhaustive enumeration
-at n ≤ 20 with zero false certificates and a planted-bug power check (G2), the pair tables at
-realistic lengths (G3), and gauge invariance and monotonicity in the radius (G6). This part of
-the work is in progress; the artifact says which gates have passed.
+For each base pair of the Turner 2004 MFE structure, certified folding returns a label
+(certified present, certified absent or uncertain) and a verified certified radius. Each label is
+proven for every parameter table θ0 + Bt in a set built from the data: the directions TR0's
+reference structures cannot see, restricted to the int11, int21, int22 and bulge tables, and
+bounded by the envelope of the published tables' data-invisible differences (or by a ball,
+for comparison).
+
+The certificate charges each interior loop by its worst-case shift: +⌈w⌉ on the loops of the
+prediction and −⌈w⌉ on every other loop. It does this through a compiled ViennaRNA
+soft-constraint callback, so one constrained fold per pair decides that pair.
+`docs/certfold_reading_rules.md` and the paper's supplement give the guarantee and its proof.
+
+| file | what it does |
+|---|---|
+| `scripts/certfold.py` | the basis, the callback, the certificate, the radius; the soundness gate (G1 to G6) and the registration (PRED) |
+| `scripts/certfold_data.py` | the test sets: TS0, one sequence per held-out Rfam family, a seeded bpRNA-new sample |
+| `scripts/certfold_baselines.py` | base-pair probability, MEA, γ-centroid, pair frequencies under envelope and noise draws |
+| `scripts/certfold_metrics.py` | the registered accuracy metrics (slip-tolerant PPV, matched coverage, risk-coverage, paired bootstrap) |
+| `scripts/certfold_run.py` | the test-set run and the registered analysis |
+| `scripts/certfold_exploratory.py` | the exploratory analyses: the registered test within length strata, a length baseline |
+| `scripts/certfold_posthoc.py` | the one post hoc check, against the energy gap |
+
+**Environment.** The callback is compiled with numba, which lives in its own environment,
+`.venv-certfold`: Python 3.11.15, numba 0.68.0 and llvmlite 0.50.0, every other package at the
+versions above, and the same ViennaRNA 2.7.2 build. The recipe is at the top of `.gitignore`.
+`--phase env-check` verifies the build against the main environment.
+
+**Order.** Every phase refuses to run unless its predecessor's record is committed:
+
+```
+.venv-certfold/bin/python scripts/certfold.py --phase build-basis
+.venv-certfold/bin/python scripts/certfold.py --phase gate-g1      # likewise gate-g2, g3, g6, g4
+.venv-certfold/bin/python scripts/certfold.py --phase env-check
+.venv-certfold/bin/python scripts/certfold.py --phase preregister  # PRED: before any test-set fold
+.venv-certfold/bin/python scripts/certfold.py --phase gate-attacks # G5, on the test sets
+.venv-certfold/bin/python scripts/certfold_run.py --phase run
+.venv-certfold/bin/python scripts/certfold_run.py --phase analyse
+.venv-certfold/bin/python scripts/certfold_exploratory.py --phase exploratory
+.venv-certfold/bin/python scripts/certfold_posthoc.py --phase posthoc-gap
+```
+
+**Where the results are.** Everything is in `runs/2026-10-13_certified_folding/metrics.json`:
+
+| key | contents | status |
+|---|---|---|
+| `gate` | G1 to G6 | gate |
+| `predictions` | the registration | registered |
+| `run` | labels, radii, baselines | registered |
+| `analysis` | R1 to R3, the disagreement sets, fractions by length stratum | registered |
+| `exploratory` | the within-strata checks, the length baseline | exploratory |
+| `posthoc` | the energy-gap check | post hoc |
+
+**Reading and order of events.**
+- `docs/certfold_exploratory.md` specified the exploratory analyses before any accuracy existed.
+- `docs/certfold_reading_rules.md` holds the authors' rules for reading the results, with a
+  dated addendum for the post hoc check.
+- The test-set run was launched before those rules arrived. The paper's supplement discloses
+  the order of events.
+
+**Cost.** The test-set run (5,429 sequences, seven uncertainty sets) took 78 CPU-hours on 8
+cores. `make test` covers the certified-folding modules; `tests/test_certfold.py` needs the
+build-basis shard, and its compiled-callback test needs `.venv-certfold`.
 
 ## Licence
 
