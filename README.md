@@ -68,8 +68,30 @@ it against the digest recorded in `data/SOURCES.yaml`:
 
 | dataset | used for | fetch with | licence |
 |---|---|---|---|
-| TR0 and TS0 (bpRNA-derived, from MXfold2's data release) | the reference structures | `scripts/ingest_mxfold2_data.py` | see `data/SOURCES.yaml` |
+| TR0, TS0 and bpRNA-new (bpRNA-derived, from MXfold2's data release) | the reference structures; the certified-folding test sets TS0 and bpRNA-new | `scripts/ingest_mxfold2_data.py` | CC BY 4.0 |
 | Rfam 12.2 and 15.1 | the 1,641 held-out families | `scripts/ingest_rfam.py`, `scripts/ingest_rfam122_families.py` | CC0 1.0 |
+
+`data/SOURCES.yaml` here holds only these three entries, each with its download URL, sha256 and
+licence.
+
+### Attribution
+
+- **MXfold2 datasets** (used here: TR0, TS0 and bpRNA-new). Kengo Sato, *The datasets used in
+  "RNA secondary structure prediction using deep learning with thermodynamic integration"*,
+  Zenodo, 2021, <https://doi.org/10.5281/zenodo.4430150>, licensed under
+  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The paper that introduced them:
+  K. Sato, M. Akiyama and Y. Sakakibara, *Nature Communications* 12:941 (2021),
+  <https://doi.org/10.1038/s41467-021-21194-4>. The structures derive from bpRNA-1m:
+  P. Danaee et al., *Nucleic Acids Research* 46:5381–5394 (2018),
+  <https://doi.org/10.1093/nar/gky285>.
+  - **Changes:** the archive is downloaded and checked against its digest, never modified or
+    redistributed. The scripts read it and filter the rows: sequences with letters other than
+    ACGU are dropped, and pairs closing hairpins of fewer than three unpaired bases are removed.
+    bpRNA-new is subsampled with a recorded seed.
+- **Rfam** (the 15.1 seed alignments and the 12.2 family table). CC0 1.0, so no attribution is
+  required. Please cite N. Ontiveros-Palacios et al., *Nucleic Acids Research* 53:D258–D267
+  (2025), <https://doi.org/10.1093/nar/gkae1023>, and, for release 12, E. P. Nawrocki et al.,
+  *Nucleic Acids Research* 43:D130–D137 (2015).
 
 ## Reproducing a result
 
