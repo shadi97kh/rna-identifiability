@@ -91,6 +91,351 @@
     "git_sha": "c54491314ae8a8ae99a67f1cc3c932ba3770cc31"
    },
    "what": "TS0 MFE pairs uncertain under the envelope at lambda = 1; 'changed' = pair frequency below 1 under the run's 200 envelope draws (seed tag 30, inside E_1, tables written at 0.01 kcal/mol): the pair left the MFE under at least one random table of the set. A LOWER bound on the uncertain pairs that change somewhere in the set: 200 random tables need not find a change that exists."
+  },
+  "B_runtime": {
+   "callback_vs_plain": {
+    "median_ratio": 1.323940188944191,
+    "n_sequences": 30,
+    "ratio_range": [
+     1.2786946069391125,
+     1.5174887092615434
+    ],
+    "reps": 5,
+    "seed": [
+     20261013,
+     70
+    ],
+    "sequences": [
+     {
+      "callback_s": 0.0013103641103953123,
+      "n_nt": 54,
+      "name": "bpRNA_RFAM_2234.bpseq",
+      "plain_s": 0.0010247670579701662,
+      "ratio": 1.2786946069391125,
+      "stratum": 0
+     },
+     {
+      "callback_s": 0.002616285812109709,
+      "n_nt": 68,
+      "name": "bpRNA_RFAM_19485.bpseq",
+      "plain_s": 0.0020312611013650894,
+      "ratio": 1.2880105912289952,
+      "stratum": 0
+     },
+     {
+      "callback_s": 0.002538856118917465,
+      "n_nt": 69,
+      "name": "bpRNA_RFAM_26947.bpseq",
+      "plain_s": 0.0019596361089497805,
+      "ratio": 1.2955752893725272,
+      "stratum": 0
+     },
+     {
+      "callback_s": 0.0032296718563884497,
+      "n_nt": 72,
+      "name": "bpRNA_RFAM_11369.bpseq",
+      "plain_s": 0.002472772030159831,
+      "ratio": 1.3060936540032344,
+      "stratum": 1
+     },
+     {
+      "callback_s": 0.002343015046790242,
+      "n_nt": 72,
+      "name": "bpRNA_RFAM_27359.bpseq",
+      "plain_s": 0.0017947859596461058,
+      "ratio": 1.3054565276698709,
+      "stratum": 1
+     },
+     {
+      "callback_s": 0.0035671959631145,
+      "n_nt": 77,
+      "name": "bpRNA_RFAM_6316.bpseq",
+      "plain_s": 0.0027332380414009094,
+      "ratio": 1.3051171939953496,
+      "stratum": 1
+     },
+     {
+      "callback_s": 0.0029859249480068684,
+      "n_nt": 78,
+      "name": "bpRNA_RFAM_24921.bpseq",
+      "plain_s": 0.002288226969540119,
+      "ratio": 1.3049076808175941,
+      "stratum": 2
+     },
+     {
+      "callback_s": 0.004326162161305547,
+      "n_nt": 84,
+      "name": "bpRNA_RFAM_17609.bpseq",
+      "plain_s": 0.0032998458482325077,
+      "ratio": 1.3110194719013204,
+      "stratum": 2
+     },
+     {
+      "callback_s": 0.005556763848289847,
+      "n_nt": 84,
+      "name": "bpRNA_RFAM_20959.bpseq",
+      "plain_s": 0.004263289971277118,
+      "ratio": 1.3033980530827591,
+      "stratum": 2
+     },
+     {
+      "callback_s": 0.0038252640515565872,
+      "n_nt": 86,
+      "name": "bpRNA_RFAM_22724.bpseq",
+      "plain_s": 0.0029130959883332253,
+      "ratio": 1.313126675837851,
+      "stratum": 3
+     },
+     {
+      "callback_s": 0.00602194806560874,
+      "n_nt": 92,
+      "name": "bpRNA_RFAM_27101.bpseq",
+      "plain_s": 0.004574886988848448,
+      "ratio": 1.3163053164564693,
+      "stratum": 3
+     },
+     {
+      "callback_s": 0.005746643990278244,
+      "n_nt": 94,
+      "name": "bpRNA_RFAM_12249.bpseq",
+      "plain_s": 0.004409321118146181,
+      "ratio": 1.303294506410165,
+      "stratum": 3
+     },
+     {
+      "callback_s": 0.007170253898948431,
+      "n_nt": 101,
+      "name": "bpRNA_RFAM_14388.bpseq",
+      "plain_s": 0.005402856040745974,
+      "ratio": 1.3271228855393364,
+      "stratum": 4
+     },
+     {
+      "callback_s": 0.0069733120035380125,
+      "n_nt": 102,
+      "name": "bpRNA_RFAM_30246.bpseq",
+      "plain_s": 0.005294368835166097,
+      "ratio": 1.3171186633655159,
+      "stratum": 4
+     },
+     {
+      "callback_s": 0.008245564065873623,
+      "n_nt": 103,
+      "name": "bpRNA_RFAM_18816.bpseq",
+      "plain_s": 0.006295355968177319,
+      "ratio": 1.3097851984152287,
+      "stratum": 4
+     },
+     {
+      "callback_s": 0.0073004469741135836,
+      "n_nt": 106,
+      "name": "bpRNA_RFAM_24302.bpseq",
+      "plain_s": 0.00550667499192059,
+      "ratio": 1.3257450248697844,
+      "stratum": 5
+     },
+     {
+      "callback_s": 0.009733448037877679,
+      "n_nt": 112,
+      "name": "bpRNA_RFAM_42406.bpseq",
+      "plain_s": 0.007361914962530136,
+      "ratio": 1.3221353530185977,
+      "stratum": 5
+     },
+     {
+      "callback_s": 0.010123892920091748,
+      "n_nt": 119,
+      "name": "bpRNA_RFAM_8158.bpseq",
+      "plain_s": 0.007579039083793759,
+      "ratio": 1.3357752622940873,
+      "stratum": 5
+     },
+     {
+      "callback_s": 0.011230548843741417,
+      "n_nt": 127,
+      "name": "bpRNA_RFAM_21071.bpseq",
+      "plain_s": 0.008376238867640495,
+      "ratio": 1.3407627243210356,
+      "stratum": 6
+     },
+     {
+      "callback_s": 0.013486051000654697,
+      "n_nt": 128,
+      "name": "bpRNA_RFAM_17022.bpseq",
+      "plain_s": 0.010120145976543427,
+      "ratio": 1.3325945131535453,
+      "stratum": 6
+     },
+     {
+      "callback_s": 0.01571623212657869,
+      "n_nt": 137,
+      "name": "bpRNA_RFAM_17594.bpseq",
+      "plain_s": 0.011802755063399673,
+      "ratio": 1.3315731828846218,
+      "stratum": 6
+     },
+     {
+      "callback_s": 0.01605413411743939,
+      "n_nt": 140,
+      "name": "bpRNA_RFAM_3192.bpseq",
+      "plain_s": 0.011954920133575797,
+      "ratio": 1.342889282242113,
+      "stratum": 7
+     },
+     {
+      "callback_s": 0.02203024597838521,
+      "n_nt": 156,
+      "name": "bpRNA_RFAM_42435.bpseq",
+      "plain_s": 0.01631635590456426,
+      "ratio": 1.3501940082235258,
+      "stratum": 7
+     },
+     {
+      "callback_s": 0.021196108078584075,
+      "n_nt": 160,
+      "name": "bpRNA_RFAM_33665.bpseq",
+      "plain_s": 0.0155905750580132,
+      "ratio": 1.3595462643111267,
+      "stratum": 7
+     },
+     {
+      "callback_s": 0.025038645835593343,
+      "n_nt": 187,
+      "name": "bpRNA_RFAM_26140.bpseq",
+      "plain_s": 0.017735901987180114,
+      "ratio": 1.411749222209945,
+      "stratum": 8
+     },
+     {
+      "callback_s": 0.034886511974036694,
+      "n_nt": 193,
+      "name": "bpRNA_RFAM_2971.bpseq",
+      "plain_s": 0.025373182026669383,
+      "ratio": 1.374936416621612,
+      "stratum": 8
+     },
+     {
+      "callback_s": 0.0424011149443686,
+      "n_nt": 208,
+      "name": "bpRNA_RFAM_41922.bpseq",
+      "plain_s": 0.030580012127757072,
+      "ratio": 1.3865630519446939,
+      "stratum": 8
+     },
+     {
+      "callback_s": 0.09088327595964074,
+      "n_nt": 294,
+      "name": "bpRNA_RFAM_35732.bpseq",
+      "plain_s": 0.06394811789505184,
+      "ratio": 1.4212032965347536,
+      "stratum": 9
+     },
+     {
+      "callback_s": 0.10952114406973124,
+      "n_nt": 335,
+      "name": "bpRNA_RNP_348.bpseq",
+      "plain_s": 0.07296837097965181,
+      "ratio": 1.5009399634298077,
+      "stratum": 9
+     },
+     {
+      "callback_s": 0.13848489802330732,
+      "n_nt": 367,
+      "name": "bpRNA_RFAM_2540.bpseq",
+      "plain_s": 0.09125926089473069,
+      "ratio": 1.5174887092615434,
+      "stratum": 9
+     }
+    ],
+    "what": "median over 5 repetitions each of one plain MFE fold and one MFE fold with the compiled callback registered at the envelope's lambda = 1, the same sequence, compounds built outside the timed region"
+   },
+   "from_the_run": {
+    "by_stratum": {
+     "0": {
+      "labels_seconds_median": 0.63,
+      "labels_seconds_per_pair_median": 0.035555555555555556,
+      "length_median": 60.0,
+      "n_sequences": 1071,
+      "rho_seconds_median": 0.8
+     },
+     "1": {
+      "labels_seconds_median": 1.39,
+      "labels_seconds_per_pair_median": 0.05949874686716791,
+      "length_median": 74.0,
+      "n_sequences": 628,
+      "rho_seconds_median": 2.01
+     },
+     "2": {
+      "labels_seconds_median": 1.91,
+      "labels_seconds_per_pair_median": 0.07412878787878788,
+      "length_median": 81.0,
+      "n_sequences": 578,
+      "rho_seconds_median": 2.815
+     },
+     "3": {
+      "labels_seconds_median": 2.69,
+      "labels_seconds_per_pair_median": 0.09416666666666668,
+      "length_median": 89.0,
+      "n_sequences": 619,
+      "rho_seconds_median": 4.13
+     },
+     "4": {
+      "labels_seconds_median": 3.64,
+      "labels_seconds_per_pair_median": 0.11901001112347052,
+      "length_median": 99.0,
+      "n_sequences": 434,
+      "rho_seconds_median": 5.8
+     },
+     "5": {
+      "labels_seconds_median": 5.7,
+      "labels_seconds_per_pair_median": 0.15941176470588236,
+      "length_median": 113.0,
+      "n_sequences": 509,
+      "rho_seconds_median": 9.23
+     },
+     "6": {
+      "labels_seconds_median": 8.37,
+      "labels_seconds_per_pair_median": 0.2109468339307049,
+      "length_median": 128.0,
+      "n_sequences": 450,
+      "rho_seconds_median": 14.6
+     },
+     "7": {
+      "labels_seconds_median": 14.91,
+      "labels_seconds_per_pair_median": 0.3209183673469388,
+      "length_median": 153.0,
+      "n_sequences": 390,
+      "rho_seconds_median": 26.619999999999997
+     },
+     "8": {
+      "labels_seconds_median": 31.655,
+      "labels_seconds_per_pair_median": 0.5344585601935874,
+      "length_median": 194.0,
+      "n_sequences": 386,
+      "rho_seconds_median": 61.105000000000004
+     },
+     "9": {
+      "labels_seconds_median": 120.63,
+      "labels_seconds_per_pair_median": 1.3307444444444445,
+      "length_median": 297.5,
+      "n_sequences": 364,
+      "rho_seconds_median": 252.63
+     }
+    },
+    "what": "per sequence, all seven label sets, and both radii (budget 1800 s), 8 workers on 8 physical cores (load 8.0-8.2)"
+   },
+   "label": "DESCRIPTIVE: runtime",
+   "load_at_start": [
+    0.1,
+    0.14,
+    0.43
+   ],
+   "provenance": {
+    "git_dirty": true,
+    "git_dirty_excluding_runs": false,
+    "git_dirty_paths_outside_runs": [],
+    "git_sha": "d5ea9a0ffec9c1c59784948a5c4f82f4f097a159"
+   }
   }
  },
  "analysis": {
