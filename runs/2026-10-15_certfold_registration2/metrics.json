@@ -1,4 +1,264 @@
 {
+ "frozen": {
+  "mxfold2_predictions": {
+   "n_lines": 1305,
+   "path": "runs/2026-10-07_mxfold2_ts0_inference/pred_A_cpu.txt",
+   "sha256": "b846b1ab749c53d5139f6851e759b8e90e218d320673e630232e03fc425a7271"
+  },
+  "ranking_sha256": "90437b9937589b149c6437b58280618af0ccd8ad4d07efeaaf6491cdede9d374",
+  "top_50": [
+   [
+    "('int21', 1, 1, 1, 3, 3)",
+    463
+   ],
+   [
+    "('int21', 6, 2, 2, 4, 1)",
+    456
+   ],
+   [
+    "('int21', 1, 4, 2, 1, 1)",
+    412
+   ],
+   [
+    "('int21', 5, 2, 1, 3, 2)",
+    395
+   ],
+   [
+    "('int21', 5, 1, 1, 3, 3)",
+    341
+   ],
+   [
+    "('int21', 1, 5, 3, 1, 1)",
+    315
+   ],
+   [
+    "('int21', 6, 6, 3, 1, 1)",
+    313
+   ],
+   [
+    "('int21', 4, 2, 1, 1, 1)",
+    280
+   ],
+   [
+    "('int22', 2, 4, 3, 1, 3, 1)",
+    280
+   ],
+   [
+    "('int21', 1, 6, 2, 4, 1)",
+    277
+   ],
+   [
+    "('int21', 1, 2, 4, 2, 2)",
+    274
+   ],
+   [
+    "('int21', 6, 1, 1, 1, 3)",
+    265
+   ],
+   [
+    "('int21', 5, 1, 4, 4, 2)",
+    262
+   ],
+   [
+    "('int21', 1, 4, 4, 2, 4)",
+    249
+   ],
+   [
+    "('int21', 5, 2, 1, 3, 1)",
+    241
+   ],
+   [
+    "('int21', 1, 2, 1, 3, 2)",
+    232
+   ],
+   [
+    "('int22', 1, 2, 4, 2, 4, 4)",
+    229
+   ],
+   [
+    "('int21', 5, 2, 3, 3, 1)",
+    222
+   ],
+   [
+    "('int21', 1, 6, 1, 2, 2)",
+    196
+   ],
+   [
+    "('int21', 2, 5, 1, 3, 3)",
+    195
+   ],
+   [
+    "('int21', 5, 2, 1, 1, 1)",
+    192
+   ],
+   [
+    "('int21', 2, 5, 3, 4, 3)",
+    183
+   ],
+   [
+    "('int22', 2, 2, 4, 3, 3, 1)",
+    183
+   ],
+   [
+    "('int22', 1, 2, 2, 3, 3, 1)",
+    182
+   ],
+   [
+    "('int21', 1, 3, 4, 1, 4)",
+    175
+   ],
+   [
+    "('int21', 3, 4, 1, 3, 1)",
+    175
+   ],
+   [
+    "('int21', 4, 4, 4, 4, 4)",
+    173
+   ],
+   [
+    "('int22', 6, 6, 1, 1, 3, 3)",
+    171
+   ],
+   [
+    "('int22', 6, 5, 3, 2, 4, 3)",
+    170
+   ],
+   [
+    "('int22', 2, 2, 1, 1, 1, 1)",
+    168
+   ],
+   [
+    "('int21', 6, 5, 4, 2, 1)",
+    166
+   ],
+   [
+    "('int22', 2, 2, 2, 3, 3, 2)",
+    164
+   ],
+   [
+    "('int11', 4, 1, 4, 3)",
+    163
+   ],
+   [
+    "('int21', 1, 2, 2, 4, 2)",
+    163
+   ],
+   [
+    "('int11', 5, 4, 2, 1)",
+    161
+   ],
+   [
+    "('int22', 2, 1, 2, 1, 3, 1)",
+    160
+   ],
+   [
+    "('int21', 1, 4, 1, 2, 2)",
+    158
+   ],
+   [
+    "('int21', 2, 3, 2, 2, 1)",
+    157
+   ],
+   [
+    "('int22', 2, 1, 1, 3, 3, 3)",
+    156
+   ],
+   [
+    "('int21', 4, 6, 1, 3, 1)",
+    154
+   ],
+   [
+    "('int22', 2, 5, 1, 2, 1, 3)",
+    152
+   ],
+   [
+    "('int21', 2, 5, 3, 3, 4)",
+    149
+   ],
+   [
+    "('int21', 1, 2, 3, 3, 3)",
+    148
+   ],
+   [
+    "('int22', 2, 2, 3, 2, 1, 3)",
+    148
+   ],
+   [
+    "('int21', 3, 5, 4, 1, 1)",
+    146
+   ],
+   [
+    "('int21', 3, 5, 1, 4, 3)",
+    145
+   ],
+   [
+    "('int22', 1, 1, 4, 4, 2, 1)",
+    145
+   ],
+   [
+    "('int22', 2, 1, 3, 3, 3, 3)",
+    145
+   ],
+   [
+    "('int21', 5, 1, 1, 3, 4)",
+    143
+   ],
+   [
+    "('int22', 5, 1, 1, 1, 2, 1)",
+    142
+   ]
+  ]
+ },
+ "predictions": {
+  "C_outcome_user": "For each TS0 Turner 2004 MFE pair, kept(p, X) = p is in the MFE under X, same pinned model. X, primary: the three whole published tables as shipped. X, secondary: theta0 plus only the data-VISIBLE part of each difference (delta_X - Pi delta_X, INF entries set to 0 as before), where certification gives no guarantee. Tertiary (consistency only): the released MXfold2's TS0 predictions from runs/2026-10-07_mxfold2_ts0_inference. Retention = the fraction of the three tables that keep the pair.",
+  "C_tables_claude": "Primary: each table loaded through ViennaRNA's own shipped loader (params_load_RNA_Turner1999, _Andronescu2007, _Langdon2018), with the fold guards (params_match on the first compound, generating-set carry rows, and counts.theta + the asymmetry correction equal to ViennaRNA's MFE energy on every fold), Turner 2004 restored after. Secondary: delta_X over the basis columns in kcal/mol with the table's INF entries set to 0, Pi the orthogonal projection onto B_four (B4 B4^T on the used columns), theta = theta0 + delta_X - Pi delta_X rounded to the parameter file's 0.01 kcal/mol (certfold_baselines.shifted_theta), loaded with the same guards. delta_X - Pi delta_X is everything outside the set's span: the identified part, the two gauge directions (which change no MFE) and the shift on columns no TR0 reference reads; the record reports each part's norm per table. kept is read off the Turner 2004 MFE pairs of registration 1's run.",
+  "D_claude": "Measured set at K: u_e = 0 on the top K entries of the frozen ranking (or on K entries drawn uniformly without replacement from the 923 reached entries, 20 draws per K, seed tag 62), u_e = delta elsewhere; lambda = 1. Only TS0 pairs uncertain at lambda = 1 in registration 1 are refolded: lowering any u_e lowers every charge, so E'(s) - E'(s*) can only grow and a certified pair stays certified. A sequence none of whose admissible interior loops reads a zeroed entry keeps its labels. Gain = (certified present under the measured set - under E) / TS0 MFE pairs. Before any TS0 fold, G2's n <= 20 enumeration on the measured sets at K = 10 and 50 (top and the first random draw of each): 0 false certificates required.",
+  "D_user": "Which measurements would certify the most pairs. Ranking, TR0 only (the pilot's 300 sequences): for each MFE pair uncertain at lambda = 1, the witness is the structure lacking the pair that the constrained fold returns at lambda = 1. Count, per reached entry, the uncertain pairs whose witness's differing loops read it. Rank; ties by entry key. Freeze the ranked list in the commit. Evaluation, TS0: labels at lambda = 1 with u_e = 0 for the top K entries (the set with those entries measured exactly; a subset of E, so still sound), K = 10 and 50. Control: K random reached entries, 20 seeded draws. R6: the top-K gain in the certified-present fraction exceeds the 95th percentile of the random-K gains, for each K. Report the gain by stratum, and in the supplement the top entries as motifs (closing pairs and loop bases). Before TS0: run G2 on the u_e = 0 sets (n <= 20 enumeration). Wording: \"if these motifs were measured exactly\"; say exact measurement is an idealization.",
+  "R4_claude": "Pool: TS0 MFE pairs with p >= 0.99 (labels are complete, so every one). Certified = certified present under the envelope at lambda = 1 (registration 1's labels). Per reporting stratum: mean retention(certified) - mean retention(uncertified); pooled weighted by the stratum's p >= 0.99 pair count, over the strata where both groups are non-empty on the full data. Strata 0 and 1 are reported merged, as in E2 and for the same reason (the uncertified group is D1, which 8 of stratum 0's 124 sequences hold); the draws stay within the ten TR0 strata (certfold_exploratory.stratified_bootstrap, seed tag 60). A resample on which a stratum's statistic is undefined leaves the interval undefined, counted, never dropped. The secondary uses the same statistic and draws with retention under the three data-visible tables.",
+  "R4_user": "R4 (directional): among MFE pairs with p >= 0.99, mean retention of pairs certified at lambda = 1 minus uncertified ones, within the ten length strata, pooled by pair count, stratified bootstrap 10,000 (new seed tag). Passes iff the interval lies entirely above 0. Run the same statistic for the secondary outcome.",
+  "R5_claude": "Per primary table X, kept(p, X) takes the place of correct in the frozen matched_coverage_comparison on the MFE pairs carrying a rho_env, coverage the p >= 0.99 set's (k = 13,878), against p, the nominal gap and the length score (-n_nt), with the score, baseline and tie-break keys R3 and E3 used; held to rule 3. Paired bootstrap over TS0 sequences, seed tag 61. The sentence on predicting survival better than p is allowed only if rho_env beats p with the interval excluding 0 for EVERY primary table; otherwise each table is reported by rule 3 without it.",
+  "R5_user": "R5 (no direction): matched-coverage comparison with \"kept\" in place of \"correct\": rho_env against p, the nominal gap and the length score, k = the number of p >= 0.99 pairs, paired bootstrap 10,000 (new seed tag).",
+  "order_user": "Registration 2 committed before any fold under a whole table on TS0 and before any pair-level comparison. Do not reuse E3's folds; refold. C, then D; report against the reading rules; then the text, figures and S8 rows.",
+  "reading_rules_user": [
+   "R4 primary passes: \"pairs certified against directions the data cannot see are also more often kept when the whole table is replaced, beyond p and length.\"",
+   "R4 primary fails: \"certification does not predict stability under whole-table changes beyond p and length.\"",
+   "If the primary passes but the secondary does not: say the effect comes from the part the set covers by construction.",
+   "R5 is read by rule 3. Only if rho_env beats p with the interval excluding 0 may the paper say \"the certified radius predicts which pairs survive a change of parameter table better than base-pair probability does\".",
+   "The tertiary outcome is \"consistent\" or \"not consistent\", nothing more."
+  ],
+  "seeds_claude": {
+   "D_random_K_draws": [
+    20261013,
+    62
+   ],
+   "R4_stratified_bootstrap": [
+    20261013,
+    60
+   ],
+   "R5_paired_bootstrap": [
+    20261013,
+    61
+   ],
+   "tags_in_use_before": [
+    1,
+    2,
+    3,
+    10,
+    11,
+    12,
+    20,
+    21,
+    30,
+    31,
+    40,
+    41,
+    50,
+    70
+   ]
+  },
+  "tertiary_claude": "kept(p, MXfold2) = p is in the released MXfold2's predicted structure (pred_A_cpu.txt, sha256 recorded here, the shipped TrainSetAB model). R4's statistic with kept(p, MXfold2) in place of retention, same strata and draws. \"Consistent\" iff its point estimate has the primary's sign and its interval does not lie entirely on the other side of 0; otherwise \"not consistent\".",
+  "version": "certified folding, registration 2"
+ },
  "ranking": {
   "files_sha256": {
    "rank_0.jsonl": "bd715d6938404ad43daf3110ca4b06a2b0f4dc8b8e117c9215c4573bd343f07d",
@@ -2029,6 +2289,32 @@
   "rule": "for each MFE pair uncertain at lambda = 1 under the envelope, the witness is the structure lacking the pair that the constrained fold returns at lambda = 1; per reached entry, the number of uncertain pairs whose witness's differing interior loops (symmetric difference with s*) read it; ranked by that count, ties by the entry key as a string",
   "seconds": 120.0
  },
+ "registration1": {
+  "run_files_sha256": {
+   "run_0.jsonl": "f9b9e115eb9db97f27668253234efe6674cb8d46b3a8094032d617f911d6f175",
+   "run_1.jsonl": "0a9bf97fadcd6edeeefd0a8b7f84d83ab62ef9dd49da78f0b09577db193d362d",
+   "run_2.jsonl": "05a8c311c70584341fbf62f1bf2a4226bbda1dc3fc547bc11522e550c4e2f977",
+   "run_3.jsonl": "aed7448a96359c99871e9225f00f59213c795645cb54abb6ef46dba850552dfa",
+   "run_4.jsonl": "d698d0c1a410a49799f8e725a3919f4884cdc235b0f3123d5ca7f2889df5dd55",
+   "run_5.jsonl": "bf5c12386ba367f7afae3c70ca60b882701df878ed91061fd9e79d3ad4990e56",
+   "run_6.jsonl": "719796f61105ab97cb2d6d8220ad0dc269125df7810707b9c6745c46a9cf5892",
+   "run_7.jsonl": "c1263e519cea635b8fa6b9c975aa8c47b97312268722e370170db9490a32463e",
+   "run_freq_0.json": "912c5ac09ded88d319e63743d72df0dbb632a3968ff66570c8ed71f29fc5064b",
+   "run_freq_1.json": "245dfa1a03ae414271f8504528d4694e5c2f7ab73d34331ad6bf44ea699b0796",
+   "run_freq_2.json": "bd414eedd34c03896839b469d4bea3747105e6cb3fe4976b0f2554a27d8eadb0",
+   "run_freq_3.json": "17bb04ef2930cb2dd3fad1807afd7f8b9904d9e2d776e5402168b6e0a47d8912",
+   "run_freq_4.json": "3db9e8e5ab79c2a2ce5294432fca50cd9af653e01a526d292067f1eae69cae80",
+   "run_freq_5.json": "e63a2ac53f7f9dd1438d2bbc7b3349963da52aae9ac6adae3cb9fdb1c4d8a6db",
+   "run_freq_6.json": "df08c413d9c2b2b6f2510ee5058010c8d0c32b310df4b128da50e5d695d3cb90",
+   "run_freq_7.json": "fe4b2fde3becdade9dfbfd97cffaa54225980e9fca7f9e22ae6aaceaacf3b97c"
+  }
+ },
+ "registration_provenance": {
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "8f5ab3df2f9c73f67cfc91937237683d1f5b98dc"
+ },
  "run_id": "2026-10-15_certfold_registration2",
- "status": "ranking done"
+ "status": "PRE-REGISTERED (registration 2): nothing folded under a whole table on TS0 yet"
 }
