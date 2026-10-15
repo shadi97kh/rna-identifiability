@@ -386,7 +386,9 @@ f2eda312ae59	42c16c8ee810	dropped	paper: S7 and Section 5 after the fresh-contex
 f801469792a4	bc4ee8a96b89	dropped	certfold: the reading-rules report and the draft abstract for Oct 28
 cdbf1e01f1d2	bc4ee8a96b89	dropped	paper: the accuracy paragraph, the abstract's last sentence and the conclusion
 60af83d29281	43da37bf2ec3	exported	reading rules: addendum, one post hoc check (the authors, 2026-10-15)
-d561856b9990	43da37bf2ec3	dropped	certfold_posthoc: the one post hoc check, as the addendum (60af83d) defines it
-1652884f2e31	43da37bf2ec3	dropped	paper: framing per R3, the authors' abstract, and checks not attacks
-e33ed7e7c2cb	43da37bf2ec3	dropped	supplement draft: S8, the per-set accuracy tables, generated from the artifact
-7fdb5649a63a	f9243e85e8fc	exported	artifact README: certified folding documented (files, environment, order, results)
+d561856b9990	d0e8568170f9	exported	certfold_posthoc: the one post hoc check, as the addendum (60af83d) defines it
+1652884f2e31	d0e8568170f9	dropped	paper: framing per R3, the authors' abstract, and checks not attacks
+e33ed7e7c2cb	d0e8568170f9	dropped	supplement draft: S8, the per-set accuracy tables, generated from the artifact
+7fdb5649a63a	a9087e9e4e76	exported	artifact README: certified folding documented (files, environment, order, results)
+32d341707ac5	c98b8b64a27b	exported	docs: remote commit map for the next artifact export (195 exported, 189 dropped)
+e347dcdcaf31	c98b8b64a27b	dropped	artifact: allow-list scripts/certfold_posthoc.py (the README documents it)
