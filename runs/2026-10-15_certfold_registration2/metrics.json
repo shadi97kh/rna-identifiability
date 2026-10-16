@@ -4998,6 +4998,54 @@
    "n_exactly_robust_present": 349
   }
  },
+ "measured_labels": {
+  "files_sha256": {
+   "measured_0.jsonl": "5648a56cfbd94520de726e6181ba243b67ded050928a9f51abcf12b363ab69d8",
+   "measured_1.jsonl": "9de72f9e7280fbbc50e38cc39489bf43f46b773f95439df7d1dbd35afa90b4bc",
+   "measured_10.jsonl": "4b537a890b17871856a868ade6a8d7c6b2fcbb426ef06a665bff11c5569b6398",
+   "measured_11.jsonl": "2b912cde9e1a35c4921b1e07dc2399e85773896b45c537791bf5ff309b3c6dd4",
+   "measured_2.jsonl": "61f255a3bcd03ee39dee7818792f9a54af81be929c7e71c13a6c6e726c317291",
+   "measured_3.jsonl": "56d2b2ff4dc2ef9b589313afa5c56385cfc2a6592f42ae2bf3e1d5d424af8d8d",
+   "measured_4.jsonl": "03800804d3d065f3a26dfae2ab05d7fc49798a132b070feb6259adbd17b3a475",
+   "measured_5.jsonl": "ddf079bb8e31020d7f5bce4258b4146a78102e19258c578cbfc4ba6eb7ae82b4",
+   "measured_6.jsonl": "c519d6afb9cb688884dacd9eb9b8ee7c1558db66c586f950af9248b1916aa542",
+   "measured_7.jsonl": "5d279e7088b384f3cbe4f17dc8af2d521301e86b393892594ebe6b2c5d61b6c1",
+   "measured_8.jsonl": "2dd6ed6651cbfe31030c6b35a6d9f17f90a3791fff4ba4bde7b1eb80baf3be7d",
+   "measured_9.jsonl": "9a11d9514a625c658731388ce3e82cb3d09fb547fcf77271a56ef15d3e38e2ea"
+  },
+  "folds": 1247225,
+  "load_at_start": [
+   0.3154296875,
+   2.99609375,
+   6.12646484375
+  ],
+  "n_refolded_sequence_sets": 37767,
+  "n_sequences": 1288,
+  "n_sets": 42,
+  "pids": [
+   1889983,
+   1889984,
+   1889985,
+   1889986,
+   1889987,
+   1889988,
+   1889989,
+   1889990,
+   1889991,
+   1889992,
+   1889993,
+   1889994
+  ],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "a2a21bf8dc697bf573bde28d474df9490caf92ff"
+  },
+  "recursion_violations": 0,
+  "seconds": 15789.7,
+  "workers": 12
+ },
  "predictions": {
   "C_outcome_user": "For each TS0 Turner 2004 MFE pair, kept(p, X) = p is in the MFE under X, same pinned model. X, primary: the three whole published tables as shipped. X, secondary: theta0 plus only the data-VISIBLE part of each difference (delta_X - Pi delta_X, INF entries set to 0 as before), where certification gives no guarantee. Tertiary (consistency only): the released MXfold2's TS0 predictions from runs/2026-10-07_mxfold2_ts0_inference. Retention = the fraction of the three tables that keep the pair.",
   "C_tables_claude": "Primary: each table loaded through ViennaRNA's own shipped loader (params_load_RNA_Turner1999, _Andronescu2007, _Langdon2018), with the fold guards (params_match on the first compound, generating-set carry rows, and counts.theta + the asymmetry correction equal to ViennaRNA's MFE energy on every fold), Turner 2004 restored after. Secondary: delta_X over the basis columns in kcal/mol with the table's INF entries set to 0, Pi the orthogonal projection onto B_four (B4 B4^T on the used columns), theta = theta0 + delta_X - Pi delta_X rounded to the parameter file's 0.01 kcal/mol (certfold_baselines.shifted_theta), loaded with the same guards. delta_X - Pi delta_X is everything outside the set's span: the identified part, the two gauge directions (which change no MFE) and the shift on columns no TR0 reference reads; the record reports each part's norm per table. kept is read off the Turner 2004 MFE pairs of registration 1's run.",
@@ -7105,5 +7153,5 @@
   "git_sha": "8f5ab3df2f9c73f67cfc91937237683d1f5b98dc"
  },
  "run_id": "2026-10-15_certfold_registration2",
- "status": "C analysed"
+ "status": "D labelled"
 }
