@@ -1,37 +1,42 @@
 # Same Energies, Different Folds
 
-Code and run artifacts for *Same Energies, Different Folds: Parameter Non-Identifiability in
-Thermodynamic and Learned RNA Folding Models* (S. Khodagholi and N. Yousefi; manuscript under
-review). Every experimental number the paper reports is read from a `runs/<id>/metrics.json` in this
-repository, and each of those files records the commit and the code that produced it.
+Code and run artifacts for *Same Energies, Different Folds: Certifying RNA Base Pairs Against
+Parameters the Data Cannot Fix* (S. Khodagholi and N. Yousefi; submitted to RECOMB 2027). Every
+experimental number the paper reports is read from a `runs/<id>/metrics.json` in this repository,
+and each of those files records the commit and the code that produced it.
 
 ## What the paper shows
 
-Nearest-neighbor energy models score RNA secondary structures with tables of loop parameters
-that are refit, learned and compared entry by entry. The paper describes three kinds of
-parameter change that data cannot detect, and an algorithm that turns the second kind into
-per-pair guarantees.
+Nearest-neighbor energy models predict RNA secondary structure from tables of loop parameters
+that are refit, learned and compared entry by entry, yet structure data cannot pin down every
+parameter. The paper describes three kinds of change the data cannot detect, and introduces
+certified folding, which proves for each base pair of a predicted structure that it stays present
+or stays absent under every data-restricted move within stated bounds, or reports it as uncertain.
 
 | | the change | code |
 |---|---|---|
-| **Type A** | *Gauge directions* leave every structure's energy unchanged. ViennaRNA's Turner 2004 model has exactly two with dangles off, and any loss computed from structures has zero gradient along them. | `scripts/turner_nullspace.py` |
-| **Type B** | *Data-restricted directions* leave the energies of a given set of reference structures unchanged but not those of others: 426 for the 11,955 bpRNA structures in TR0 and TS0. | `scripts/turner_nullspace_tr0.py`, `scripts/turner_typeb*.py`, `scripts/typeb_*.py` |
-| **Type C** | In MXfold2, per-sequence changes to the output scores leave every structure's score unchanged, and the loss is almost flat along a weight symmetry. | `scripts/mxfold2_*.py` |
-| **Certified folding** | For each base pair of the minimum free energy structure, a label that holds for *every* parameter table in a ball of Type B directions: certified present, certified absent, or uncertain. | `scripts/certfold.py` |
+| **Type A** | *Gauge directions* leave every structure's energy unchanged. ViennaRNA's Turner 2004 model has exactly two with dangles off. | `scripts/turner_nullspace.py` |
+| **Type B** | *Data-restricted directions* leave the energies of a set of reference structures unchanged but not those of others: 426 for the 11,955 bpRNA structures in TR0 and TS0. | `scripts/turner_nullspace_tr0.py`, `scripts/turner_typeb*.py`, `scripts/typeb_*.py` |
+| **Type C** | Learned models such as MXfold2 add output gauges of their own; the optimizer, not the data, moves MXfold2 along a weight symmetry. | `scripts/mxfold2_*.py` |
+| **Certified folding** | For each base pair of the Turner 2004 MFE structure: certified present, certified absent or uncertain, for every table in a set built from TR0's Type B directions and bounded by the published tables' data-invisible differences, with a verified certified radius. | `scripts/certfold*.py` |
 
 ## Where each headline number comes from
 
 | claim in the abstract | artifact |
 |---|---|
-| 426 data-restricted directions for the 11,955 TR0 and TS0 structures | `runs/2026-10-08_turner_nullspace_tr0/` |
-| adding to Turner 2004 only the part of Andronescu 2007 that lies in the 426 directions changes the predicted MFE structure of 3.9% of the 11,970 sequences | `runs/2026-10-12_turner_typeb_tie_split/` |
-| likelihood training carries about 9 times less information along these directions | `runs/2026-10-12_typeb_fisher/` |
-| on 1,641 held-out Rfam families: 2.9% of predictions change, mean F1 falls by 0.0004 | `runs/2026-10-12_typeb_heldout/` |
-| Adam moves MXfold2 along the weight symmetry 33 times more than weight decay | `runs/2026-10-11_mxfold2_weight_decay_ablation/` |
-| penalizing the output gauge cuts its seed-to-seed variance about 1,250-fold | `runs/2026-10-08_mxfold2_gauge_eval/` |
+| exactly two gauge directions; 426 data-restricted directions for the 11,955 TR0 and TS0 structures | `runs/2026-10-07_turner_nullspace_r2/`, `runs/2026-10-08_turner_nullspace_tr0/` |
+| adding to Turner 2004 only the part of Andronescu 2007's difference the data cannot see reorders 3.9% of predicted structures, with no detectable change in accuracy | `runs/2026-10-12_turner_typeb_tie_split/`, `runs/2026-10-12_typeb_decoders/` |
+| no false certificate in 1.2 million checks on 5,429 test sequences, including 108,580 targeted worst-case moves | `runs/2026-10-13_certified_folding/` (`gate`) |
+| 40.9% of TS0's predicted pairs certified, 70% in short sequences to 12% in long ones | `runs/2026-10-13_certified_folding/` (`analysis`) |
+| the certified radius ranks pairs less accurately than base-pair probability, and its signal among confident pairs is shared with the energy gap | `runs/2026-10-13_certified_folding/` (`analysis`, `posthoc`) |
+| measuring the 50 top-ranked motifs exactly would raise the certified share from 40.9% to 47.6%; 20 random sets of 50 raise it by at most 2.5 points; a second training sample gains nearly as much | `runs/2026-10-15_certfold_registration2/` (`analysis_d`), `runs/2026-10-18_certfold_reviewer/` (`analysis`) |
+| in MXfold2 the optimizer, not the data, moves the model along a weight symmetry, and fixing it costs no accuracy | `runs/2026-10-11_mxfold2_weight_decay_ablation/`, `runs/2026-10-12_mxfold2_ablation/` |
 
 The other directories under `runs/` back the remaining numbers in the paper and its
-supplement, or are the registrations and inputs those runs name.
+supplement, or are the registrations and inputs those runs name. The paper's TeX sources
+(`main_letter.tex`, `supplement_letter.tex`) are not part of this repository; every number in
+them is tied to its artifact by a pin, checked by `tests/test_recomb_pins.py` in the authors'
+working repository.
 
 ## Layout
 
