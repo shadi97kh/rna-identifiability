@@ -10,7 +10,7 @@ and each of those files records the commit and the code that produced it.
 Nearest-neighbor energy models predict RNA secondary structure from tables of loop parameters
 that are refit, learned and compared entry by entry, yet structure data cannot pin down every
 parameter. The paper describes three kinds of change the data cannot detect, and introduces
-certified folding, which proves for each base pair of a predicted structure that it stays present
+certified folding, which certifies for each base pair of a predicted structure that it stays present
 or stays absent under every data-restricted move within stated bounds, or reports it as uncertain.
 
 | | the change | code |
@@ -25,7 +25,7 @@ or stays absent under every data-restricted move within stated bounds, or report
 | claim in the abstract | artifact |
 |---|---|
 | exactly two gauge directions; 426 data-restricted directions for the 11,955 TR0 and TS0 structures | `runs/2026-10-07_turner_nullspace_r2/`, `runs/2026-10-08_turner_nullspace_tr0/` |
-| adding to Turner 2004 only the part of Andronescu 2007's difference the data cannot see reorders 3.9% of predicted structures, with no detectable change in accuracy | `runs/2026-10-12_turner_typeb_tie_split/`, `runs/2026-10-12_typeb_decoders/` |
+| adding to Turner 2004 only the part of Andronescu 2007's difference the data cannot see reorders 3.9% of predicted structures, with no detectable change in in-sample accuracy (a small, detectable loss on held-out families) | `runs/2026-10-12_turner_typeb_tie_split/`, `runs/2026-10-12_typeb_decoders/`, `runs/2026-10-12_typeb_heldout/` |
 | no false certificate in 1.2 million checks on 5,429 test sequences, including 108,580 targeted worst-case moves | `runs/2026-10-13_certified_folding/` (`gate`) |
 | 40.9% of TS0's predicted pairs certified, 70% in short sequences to 12% in long ones | `runs/2026-10-13_certified_folding/` (`analysis`) |
 | the certified radius ranks pairs less accurately than base-pair probability, and its signal among confident pairs is shared with the energy gap | `runs/2026-10-13_certified_folding/` (`analysis`, `posthoc`) |
@@ -130,8 +130,8 @@ carries its code.
 ## Certified folding
 
 For each base pair of the Turner 2004 MFE structure, certified folding returns a label
-(certified present, certified absent or uncertain) and a verified certified radius. Each label is
-proven for every parameter table θ0 + Bt in a set built from the data: the directions TR0's
+(certified present, certified absent or uncertain) and a verified certified radius. Each label
+holds for every parameter table θ0 + Bt in a set built from the data, by a proof that assumes ViennaRNA's recursions are exact (checked, not proved): the directions TR0's
 reference structures cannot see, restricted to the int11, int21, int22 and bulge tables, and
 bounded by the envelope of the published tables' data-invisible differences (or by a ball,
 for comparison).
