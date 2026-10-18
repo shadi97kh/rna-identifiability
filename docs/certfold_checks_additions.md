@@ -146,3 +146,24 @@ whole-table stability with absolute effects; targeted measurement with the effic
 accuracy ranking kept in the main text as a limitation; exhaustive checks and full tables in the
 supplement. R4's secondary is reported as an interpretation the registered rules do not cover,
 labeled so. Every number from this file is labeled post hoc where it appears.
+
+## Correction, 2026-10-18, before any phase ran: 67 directions, not 49
+
+Smoke-testing section 3c's code (on TS0's reference structures only: no label, accuracy or
+fold of a test sequence) found that TS0's references have rank **67** on B_TR0, with a clean
+gap in the singular values (0.339, then 7e-13). Principal angles between B_TR0 (448) and the
+TR0+TS0 basis (426) agree independently: they share exactly 381 directions. So B_excl, as
+defined above, has dimension **381**, and TS0's own references would pin **67** of the set's
+directions, not 49.
+
+The 49 is a different quantity, recorded by build-basis under `principal_angles /
+dimension_arithmetic`: B_TR0's dimension beyond the span of the TR0+TS0 directions *restricted to
+TR0's entries* (448 - 399). Restricting a direction drops its part on entries only TS0 reads, so 18
+of those 399 restricted directions are not invisible to TS0's references. The paper's sentence
+"on TS0 the set includes 49 directions that TS0's own references would pin" is therefore wrong
+and is corrected in the paper and the experiment report: 448 = 381 + 67, and 426 = 381 + 45
+(45 of the TR0+TS0 directions use entries no TR0 reference reads, 27 of them only such entries).
+
+Nothing else changes. Section 3c's definition stands (B_excl = the part of span(B_TR0) TS0's
+references cannot see either); its "expected dimension 399" reads 381, and its reading's
+"49 TS0-pinnable directions" reads "67".
