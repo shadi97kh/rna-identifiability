@@ -1,0 +1,2046 @@
+{
+ "descriptive": {
+  "conservativeness": {
+   "cross_check_addition_A_changed": [
+    8428,
+    {
+     "changed_in_a_draw": 8428,
+     "fraction": 0.2677935943060498,
+     "uncertain": 31472
+    }
+   ],
+   "panel_A_present_pairs": {
+    "G2 ball r = 1": {
+     "certified": 371,
+     "exactly_robust": 371,
+     "fraction_missed": 0.0,
+     "missed": 0
+    },
+    "G2 ball r = 20": {
+     "certified": 5,
+     "exactly_robust": 5,
+     "fraction_missed": 0.0,
+     "missed": 0
+    },
+    "G2 ball r = 5": {
+     "certified": 323,
+     "exactly_robust": 326,
+     "fraction_missed": 0.009202453987730062,
+     "missed": 3
+    },
+    "G2 envelope": {
+     "certified": 349,
+     "exactly_robust": 349,
+     "fraction_missed": 0.0,
+     "missed": 0,
+     "note": "robust by the box bound, an upper bound on the envelope's worst case, so missed is a lower bound"
+    },
+    "G4 ball r = 1": {
+     "certified": 2665,
+     "exactly_robust": 2682,
+     "fraction_missed": 0.00633855331841909,
+     "missed": 17,
+     "n_sequences": 100,
+     "n_skipped": 0
+    },
+    "G4 ball r = 20": {
+     "note": "all 100 sequences skipped: the band exceeded the cap"
+    },
+    "G4 ball r = 5": {
+     "certified": 1312,
+     "exactly_robust": 1597,
+     "fraction_missed": 0.17845961177207265,
+     "missed": 285,
+     "n_sequences": 96,
+     "n_skipped": 4
+    },
+    "G4 envelope": {
+     "certified": 1566,
+     "exactly_robust": 1568,
+     "fraction_missed": 0.0012755102040816326,
+     "missed": 2,
+     "n_sequences": 99,
+     "n_skipped": 1,
+     "note": "witnesses by the box bound, so missed is a lower bound"
+    }
+   },
+   "panel_B": {
+    "0": {
+     "certified": 1394,
+     "uncertain, not observed to move (unresolved)": 468,
+     "uncertain, observed to move": 126
+    },
+    "1": {
+     "certified": 2477,
+     "uncertain, not observed to move (unresolved)": 721,
+     "uncertain, observed to move": 441
+    },
+    "2": {
+     "certified": 1603,
+     "uncertain, not observed to move (unresolved)": 591,
+     "uncertain, observed to move": 207
+    },
+    "3": {
+     "certified": 2095,
+     "uncertain, not observed to move (unresolved)": 983,
+     "uncertain, observed to move": 308
+    },
+    "4": {
+     "certified": 2156,
+     "uncertain, not observed to move (unresolved)": 952,
+     "uncertain, observed to move": 287
+    },
+    "5": {
+     "certified": 3072,
+     "uncertain, not observed to move (unresolved)": 1757,
+     "uncertain, observed to move": 602
+    },
+    "6": {
+     "certified": 2578,
+     "uncertain, not observed to move (unresolved)": 2013,
+     "uncertain, observed to move": 662
+    },
+    "7": {
+     "certified": 2237,
+     "uncertain, not observed to move (unresolved)": 2304,
+     "uncertain, observed to move": 919
+    },
+    "8": {
+     "certified": 2419,
+     "uncertain, not observed to move (unresolved)": 3862,
+     "uncertain, observed to move": 1013
+    },
+    "9": {
+     "certified": 1745,
+     "uncertain, not observed to move (unresolved)": 9393,
+     "uncertain, observed to move": 3863
+    },
+    "all": {
+     "certified": 21776,
+     "uncertain, not observed to move (unresolved)": 23044,
+     "uncertain, observed to move": 8428
+    }
+   },
+   "panel_B_note": "observed to move = left the MFE under at least one of the 200 envelope draws; unresolved is not stable"
+  },
+  "leave_one_table_out": {
+   "all three (R4, reproduced)": {
+    "by_stratum": {
+     "0+1": {
+      "interval": [
+       -0.0027003941231660386,
+       0.03560201776396315
+      ],
+      "n_certified": 1505,
+      "n_pairs": 1578,
+      "n_uncertified": 73,
+      "point": 0.010734386140566099
+     },
+     "2": {
+      "interval": [
+       0.0017522764906314607,
+       0.07050253956250502
+      ],
+      "n_certified": 781,
+      "n_pairs": 819,
+      "n_uncertified": 38,
+      "point": 0.029966080373789894
+     },
+     "3": {
+      "interval": [
+       -0.008825882458845557,
+       0.03643815959010099
+      ],
+      "n_certified": 1073,
+      "n_pairs": 1181,
+      "n_uncertified": 108,
+      "point": 0.009218989104046282
+     },
+     "4": {
+      "interval": [
+       -0.013320352978688587,
+       -0.0020114581528330767
+      ],
+      "n_certified": 1071,
+      "n_pairs": 1125,
+      "n_uncertified": 54,
+      "point": -0.006847183317772121
+     },
+     "5": {
+      "interval": [
+       -0.0009654353553707553,
+       0.07366245638079022
+      ],
+      "n_certified": 1590,
+      "n_pairs": 1723,
+      "n_uncertified": 133,
+      "point": 0.027121262275184632
+     },
+     "6": {
+      "interval": [
+       -0.01878293401896709,
+       0.07049788446847197
+      ],
+      "n_certified": 1288,
+      "n_pairs": 1439,
+      "n_uncertified": 151,
+      "point": 0.01667112281134797
+     },
+     "7": {
+      "interval": [
+       0.0026493609997213156,
+       0.10434835825178237
+      ],
+      "n_certified": 967,
+      "n_pairs": 1250,
+      "n_uncertified": 283,
+      "point": 0.0472592002514054
+     },
+     "8": {
+      "interval": [
+       -0.04553008140368628,
+       0.02158945653345408
+      ],
+      "n_certified": 1348,
+      "n_pairs": 1912,
+      "n_uncertified": 564,
+      "point": -0.009344024243956639
+     },
+     "9": {
+      "interval": [
+       0.01773752235439886,
+       0.07565102294762871
+      ],
+      "n_certified": 1055,
+      "n_pairs": 2851,
+      "n_uncertified": 1796,
+      "point": 0.04677288832124504
+     }
+    },
+    "pooled_interval": [
+     0.009689954700489457,
+     0.03325366333061529
+    ],
+    "pooled_point": 0.020892278227747973,
+    "pooled_resamples_undefined": 0,
+    "strata_left_out": []
+   },
+   "bootstrap": {
+    "level": 95.0,
+    "n_boot": 10000,
+    "rule": "within each TR0 stratum, its sequences drawn with replacement, as many as it holds; strata in order, units sorted, one draw per stratum per resample; a merged reporting stratum uses the union of its members' draws; pooled weights from the resample's own pair counts; the pooled interval is undefined if any full-data-defined reporting stratum is undefined on some resample (counted, never dropped)",
+    "seed": [
+     20261013,
+     80
+    ]
+   },
+   "one table e:Andronescu2007": {
+    "by_stratum": {
+     "0+1": {
+      "interval": [
+       -0.0020920867069406796,
+       0.0
+      ],
+      "n_certified": 1505,
+      "n_pairs": 1578,
+      "n_uncertified": 73,
+      "point": -0.0006644518272425071
+     },
+     "2": {
+      "interval": [
+       -0.01862464183381085,
+       0.0
+      ],
+      "n_certified": 781,
+      "n_pairs": 819,
+      "n_uncertified": 38,
+      "point": -0.007682458386683688
+     },
+     "3": {
+      "interval": [
+       -0.003626555525024133,
+       0.125
+      ],
+      "n_certified": 1073,
+      "n_pairs": 1181,
+      "n_uncertified": 108,
+      "point": 0.04443236339788059
+     },
+     "4": {
+      "interval": [
+       -0.003096055190236199,
+       0.0
+      ],
+      "n_certified": 1071,
+      "n_pairs": 1125,
+      "n_uncertified": 54,
+      "point": -0.0009337068160597539
+     },
+     "5": {
+      "interval": [
+       -0.00846905537459286,
+       0.12197781718485741
+      ],
+      "n_certified": 1590,
+      "n_pairs": 1723,
+      "n_uncertified": 133,
+      "point": 0.040081335414006714
+     },
+     "6": {
+      "interval": [
+       -0.025000000000000022,
+       0.2287558177264566
+      ],
+      "n_certified": 1288,
+      "n_pairs": 1439,
+      "n_uncertified": 151,
+      "point": 0.06471864588046561
+     },
+     "7": {
+      "interval": [
+       -0.011091343905409808,
+       0.23212952663076342
+      ],
+      "n_certified": 967,
+      "n_pairs": 1250,
+      "n_uncertified": 283,
+      "point": 0.08963279385809453
+     },
+     "8": {
+      "interval": [
+       -0.02812248090729037,
+       0.0465447251490663
+      ],
+      "n_certified": 1348,
+      "n_pairs": 1912,
+      "n_uncertified": 564,
+      "point": 0.008502220258012949
+     },
+     "9": {
+      "interval": [
+       -0.004720801515093275,
+       0.09116833786610014
+      ],
+      "n_certified": 1055,
+      "n_pairs": 2851,
+      "n_uncertified": 1796,
+      "point": 0.044908115981802665
+     }
+    },
+    "pooled_interval": [
+     0.011242299245464769,
+     0.05888489577683119
+    ],
+    "pooled_point": 0.03333364397342045,
+    "pooled_resamples_undefined": 0,
+    "strata_left_out": []
+   },
+   "one table e:Langdon2018": {
+    "by_stratum": {
+     "0+1": {
+      "interval": [
+       -0.01138153820452366,
+       0.08482007767594446
+      ],
+      "n_certified": 1505,
+      "n_pairs": 1578,
+      "n_uncertified": 73,
+      "point": 0.02116233559368319
+     },
+     "2": {
+      "interval": [
+       -0.0036145668318630364,
+       0.08948131756511644
+      ],
+      "n_certified": 781,
+      "n_pairs": 819,
+      "n_uncertified": 38,
+      "point": 0.025035379742570196
+     },
+     "3": {
+      "interval": [
+       -0.028101161156034137,
+       0.0
+      ],
+      "n_certified": 1073,
+      "n_pairs": 1181,
+      "n_uncertified": 108,
+      "point": -0.011183597390493905
+     },
+     "4": {
+      "interval": [
+       -0.038961347587773455,
+       -0.005186587620665175
+      ],
+      "n_certified": 1071,
+      "n_pairs": 1125,
+      "n_uncertified": 54,
+      "point": -0.019607843137254943
+     },
+     "5": {
+      "interval": [
+       -0.022957532156857464,
+       0.03029449945353887
+      ],
+      "n_certified": 1590,
+      "n_pairs": 1723,
+      "n_uncertified": 133,
+      "point": -0.0006856764552891637
+     },
+     "6": {
+      "interval": [
+       -0.04798929090070683,
+       -0.007482950786299609
+      ],
+      "n_certified": 1288,
+      "n_pairs": 1439,
+      "n_uncertified": 151,
+      "point": -0.024844720496894457
+     },
+     "7": {
+      "interval": [
+       -0.013949620596493767,
+       0.10328581234070937
+      ],
+      "n_certified": 967,
+      "n_pairs": 1250,
+      "n_uncertified": 283,
+      "point": 0.03404577195873726
+     },
+     "8": {
+      "interval": [
+       -0.07953335342807635,
+       0.04232459743121488
+      ],
+      "n_certified": 1348,
+      "n_pairs": 1912,
+      "n_uncertified": 564,
+      "point": -0.02075572952837934
+     },
+     "9": {
+      "interval": [
+       0.029865783005201083,
+       0.13176797012788397
+      ],
+      "n_certified": 1055,
+      "n_pairs": 2851,
+      "n_uncertified": 1796,
+      "point": 0.07704957831516068
+     }
+    },
+    "pooled_interval": [
+     -0.0007369810577781187,
+     0.03259780897707403
+    ],
+    "pooled_point": 0.01471675486868432,
+    "pooled_resamples_undefined": 0,
+    "strata_left_out": []
+   },
+   "one table e:Turner1999": {
+    "by_stratum": {
+     "0+1": {
+      "interval": [
+       -0.004377941805733895,
+       0.04878048780487809
+      ],
+      "n_certified": 1505,
+      "n_pairs": 1578,
+      "n_uncertified": 73,
+      "point": 0.011705274655258835
+     },
+     "2": {
+      "interval": [
+       -0.0035802738199019798,
+       0.18774444000895144
+      ],
+      "n_certified": 781,
+      "n_pairs": 819,
+      "n_uncertified": 38,
+      "point": 0.07254531976548284
+     },
+     "3": {
+      "interval": [
+       -0.011840821739347532,
+       -0.0009033219844834243
+      ],
+      "n_certified": 1073,
+      "n_pairs": 1181,
+      "n_uncertified": 108,
+      "point": -0.005591798695246952
+     },
+     "4": {
+      "interval": [
+       0.0,
+       0.0
+      ],
+      "n_certified": 1071,
+      "n_pairs": 1125,
+      "n_uncertified": 54,
+      "point": 0.0
+     },
+     "5": {
+      "interval": [
+       0.0029887384392091073,
+       0.10880278687826513
+      ],
+      "n_certified": 1590,
+      "n_pairs": 1723,
+      "n_uncertified": 133,
+      "point": 0.0419681278668369
+     },
+     "6": {
+      "interval": [
+       -0.006097793706944709,
+       0.0386633822247206
+      ],
+      "n_certified": 1288,
+      "n_pairs": 1439,
+      "n_uncertified": 151,
+      "point": 0.010139443050470986
+     },
+     "7": {
+      "interval": [
+       -0.0050000000000000044,
+       0.050992660269209046
+      ],
+      "n_certified": 967,
+      "n_pairs": 1250,
+      "n_uncertified": 283,
+      "point": 0.01809903493738607
+     },
+     "8": {
+      "interval": [
+       -0.05306308162054592,
+       0.015519733458253117
+      ],
+      "n_certified": 1348,
+      "n_pairs": 1912,
+      "n_uncertified": 564,
+      "point": -0.015778563461497974
+     },
+     "9": {
+      "interval": [
+       -0.00414687011276878,
+       0.03837809483183767
+      ],
+      "n_certified": 1055,
+      "n_pairs": 2851,
+      "n_uncertified": 1796,
+      "point": 0.01836097066677922
+     }
+    },
+    "pooled_interval": [
+     0.0037633706593110214,
+     0.027634843995298437
+    ],
+    "pooled_point": 0.014626435841141809,
+    "pooled_resamples_undefined": 0,
+    "strata_left_out": []
+   },
+   "two tables A07+L18": {
+    "by_stratum": {
+     "0+1": {
+      "interval": [
+       -0.005980212671377052,
+       0.042103577827928264
+      ],
+      "n_certified": 1505,
+      "n_pairs": 1578,
+      "n_uncertified": 73,
+      "point": 0.010248941883220342
+     },
+     "2": {
+      "interval": [
+       -0.008879811752031019,
+       0.041100550660160266
+      ],
+      "n_certified": 781,
+      "n_pairs": 819,
+      "n_uncertified": 38,
+      "point": 0.008676460677943254
+     },
+     "3": {
+      "interval": [
+       -0.009923014094283736,
+       0.05751111300572347
+      ],
+      "n_certified": 1073,
+      "n_pairs": 1181,
+      "n_uncertified": 108,
+      "point": 0.016624383003693288
+     },
+     "4": {
+      "interval": [
+       -0.019980529468031926,
+       -0.003017187229249716
+      ],
+      "n_certified": 1071,
+      "n_pairs": 1125,
+      "n_uncertified": 54,
+      "point": -0.010270774976657293
+     },
+     "5": {
+      "interval": [
+       -0.00901184451285732,
+       0.06329548305024997
+      ],
+      "n_certified": 1590,
+      "n_pairs": 1723,
+      "n_uncertified": 133,
+      "point": 0.01969782947935872
+     },
+     "6": {
+      "interval": [
+       -0.030126632844458906,
+       0.10245424389725173
+      ],
+      "n_certified": 1288,
+      "n_pairs": 1439,
+      "n_uncertified": 151,
+      "point": 0.019936962691785576
+     },
+     "7": {
+      "interval": [
+       -0.004034962531685501,
+       0.1475055987489098
+      ],
+      "n_certified": 967,
+      "n_pairs": 1250,
+      "n_uncertified": 283,
+      "point": 0.061839282908415893
+     },
+     "8": {
+      "interval": [
+       -0.0457886429467683,
+       0.03194254039106646
+      ],
+      "n_certified": 1348,
+      "n_pairs": 1912,
+      "n_uncertified": 564,
+      "point": -0.006126754635183196
+     },
+     "9": {
+      "interval": [
+       0.022690806279806776,
+       0.10221814563243355
+      ],
+      "n_certified": 1055,
+      "n_pairs": 2851,
+      "n_uncertified": 1796,
+      "point": 0.060978847148481674
+     }
+    },
+    "pooled_interval": [
+     0.009386990877682905,
+     0.0404186144768685
+    ],
+    "pooled_point": 0.02402519942105238,
+    "pooled_resamples_undefined": 0,
+    "strata_left_out": []
+   },
+   "two tables T99+A07": {
+    "by_stratum": {
+     "0+1": {
+      "interval": [
+       -0.0025946288517329327,
+       0.02422068199660836
+      ],
+      "n_certified": 1505,
+      "n_pairs": 1578,
+      "n_uncertified": 73,
+      "point": 0.005520411414008164
+     },
+     "2": {
+      "interval": [
+       -0.004237288135593209,
+       0.0891776192557442
+      ],
+      "n_certified": 781,
+      "n_pairs": 819,
+      "n_uncertified": 38,
+      "point": 0.032431430689399576
+     },
+     "3": {
+      "interval": [
+       -0.005226522237384202,
+       0.05983523064265474
+      ],
+      "n_certified": 1073,
+      "n_pairs": 1181,
+      "n_uncertified": 108,
+      "point": 0.019420282351316875
+     },
+     "4": {
+      "interval": [
+       -0.0015480275951180982,
+       0.0
+      ],
+      "n_certified": 1071,
+      "n_pairs": 1125,
+      "n_uncertified": 54,
+      "point": -0.00046685340802987696
+     },
+     "5": {
+      "interval": [
+       0.0017632983246934771,
+       0.10733351365570148
+      ],
+      "n_certified": 1590,
+      "n_pairs": 1723,
+      "n_uncertified": 133,
+      "point": 0.04102473164042175
+     },
+     "6": {
+      "interval": [
+       -0.011278664791908755,
+       0.11732471300577639
+      ],
+      "n_certified": 1288,
+      "n_pairs": 1439,
+      "n_uncertified": 151,
+      "point": 0.03742904446546835
+     },
+     "7": {
+      "interval": [
+       0.0001292712958865324,
+       0.12311189245844967
+      ],
+      "n_certified": 967,
+      "n_pairs": 1250,
+      "n_uncertified": 283,
+      "point": 0.053865914397740244
+     },
+     "8": {
+      "interval": [
+       -0.037709016660177015,
+       0.024014328959813567
+      ],
+      "n_certified": 1348,
+      "n_pairs": 1912,
+      "n_uncertified": 564,
+      "point": -0.0036381716017426236
+     },
+     "9": {
+      "interval": [
+       -0.0013434735152728966,
+       0.05945198006852953
+      ],
+      "n_certified": 1055,
+      "n_pairs": 2851,
+      "n_uncertified": 1796,
+      "point": 0.03163454332429094
+     }
+    },
+    "pooled_interval": [
+     0.01053204857578125,
+     0.03929082663764351
+    ],
+    "pooled_point": 0.023980039907281113,
+    "pooled_resamples_undefined": 0,
+    "strata_left_out": []
+   },
+   "two tables T99+L18": {
+    "by_stratum": {
+     "0+1": {
+      "interval": [
+       -0.0036568296344182904,
+       0.05372353097123236
+      ],
+      "n_certified": 1505,
+      "n_pairs": 1578,
+      "n_uncertified": 73,
+      "point": 0.0164338051244709
+     },
+     "2": {
+      "interval": [
+       0.006739105439670748,
+       0.10999348980988503
+      ],
+      "n_certified": 781,
+      "n_pairs": 819,
+      "n_uncertified": 38,
+      "point": 0.04879034975402663
+     },
+     "3": {
+      "interval": [
+       -0.017609203333156444,
+       -0.0015788231070856214
+      ],
+      "n_certified": 1073,
+      "n_pairs": 1181,
+      "n_uncertified": 108,
+      "point": -0.008387698042870428
+     },
+     "4": {
+      "interval": [
+       -0.019480673793886676,
+       -0.0025932938103325875
+      ],
+      "n_certified": 1071,
+      "n_pairs": 1125,
+      "n_uncertified": 54,
+      "point": -0.009803921568627416
+     },
+     "5": {
+      "interval": [
+       -0.003427200023546475,
+       0.057545097132202294
+      ],
+      "n_certified": 1590,
+      "n_pairs": 1723,
+      "n_uncertified": 133,
+      "point": 0.02064122570577387
+     },
+     "6": {
+      "interval": [
+       -0.02289812027667475,
+       0.00924318920627773
+      ],
+      "n_certified": 1288,
+      "n_pairs": 1439,
+      "n_uncertified": 151,
+      "point": -0.00735263872321168
+     },
+     "7": {
+      "interval": [
+       -0.0016304320535998253,
+       0.06262932850849558
+      ],
+      "n_certified": 967,
+      "n_pairs": 1250,
+      "n_uncertified": 283,
+      "point": 0.02607240344806161
+     },
+     "8": {
+      "interval": [
+       -0.06035859160986208,
+       0.021080338894533215
+      ],
+      "n_certified": 1348,
+      "n_pairs": 1912,
+      "n_uncertified": 564,
+      "point": -0.018267146494938657
+     },
+     "9": {
+      "interval": [
+       0.02222156496599751,
+       0.07550082440594172
+      ],
+      "n_certified": 1055,
+      "n_pairs": 2851,
+      "n_uncertified": 1796,
+      "point": 0.04770527449096995
+     }
+    },
+    "pooled_interval": [
+     0.004775395234141414,
+     0.026058010620901965
+    ],
+    "pooled_point": 0.014671595354913062,
+    "pooled_resamples_undefined": 0,
+    "strata_left_out": []
+   }
+  },
+  "pilot_bootstrap": {
+   "design": "the 300 pilot sequences resampled with replacement within their length strata; the ranking rebuilt from the recorded witnesses",
+   "frozen_top10_in_top10": {
+    "max": 9,
+    "median": 5.0,
+    "min": 1,
+    "p5": 2.0,
+    "p95": 7.0
+   },
+   "frozen_top10_in_top50": {
+    "max": 10,
+    "median": 9.0,
+    "min": 5,
+    "p5": 7.0,
+    "p95": 10.0
+   },
+   "frozen_top50_fraction_kept_in_top50": {
+    "('int11', 4, 1, 4, 3)": 0.519,
+    "('int11', 5, 4, 2, 1)": 0.493,
+    "('int21', 1, 1, 1, 3, 3)": 0.977,
+    "('int21', 1, 2, 1, 3, 2)": 0.723,
+    "('int21', 1, 2, 2, 4, 2)": 0.491,
+    "('int21', 1, 2, 3, 3, 3)": 0.406,
+    "('int21', 1, 2, 4, 2, 2)": 0.692,
+    "('int21', 1, 3, 4, 1, 4)": 0.541,
+    "('int21', 1, 4, 1, 2, 2)": 0.489,
+    "('int21', 1, 4, 2, 1, 1)": 0.963,
+    "('int21', 1, 4, 4, 2, 4)": 0.798,
+    "('int21', 1, 5, 3, 1, 1)": 0.843,
+    "('int21', 1, 6, 1, 2, 2)": 0.605,
+    "('int21', 1, 6, 2, 4, 1)": 0.821,
+    "('int21', 2, 3, 2, 2, 1)": 0.466,
+    "('int21', 2, 5, 1, 3, 3)": 0.655,
+    "('int21', 2, 5, 3, 3, 4)": 0.427,
+    "('int21', 2, 5, 3, 4, 3)": 0.566,
+    "('int21', 3, 4, 1, 3, 1)": 0.494,
+    "('int21', 3, 5, 1, 4, 3)": 0.359,
+    "('int21', 3, 5, 4, 1, 1)": 0.433,
+    "('int21', 4, 2, 1, 1, 1)": 0.822,
+    "('int21', 4, 4, 4, 4, 4)": 0.562,
+    "('int21', 4, 6, 1, 3, 1)": 0.447,
+    "('int21', 5, 1, 1, 3, 3)": 0.887,
+    "('int21', 5, 1, 1, 3, 4)": 0.391,
+    "('int21', 5, 1, 4, 4, 2)": 0.808,
+    "('int21', 5, 2, 1, 1, 1)": 0.602,
+    "('int21', 5, 2, 1, 3, 1)": 0.763,
+    "('int21', 5, 2, 1, 3, 2)": 0.946,
+    "('int21', 5, 2, 3, 3, 1)": 0.702,
+    "('int21', 6, 1, 1, 1, 3)": 0.753,
+    "('int21', 6, 2, 2, 4, 1)": 0.977,
+    "('int21', 6, 5, 4, 2, 1)": 0.514,
+    "('int21', 6, 6, 3, 1, 1)": 0.874,
+    "('int22', 1, 1, 4, 4, 2, 1)": 0.332,
+    "('int22', 1, 2, 2, 3, 3, 1)": 0.561,
+    "('int22', 1, 2, 4, 2, 4, 4)": 0.594,
+    "('int22', 2, 1, 1, 3, 3, 3)": 0.453,
+    "('int22', 2, 1, 2, 1, 3, 1)": 0.495,
+    "('int22', 2, 1, 3, 3, 3, 3)": 0.305,
+    "('int22', 2, 2, 1, 1, 1, 1)": 0.481,
+    "('int22', 2, 2, 2, 3, 3, 2)": 0.565,
+    "('int22', 2, 2, 3, 2, 1, 3)": 0.373,
+    "('int22', 2, 2, 4, 3, 3, 1)": 0.611,
+    "('int22', 2, 4, 3, 1, 3, 1)": 0.767,
+    "('int22', 2, 5, 1, 2, 1, 3)": 0.415,
+    "('int22', 5, 1, 1, 1, 2, 1)": 0.397,
+    "('int22', 6, 5, 3, 2, 4, 3)": 0.529,
+    "('int22', 6, 6, 1, 1, 3, 3)": 0.508
+   },
+   "n_frozen_top50_kept_in_at_least_80pct": 10,
+   "n_resamples": 1000,
+   "overlap_top50": {
+    "max": 41,
+    "median": 30.0,
+    "min": 18,
+    "p5": 24.0,
+    "p95": 37.0
+   },
+   "seed": [
+    20261013,
+    82
+   ],
+   "stable_under_resampling": false
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "b2ddeabd9a65176338abb3c0403e304478331030"
+  },
+  "radius_vs_gap": {
+   "disagreement_definition": "lowest quartile of one, upper half of the other",
+   "n_pairs": 53246,
+   "n_small_gap_large_radius": 2462,
+   "n_small_radius_large_gap": 1577,
+   "quartile_agreement": {
+    "cols": "gap quartile 1..4",
+    "counts": [
+     [
+      7747,
+      4246,
+      1442,
+      135
+     ],
+     [
+      3118,
+      3739,
+      4356,
+      1751
+     ],
+     [
+      1792,
+      3175,
+      4463,
+      3950
+     ],
+     [
+      670,
+      1618,
+      3409,
+      7635
+     ]
+    ],
+    "rows": "rho_env quartile 1..4",
+    "same_quartile_fraction": 0.4429252901626413
+   },
+   "spearman": 0.63755284356946,
+   "spearman_by_stratum": {
+    "0": 0.6075907859618834,
+    "1": 0.6311209858409421,
+    "2": 0.6591205682244663,
+    "3": 0.6495370536632459,
+    "4": 0.6669363805469583,
+    "5": 0.678681155226499,
+    "6": 0.678907093933013,
+    "7": 0.6608614710340899,
+    "8": 0.6727432449116955,
+    "9": 0.6978607142471801
+   },
+   "where": {
+    "exposure quartile 1": {
+     "n": 6363,
+     "small gap, large radius": 594,
+     "small radius, large gap": 49
+    },
+    "exposure quartile 2": {
+     "n": 9202,
+     "small gap, large radius": 685,
+     "small radius, large gap": 83
+    },
+    "exposure quartile 3": {
+     "n": 12303,
+     "small gap, large radius": 539,
+     "small radius, large gap": 252
+    },
+    "exposure quartile 4": {
+     "n": 25378,
+     "small gap, large radius": 644,
+     "small radius, large gap": 1193
+    },
+    "next to a reached interior loop": {
+     "n": 6280,
+     "small gap, large radius": 366,
+     "small radius, large gap": 237
+    },
+    "not next to one": {
+     "n": 46966,
+     "small gap, large radius": 2096,
+     "small radius, large gap": 1340
+    },
+    "stratum 1": {
+     "n": 1988,
+     "small gap, large radius": 237,
+     "small radius, large gap": 19
+    },
+    "stratum 10": {
+     "n": 14999,
+     "small gap, large radius": 160,
+     "small radius, large gap": 974
+    },
+    "stratum 2": {
+     "n": 3639,
+     "small gap, large radius": 319,
+     "small radius, large gap": 28
+    },
+    "stratum 3": {
+     "n": 2401,
+     "small gap, large radius": 141,
+     "small radius, large gap": 41
+    },
+    "stratum 4": {
+     "n": 3386,
+     "small gap, large radius": 233,
+     "small radius, large gap": 26
+    },
+    "stratum 5": {
+     "n": 3395,
+     "small gap, large radius": 292,
+     "small radius, large gap": 13
+    },
+    "stratum 6": {
+     "n": 5431,
+     "small gap, large radius": 290,
+     "small radius, large gap": 81
+    },
+    "stratum 7": {
+     "n": 5253,
+     "small gap, large radius": 201,
+     "small radius, large gap": 89
+    },
+    "stratum 8": {
+     "n": 5460,
+     "small gap, large radius": 277,
+     "small radius, large gap": 129
+    },
+    "stratum 9": {
+     "n": 7294,
+     "small gap, large radius": 312,
+     "small radius, large gap": 177
+    }
+   },
+   "worked_cases": {
+    "small gap, large radius": [
+     {
+      "gap_kcal": 0.1,
+      "n_nt": 82,
+      "name": "bpRNA_RFAM_19085.bpseq",
+      "nominal_witness": {
+       "D_kcal": 0.0,
+       "N_kcal": 0.1,
+       "N_over_D": null,
+       "lambda": 0.0,
+       "n_differing_loops": 4
+      },
+      "p": 0.5166866480682617,
+      "pair": [
+       31,
+       52
+      ],
+      "rho_env": 2.139508928571485,
+      "witness_at_rho": {
+       "D_kcal": 3.2666666666665813,
+       "N_kcal": 7.0,
+       "N_over_D": 2.1428571428571987,
+       "lambda": 2.139508928571485,
+       "n_differing_loops": 12
+      }
+     },
+     {
+      "gap_kcal": 0.1,
+      "n_nt": 112,
+      "name": "bpRNA_RFAM_19015.bpseq",
+      "nominal_witness": {
+       "D_kcal": 0.0,
+       "N_kcal": 0.1,
+       "N_over_D": null,
+       "lambda": 0.0,
+       "n_differing_loops": 2
+      },
+      "p": 0.5237740037334963,
+      "pair": [
+       2,
+       111
+      ],
+      "rho_env": 2.07838010204087,
+      "witness_at_rho": {
+       "D_kcal": 6.533333333333163,
+       "N_kcal": 13.6,
+       "N_over_D": 2.0816326530612788,
+       "lambda": 2.07838010204087,
+       "n_differing_loops": 10
+      }
+     }
+    ],
+    "small radius, large gap": [
+     {
+      "gap_kcal": 5.1,
+      "n_nt": 436,
+      "name": "bpRNA_RFAM_4617.bpseq",
+      "nominal_witness": {
+       "D_kcal": 13.066666666666325,
+       "N_kcal": 5.1,
+       "N_over_D": 0.39030612244898977,
+       "lambda": 0.0,
+       "n_differing_loops": 181
+      },
+      "p": 0.9991686239440679,
+      "pair": [
+       213,
+       333
+      ],
+      "rho_env": 0.3885985331632754,
+      "witness_at_rho": {
+       "D_kcal": 13.066666666666325,
+       "N_kcal": 5.1,
+       "N_over_D": 0.39030612244898977,
+       "lambda": 0.3885985331632754,
+       "n_differing_loops": 181
+      }
+     },
+     {
+      "gap_kcal": 5.1,
+      "n_nt": 436,
+      "name": "bpRNA_RFAM_4617.bpseq",
+      "nominal_witness": {
+       "D_kcal": 13.066666666666325,
+       "N_kcal": 5.1,
+       "N_over_D": 0.39030612244898977,
+       "lambda": 0.0,
+       "n_differing_loops": 181
+      },
+      "p": 0.9990287308867187,
+      "pair": [
+       206,
+       340
+      ],
+      "rho_env": 0.3885985331632754,
+      "witness_at_rho": {
+       "D_kcal": 13.066666666666325,
+       "N_kcal": 5.1,
+       "N_over_D": 0.39030612244898977,
+       "lambda": 0.3885985331632754,
+       "n_differing_loops": 181
+      }
+     }
+    ]
+   }
+  },
+  "scale": {
+   "R4_statistic": {
+    "bootstrap": {
+     "level": 95.0,
+     "n_boot": 10000,
+     "rule": "within each TR0 stratum, its sequences drawn with replacement, as many as it holds; strata in order, units sorted, one draw per stratum per resample; a merged reporting stratum uses the union of its members' draws; pooled weights from the resample's own pair counts; the pooled interval is undefined if any full-data-defined reporting stratum is undefined on some resample (counted, never dropped)",
+     "seed": [
+      20261013,
+      81
+     ]
+    },
+    "lambda 0.5": {
+     "by_stratum": {
+      "0+1": {
+       "interval": null,
+       "n_certified": 1578,
+       "n_pairs": 1578,
+       "n_uncertified": 0,
+       "point": null
+      },
+      "2": {
+       "interval": null,
+       "n_certified": 819,
+       "n_pairs": 819,
+       "n_uncertified": 0,
+       "point": null
+      },
+      "3": {
+       "interval": null,
+       "n_certified": 1177,
+       "n_pairs": 1181,
+       "n_uncertified": 4,
+       "point": -0.007080147267063519
+      },
+      "4": {
+       "interval": null,
+       "n_certified": 1125,
+       "n_pairs": 1125,
+       "n_uncertified": 0,
+       "point": null
+      },
+      "5": {
+       "interval": null,
+       "n_certified": 1719,
+       "n_pairs": 1723,
+       "n_uncertified": 4,
+       "point": 0.24049835175489664
+      },
+      "6": {
+       "interval": null,
+       "n_certified": 1432,
+       "n_pairs": 1439,
+       "n_uncertified": 7,
+       "point": -0.01606145251396618
+      },
+      "7": {
+       "interval": null,
+       "n_certified": 1250,
+       "n_pairs": 1250,
+       "n_uncertified": 0,
+       "point": null
+      },
+      "8": {
+       "interval": null,
+       "n_certified": 1898,
+       "n_pairs": 1912,
+       "n_uncertified": 14,
+       "point": 0.25796577851372393
+      },
+      "9": {
+       "interval": [
+        -0.023117207626407343,
+        0.24950533008926634
+       ],
+       "n_certified": 2742,
+       "n_pairs": 2851,
+       "n_uncertified": 109,
+       "point": 0.09711431866290932
+      }
+     },
+     "pooled_interval": null,
+     "pooled_point": 0.12662069701404371,
+     "pooled_resamples_undefined": 5433,
+     "strata_left_out": [
+      "0+1",
+      "2",
+      "4",
+      "7"
+     ]
+    },
+    "lambda 2": {
+     "by_stratum": {
+      "0+1": {
+       "interval": [
+        -0.00037639400719784166,
+        0.014474906832210937
+       ],
+       "n_certified": 339,
+       "n_pairs": 1578,
+       "n_uncertified": 1239,
+       "point": 0.006466343349499248
+      },
+      "2": {
+       "interval": [
+        0.0028776978417267562,
+        0.014426026103383147
+       ],
+       "n_certified": 161,
+       "n_pairs": 819,
+       "n_uncertified": 658,
+       "point": 0.008105369807497542
+      },
+      "3": {
+       "interval": [
+        -0.0180926610108054,
+        0.010299671437834905
+       ],
+       "n_certified": 221,
+       "n_pairs": 1181,
+       "n_uncertified": 960,
+       "point": -0.0024525515334336
+      },
+      "4": {
+       "interval": [
+        -0.00719429097381164,
+        0.012018467975129192
+       ],
+       "n_certified": 148,
+       "n_pairs": 1125,
+       "n_uncertified": 977,
+       "point": 0.0023191051850218747
+      },
+      "5": {
+       "interval": [
+        -0.018387093706949263,
+        0.014465576669128991
+       ],
+       "n_certified": 91,
+       "n_pairs": 1723,
+       "n_uncertified": 1632,
+       "point": -0.0009808410543705737
+      },
+      "6": {
+       "interval": null,
+       "n_certified": 29,
+       "n_pairs": 1439,
+       "n_uncertified": 1410,
+       "point": 0.016312056737588287
+      },
+      "7": {
+       "interval": null,
+       "n_certified": 14,
+       "n_pairs": 1250,
+       "n_uncertified": 1236,
+       "point": 0.02615965480043103
+      },
+      "8": {
+       "interval": null,
+       "n_certified": 0,
+       "n_pairs": 1912,
+       "n_uncertified": 1912,
+       "point": null
+      },
+      "9": {
+       "interval": null,
+       "n_certified": 0,
+       "n_pairs": 2851,
+       "n_uncertified": 2851,
+       "point": null
+      }
+     },
+     "pooled_interval": null,
+     "pooled_point": 0.007793455475508795,
+     "pooled_resamples_undefined": 1680,
+     "strata_left_out": [
+      "8",
+      "9"
+     ]
+    }
+   },
+   "certified_present_by_stratum": {
+    "lambda 0.5": {
+     "0": 0.897887323943662,
+     "1": 0.8892552899148117,
+     "2": 0.9187838400666389,
+     "3": 0.899291199054932,
+     "4": 0.9039764359351988,
+     "5": 0.8657705763211195,
+     "6": 0.8446601941747572,
+     "7": 0.8075091575091575,
+     "8": 0.8194406361392925,
+     "9": 0.6081594560362642
+    },
+    "lambda 1": {
+     "0": 0.7012072434607646,
+     "1": 0.6806815059082165,
+     "2": 0.6676384839650146,
+     "3": 0.6187241582988777,
+     "4": 0.6350515463917525,
+     "5": 0.5656416866138833,
+     "6": 0.49076718065867125,
+     "7": 0.4097069597069597,
+     "8": 0.33164244584590075,
+     "9": 0.11632557829478035
+    },
+    "lambda 2": {
+     "0": 0.14285714285714285,
+     "1": 0.04094531464688101,
+     "2": 0.0770512286547272,
+     "3": 0.0800354400472534,
+     "4": 0.050957290132547864,
+     "5": 0.020622353157797826,
+     "6": 0.006091757091185989,
+     "7": 0.002564102564102564,
+     "8": 0.0,
+     "9": 0.0
+    }
+   }
+  },
+  "seconds": 630.2,
+  "stability": {
+   "by_stratum": {
+    "0": {
+     "mean_retention": {
+      "certified": 0.9988283538371413,
+      "uncertified": 0.9885057471264367
+     },
+     "n_certified": 569,
+     "n_uncertified": 29,
+     "tables": {
+      "all three": {
+       "difference_points": 3.096782013211319,
+       "kept_certified": 0.9964850615114236,
+       "kept_uncertified": 0.9655172413793104,
+       "lost_certified": 2,
+       "lost_uncertified": 1,
+       "relative_reduction_in_loss": 0.8980667838312836
+      },
+      "whole:Andronescu2007": {
+       "difference_points": 0.0,
+       "kept_certified": 1.0,
+       "kept_uncertified": 1.0,
+       "lost_certified": 0,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Langdon2018": {
+       "difference_points": 0.0,
+       "kept_certified": 1.0,
+       "kept_uncertified": 1.0,
+       "lost_certified": 0,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Turner1999": {
+       "difference_points": 3.096782013211319,
+       "kept_certified": 0.9964850615114236,
+       "kept_uncertified": 0.9655172413793104,
+       "lost_certified": 2,
+       "lost_uncertified": 1,
+       "relative_reduction_in_loss": 0.8980667838312836
+      }
+     }
+    },
+    "1": {
+     "mean_retention": {
+      "certified": 0.9886039886039887,
+      "uncertified": 0.9772727272727271
+     },
+     "n_certified": 936,
+     "n_uncertified": 44,
+     "tables": {
+      "all three": {
+       "difference_points": 3.506216006216012,
+       "kept_certified": 0.9668803418803419,
+       "kept_uncertified": 0.9318181818181818,
+       "lost_certified": 31,
+       "lost_uncertified": 3,
+       "relative_reduction_in_loss": 0.5142450142450147
+      },
+      "whole:Andronescu2007": {
+       "difference_points": -0.10683760683760646,
+       "kept_certified": 0.9989316239316239,
+       "kept_uncertified": 1.0,
+       "lost_certified": 1,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Langdon2018": {
+       "difference_points": 3.6130536130536184,
+       "kept_certified": 0.967948717948718,
+       "kept_uncertified": 0.9318181818181818,
+       "lost_certified": 30,
+       "lost_uncertified": 3,
+       "relative_reduction_in_loss": 0.5299145299145303
+      },
+      "whole:Turner1999": {
+       "difference_points": -0.10683760683760646,
+       "kept_certified": 0.9989316239316239,
+       "kept_uncertified": 1.0,
+       "lost_certified": 1,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      }
+     }
+    },
+    "2": {
+     "mean_retention": {
+      "certified": 0.9948783610755442,
+      "uncertified": 0.9649122807017543
+     },
+     "n_certified": 781,
+     "n_uncertified": 38,
+     "tables": {
+      "all three": {
+       "difference_points": 9.117865085248333,
+       "kept_certified": 0.9859154929577465,
+       "kept_uncertified": 0.8947368421052632,
+       "lost_certified": 11,
+       "lost_uncertified": 4,
+       "relative_reduction_in_loss": 0.8661971830985917
+      },
+      "whole:Andronescu2007": {
+       "difference_points": -0.7682458386683688,
+       "kept_certified": 0.9923175416133163,
+       "kept_uncertified": 1.0,
+       "lost_certified": 6,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Langdon2018": {
+       "difference_points": 2.5035379742570196,
+       "kept_certified": 0.998719590268886,
+       "kept_uncertified": 0.9736842105263158,
+       "lost_certified": 1,
+       "lost_uncertified": 1,
+       "relative_reduction_in_loss": 0.9513444302176686
+      },
+      "whole:Turner1999": {
+       "difference_points": 7.254531976548284,
+       "kept_certified": 0.9935979513444302,
+       "kept_uncertified": 0.9210526315789473,
+       "lost_certified": 5,
+       "lost_uncertified": 3,
+       "relative_reduction_in_loss": 0.9189073836961157
+      }
+     }
+    },
+    "3": {
+     "mean_retention": {
+      "certified": 0.9937868903386144,
+      "uncertified": 0.9845679012345682
+     },
+     "n_certified": 1073,
+     "n_uncertified": 108,
+     "tables": {
+      "all three": {
+       "difference_points": 2.7656967312139735,
+       "kept_certified": 0.9813606710158435,
+       "kept_uncertified": 0.9537037037037037,
+       "lost_certified": 20,
+       "lost_uncertified": 5,
+       "relative_reduction_in_loss": 0.5973904939422185
+      },
+      "whole:Andronescu2007": {
+       "difference_points": 4.44323633978806,
+       "kept_certified": 0.9981360671015843,
+       "kept_uncertified": 0.9537037037037037,
+       "lost_certified": 2,
+       "lost_uncertified": 5,
+       "relative_reduction_in_loss": 0.9597390493942212
+      },
+      "whole:Langdon2018": {
+       "difference_points": -1.1183597390493905,
+       "kept_certified": 0.9888164026095061,
+       "kept_uncertified": 1.0,
+       "lost_certified": 12,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Turner1999": {
+       "difference_points": -0.5591798695246952,
+       "kept_certified": 0.994408201304753,
+       "kept_uncertified": 1.0,
+       "lost_certified": 6,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      }
+     }
+    },
+    "4": {
+     "mean_retention": {
+      "certified": 0.9931528166822279,
+      "uncertified": 1.0
+     },
+     "n_certified": 1071,
+     "n_uncertified": 54,
+     "tables": {
+      "all three": {
+       "difference_points": -2.0541549953314697,
+       "kept_certified": 0.9794584500466853,
+       "kept_uncertified": 1.0,
+       "lost_certified": 22,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Andronescu2007": {
+       "difference_points": -0.09337068160597539,
+       "kept_certified": 0.9990662931839402,
+       "kept_uncertified": 1.0,
+       "lost_certified": 1,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Langdon2018": {
+       "difference_points": -1.9607843137254943,
+       "kept_certified": 0.9803921568627451,
+       "kept_uncertified": 1.0,
+       "lost_certified": 21,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Turner1999": {
+       "difference_points": 0.0,
+       "kept_certified": 1.0,
+       "kept_uncertified": 1.0,
+       "lost_certified": 0,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      }
+     }
+    },
+    "5": {
+     "mean_retention": {
+      "certified": 0.9920335429769394,
+      "uncertified": 0.9649122807017547
+     },
+     "n_certified": 1590,
+     "n_uncertified": 133,
+     "tables": {
+      "all three": {
+       "difference_points": 5.943632666572096,
+       "kept_certified": 0.9767295597484277,
+       "kept_uncertified": 0.9172932330827067,
+       "lost_certified": 37,
+       "lost_uncertified": 11,
+       "relative_reduction_in_loss": 0.7186392224128075
+      },
+      "whole:Andronescu2007": {
+       "difference_points": 4.008133541400671,
+       "kept_certified": 0.9949685534591195,
+       "kept_uncertified": 0.9548872180451128,
+       "lost_certified": 8,
+       "lost_uncertified": 6,
+       "relative_reduction_in_loss": 0.8884696016771488
+      },
+      "whole:Langdon2018": {
+       "difference_points": -0.06856764552891637,
+       "kept_certified": 0.9842767295597484,
+       "kept_uncertified": 0.9849624060150376,
+       "lost_certified": 25,
+       "lost_uncertified": 2,
+       "relative_reduction_in_loss": -0.045597484276729494
+      },
+      "whole:Turner1999": {
+       "difference_points": 4.19681278668369,
+       "kept_certified": 0.9968553459119497,
+       "kept_uncertified": 0.9548872180451128,
+       "lost_certified": 5,
+       "lost_uncertified": 6,
+       "relative_reduction_in_loss": 0.9302935010482181
+      }
+     }
+    },
+    "6": {
+     "mean_retention": {
+      "certified": 0.9857660455486547,
+      "uncertified": 0.9690949227373067
+     },
+     "n_certified": 1288,
+     "n_uncertified": 151,
+     "tables": {
+      "all three": {
+       "difference_points": 5.544815104273793,
+       "kept_certified": 0.9627329192546584,
+       "kept_uncertified": 0.9072847682119205,
+       "lost_certified": 48,
+       "lost_uncertified": 14,
+       "relative_reduction_in_loss": 0.5980479148181017
+      },
+      "whole:Andronescu2007": {
+       "difference_points": 6.471864588046561,
+       "kept_certified": 0.985248447204969,
+       "kept_uncertified": 0.9205298013245033,
+       "lost_certified": 19,
+       "lost_uncertified": 12,
+       "relative_reduction_in_loss": 0.8143762939958593
+      },
+      "whole:Langdon2018": {
+       "difference_points": -2.4844720496894457,
+       "kept_certified": 0.9751552795031055,
+       "kept_uncertified": 1.0,
+       "lost_certified": 32,
+       "lost_uncertified": 0,
+       "relative_reduction_in_loss": null
+      },
+      "whole:Turner1999": {
+       "difference_points": 1.0139443050470986,
+       "kept_certified": 0.9968944099378882,
+       "kept_uncertified": 0.9867549668874173,
+       "lost_certified": 4,
+       "lost_uncertified": 2,
+       "relative_reduction_in_loss": 0.765527950310562
+      }
+     }
+    },
+    "7": {
+     "mean_retention": {
+      "certified": 0.9848328162702509,
+      "uncertified": 0.9375736160188455
+     },
+     "n_certified": 967,
+     "n_uncertified": 283,
+     "tables": {
+      "all three": {
+       "difference_points": 11.704261842206243,
+       "kept_certified": 0.954498448810755,
+       "kept_uncertified": 0.8374558303886925,
+       "lost_certified": 44,
+       "lost_uncertified": 46,
+       "relative_reduction_in_loss": 0.7200665437705143
+      },
+      "whole:Andronescu2007": {
+       "difference_points": 8.963279385809454,
+       "kept_certified": 0.9906928645294726,
+       "kept_uncertified": 0.901060070671378,
+       "lost_certified": 9,
+       "lost_uncertified": 28,
+       "relative_reduction_in_loss": 0.9059314522085979
+      },
+      "whole:Langdon2018": {
+       "difference_points": 3.404577195873726,
+       "kept_certified": 0.9669079627714581,
+       "kept_uncertified": 0.9328621908127208,
+       "lost_certified": 32,
+       "lost_uncertified": 19,
+       "relative_reduction_in_loss": 0.5071028139117179
+      },
+      "whole:Turner1999": {
+       "difference_points": 1.8099034937386071,
+       "kept_certified": 0.9968976215098242,
+       "kept_uncertified": 0.9787985865724381,
+       "lost_certified": 3,
+       "lost_uncertified": 6,
+       "relative_reduction_in_loss": 0.8536711478800414
+      }
+     }
+    },
+    "8": {
+     "mean_retention": {
+      "certified": 0.9676063303659732,
+      "uncertified": 0.9769503546099298
+     },
+     "n_certified": 1348,
+     "n_uncertified": 564,
+     "tables": {
+      "all three": {
+       "difference_points": 0.7576235873476889,
+       "kept_certified": 0.9384272997032641,
+       "kept_uncertified": 0.9308510638297872,
+       "lost_certified": 83,
+       "lost_uncertified": 39,
+       "relative_reduction_in_loss": 0.10956402647797348
+      },
+      "whole:Andronescu2007": {
+       "difference_points": 0.8502220258012949,
+       "kept_certified": 0.983679525222552,
+       "kept_uncertified": 0.975177304964539,
+       "lost_certified": 22,
+       "lost_uncertified": 14,
+       "relative_reduction_in_loss": 0.34251801610852195
+      },
+      "whole:Langdon2018": {
+       "difference_points": -2.075572952837934,
+       "kept_certified": 0.9473293768545994,
+       "kept_uncertified": 0.9680851063829787,
+       "lost_certified": 71,
+       "lost_uncertified": 18,
+       "relative_reduction_in_loss": -0.6503461918892195
+      },
+      "whole:Turner1999": {
+       "difference_points": -1.5778563461497974,
+       "kept_certified": 0.9718100890207715,
+       "kept_uncertified": 0.9875886524822695,
+       "lost_certified": 38,
+       "lost_uncertified": 7,
+       "relative_reduction_in_loss": -1.271301398897832
+      }
+     }
+    },
+    "9": {
+     "mean_retention": {
+      "certified": 0.9883096366508679,
+      "uncertified": 0.9415367483296229
+     },
+     "n_certified": 1055,
+     "n_uncertified": 1796,
+     "tables": {
+      "all three": {
+       "difference_points": 11.136543556507872,
+       "kept_certified": 0.9649289099526066,
+       "kept_uncertified": 0.8535634743875279,
+       "lost_certified": 37,
+       "lost_uncertified": 263,
+       "relative_reduction_in_loss": 0.7605031265204618
+      },
+      "whole:Andronescu2007": {
+       "difference_points": 4.490811598180267,
+       "kept_certified": 0.9819905213270143,
+       "kept_uncertified": 0.9370824053452116,
+       "lost_certified": 19,
+       "lost_uncertified": 113,
+       "relative_reduction_in_loss": 0.7137608522417487
+      },
+      "whole:Langdon2018": {
+       "difference_points": 7.704957831516069,
+       "kept_certified": 0.9924170616113744,
+       "kept_uncertified": 0.9153674832962138,
+       "lost_certified": 8,
+       "lost_uncertified": 152,
+       "relative_reduction_in_loss": 0.9104015964080823
+      },
+      "whole:Turner1999": {
+       "difference_points": 1.836097066677922,
+       "kept_certified": 0.990521327014218,
+       "kept_uncertified": 0.9721603563474388,
+       "lost_certified": 10,
+       "lost_uncertified": 50,
+       "relative_reduction_in_loss": 0.6595260663507108
+      }
+     }
+    }
+   },
+   "pool": "TS0 MFE pairs with p >= 0.99; certified = registration 1's label at lambda = 1; 'all three' = kept under every whole table",
+   "raw": {
+    "mean_retention": {
+     "certified": 0.9877317849784599,
+     "uncertified": 0.9533333333333307
+    },
+    "n_certified": 10678,
+    "n_uncertified": 3200,
+    "tables": {
+     "all three": {
+      "difference_points": 8.925208372354376,
+      "kept_certified": 0.9686270837235438,
+      "kept_uncertified": 0.879375,
+      "lost_certified": 335,
+      "lost_uncertified": 386,
+      "relative_reduction_in_loss": 0.7399136474490675
+     },
+     "whole:Andronescu2007": {
+      "difference_points": 4.747740681775614,
+      "kept_certified": 0.9918524068177561,
+      "kept_uncertified": 0.944375,
+      "lost_certified": 87,
+      "lost_uncertified": 178,
+      "relative_reduction_in_loss": 0.8535264147012335
+     },
+     "whole:Langdon2018": {
+      "difference_points": 3.9210584847349628,
+      "kept_certified": 0.9782730848473496,
+      "kept_uncertified": 0.9390625,
+      "lost_certified": 232,
+      "lost_uncertified": 195,
+      "relative_reduction_in_loss": 0.6434557513411223
+     },
+     "whole:Turner1999": {
+      "difference_points": 1.6507363270275355,
+      "kept_certified": 0.9930698632702754,
+      "kept_uncertified": 0.9765625,
+      "lost_certified": 74,
+      "lost_uncertified": 75,
+      "relative_reduction_in_loss": 0.7043141661984151
+     }
+    }
+   }
+  },
+  "table_coverage": {
+   "Andronescu2007": {
+    "inside_part_in_E1": {
+     "contained": true,
+     "delta_kcal": 3.2666666666665813,
+     "max_entry_shift_kcal": 3.069999999999912,
+     "norm_kcal": 21.26280733187213,
+     "r_max_kcal": 24.13231091078804
+    },
+    "norm_delta_kcal": 116.61083911884006,
+    "parts": {
+     "inside the set": {
+      "by_family_norm_kcal": {
+       "bulge": 1.249056603835296,
+       "int11": 3.0763782158463777,
+       "int21": 12.833333671256085,
+       "int22": 16.624929388962865
+      },
+      "norm_kcal": 21.26280733187213,
+      "share_of_squared_norm": 0.033247834716313214
+     },
+     "outside: columns no TR0 reference reads": {
+      "by_family_norm_kcal": {
+       "int11": 2.11395364187581,
+       "int21": 50.781160876844865,
+       "int22": 80.77424280053634
+      },
+      "norm_kcal": 95.43413121100856,
+      "share_of_squared_norm": 0.6697760401282302
+     },
+     "outside: the gauge": {
+      "by_family_norm_kcal": {
+       "hairpin initiation": 0.6930161498659511,
+       "hairpin mismatches": 1.2832165620257685,
+       "interior initiation": 0.9930424630061548,
+       "interior mismatches": 1.6216315515211464
+      },
+      "norm_kcal": 2.3964011248650485,
+      "share_of_squared_norm": 0.0004223195522575219
+     },
+     "outside: the rest (the data can see it)": {
+      "by_family_norm_kcal": {
+       "Ninio": 0.1,
+       "bulge": 4.8589911536411945,
+       "hairpin initiation": 5.492713980160081,
+       "hairpin mismatches": 8.136803856743859,
+       "int11": 16.24646208973432,
+       "int21": 42.14642366093709,
+       "int22": 42.351141324598906,
+       "interior initiation": 3.911879343742597,
+       "interior mismatches": 5.314600434442627,
+       "multiloop": 4.987634709960224,
+       "stack": 3.1785688603520925,
+       "terminal AU": 0.39
+      },
+      "norm_kcal": 63.50247779430681,
+      "share_of_squared_norm": 0.29655380560319883
+     }
+    },
+    "parts_sum_to_delta": 4.440892098500626e-16
+   },
+   "Langdon2018": {
+    "inside_part_in_E1": {
+     "contained": true,
+     "delta_kcal": 3.2666666666665813,
+     "max_entry_shift_kcal": 1.2400000000000013,
+     "norm_kcal": 5.215229067044539,
+     "r_max_kcal": 24.13231091078804
+    },
+    "norm_delta_kcal": 43.84586639581889,
+    "parts": {
+     "inside the set": {
+      "by_family_norm_kcal": {
+       "bulge": 0.10000000000001272,
+       "int11": 0.7813371311002283,
+       "int21": 3.4699759561670525,
+       "int22": 3.81279338188327
+      },
+      "norm_kcal": 5.215229067044539,
+      "share_of_squared_norm": 0.014147818015327367
+     },
+     "outside: columns no TR0 reference reads": {
+      "by_family_norm_kcal": {
+       "int11": 1.57797338380595,
+       "int21": 13.402611685787214,
+       "int22": 25.80271303564802
+      },
+      "norm_kcal": 29.118722499450417,
+      "share_of_squared_norm": 0.4410494886759672
+     },
+     "outside: the gauge": {
+      "by_family_norm_kcal": {
+       "hairpin initiation": 1.6045201499359458,
+       "hairpin mismatches": 2.970994010601533,
+       "interior initiation": 0.915887472487179,
+       "interior mismatches": 1.4956379796006374
+      },
+      "norm_kcal": 3.8048749192139653,
+      "share_of_squared_norm": 0.007530493820866743
+     },
+     "outside: the rest (the data can see it)": {
+      "by_family_norm_kcal": {
+       "Ninio": 0.2,
+       "bulge": 2.174856317093152,
+       "hairpin initiation": 8.888972929999289,
+       "hairpin mismatches": 6.058454417354248,
+       "int11": 26.58582782162096,
+       "int21": 9.702804476316532,
+       "int22": 9.279586742509112,
+       "interior initiation": 1.1625734965954735,
+       "interior mismatches": 3.8913545246778725,
+       "multiloop": 0.1,
+       "stack": 2.956349099818896,
+       "terminal AU": 0.3
+      },
+      "norm_kcal": 32.138517586027376,
+      "share_of_squared_norm": 0.537272199487839
+     }
+    },
+    "parts_sum_to_delta": 2.220446049250313e-16
+   },
+   "Turner1999": {
+    "inside_part_in_E1": {
+     "contained": true,
+     "delta_kcal": 3.2666666666665813,
+     "max_entry_shift_kcal": 3.2666666666665813,
+     "norm_kcal": 24.13231091078804,
+     "r_max_kcal": 24.13231091078804
+    },
+    "norm_delta_kcal": 132.72790625938467,
+    "parts": {
+     "inside the set": {
+      "by_family_norm_kcal": {
+       "bulge": 0.867214482778783,
+       "int11": 3.3892843049715693,
+       "int21": 14.725871684800351,
+       "int22": 18.795686312520406
+      },
+      "norm_kcal": 24.13231091078804,
+      "share_of_squared_norm": 0.033057753481777204
+     },
+     "outside: columns no TR0 reference reads": {
+      "by_family_norm_kcal": {
+       "int11": 0.6244997998398398,
+       "int21": 62.6585987714376,
+       "int22": 92.17982425672118
+      },
+      "norm_kcal": 111.46124887152484,
+      "share_of_squared_norm": 0.7052178924050408
+     },
+     "outside: the gauge": {
+      "by_family_norm_kcal": {
+       "hairpin initiation": 0.5573147116532831,
+       "hairpin mismatches": 1.0319463238951065,
+       "interior initiation": 0.4760515401409005,
+       "interior mismatches": 0.7773889097408464
+      },
+      "norm_kcal": 1.4854196340039374,
+      "share_of_squared_norm": 0.00012524887477825743
+     },
+     "outside: the rest (the data can see it)": {
+      "by_family_norm_kcal": {
+       "Ninio": 0.1,
+       "bulge": 0.9127202898820216,
+       "hairpin initiation": 0.5954014726481903,
+       "hairpin mismatches": 5.032969718083208,
+       "int11": 6.2161327481157596,
+       "int21": 48.03736136416443,
+       "int22": 46.55017420594668,
+       "interior initiation": 0.7777225350970588,
+       "interior mismatches": 5.633106520610419,
+       "multiloop": 6.041522986797286
+      },
+      "norm_kcal": 67.8860235881877,
+      "share_of_squared_norm": 0.2615991052384033
+     }
+    },
+    "parts_sum_to_delta": 4.440892098500626e-16
+   }
+  }
+ },
+ "run_id": "2026-10-18_certfold_reviewer",
+ "specification": {
+  "commit": "b2ddeabd9a65176338abb3c0403e304478331030",
+  "path": "docs/certfold_reviewer_additions.md",
+  "sha256": "bf5cbe1cdfb2c6a86c14193fdef8c153903bf1daac251182156d5b9635f41c75"
+ },
+ "status": "descriptive done"
+}

@@ -182,6 +182,41 @@ versions above, and the same ViennaRNA 2.7.2 build. The recipe is at the top of 
 - The test-set run was launched before those rules arrived. The paper's supplement discloses
   the order of events.
 
+**Registration 2, the additions and the reviewer's analyses.** Three later scripts follow the
+same discipline: a registration or specification committed before the folds it governs, phases
+that refuse to run out of order, and records written only by the scripts.
+
+| file | what it does | record | status |
+|---|---|---|---|
+| `scripts/certfold_additions.py` | A: how many uncertain pairs move under envelope draws; B: runtime | `runs/2026-10-13_certified_folding/metrics.json` → `additions` | descriptive |
+| `scripts/certfold_reg2.py` | C: stability under whole published tables (R4, R5); D: which measurements would certify the most (R6) | `runs/2026-10-15_certfold_registration2/metrics.json` | registered (PRED2) |
+| `scripts/certfold_reviewer.py` | the reviewer's additions: absolute stability, leave one table out, scale, coverage of the published tables, the held-out basis, the measurement-efficiency curve, the ranking's stability, conservativeness, the radius against the gap | `runs/2026-10-18_certfold_reviewer/metrics.json` | post hoc |
+| `scripts/certfold_reproduce_r4r5.py` | an independent reimplementation of R4 and R5 from the raw shards | `runs/2026-10-18_certfold_reviewer/reproduce_r4r5/` | check (117 of 117 bit-identical) |
+
+```
+.venv-certfold/bin/python scripts/certfold_additions.py --phase uncertain-change  # then runtime
+.venv-certfold/bin/python scripts/certfold_reg2.py --phase rank-entries            # TR0 only
+.venv-certfold/bin/python scripts/certfold_reg2.py --phase preregister2            # PRED2
+.venv-certfold/bin/python scripts/certfold_reg2.py --phase gate-g2-measured
+.venv-certfold/bin/python scripts/certfold_reg2.py --phase fold-tables             # then analyse-c
+.venv-certfold/bin/python scripts/certfold_reg2.py --phase measured-labels         # then analyse-d
+.venv-certfold/bin/python scripts/certfold_reviewer.py --phase descriptive        # then pilot2-rank,
+                                                    # gates, ts0-folds, analyse
+.venv-certfold/bin/python scripts/certfold_reproduce_r4r5.py OUTDIR
+```
+
+**Frozen configurations.** Registration 1: `PRED` in `scripts/certfold.py`, committed in its
+record under `predictions`. Registration 2: `PRED2` in `scripts/certfold_reg2.py`, with the
+frozen measurement ranking and the sha256 of the MXfold2 predictions it reads. The reviewer's
+additions: `docs/certfold_reviewer_additions.md`, committed before any of them ran, with a dated
+correction. Each record carries the commit it ran at, its seeds and the sha256 of every
+intermediate file it read.
+
+Registration 2's tertiary outcome reads the released MXfold2's TS0 predictions
+(`runs/2026-10-07_mxfold2_ts0_inference/pred_A_cpu.txt`, sha256 pinned in PRED2). They are
+regenerated with MXfold2 at commit 51b2136 and its released TrainSetAB model; see
+`LICENSE_AUDIT.md` for whether the file itself ships here.
+
 **Cost.** The test-set run (5,429 sequences, seven uncertainty sets) took 78 CPU-hours on 8
 cores. `make test` covers the certified-folding modules; `tests/test_certfold.py` needs the
 build-basis shard, and its compiled-callback test needs `.venv-certfold`.
