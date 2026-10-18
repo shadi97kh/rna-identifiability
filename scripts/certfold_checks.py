@@ -652,7 +652,25 @@ def alt_basis(B: dict) -> tuple[dict, dict]:
     Bx = dict(B, NT=NT_excl, B4=B4x, a_four=a4)
     radii = cf.published_radii(Bx, B4x)
     env_ii, u_ii = cf.published_envelope(Bx, B4x, a4, radii)
+    # the same count by principal angles against the TR0+TS0 basis, and how that basis splits
+    from scripts.turner_typeb import load_basis
+    C = load_basis("tr0ts0")
+    n = len(B["cols"])
+    L1 = np.zeros((n, B["NT"].shape[1]))
+    L1[B["used"]] = B["NT"]
+    L2 = np.zeros((n, C["NT"].shape[1]))
+    L2[C["used"]] = C["NT"]
+    cos = np.linalg.svd(L1.T @ L2, compute_uv=False)
+    tr0_unused = np.setdiff1d(np.arange(n), B["used"])
+    angles = {"dim_B_TR0": int(L1.shape[1]), "dim_tr0ts0": int(L2.shape[1]),
+              "n_shared_cos_above_1_minus_1e-9": int((cos > 1 - 1e-9).sum()),
+              "largest_cos_below_the_shared_block": float(cos[cos <= 1 - 1e-9].max()),
+              "tr0ts0_rank_on_columns_TR0_does_not_read": int(
+                  np.linalg.matrix_rank(L2[tr0_unused], tol=1e-9)),
+              "tr0ts0_directions_vanishing_on_TR0_columns": int(
+                  L2.shape[1] - np.linalg.matrix_rank(L2[B["used"]], tol=1e-9))}
     rec = {"n_TS0_references": len(ts0), "rank_of_TS0_on_B_TR0": rank,
+           "principal_angles_against_tr0ts0": angles,
            "dim_B_excl": int(NT_excl.shape[1]), "dim_B_four_excl": int(B4x.shape[1]),
            "singular_values_at_the_gap": [float(x) for x in s[max(0, rank - 3):rank + 3]],
            "max_TS0_residual_on_B_excl": float(np.abs(V @ N).max()),
