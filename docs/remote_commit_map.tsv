@@ -392,3 +392,44 @@ e33ed7e7c2cb	d0e8568170f9	dropped	supplement draft: S8, the per-set accuracy tab
 7fdb5649a63a	a9087e9e4e76	exported	artifact README: certified folding documented (files, environment, order, results)
 32d341707ac5	c98b8b64a27b	exported	docs: remote commit map for the next artifact export (195 exported, 189 dropped)
 e347dcdcaf31	c98b8b64a27b	dropped	artifact: allow-list scripts/certfold_posthoc.py (the README documents it)
+ea67dcee0555	7846151dc7d6	exported	docs: remote commit map after allow-listing the post hoc script
+5a4db8d21dc5	37f27a925690	exported	reading rules: the authors confirm the post hoc branches, before the result lands
+67b100813e7e	37f27a925690	dropped	paper: the authors' revised abstract, verbatim
+8978e3bd02d6	14ec375806fd	exported	certfold post hoc: the energy gap shows the 2a pattern too (branch b)
+306036557fc1	14ec375806fd	dropped	paper: post hoc branch (b) applied; S8 with the post hoc rows; report updated
+c54491314ae8	e3f55b8ed4e6	exported	certfold_additions: A (uncertain is not unstable) and B (runtime), descriptive
+d5ea9a0ffec9	2347507d4ad6	exported	certfold additions A: 26.8% of uncertain TS0 pairs change in a random envelope table
+e0400c945600	cd5cc71c286f	exported	certfold additions B: one callback fold costs 1.32x a plain MFE fold
+6371f642d60d	cd5cc71c286f	dropped	paper: additions A and B in the text; S9 runtime table
+589b83e2b19b	b03131585638	exported	certfold_reg2: D's entry ranking on TR0 (registration 2, first phase)
+787e29b889c0	7312860cf483	exported	certfold registration 2: D's entry ranking on TR0, before the registration
+8f5ab3df2f9c	d29aadc14ff2	exported	certfold_reg2: PRED2, the authors' design and reading rules verbatim
+b5cacdaca20d	e802b425dcc7	exported	certfold PRED2: registration 2 committed before any whole-table fold on TS0
+5c2bac380eab	018e7cde7658	exported	certfold_reg2: G2 on the measured sets, C's folds, D's measured labels
+6379d36b0a91	2336564606d7	exported	certfold registration 2: G2 on the measured sets passes, before any TS0 fold
+919714ba2e23	e6a5669b370d	exported	certfold registration 2: C's folds on TS0, and analyse-c
+17403aad6f7d	56b85f0f40db	exported	certfold_reg2: analyse-d (R6, gain by stratum, top entries as motifs)
+5c3b7b591108	484398eb42e0	exported	certfold registration 2: C analysed (R4 passes; R5 lower than p on every table)
+a2a21bf8dc69	484398eb42e0	dropped	paper: registration 2 tables (R4, R5) in the S8 generator; D's when present
+ea104e51d824	484398eb42e0	dropped	paper, reading report: C read by registration 2's rules
+5ca89124097d	70f1f0037ca6	exported	certfold registration 2: D's labels on TS0 under the 42 measured sets
+597bdb0d40a5	bae36c9ae250	exported	certfold registration 2: D analysed (R6 passes at K = 10 and 50)
+edd4f2613426	bae36c9ae250	dropped	paper, reading report: D read by registration 2's rules; Fig. 6
+94767990faf9	bae36c9ae250	dropped	paper, report: registration 2 preceded every pair-level comparison, not every TS0 fold
+6f0b16e2b466	bae36c9ae250	dropped	paper: the conclusion carries C and D (R4, R5 by rule 3, R6); body 9.65 pages
+4c42f14dabc7	bae36c9ae250	dropped	paper, report: the independent review of registration 2 acted on
+98f1504c1980	51500573c675	exported	certfold: the reviewer's additions specified (post hoc) before any runs; the experiment re
+b2ddeabd9a65	91b50036e4a8	exported	certfold reviewer additions: the code; R4/R5 reproduced exactly; 67 directions, not 49
+3f8190b145e4	68d2f9b959ad	exported	certfold reviewer additions: the descriptive phase; Section 5 says 67, not 49
+a78a246383fa	16375d574bd3	exported	certfold reviewer additions: the second TR0 pilot ranked; Section 6 restructured (draft)
+e2abbb9824ad	bf2f6468d6c4	exported	certfold reviewer additions: gates pass before any TS0 fold
+90bcb812feca	0373718750e8	exported	certfold reviewer additions: TS0 folds; the paper restructured as the reviewer proposed (d
+5c4ce8f2c180	604962d24fdc	exported	certfold reviewer additions: analysed
+945fa812ae4c	604962d24fdc	dropped	paper: the reviewer's additions written in; body 9.92 Letter pages
+558ba4a2665b	604962d24fdc	dropped	docs: the reviewer's additions read by their pre-committed rules; the experiment report re
+77ad7d8b44de	b94be42574cf	exported	integrity and wording: registered before any test sequence was certified; the authors' abs
+a091947343c2	b94be42574cf	dropped	the outline approved: main_letter.tex is the manuscript of record; one compiled supplement
+99b617b2504b	b94be42574cf	dropped	tests: the pins test covers the Letter manuscript, with a coverage test for its main text
+194c973cb2e3	b94be42574cf	dropped	tests: claims, numbers and refs cover the Letter manuscript
+8d6246421149	b09c086bd932	exported	number checks: every number in the Letter manuscript pinned to its artifact; four errors f
+eedda7b4bee8	c8a085849741	exported	text freeze: the fresh-context review's 21 points fixed
