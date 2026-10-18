@@ -1,0 +1,677 @@
+{
+ "R4": {
+  "R4_primary": {
+   "by_stratum": {
+    "0+1": {
+     "members": [
+      0,
+      1
+     ],
+     "n_pairs": 1578,
+     "n_sequences": 289,
+     "point": 0.010734386140566099,
+     "n_certified": 1505,
+     "n_uncertified": 73,
+     "mean_certified": 0.9924695459579178,
+     "mean_uncertified": 0.9817351598173517,
+     "interval": [
+      -0.002807188425609852,
+      0.035991091400147335
+     ],
+     "resamples_undefined": 0
+    },
+    "2": {
+     "members": [
+      2
+     ],
+     "n_pairs": 819,
+     "n_sequences": 96,
+     "point": 0.029966080373789894,
+     "n_certified": 781,
+     "n_uncertified": 38,
+     "mean_certified": 0.9948783610755442,
+     "mean_uncertified": 0.9649122807017543,
+     "interval": [
+      0.0031587017096356145,
+      0.07015424256967447
+     ],
+     "resamples_undefined": 0
+    },
+    "3": {
+     "members": [
+      3
+     ],
+     "n_pairs": 1181,
+     "n_sequences": 122,
+     "point": 0.009218989104046282,
+     "n_certified": 1073,
+     "n_uncertified": 108,
+     "mean_certified": 0.9937868903386144,
+     "mean_uncertified": 0.9845679012345682,
+     "interval": [
+      -0.008429254502303404,
+      0.03694611354704861
+     ],
+     "resamples_undefined": 0
+    },
+    "4": {
+     "members": [
+      4
+     ],
+     "n_pairs": 1125,
+     "n_sequences": 113,
+     "point": -0.006847183317772121,
+     "n_certified": 1071,
+     "n_uncertified": 54,
+     "mean_certified": 0.9931528166822279,
+     "mean_uncertified": 1.0,
+     "interval": [
+      -0.013571879559135996,
+      -0.0019880715705766746
+     ],
+     "resamples_undefined": 0
+    },
+    "5": {
+     "members": [
+      5
+     ],
+     "n_pairs": 1723,
+     "n_sequences": 154,
+     "point": 0.027121262275184632,
+     "n_certified": 1590,
+     "n_uncertified": 133,
+     "mean_certified": 0.9920335429769394,
+     "mean_uncertified": 0.9649122807017547,
+     "interval": [
+      -0.0006587249523929104,
+      0.07330829132772222
+     ],
+     "resamples_undefined": 0
+    },
+    "6": {
+     "members": [
+      6
+     ],
+     "n_pairs": 1439,
+     "n_sequences": 135,
+     "point": 0.01667112281134797,
+     "n_certified": 1288,
+     "n_uncertified": 151,
+     "mean_certified": 0.9857660455486547,
+     "mean_uncertified": 0.9690949227373067,
+     "interval": [
+      -0.018602479514005704,
+      0.0710242068006188
+     ],
+     "resamples_undefined": 0
+    },
+    "7": {
+     "members": [
+      7
+     ],
+     "n_pairs": 1250,
+     "n_sequences": 120,
+     "point": 0.0472592002514054,
+     "n_certified": 967,
+     "n_uncertified": 283,
+     "mean_certified": 0.9848328162702509,
+     "mean_uncertified": 0.9375736160188455,
+     "interval": [
+      0.0022982468295090776,
+      0.10337567866367497
+     ],
+     "resamples_undefined": 0
+    },
+    "8": {
+     "members": [
+      8
+     ],
+     "n_pairs": 1912,
+     "n_sequences": 120,
+     "point": -0.009344024243956639,
+     "n_certified": 1348,
+     "n_uncertified": 564,
+     "mean_certified": 0.9676063303659732,
+     "mean_uncertified": 0.9769503546099298,
+     "interval": [
+      -0.04637545645809066,
+      0.021110326343445486
+     ],
+     "resamples_undefined": 0
+    },
+    "9": {
+     "members": [
+      9
+     ],
+     "n_pairs": 2851,
+     "n_sequences": 139,
+     "point": 0.04677288832124504,
+     "n_certified": 1055,
+     "n_uncertified": 1796,
+     "mean_certified": 0.9883096366508679,
+     "mean_uncertified": 0.9415367483296229,
+     "interval": [
+      0.01787309516892005,
+      0.07640614135843814
+     ],
+     "resamples_undefined": 0
+    }
+   },
+   "strata_pooled": [
+    "0+1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+   ],
+   "pooled_point": 0.020892278227747973,
+   "pooled_interval": [
+    0.009841994442689777,
+    0.03325051054884942
+   ],
+   "pooled_resamples_undefined": 0
+  },
+  "R4_secondary": {
+   "by_stratum": {
+    "0+1": {
+     "members": [
+      0,
+      1
+     ],
+     "n_pairs": 1578,
+     "n_sequences": 289,
+     "point": 0.011177354025394326,
+     "n_certified": 1505,
+     "n_uncertified": 73,
+     "mean_certified": 0.992912513842746,
+     "mean_uncertified": 0.9817351598173517,
+     "interval": [
+      -0.002357621505610571,
+      0.036433604255677494
+     ],
+     "resamples_undefined": 0
+    },
+    "2": {
+     "members": [
+      2
+     ],
+     "n_pairs": 819,
+     "n_sequences": 96,
+     "point": 0.02162095379293294,
+     "n_certified": 781,
+     "n_uncertified": 38,
+     "mean_certified": 0.9953051643192488,
+     "mean_uncertified": 0.9736842105263158,
+     "interval": [
+      -0.004092825307013689,
+      0.05793398758539422
+     ],
+     "resamples_undefined": 0
+    },
+    "3": {
+     "members": [
+      3
+     ],
+     "n_pairs": 1181,
+     "n_sequences": 122,
+     "point": 0.009218989104046282,
+     "n_certified": 1073,
+     "n_uncertified": 108,
+     "mean_certified": 0.9937868903386144,
+     "mean_uncertified": 0.9845679012345682,
+     "interval": [
+      -0.008429254502303404,
+      0.03694611354704861
+     ],
+     "resamples_undefined": 0
+    },
+    "4": {
+     "members": [
+      4
+     ],
+     "n_pairs": 1125,
+     "n_sequences": 113,
+     "point": -0.006847183317772121,
+     "n_certified": 1071,
+     "n_uncertified": 54,
+     "mean_certified": 0.9931528166822279,
+     "mean_uncertified": 1.0,
+     "interval": [
+      -0.013571879559135996,
+      -0.0019880715705766746
+     ],
+     "resamples_undefined": 0
+    },
+    "5": {
+     "members": [
+      5
+     ],
+     "n_pairs": 1723,
+     "n_sequences": 154,
+     "point": 0.026501789063854697,
+     "n_certified": 1590,
+     "n_uncertified": 133,
+     "mean_certified": 0.9939203354297697,
+     "mean_uncertified": 0.967418546365915,
+     "interval": [
+      -0.0006784084098904075,
+      0.07179281100540287
+     ],
+     "resamples_undefined": 0
+    },
+    "6": {
+     "members": [
+      6
+     ],
+     "n_pairs": 1439,
+     "n_sequences": 135,
+     "point": 0.01667112281134797,
+     "n_certified": 1288,
+     "n_uncertified": 151,
+     "mean_certified": 0.9857660455486547,
+     "mean_uncertified": 0.9690949227373067,
+     "interval": [
+      -0.018602479514005704,
+      0.0710242068006188
+     ],
+     "resamples_undefined": 0
+    },
+    "7": {
+     "members": [
+      7
+     ],
+     "n_pairs": 1250,
+     "n_sequences": 120,
+     "point": 0.048638035135927904,
+     "n_certified": 967,
+     "n_uncertified": 283,
+     "mean_certified": 0.9862116511547734,
+     "mean_uncertified": 0.9375736160188455,
+     "interval": [
+      0.003613241780039456,
+      0.10512120412470749
+     ],
+     "resamples_undefined": 0
+    },
+    "8": {
+     "members": [
+      8
+     ],
+     "n_pairs": 1912,
+     "n_sequences": 120,
+     "point": -0.011117073889346796,
+     "n_certified": 1348,
+     "n_uncertified": 564,
+     "mean_certified": 0.9676063303659732,
+     "mean_uncertified": 0.97872340425532,
+     "interval": [
+      -0.04863380374161838,
+      0.019684966571853455
+     ],
+     "resamples_undefined": 0
+    },
+    "9": {
+     "members": [
+      9
+     ],
+     "n_pairs": 2851,
+     "n_sequences": 139,
+     "point": 0.04547370495079184,
+     "n_certified": 1055,
+     "n_uncertified": 1796,
+     "mean_certified": 0.9883096366508679,
+     "mean_uncertified": 0.9428359317000761,
+     "interval": [
+      0.016173305711976907,
+      0.07574865895550212
+     ],
+     "resamples_undefined": 0
+    }
+   },
+   "strata_pooled": [
+    "0+1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+   ],
+   "pooled_point": 0.019986275432238583,
+   "pooled_interval": [
+    0.008965782498562376,
+    0.03238273151274364
+   ],
+   "pooled_resamples_undefined": 0
+  },
+  "R4_tertiary": {
+   "by_stratum": {
+    "0+1": {
+     "members": [
+      0,
+      1
+     ],
+     "n_pairs": 1578,
+     "n_sequences": 289,
+     "point": 0.00761844081372598,
+     "n_certified": 1505,
+     "n_uncertified": 73,
+     "mean_certified": 0.9528239202657808,
+     "mean_uncertified": 0.9452054794520548,
+     "interval": [
+      -0.040403357756828004,
+      0.08211858677862362
+     ],
+     "resamples_undefined": 0
+    },
+    "2": {
+     "members": [
+      2
+     ],
+     "n_pairs": 819,
+     "n_sequences": 96,
+     "point": 0.017352921355886508,
+     "n_certified": 781,
+     "n_uncertified": 38,
+     "mean_certified": 0.9910371318822023,
+     "mean_uncertified": 0.9736842105263158,
+     "interval": [
+      -0.022432113341204207,
+      0.05920975630414403
+     ],
+     "resamples_undefined": 0
+    },
+    "3": {
+     "members": [
+      3
+     ],
+     "n_pairs": 1181,
+     "n_sequences": 122,
+     "point": -0.006704980842911823,
+     "n_certified": 1073,
+     "n_uncertified": 108,
+     "mean_certified": 0.9655172413793104,
+     "mean_uncertified": 0.9722222222222222,
+     "interval": [
+      -0.060988134887647184,
+      0.057863180779050755
+     ],
+     "resamples_undefined": 0
+    },
+    "4": {
+     "members": [
+      4
+     ],
+     "n_pairs": 1125,
+     "n_sequences": 113,
+     "point": -0.00466853408029877,
+     "n_certified": 1071,
+     "n_uncertified": 54,
+     "mean_certified": 0.9953314659197012,
+     "mean_uncertified": 1.0,
+     "interval": [
+      -0.010280507343124176,
+      -0.0008524786417804664
+     ],
+     "resamples_undefined": 0
+    },
+    "5": {
+     "members": [
+      5
+     ],
+     "n_pairs": 1723,
+     "n_sequences": 154,
+     "point": 0.011207263441622928,
+     "n_certified": 1590,
+     "n_uncertified": 133,
+     "mean_certified": 0.9811320754716981,
+     "mean_uncertified": 0.9699248120300752,
+     "interval": [
+      -0.025461779869162544,
+      0.07450573642679544
+     ],
+     "resamples_undefined": 0
+    },
+    "6": {
+     "members": [
+      6
+     ],
+     "n_pairs": 1439,
+     "n_sequences": 135,
+     "point": 0.05535560034552256,
+     "n_certified": 1288,
+     "n_uncertified": 151,
+     "mean_certified": 0.9891304347826086,
+     "mean_uncertified": 0.9337748344370861,
+     "interval": [
+      -0.017023826872631907,
+      0.1848312224897235
+     ],
+     "resamples_undefined": 0
+    },
+    "7": {
+     "members": [
+      7
+     ],
+     "n_pairs": 1250,
+     "n_sequences": 120,
+     "point": 0.025513317571740135,
+     "n_certified": 967,
+     "n_uncertified": 283,
+     "mean_certified": 0.9689762150982419,
+     "mean_uncertified": 0.9434628975265018,
+     "interval": [
+      -0.02323793298350853,
+      0.09467818299511607
+     ],
+     "resamples_undefined": 0
+    },
+    "8": {
+     "members": [
+      8
+     ],
+     "n_pairs": 1912,
+     "n_sequences": 120,
+     "point": 0.09523433718458663,
+     "n_certified": 1348,
+     "n_uncertified": 564,
+     "mean_certified": 0.9480712166172107,
+     "mean_uncertified": 0.8528368794326241,
+     "interval": [
+      0.01876058677299828,
+      0.18082129555494458
+     ],
+     "resamples_undefined": 0
+    },
+    "9": {
+     "members": [
+      9
+     ],
+     "n_pairs": 2851,
+     "n_sequences": 139,
+     "point": 0.04295274385416781,
+     "n_certified": 1055,
+     "n_uncertified": 1796,
+     "mean_certified": 0.9772511848341232,
+     "mean_uncertified": 0.9342984409799554,
+     "interval": [
+      -0.00393014031787231,
+      0.09146814133602725
+     ],
+     "resamples_undefined": 0
+    }
+   },
+   "strata_pooled": [
+    "0+1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+   ],
+   "pooled_point": 0.032315034960057366,
+   "pooled_interval": [
+    0.012292899213589253,
+    0.0555604770595265
+   ],
+   "pooled_resamples_undefined": 0
+  },
+  "seed": [
+   20261013,
+   60
+  ]
+ },
+ "R5": {
+  "Turner1999": {
+   "n": 53246,
+   "n_in_coverage_set": 13878,
+   "p": {
+    "difference": -0.022265456117596227,
+    "ppv_score": 0.9669981265312004,
+    "ppv_baseline": 0.9892635826487967,
+    "k": 13878,
+    "baseline_key": "p",
+    "interval": [
+     -0.03174072222043707,
+     -0.013575285101315965
+    ]
+   },
+   "nominal_gap": {
+    "difference": -0.02124964890557668,
+    "ppv_score": 0.9669981265312004,
+    "ppv_baseline": 0.9882477754367771,
+    "k": 13878,
+    "baseline_key": "gap",
+    "interval": [
+     -0.03086587772652971,
+     -0.01234633186906031
+    ]
+   },
+   "length": {
+    "difference": 0.08336936157947827,
+    "ppv_score": 0.9669981265312004,
+    "ppv_baseline": 0.8836287649517222,
+    "k": 13878,
+    "baseline_key": "neg_len",
+    "interval": [
+     0.06494402282989706,
+     0.10081488967152777
+    ]
+   },
+   "seed": [
+    20261013,
+    61
+   ]
+  },
+  "Andronescu2007": {
+   "n": 53246,
+   "n_in_coverage_set": 13878,
+   "p": {
+    "difference": -0.05476293414036604,
+    "ppv_score": 0.9261420954027958,
+    "ppv_baseline": 0.9809050295431618,
+    "k": 13878,
+    "baseline_key": "p",
+    "interval": [
+     -0.06808778435498254,
+     -0.041114067269585615
+    ]
+   },
+   "nominal_gap": {
+    "difference": -0.04647287368196207,
+    "ppv_score": 0.9261420954027958,
+    "ppv_baseline": 0.9726149690847579,
+    "k": 13878,
+    "baseline_key": "gap",
+    "interval": [
+     -0.06046986863849481,
+     -0.031890342977327915
+    ]
+   },
+   "length": {
+    "difference": 0.13921314310419364,
+    "ppv_score": 0.9261420954027958,
+    "ppv_baseline": 0.7869289522986022,
+    "k": 13878,
+    "baseline_key": "neg_len",
+    "interval": [
+     0.11681817762100852,
+     0.16274315879457044
+    ]
+   },
+   "seed": [
+    20261013,
+    61
+   ]
+  },
+  "Langdon2018": {
+   "n": 53246,
+   "n_in_coverage_set": 13878,
+   "p": {
+    "difference": -0.0747946389969737,
+    "ppv_score": 0.8944372387952154,
+    "ppv_baseline": 0.9692318777921891,
+    "k": 13878,
+    "baseline_key": "p",
+    "interval": [
+     -0.09116186339853448,
+     -0.058747947747876395
+    ]
+   },
+   "nominal_gap": {
+    "difference": -0.07392984971933614,
+    "ppv_score": 0.8944372387952154,
+    "ppv_baseline": 0.9683670885145516,
+    "k": 13878,
+    "baseline_key": "gap",
+    "interval": [
+     -0.08962209348106548,
+     -0.05836963224098434
+    ]
+   },
+   "length": {
+    "difference": 0.15548349906326553,
+    "ppv_score": 0.8944372387952154,
+    "ppv_baseline": 0.7389537397319499,
+    "k": 13878,
+    "baseline_key": "neg_len",
+    "interval": [
+     0.13295574525873038,
+     0.17950008036062012
+    ]
+   },
+   "seed": [
+    20261013,
+    61
+   ]
+  }
+ },
+ "load_info": {
+  "n_ts0": 1288,
+  "mx_lines": null,
+  "mx_conflicting_duplicates": [],
+  "chars": {
+   "whole:Turner1999": "().",
+   "whole:Andronescu2007": "().",
+   "whole:Langdon2018": "().",
+   "visible:Turner1999": "().",
+   "visible:Andronescu2007": "().",
+   "visible:Langdon2018": "().",
+   "mxfold2": "()."
+  }
+ },
+ "seconds": 26.5,
+ "tags": [
+  60,
+  61
+ ]
+}
