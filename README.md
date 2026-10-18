@@ -106,7 +106,8 @@ python scripts/certfold.py --phase build-basis
 The registered experiments refuse to run out of order. A phase checks that the tree is clean,
 that its predecessor's record is committed, and that the predictions block (`PRED`) in the
 script still equals the one committed with the registration; the registration is always
-committed before any test-set data is folded. Large intermediate files (bases, shards) are not
+committed before the analyses it governs (for certified folding, before any test sequence was
+certified; earlier experiments had folded test sequences). Large intermediate files (bases, shards) are not
 committed: each `metrics.json` records their sha256, and rerunning the phase rebuilds them.
 
 `make test` runs the tests. Some tests read a run's intermediate files, so they need that run
@@ -156,7 +157,7 @@ versions above, and the same ViennaRNA 2.7.2 build. The recipe is at the top of 
 .venv-certfold/bin/python scripts/certfold.py --phase build-basis
 .venv-certfold/bin/python scripts/certfold.py --phase gate-g1      # likewise gate-g2, g3, g6, g4
 .venv-certfold/bin/python scripts/certfold.py --phase env-check
-.venv-certfold/bin/python scripts/certfold.py --phase preregister  # PRED: before any test-set fold
+.venv-certfold/bin/python scripts/certfold.py --phase preregister  # PRED: before any test sequence is certified
 .venv-certfold/bin/python scripts/certfold.py --phase gate-attacks # G5, on the test sets
 .venv-certfold/bin/python scripts/certfold_run.py --phase run
 .venv-certfold/bin/python scripts/certfold_run.py --phase analyse
@@ -212,10 +213,14 @@ additions: `docs/certfold_reviewer_additions.md`, committed before any of them r
 correction. Each record carries the commit it ran at, its seeds and the sha256 of every
 intermediate file it read.
 
-Registration 2's tertiary outcome reads the released MXfold2's TS0 predictions
-(`runs/2026-10-07_mxfold2_ts0_inference/pred_A_cpu.txt`, sha256 pinned in PRED2). They are
-regenerated with MXfold2 at commit 51b2136 and its released TrainSetAB model; see
-`LICENSE_AUDIT.md` for whether the file itself ships here.
+Registration 2's tertiary outcome reads the released MXfold2's TS0 predictions, which ship here:
+`runs/2026-10-07_mxfold2_ts0_inference/pred_A_cpu.txt` (sha256 `b846b1ab...`, pinned in PRED2),
+one line per TS0 sequence with its bpRNA identifier and predicted dot-bracket structure, and no
+sequences. They are the output of MXfold2 at commit 51b2136 (MIT licence, K. Sato) with its
+released TrainSetAB model (`models/TrainSetAB.conf`, `TrainSetAB.pth`), run on CPU on TS0 from
+the MXfold2 data release (Sato, Zenodo 2021, <https://doi.org/10.5281/zenodo.4430150>, CC BY 4.0;
+structures derived from bpRNA-1m, Danaee et al. 2018). Rerunning that model on TS0 regenerates
+them, checked against the pinned sha256.
 
 **Cost.** The test-set run (5,429 sequences, seven uncertainty sets) took 78 CPU-hours on 8
 cores. `make test` covers the certified-folding modules; `tests/test_certfold.py` needs the

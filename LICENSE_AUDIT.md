@@ -4,8 +4,8 @@ Audited 2026-10-18 against the allow-lists in this directory (`keep_files.txt`, 
 `keep_sources.txt`), which decide everything `export.sh` publishes. The artifact is still
 private; making it public waits for the authors' go.
 
-**Verdict: nothing in the export carries third-party code or redistributes a dataset; one
-decision is open** (whether to add the MXfold2 TS0 predictions, below).
+**Verdict: nothing in the export carries third-party code or redistributes a dataset.** The MXfold2
+TS0 predictions ship with their attribution (below).
 
 ## Our code and records
 
@@ -31,17 +31,14 @@ decision is open** (whether to add the MXfold2 TS0 predictions, below).
 | TR0, TS0, bpRNA-new (MXfold2's data release, from bpRNA-1m) | CC BY 4.0 | attribution and an indication of changes | the README's Attribution section (Zenodo record, the MXfold2 and bpRNA papers; the filtering steps) |
 | Rfam 12.2 and 15.1 | CC0 1.0 | none (citation requested) | cited in the README |
 
-## Open decision for the authors
+## The MXfold2 TS0 predictions (decided 2026-10-18: they ship)
 
-**The MXfold2 TS0 predictions** (`runs/2026-10-07_mxfold2_ts0_inference/pred_A_cpu.txt`) are not
-committed, yet registration 2's tertiary outcome reads them, and PRED2 pins their sha256
-(`b846b1ab...`). They are the released MXfold2 model's (MIT) predictions on TS0 (CC BY 4.0):
-dot-bracket structures keyed by bpRNA identifier, with no sequences. Both licences allow
-redistributing them with the attribution the README already gives. Two options:
-1. add the file to the export (recommended: the tertiary outcome then reproduces from the
-   artifact alone); or
-2. leave it out and document regeneration with MXfold2 51b2136 and its released TrainSetAB
-   model on TS0, checked against the pinned sha256.
+`runs/2026-10-07_mxfold2_ts0_inference/pred_A_cpu.txt`, which registration 2's tertiary outcome
+reads and PRED2 pins (sha256 `b846b1ab...`), is committed and exported. It is the released MXfold2
+model's (commit 51b2136, MIT) output on TS0 (CC BY 4.0): dot-bracket structures keyed by bpRNA
+identifier, with no sequences. Both licences allow redistributing it; the README names the model's
+commit and gives the data bundle's attribution beside the file. The run's `ts0.fa`, which holds the
+sequences, is not committed and not exported.
 
 Also not on the allow-list, by choice rather than licence: `docs/certfold_reading_report.md` and
 `docs/certfold_experiment_report.*`, which carry the authors' draft text and open decisions.
