@@ -5306,5 +5306,50 @@
   "path": "docs/certfold_reviewer_additions.md",
   "sha256": "bf5cbe1cdfb2c6a86c14193fdef8c153903bf1daac251182156d5b9635f41c75"
  },
- "status": "gates passed"
+ "status": "TS0 folds done",
+ "ts0_folds": {
+  "files_sha256": {
+   "ts0_0.jsonl": "e391c9113fa6e143768f29827146694437379d0797d9b6dc38796ce518fe64ee",
+   "ts0_1.jsonl": "8bff093f46ade4356811f2fd2f560d55240e13f5edfa7e5878691f0b58d6d506",
+   "ts0_10.jsonl": "7b59cbc3302325bb8dd801262d33608cd89fd3dc480f74c58e7b1ce5b52ed1d7",
+   "ts0_11.jsonl": "755b4678732e60b8bd7268b8eb0709113411ce50ab838044053994eb7839965d",
+   "ts0_2.jsonl": "a486042e2658305371f14d30fbc744ce038bf178343f62f322d7915d2aaaa132",
+   "ts0_3.jsonl": "beb56f672e1618501bd7b3b174bea9afe1c28e414cb124095deb11b7eb97377e",
+   "ts0_4.jsonl": "a39361b18fd2ea411545465b4b9c956e21235cf2d388b1ec1fd4eda013e20509",
+   "ts0_5.jsonl": "dbef28687ddf844143b26bcc99848bbdfd532ac87a8a8139f837445941d50423",
+   "ts0_6.jsonl": "8a809917114bf242db0921ce086f834511b7ecaafbe36bb5a320e75be2dab9db",
+   "ts0_7.jsonl": "5f2847c04c0c012e3fda0562e103f3924fc3c1bf53dba57130d6a708ccdff944",
+   "ts0_8.jsonl": "f9e8f8758f8179e159a3d282ff0228d776a4f47262b4d126707988c10f017314",
+   "ts0_9.jsonl": "49f68aef89fbcdd1eb8ba224f6c2fe5e87b25089091746e2c661c453a129cde4"
+  },
+  "folds": 272172,
+  "load_at_start": [
+   2.2548828125,
+   3.18408203125,
+   1.9892578125
+  ],
+  "n_sequences": 1288,
+  "pids": [
+   2043040,
+   2043041,
+   2043042,
+   2043043,
+   2043044,
+   2043045,
+   2043046,
+   2043047,
+   2043048,
+   2043049,
+   2043050,
+   2043051
+  ],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "e2abbb9824ada4ce53f417b25abf5a0c4b2df5bb"
+  },
+  "seconds": 2709.5,
+  "workers": 12
+ }
 }
