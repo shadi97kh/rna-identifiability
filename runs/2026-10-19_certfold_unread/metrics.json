@@ -286,11 +286,62 @@
   },
   "seconds": 275.6
  },
+ "run": {
+  "cpu_seconds": 5253.5,
+  "environment": {
+   "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+   "callback_backend": "compiled",
+   "numba": "0.68.0",
+   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+   "viennarna": "2.7.2"
+  },
+  "files_sha256": {
+   "run_0.jsonl": "e38c8c6858d2b236cb5510a8b7e09e9f97641adf7fe270780fccbb8195721fc8",
+   "run_1.jsonl": "2b19a240a13b40d49cc3f9cbb30bdb1fb57dd7d75c5c7b7a947395e9c47ad673",
+   "run_2.jsonl": "9d1ede8cbd03112e4584aed76bff09396e7312739cbc7d05bc692d9394c38404",
+   "run_3.jsonl": "46fc992ba46099e9c8ab3d8feb7c570aa533105829c70ad8c309e0e0cf386cf7",
+   "run_4.jsonl": "52a4e2dfe37deef658f8a637030d9bd7820ecfe3caec70f02e843cbacd480559",
+   "run_5.jsonl": "71c8c861622d1fd18a6de6f5c303dd378da2ba61e80a31f5018f18dcf16b0a48",
+   "run_6.jsonl": "e07fa3e84ab49605f57ae63ef88ecdc423382867e5c3010807d4d372a2c2eb3c",
+   "run_7.jsonl": "1cd4f6aad856730672e0e46685f96c75dff9b566ed0cabfe7970b124df47ac99"
+  },
+  "folds": 54536,
+  "load_at_start": [
+   2.4384765625,
+   6.16015625,
+   6.31298828125
+  ],
+  "must_holds": "every margin <= registration 1's; certified-absent counts <= registration 1's; denominators equal; labels == G5+'s digests",
+  "n_sequences": 1288,
+  "pids": [
+   2105514,
+   2105515,
+   2105516,
+   2105517,
+   2105518,
+   2105519,
+   2105520,
+   2105521
+  ],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "bd8e0b3b6395980af21b8e21aacb66fe4e649642"
+  },
+  "recursion_side": {
+   "folds_checked": 54536,
+   "violations": 0,
+   "zuker_structures_checked": 4071182
+  },
+  "seconds": 759.5,
+  "workers": 8
+ },
  "run_id": "2026-10-19_certfold_unread",
  "specification": {
   "commit": "6a0c14d8382c4518580913dfe1e30c4698dd56e1",
   "path": "docs/certfold_unread_addition.md",
   "sha256": "2dbcc2c7d500117f5d488cb25f0007111b8d2c97ab49b0383e34e0bbf68f6b40"
  },
- "status": "G5 passed"
+ "status": "TS0 labelled"
 }
