@@ -1,0 +1,48 @@
+{
+ "fold": {
+  "checks": {
+   "1_model_read_back_and_turner2004_params": true,
+   "2_energy_identity": "every MFE energy equals Extractor(special, 2, 1, lxc) counts . clip_d2(theta0) + offset + Ninio correction, integer dcal",
+   "2_n_folds_checked": 1288,
+   "2_n_folds_with_a_nonzero_ninio_correction": 0,
+   "3_dangles0_mfe_is_registration_1s": true
+  },
+  "environment": {
+   "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+   "callback_backend": "compiled",
+   "numba": "0.68.0",
+   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+   "viennarna": "2.7.2"
+  },
+  "files_sha256": {
+   "default_mfe.jsonl": "36fe48af54c1c41d7d9d67a8f2bc3899714a06c1b4c22babc6a0593a6eb24ef8"
+  },
+  "model": {
+   "dangles": 2,
+   "every_other_field": "as thermo.vienna_ref.REFERENCE_MODEL",
+   "fields_differing_from_a_bare_RNA_md": {
+    "pf_smooth": {
+     "bare_RNA_md": 1,
+     "here": 0
+    }
+   },
+   "special_hp": 1
+  },
+  "n_sequences": 1288,
+  "n_sequences_mfe_differs_from_dangles0": 726,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "7e9a7fd5fda9da114dd832546728dd673faf89d1"
+  },
+  "seconds": 67.5
+ },
+ "run_id": "2026-10-19_certfold_default_model",
+ "specification": {
+  "commit": "2e526c84073d8ae6f7d912fc4ddfef4589ce1e6c",
+  "path": "docs/certfold_default_model.md",
+  "sha256": "f98bf660d9f0e5d3e1d4d26e5718d14032d8e4852c9215be3bf45c42d9a7e76d"
+ },
+ "status": "default-model folds done"
+}
