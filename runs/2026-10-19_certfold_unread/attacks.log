@@ -1,0 +1,72 @@
+{
+ "rule": "violation counts only; no accuracy, coverage or PPV",
+ "n_sequences": 1288,
+ "violations": {},
+ "n_tested": {
+  "worst_case": 25760,
+  "worst_case_touching": 10341,
+  "component:Turner1999": 1288,
+  "component:Andronescu2007": 1288,
+  "component:Langdon2018": 1288,
+  "draw": 257600
+ },
+ "n_violations": 0,
+ "attacks": {
+  "components": "Pi delta_X + delta_X|U, three",
+  "draws": 200,
+  "draw_seed": [
+   20261013,
+   50
+  ],
+  "vertex_seed": [
+   20261013,
+   90
+  ],
+  "worst_case_alternatives": 20
+ },
+ "envelope_draws": {
+  "kind": "envelope",
+  "definition": "uniform on {t : ||t|| <= lam r_max, |(B4 t)_e| <= lam delta for every e} by rejection from the uniform k-ball (Gaussian direction, radius r_max U^(1/k)); the box is tested at lam = 1 and the accepted t scaled by lam; shift = B4 t on B['used'], 0 elsewhere, kcal/mol",
+  "seed": [
+   20261013,
+   50
+  ],
+  "lam": 1.0,
+  "k": 448,
+  "r_max_kcal": 24.13231091078804,
+  "delta_kcal": 3.2666666666665813,
+  "n_draws": 200,
+  "n_proposals": 225,
+  "acceptance_rate": 0.8888888888888888,
+  "norm_t_over_lam_r_max": {
+   "min": 0.9904305886622066,
+   "median": 0.9985720700365711,
+   "max": 0.9999855868056666
+  },
+  "max_abs_entry_over_lam_delta": {
+   "min": 0.7009115921719585,
+   "median": 0.8458368905781052,
+   "max": 0.9988843252667992
+  },
+  "max_over_draws_abs_shift_over_lam_u_env": 0.9988843252667992,
+  "n_entries_reached": 923
+ },
+ "workers": 8,
+ "pids": [
+  2104225,
+  2104226,
+  2104227,
+  2104228,
+  2104229,
+  2104230,
+  2104231,
+  2104232
+ ],
+ "load_at_start": [
+  0.81201171875,
+  1.07666015625,
+  0.6533203125
+ ],
+ "pass": true,
+ "seconds": 1689.3
+}

@@ -1,4 +1,99 @@
 {
+ "attacks": {
+  "attacks": {
+   "components": "Pi delta_X + delta_X|U, three",
+   "draw_seed": [
+    20261013,
+    50
+   ],
+   "draws": 200,
+   "vertex_seed": [
+    20261013,
+    90
+   ],
+   "worst_case_alternatives": 20
+  },
+  "envelope_draws": {
+   "acceptance_rate": 0.8888888888888888,
+   "definition": "uniform on {t : ||t|| <= lam r_max, |(B4 t)_e| <= lam delta for every e} by rejection from the uniform k-ball (Gaussian direction, radius r_max U^(1/k)); the box is tested at lam = 1 and the accepted t scaled by lam; shift = B4 t on B['used'], 0 elsewhere, kcal/mol",
+   "delta_kcal": 3.2666666666665813,
+   "k": 448,
+   "kind": "envelope",
+   "lam": 1.0,
+   "max_abs_entry_over_lam_delta": {
+    "max": 0.9988843252667992,
+    "median": 0.8458368905781052,
+    "min": 0.7009115921719585
+   },
+   "max_over_draws_abs_shift_over_lam_u_env": 0.9988843252667992,
+   "n_draws": 200,
+   "n_entries_reached": 923,
+   "n_proposals": 225,
+   "norm_t_over_lam_r_max": {
+    "max": 0.9999855868056666,
+    "median": 0.9985720700365711,
+    "min": 0.9904305886622066
+   },
+   "r_max_kcal": 24.13231091078804,
+   "seed": [
+    20261013,
+    50
+   ]
+  },
+  "environment": {
+   "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+   "callback_backend": "compiled",
+   "numba": "0.68.0",
+   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+   "viennarna": "2.7.2"
+  },
+  "files_sha256": {
+   "g5_0.jsonl": "48eb303972da0365bdb44648cafec4f256ac019d231665d018b5379ab07ef129",
+   "g5_1.jsonl": "2966b1ed56ed6fec0b59e718b9b24264722ff4ea4e3e471ff45fde10c7afc33f",
+   "g5_2.jsonl": "aa77b867c885fa6792685609ce363135abd7f93de509da6abd47979a55f67995",
+   "g5_3.jsonl": "841c5fdde0fddd426d95101f67dace460371a329b977bc1901864ccab7d2241a",
+   "g5_4.jsonl": "566b42914e09003cd878b2ebd93f3d11a0833cbd843136e83795446e97f7240c",
+   "g5_5.jsonl": "d82c600d014f90d6687df99fc2d08c7a4067ac69188d9dd1a01423d3d376b388",
+   "g5_6.jsonl": "50b617bd1b2bd100f30f5bbcdf966c036dfbe8f6e20fdd50708d5247f782ff89",
+   "g5_7.jsonl": "d047aa2e18bace222423a066ad98d59163de6a8e1fcee636b671127c7fa7bbb6"
+  },
+  "load_at_start": [
+   0.81201171875,
+   1.07666015625,
+   0.6533203125
+  ],
+  "n_sequences": 1288,
+  "n_tested": {
+   "component:Andronescu2007": 1288,
+   "component:Langdon2018": 1288,
+   "component:Turner1999": 1288,
+   "draw": 257600,
+   "worst_case": 25760,
+   "worst_case_touching": 10341
+  },
+  "n_violations": 0,
+  "pass": true,
+  "pids": [
+   2104225,
+   2104226,
+   2104227,
+   2104228,
+   2104229,
+   2104230,
+   2104231,
+   2104232
+  ],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "193c7d48164602bd82a3a4e9aea72c58eb6711fa"
+  },
+  "rule": "violation counts only; no accuracy, coverage or PPV",
+  "seconds": 1689.3,
+  "violations": {},
+  "workers": 8
+ },
  "describe": {
   "cross_check": "share_inside_registered_span and share_on_unread_four_table_entries equal the reviewer's /descriptive/table_coverage to 1e-12",
   "definition": "E+_1 = {theta0 + B t + v : t in E_1, v_e = 0 off U, |v_e| <= m_e on U}; u+ = u_env + m (disjoint supports)",
@@ -197,5 +292,5 @@
   "path": "docs/certfold_unread_addition.md",
   "sha256": "2dbcc2c7d500117f5d488cb25f0007111b8d2c97ab49b0383e34e0bbf68f6b40"
  },
- "status": "gates passed"
+ "status": "G5 passed"
 }
