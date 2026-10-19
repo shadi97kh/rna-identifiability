@@ -67,11 +67,135 @@
   },
   "u_plus_sha256": "ce2506ac4e54e1e8ff428a45fdb1762ebf8bc64bb828ef77de5cccb3a69316e4"
  },
+ "gates": {
+  "G1": {
+   "constructed": {
+    "by_backend": {
+     "compiled": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 9198,
+       "plus": 9198
+      }
+     },
+     "python": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 9198,
+       "plus": 9198
+      }
+     }
+    },
+    "n_rows_reading_an_unread_entry": 8257
+   },
+   "pass": true,
+   "sampled": {
+    "by_backend": {
+     "compiled": {
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 7856
+     },
+     "python": {
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 7856
+     }
+    },
+    "n_sequences": 20,
+    "n_structures_charged_on_U": 7186
+   },
+   "samples_per_sequence": 1000,
+   "seconds": 36.8
+  },
+  "G2": {
+   "n_certified_absent": 7777,
+   "n_certified_present": 341,
+   "n_exactly_robust_absent": 7777,
+   "n_exactly_robust_present": 341,
+   "n_false_certificates": 0,
+   "n_sequences": 200,
+   "n_structures": 262593,
+   "pass": true,
+   "power_check": {
+    "false_certificates_produced": 28,
+    "n_sequences": 50,
+    "pass": true,
+    "weights_scaled_by": 0.5
+   },
+   "recursion_side": {
+    "folds_checked": 1146,
+    "subopt_structures_checked": 0,
+    "violations": 0,
+    "zuker_structures_checked": 11651
+   },
+   "seconds": 24.3,
+   "sequences": {
+    "lengths": [
+     16,
+     20
+    ],
+    "n_kept": 200,
+    "n_rejected_no_reachable_loop": 40,
+    "n_screened": 240
+   },
+   "test": "the box bound N(s) - sum_e |dc_e| u+_e: certified must imply robust over the box {|x_e| <= u+_e}, which contains E+_1",
+   "whole_structure_certified": 173
+  },
+  "G4": {
+   "band_size": 296363,
+   "cap_dcal": 600,
+   "lengths": [
+    37,
+    149
+   ],
+   "n_band_structures_differing_on_U": 269479,
+   "n_certified_absent": 154509,
+   "n_certified_present": 1213,
+   "n_exact_witnesses": 285929,
+   "n_false_certificates": 0,
+   "n_pairs_star": 2625,
+   "n_robust_absent": 154549,
+   "n_robust_present": 1216,
+   "n_sequences": 100,
+   "n_skipped": 5,
+   "note": "robustness is judged by the box bound, an upper bound on E+_1's worst case, so the robust counts and the relaxation loss are lower bounds",
+   "pass": true,
+   "relaxation_loss_absent": 40,
+   "relaxation_loss_present": 3,
+   "seconds": 213.8,
+   "skipped_band_delta_dcal": [
+    911,
+    724,
+    725,
+    734,
+    975
+   ]
+  },
+  "environment": {
+   "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+   "callback_backend": "compiled",
+   "numba": "0.68.0",
+   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+   "viennarna": "2.7.2"
+  },
+  "load_at_start": [
+   1.13525390625,
+   1.15234375,
+   0.6689453125
+  ],
+  "pass": true,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "d268dcb04aa9dc442943b3d1796f5d57b51b4ed6"
+  },
+  "seconds": 275.6
+ },
  "run_id": "2026-10-19_certfold_unread",
  "specification": {
   "commit": "6a0c14d8382c4518580913dfe1e30c4698dd56e1",
   "path": "docs/certfold_unread_addition.md",
   "sha256": "2dbcc2c7d500117f5d488cb25f0007111b8d2c97ab49b0383e34e0bbf68f6b40"
  },
- "status": "described"
+ "status": "gates passed"
 }
