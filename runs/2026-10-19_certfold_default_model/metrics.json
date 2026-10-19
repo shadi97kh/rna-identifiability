@@ -1,4 +1,341 @@
 {
+ "analysis": {
+  "decoupled_bound": {
+   "bound": "share of TS0 MFE pairs with nominal gap > W(s*) (integer dcal, strict); W(s*) = certfold.eprime_offset(s*) under Weights(u_env, cols, 1.0)",
+   "by_stratum": {
+    "0": {
+     "bound": 0.9109657947686117,
+     "coupled": 0.7012072434607646,
+     "informative": false,
+     "n_bound": 1811,
+     "of": 1988
+    },
+    "1": {
+     "bound": 0.9285517999450399,
+     "coupled": 0.6806815059082165,
+     "informative": false,
+     "n_bound": 3379,
+     "of": 3639
+    },
+    "2": {
+     "bound": 0.9366930445647647,
+     "coupled": 0.6676384839650146,
+     "informative": false,
+     "n_bound": 2249,
+     "of": 2401
+    },
+    "3": {
+     "bound": 0.9087418783225044,
+     "coupled": 0.6187241582988777,
+     "informative": false,
+     "n_bound": 3077,
+     "of": 3386
+    },
+    "4": {
+     "bound": 0.9375552282768778,
+     "coupled": 0.6350515463917525,
+     "informative": false,
+     "n_bound": 3183,
+     "of": 3395
+    },
+    "5": {
+     "bound": 0.9088565641686613,
+     "coupled": 0.5656416866138833,
+     "informative": false,
+     "n_bound": 4936,
+     "of": 5431
+    },
+    "6": {
+     "bound": 0.9124309918142014,
+     "coupled": 0.49076718065867125,
+     "informative": false,
+     "n_bound": 4793,
+     "of": 5253
+    },
+    "7": {
+     "bound": 0.910989010989011,
+     "coupled": 0.4097069597069597,
+     "informative": false,
+     "n_bound": 4974,
+     "of": 5460
+    },
+    "8": {
+     "bound": 0.8382231971483411,
+     "coupled": 0.33164244584590075,
+     "informative": false,
+     "n_bound": 6114,
+     "of": 7294
+    },
+    "9": {
+     "bound": 0.727618158789414,
+     "coupled": 0.11632557829478035,
+     "informative": false,
+     "n_bound": 10915,
+     "of": 15001
+    }
+   },
+   "pooled": {
+    "bound": 0.8531963641826923,
+    "coupled": 0.4089543269230769,
+    "informative": false,
+    "n_bound": 45431,
+    "of": 53248
+   },
+   "reading": "where the bound is below the coupled share: 'a decoupled certificate could certify at most X% (post hoc)'; elsewhere uninformative. Supplement only."
+  },
+  "default_model_transfer": {
+   "absolute_retention": {
+    "by_stratum": {
+     "0": {
+      "difference_points": 0.0,
+      "kept_certified": 1.0,
+      "kept_uncertified": 1.0,
+      "lost_certified": 0,
+      "lost_uncertified": 0,
+      "n_certified": 569,
+      "n_uncertified": 29,
+      "relative_reduction_in_loss": null
+     },
+     "1": {
+      "difference_points": 1.418026418026419,
+      "kept_certified": 0.9914529914529915,
+      "kept_uncertified": 0.9772727272727273,
+      "lost_certified": 8,
+      "lost_uncertified": 1,
+      "n_certified": 936,
+      "n_uncertified": 44,
+      "relative_reduction_in_loss": 0.6239316239316249
+     },
+     "2": {
+      "difference_points": 2.631578947368418,
+      "kept_certified": 1.0,
+      "kept_uncertified": 0.9736842105263158,
+      "lost_certified": 0,
+      "lost_uncertified": 1,
+      "n_certified": 781,
+      "n_uncertified": 38,
+      "relative_reduction_in_loss": 1.0
+     },
+     "3": {
+      "difference_points": 0.7395326360843613,
+      "kept_certified": 0.9981360671015843,
+      "kept_uncertified": 0.9907407407407407,
+      "lost_certified": 2,
+      "lost_uncertified": 1,
+      "n_certified": 1073,
+      "n_uncertified": 108,
+      "relative_reduction_in_loss": 0.7986952469711066
+     },
+     "4": {
+      "difference_points": -0.09337068160597539,
+      "kept_certified": 0.9990662931839402,
+      "kept_uncertified": 1.0,
+      "lost_certified": 1,
+      "lost_uncertified": 0,
+      "n_certified": 1071,
+      "n_uncertified": 54,
+      "relative_reduction_in_loss": null
+     },
+     "5": {
+      "difference_points": 1.941173688939335,
+      "kept_certified": 0.9968553459119497,
+      "kept_uncertified": 0.9774436090225563,
+      "lost_certified": 5,
+      "lost_uncertified": 3,
+      "n_certified": 1590,
+      "n_uncertified": 133,
+      "relative_reduction_in_loss": 0.8605870020964365
+     },
+     "6": {
+      "difference_points": 4.36633622639958,
+      "kept_certified": 0.9906832298136646,
+      "kept_uncertified": 0.9470198675496688,
+      "lost_certified": 12,
+      "lost_uncertified": 8,
+      "n_certified": 1288,
+      "n_uncertified": 151,
+      "relative_reduction_in_loss": 0.8241459627329202
+     },
+     "7": {
+      "difference_points": 0.6895392474631001,
+      "kept_certified": 0.9927611168562565,
+      "kept_uncertified": 0.9858657243816255,
+      "lost_certified": 7,
+      "lost_uncertified": 4,
+      "n_certified": 967,
+      "n_uncertified": 283,
+      "relative_reduction_in_loss": 0.48784901758014376
+     },
+     "8": {
+      "difference_points": 6.630784771765896,
+      "kept_certified": 0.9918397626112759,
+      "kept_uncertified": 0.925531914893617,
+      "lost_certified": 11,
+      "lost_uncertified": 42,
+      "n_certified": 1348,
+      "n_uncertified": 564,
+      "relative_reduction_in_loss": 0.8904196693514197
+     },
+     "9": {
+      "difference_points": 2.0932773197943844,
+      "kept_certified": 0.9981042654028436,
+      "kept_uncertified": 0.9771714922048997,
+      "lost_certified": 2,
+      "lost_uncertified": 41,
+      "n_certified": 1055,
+      "n_uncertified": 1796,
+      "relative_reduction_in_loss": 0.9169575771587093
+     }
+    },
+    "pool": "TS0 MFE pairs (dangles 0) with p >= 0.99; certified = registration 1's label at lambda = 1; kept = in the default-model MFE structure",
+    "raw": {
+     "difference_points": 2.7067276175313792,
+     "kept_certified": 0.9955047761753137,
+     "kept_uncertified": 0.9684375,
+     "lost_certified": 48,
+     "lost_uncertified": 101,
+     "n_certified": 10678,
+     "n_uncertified": 3200,
+     "relative_reduction_in_loss": 0.8575770669406337
+    }
+   },
+   "all_mfe_pairs_kept": {
+    "fraction": 0.8021709735576923,
+    "n": 42714,
+    "of": 53248
+   },
+   "bootstrap": {
+    "level": 95.0,
+    "n_boot": 10000,
+    "rule": "within each TR0 stratum, its sequences drawn with replacement, as many as it holds; strata in order, units sorted, one draw per stratum per resample; a merged reporting stratum uses the union of its members' draws; pooled weights from the resample's own pair counts; the pooled interval is undefined if any full-data-defined reporting stratum is undefined on some resample (counted, never dropped)",
+    "seed": [
+     20261013,
+     91
+    ]
+   },
+   "by_stratum": {
+    "0+1": {
+     "interval": [
+      -0.008432888264230498,
+      0.0451281155780856
+     ],
+     "n_certified": 1505,
+     "n_pairs": 1578,
+     "n_uncertified": 73,
+     "point": 0.008383015519046189
+    },
+    "2": {
+     "interval": [
+      0.0,
+      0.06557377049180324
+     ],
+     "n_certified": 781,
+     "n_pairs": 819,
+     "n_uncertified": 38,
+     "point": 0.02631578947368418
+    },
+    "3": {
+     "interval": [
+      0.0,
+      0.02961256093346423
+     ],
+     "n_certified": 1073,
+     "n_pairs": 1181,
+     "n_uncertified": 108,
+     "point": 0.007395326360843613
+    },
+    "4": {
+     "interval": [
+      -0.0031746031746031633,
+      0.0
+     ],
+     "n_certified": 1071,
+     "n_pairs": 1125,
+     "n_uncertified": 54,
+     "point": -0.0009337068160597539
+    },
+    "5": {
+     "interval": [
+      -0.008896929152982697,
+      0.07805160171862185
+     ],
+     "n_certified": 1590,
+     "n_pairs": 1723,
+     "n_uncertified": 133,
+     "point": 0.01941173688939335
+    },
+    "6": {
+     "interval": [
+      -0.019608243951709913,
+      0.1643835616438356
+     ],
+     "n_certified": 1288,
+     "n_pairs": 1439,
+     "n_uncertified": 151,
+     "point": 0.04366336226399581
+    },
+    "7": {
+     "interval": [
+      -0.015152281928597704,
+      0.042391803224138186
+     ],
+     "n_certified": 967,
+     "n_pairs": 1250,
+     "n_uncertified": 283,
+     "point": 0.006895392474631001
+    },
+    "8": {
+     "interval": [
+      0.007096404793672113,
+      0.13781802376122854
+     ],
+     "n_certified": 1348,
+     "n_pairs": 1912,
+     "n_uncertified": 564,
+     "point": 0.06630784771765896
+    },
+    "9": {
+     "interval": [
+      0.0013616593033519253,
+      0.04687717074466578
+     ],
+     "n_certified": 1055,
+     "n_pairs": 2851,
+     "n_uncertified": 1796,
+     "point": 0.020932773197943844
+    }
+   },
+   "check_4_reproduced_R4": {
+    "pooled_interval": [
+     0.009841994442689777,
+     0.03325051054884942
+    ],
+    "pooled_point": 0.020892278227747973,
+    "seed_tag": 60
+   },
+   "n_boot": 10000,
+   "pooled_interval": [
+    0.009245484230338101,
+    0.042175919196791346
+   ],
+   "pooled_point": 0.024054018814468704,
+   "pooled_resamples_undefined": 0,
+   "reading": "interval above 0: Limitations' 'and no claim here covers it' becomes 'and no guarantee here covers it, though certified pairs are kept more often in its MFE (post hoc, S7)'",
+   "seed": [
+    20261013,
+    91
+   ],
+   "statistic": "R4's (certfold_reg2._r4_spec) on ret_default: mean kept by the default-model MFE over certified p >= 0.99 pairs minus over uncertified, within TR0 strata (0 and 1 merged), pooled by p >= 0.99 pair count",
+   "strata_left_out": []
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "c3a3be6c93e1b9337625005af66f3e64143f5b66"
+  },
+  "seconds": 283.0
+ },
  "fold": {
   "checks": {
    "1_model_read_back_and_turner2004_params": true,
@@ -44,5 +381,5 @@
   "path": "docs/certfold_default_model.md",
   "sha256": "f98bf660d9f0e5d3e1d4d26e5718d14032d8e4852c9215be3bf45c42d9a7e76d"
  },
- "status": "default-model folds done"
+ "status": "analysed"
 }

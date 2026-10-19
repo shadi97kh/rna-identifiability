@@ -1,0 +1,74 @@
+{
+ "a": {
+  "pooled_point": 0.024054018814468704,
+  "pooled_interval": [
+   0.009245484230338101,
+   0.042175919196791346
+  ],
+  "reading": "interval above 0: Limitations' 'and no claim here covers it' becomes 'and no guarantee here covers it, though certified pairs are kept more often in its MFE (post hoc, S7)'",
+  "all_mfe_pairs_kept": {
+   "n": 42714,
+   "of": 53248,
+   "fraction": 0.8021709735576923
+  }
+ },
+ "a_raw": {
+  "n_certified": 10678,
+  "n_uncertified": 3200,
+  "kept_certified": 0.9955047761753137,
+  "kept_uncertified": 0.9684375,
+  "lost_certified": 48,
+  "lost_uncertified": 101,
+  "difference_points": 2.7067276175313792,
+  "relative_reduction_in_loss": 0.8575770669406337
+ },
+ "b_pooled": {
+  "n_bound": 45431,
+  "of": 53248,
+  "bound": 0.8531963641826923,
+  "coupled": 0.4089543269230769,
+  "informative": false
+ },
+ "b_by_stratum": {
+  "0": [
+   0.911,
+   0.7012
+  ],
+  "1": [
+   0.9286,
+   0.6807
+  ],
+  "2": [
+   0.9367,
+   0.6676
+  ],
+  "3": [
+   0.9087,
+   0.6187
+  ],
+  "4": [
+   0.9376,
+   0.6351
+  ],
+  "5": [
+   0.9089,
+   0.5656
+  ],
+  "6": [
+   0.9124,
+   0.4908
+  ],
+  "7": [
+   0.911,
+   0.4097
+  ],
+  "8": [
+   0.8382,
+   0.3316
+  ],
+  "9": [
+   0.7276,
+   0.1163
+  ]
+ }
+}
