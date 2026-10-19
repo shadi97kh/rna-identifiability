@@ -433,3 +433,14 @@ a091947343c2	b94be42574cf	dropped	the outline approved: main_letter.tex is the m
 194c973cb2e3	b94be42574cf	dropped	tests: claims, numbers and refs cover the Letter manuscript
 8d6246421149	b09c086bd932	exported	number checks: every number in the Letter manuscript pinned to its artifact; four errors f
 eedda7b4bee8	c8a085849741	exported	text freeze: the fresh-context review's 21 points fixed
+39dc2ea8dc33	90a70e3a6ce7	exported	docs: the remote commit map for the text-freeze export
+6a0c14d8382c	2dbe2fcbb9bd	exported	spec: the four tables' unread entries, a post hoc addition (the authors, 2026-10-19)
+9a0a7c574df2	27f9a6e4a1fd	exported	certfold_unread: the post hoc addition's script, as specified in 6a0c14d
+d268dcb04aa9	178a5e604ee4	exported	certfold_unread describe: U, m_e and the shares E+'s span holds (post hoc)
+e0e5551502be	28be10d866b7	exported	certfold_unread gates: G1 (both backends), G2 and G4 with u+, no false certificate (post h
+193c7d481646	28be10d866b7	dropped	text: the authors' abstract clause; the ablations not run disclosed in S8; the dangles sen
+bd8e0b3b6395	d0d0901aff25	exported	certfold_unread G5 on TS0: 0 violations (post hoc)
+776766a94744	4e1e2bdc8745	exported	certfold_unread run: TS0 labelled under E+_1, every must-hold holds (post hoc)
+140185e534de	24f8de92762d	exported	certfold_unread analyse: 28.9% of TS0 MFE pairs certified under E+_1 beside 40.9% under E_
+7907401b670b	54dba73fc072	exported	the unread-entries addition written up by its fixed reading (post hoc)
+611be3dc05a2	472ceda4fb80	exported	review of the changed passages: its points fixed
