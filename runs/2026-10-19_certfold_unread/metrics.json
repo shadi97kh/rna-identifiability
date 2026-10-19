@@ -1,4 +1,511 @@
 {
+ "analysis": {
+  "labels": {
+   "certified_absent_admissible": {
+    "by_stratum": {
+     "0": {
+      "E_plus": {
+       "fraction": 0.9712643678160919,
+       "n": 70642,
+       "of": 72732
+      },
+      "registered_E": {
+       "fraction": 0.9797613155144915,
+       "n": 71260,
+       "of": 72732
+      }
+     },
+     "1": {
+      "E_plus": {
+       "fraction": 0.9687663339325098,
+       "n": 151982,
+       "of": 156882
+      },
+      "registered_E": {
+       "fraction": 0.980635127038156,
+       "n": 153844,
+       "of": 156882
+      }
+     },
+     "2": {
+      "E_plus": {
+       "fraction": 0.9632644579565064,
+       "n": 106617,
+       "of": 110683
+      },
+      "registered_E": {
+       "fraction": 0.9789669596957076,
+       "n": 108355,
+       "of": 110683
+      }
+     },
+     "3": {
+      "E_plus": {
+       "fraction": 0.9644507622626741,
+       "n": 167582,
+       "of": 173759
+      },
+      "registered_E": {
+       "fraction": 0.9787061389625861,
+       "n": 170059,
+       "of": 173759
+      }
+     },
+     "4": {
+      "E_plus": {
+       "fraction": 0.9721567561034566,
+       "n": 193047,
+       "of": 198576
+      },
+      "registered_E": {
+       "fraction": 0.984947828539199,
+       "n": 195587,
+       "of": 198576
+      }
+     },
+     "5": {
+      "E_plus": {
+       "fraction": 0.9584440848223644,
+       "n": 342915,
+       "of": 357783
+      },
+      "registered_E": {
+       "fraction": 0.9746214884441128,
+       "n": 348703,
+       "of": 357783
+      }
+     },
+     "6": {
+      "E_plus": {
+       "fraction": 0.9446950142975402,
+       "n": 386863,
+       "of": 409511
+      },
+      "registered_E": {
+       "fraction": 0.9661718488636447,
+       "n": 395658,
+       "of": 409511
+      }
+     },
+     "7": {
+      "E_plus": {
+       "fraction": 0.9235328940041927,
+       "n": 472702,
+       "of": 511841
+      },
+      "registered_E": {
+       "fraction": 0.9578208857828896,
+       "n": 490252,
+       "of": 511841
+      }
+     },
+     "8": {
+      "E_plus": {
+       "fraction": 0.9177899834144235,
+       "n": 799061,
+       "of": 870636
+      },
+      "registered_E": {
+       "fraction": 0.9619921528629646,
+       "n": 837545,
+       "of": 870636
+      }
+     },
+     "9": {
+      "E_plus": {
+       "fraction": 0.7550579298054769,
+       "n": 2340518,
+       "of": 3099786
+      },
+      "registered_E": {
+       "fraction": 0.88889103957499,
+       "n": 2755372,
+       "of": 3099786
+      }
+     }
+    },
+    "pooled": {
+     "E_plus": {
+      "fraction": 0.8439734131205837,
+      "n": 5031929,
+      "of": 5962189
+     },
+     "difference_points": -8.297388761074165,
+     "registered_E": {
+      "fraction": 0.9269473007313254,
+      "n": 5526635,
+      "of": 5962189
+     }
+    }
+   },
+   "certified_absent_contested": {
+    "by_stratum": {
+     "0": {
+      "E_plus": {
+       "fraction": 0.6724817107484524,
+       "n": 2390,
+       "of": 3554
+      },
+      "registered_E": {
+       "fraction": 0.7616769836803602,
+       "n": 2707,
+       "of": 3554
+      }
+     },
+     "1": {
+      "E_plus": {
+       "fraction": 0.5968421052631578,
+       "n": 3969,
+       "of": 6650
+      },
+      "registered_E": {
+       "fraction": 0.7245112781954888,
+       "n": 4818,
+       "of": 6650
+      }
+     },
+     "2": {
+      "E_plus": {
+       "fraction": 0.523702664796634,
+       "n": 1867,
+       "of": 3565
+      },
+      "registered_E": {
+       "fraction": 0.6580645161290323,
+       "n": 2346,
+       "of": 3565
+      }
+     },
+     "3": {
+      "E_plus": {
+       "fraction": 0.4821705426356589,
+       "n": 2488,
+       "of": 5160
+      },
+      "registered_E": {
+       "fraction": 0.6114341085271318,
+       "n": 3155,
+       "of": 5160
+      }
+     },
+     "4": {
+      "E_plus": {
+       "fraction": 0.48522579446199593,
+       "n": 2611,
+       "of": 5381
+      },
+      "registered_E": {
+       "fraction": 0.6651180078052407,
+       "n": 3579,
+       "of": 5381
+      }
+     },
+     "5": {
+      "E_plus": {
+       "fraction": 0.4004224856237531,
+       "n": 3412,
+       "of": 8521
+      },
+      "registered_E": {
+       "fraction": 0.5581504518249032,
+       "n": 4756,
+       "of": 8521
+      }
+     },
+     "6": {
+      "E_plus": {
+       "fraction": 0.31389996931574105,
+       "n": 3069,
+       "of": 9777
+      },
+      "registered_E": {
+       "fraction": 0.46670757901196686,
+       "n": 4563,
+       "of": 9777
+      }
+     },
+     "7": {
+      "E_plus": {
+       "fraction": 0.26788520387064757,
+       "n": 3239,
+       "of": 12091
+      },
+      "registered_E": {
+       "fraction": 0.4556281531717807,
+       "n": 5509,
+       "of": 12091
+      }
+     },
+     "8": {
+      "E_plus": {
+       "fraction": 0.15073365940417963,
+       "n": 2034,
+       "of": 13494
+      },
+      "registered_E": {
+       "fraction": 0.34896991255372756,
+       "n": 4709,
+       "of": 13494
+      }
+     },
+     "9": {
+      "E_plus": {
+       "fraction": 0.02996836672401354,
+       "n": 1080,
+       "of": 36038
+      },
+      "registered_E": {
+       "fraction": 0.11512847549808536,
+       "n": 4149,
+       "of": 36038
+      }
+     }
+    },
+    "pooled": {
+     "E_plus": {
+      "fraction": 0.2509714000633209,
+      "n": 26159,
+      "of": 104231
+     },
+     "difference_points": -13.558346365284796,
+     "registered_E": {
+      "fraction": 0.3865548637161689,
+      "n": 40291,
+      "of": 104231
+     }
+    }
+   },
+   "certified_present": {
+    "by_stratum": {
+     "0": {
+      "E_plus": {
+       "fraction": 0.5985915492957746,
+       "n": 1190,
+       "of": 1988
+      },
+      "registered_E": {
+       "fraction": 0.7012072434607646,
+       "n": 1394,
+       "of": 1988
+      }
+     },
+     "1": {
+      "E_plus": {
+       "fraction": 0.5344874965649904,
+       "n": 1945,
+       "of": 3639
+      },
+      "registered_E": {
+       "fraction": 0.6806815059082165,
+       "n": 2477,
+       "of": 3639
+      }
+     },
+     "2": {
+      "E_plus": {
+       "fraction": 0.5568513119533528,
+       "n": 1337,
+       "of": 2401
+      },
+      "registered_E": {
+       "fraction": 0.6676384839650146,
+       "n": 1603,
+       "of": 2401
+      }
+     },
+     "3": {
+      "E_plus": {
+       "fraction": 0.5038393384524513,
+       "n": 1706,
+       "of": 3386
+      },
+      "registered_E": {
+       "fraction": 0.6187241582988777,
+       "n": 2095,
+       "of": 3386
+      }
+     },
+     "4": {
+      "E_plus": {
+       "fraction": 0.4833578792341679,
+       "n": 1641,
+       "of": 3395
+      },
+      "registered_E": {
+       "fraction": 0.6350515463917525,
+       "n": 2156,
+       "of": 3395
+      }
+     },
+     "5": {
+      "E_plus": {
+       "fraction": 0.42570429018596945,
+       "n": 2312,
+       "of": 5431
+      },
+      "registered_E": {
+       "fraction": 0.5656416866138833,
+       "n": 3072,
+       "of": 5431
+      }
+     },
+     "6": {
+      "E_plus": {
+       "fraction": 0.3632210165619646,
+       "n": 1908,
+       "of": 5253
+      },
+      "registered_E": {
+       "fraction": 0.49076718065867125,
+       "n": 2578,
+       "of": 5253
+      }
+     },
+     "7": {
+      "E_plus": {
+       "fraction": 0.22362637362637364,
+       "n": 1221,
+       "of": 5460
+      },
+      "registered_E": {
+       "fraction": 0.4097069597069597,
+       "n": 2237,
+       "of": 5460
+      }
+     },
+     "8": {
+      "E_plus": {
+       "fraction": 0.1890595009596929,
+       "n": 1379,
+       "of": 7294
+      },
+      "registered_E": {
+       "fraction": 0.33164244584590075,
+       "n": 2419,
+       "of": 7294
+      }
+     },
+     "9": {
+      "E_plus": {
+       "fraction": 0.050396640223985066,
+       "n": 756,
+       "of": 15001
+      },
+      "registered_E": {
+       "fraction": 0.11632557829478035,
+       "n": 1745,
+       "of": 15001
+      }
+     }
+    },
+    "pooled": {
+     "E_plus": {
+      "fraction": 0.2891188401442308,
+      "n": 15395,
+      "of": 53248
+     },
+     "difference_points": -11.983548677884615,
+     "registered_E": {
+      "fraction": 0.4089543269230769,
+      "n": 21776,
+      "of": 53248
+     }
+    }
+   }
+  },
+  "length_profile": {
+   "0": {
+    "lengths": [
+     22,
+     69
+    ],
+    "n_sequences": 124
+   },
+   "1": {
+    "lengths": [
+     70,
+     77
+    ],
+    "n_sequences": 165
+   },
+   "2": {
+    "lengths": [
+     78,
+     84
+    ],
+    "n_sequences": 96
+   },
+   "3": {
+    "lengths": [
+     85,
+     94
+    ],
+    "n_sequences": 122
+   },
+   "4": {
+    "lengths": [
+     95,
+     105
+    ],
+    "n_sequences": 113
+   },
+   "5": {
+    "lengths": [
+     106,
+     120
+    ],
+    "n_sequences": 154
+   },
+   "6": {
+    "lengths": [
+     121,
+     138
+    ],
+    "n_sequences": 135
+   },
+   "7": {
+    "lengths": [
+     139,
+     172
+    ],
+    "n_sequences": 120
+   },
+   "8": {
+    "lengths": [
+     173,
+     225
+    ],
+    "n_sequences": 120
+   },
+   "9": {
+    "lengths": [
+     226,
+     499
+    ],
+    "n_sequences": 139
+   }
+  },
+  "n_mfe_pairs_certified_under_E_not_under_E_plus": 6381,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "776766a9474435addfcfc3a417058e58e64c3a6c"
+  },
+  "reading": "descriptive (the spec, section 5): X beside 40.9%; no adjective, no claim",
+  "reproduces_registration_1": true,
+  "seconds": 2.2,
+  "whole_structure_certified": {
+   "E_plus": {
+    "n": 146,
+    "of": 1288
+   },
+   "registered_E": {
+    "n": 248,
+    "of": 1288
+   }
+  }
+ },
  "attacks": {
   "attacks": {
    "components": "Pi delta_X + delta_X|U, three",
@@ -343,5 +850,5 @@
   "path": "docs/certfold_unread_addition.md",
   "sha256": "2dbcc2c7d500117f5d488cb25f0007111b8d2c97ab49b0383e34e0bbf68f6b40"
  },
- "status": "TS0 labelled"
+ "status": "analysed"
 }
