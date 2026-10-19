@@ -198,6 +198,7 @@ that refuse to run out of order, and records written only by the scripts.
 | `scripts/certfold_reg2.py` | C: stability under whole published tables (R4, R5); D: which measurements would certify the most (R6) | `runs/2026-10-15_certfold_registration2/metrics.json` | registered (PRED2) |
 | `scripts/certfold_reviewer.py` | the reviewer's additions: absolute stability, leave one table out, scale, coverage of the published tables, the held-out basis, the measurement-efficiency curve, the ranking's stability, conservativeness, the radius against the gap | `runs/2026-10-18_certfold_reviewer/metrics.json` | post hoc |
 | `scripts/certfold_unread.py` | the four tables' unread entries: the envelope with the int11/int21/int22/bulge entries no TR0 reference reads also free, each by up to the largest published difference on it; G1, G2, G4 and G5 rerun; TS0 labels | `runs/2026-10-19_certfold_unread/metrics.json` | post hoc |
+| `scripts/certfold_default_model.py` | TS0 folded once under ViennaRNA's default model (dangles 2, special hairpins on): R4's statistic with that MFE as the substitution, absolute retention by label; and an upper bound on what a decoupled certificate could certify, from stored records | `runs/2026-10-19_certfold_default_model/metrics.json` | post hoc |
 | `scripts/certfold_reproduce_r4r5.py` | an independent reimplementation of R4 and R5 from the raw shards | `runs/2026-10-18_certfold_reviewer/reproduce_r4r5/` | check (117 of 117 bit-identical) |
 
 ```
@@ -211,6 +212,7 @@ that refuse to run out of order, and records written only by the scripts.
                                                     # gates, ts0-folds, analyse
 .venv-certfold/bin/python scripts/certfold_unread.py --phase describe          # then gates,
                                                     # attacks, run, analyse
+.venv-certfold/bin/python scripts/certfold_default_model.py --phase fold       # then analyse
 .venv-certfold/bin/python scripts/certfold_reproduce_r4r5.py OUTDIR
 ```
 
@@ -219,7 +221,7 @@ record under `predictions`. Registration 2: `PRED2` in `scripts/certfold_reg2.py
 frozen measurement ranking and the sha256 of the MXfold2 predictions it reads. The reviewer's
 additions: `docs/certfold_reviewer_additions.md`, committed before any of them ran, with a dated
 correction. The unread-entries addition: `docs/certfold_unread_addition.md`, committed before
-any of its code. Each record carries the commit it ran at, its seeds and the sha256 of every
+any of its code; likewise the default-model and decoupling items: `docs/certfold_default_model.md`. Each record carries the commit it ran at, its seeds and the sha256 of every
 intermediate file it read.
 
 Registration 2's tertiary outcome reads the released MXfold2's TS0 predictions, which ship here:
