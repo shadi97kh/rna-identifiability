@@ -27,7 +27,7 @@ or stays absent under every data-restricted move within stated bounds, or report
 | exactly two gauge directions; 426 data-restricted directions for the 11,955 TR0 and TS0 structures | `runs/2026-10-07_turner_nullspace_r2/`, `runs/2026-10-08_turner_nullspace_tr0/` |
 | adding to Turner 2004 only the part of Andronescu 2007's difference the data cannot see reorders 3.9% of predicted structures, with no detectable change in in-sample accuracy (a small, detectable loss on held-out families) | `runs/2026-10-12_turner_typeb_tie_split/`, `runs/2026-10-12_typeb_decoders/`, `runs/2026-10-12_typeb_heldout/` |
 | no false certificate in 1.2 million checks on 5,429 test sequences, including 108,580 targeted worst-case moves | `runs/2026-10-13_certified_folding/` (`gate`) |
-| 40.9% of TS0's predicted pairs certified, 70% in short sequences to 12% in long ones | `runs/2026-10-13_certified_folding/` (`analysis`) |
+| for data-restricted moves up to the size of the published tables' differences along those directions, 40.9% of TS0's predicted pairs certified, 70% in short sequences to 12% in long ones (Section 6 places beside it, post hoc, 28.9% when the four tables' unread entries may move too: `runs/2026-10-19_certfold_unread/`) | `runs/2026-10-13_certified_folding/` (`analysis`) |
 | the certified radius ranks pairs less accurately than base-pair probability, and its signal among confident pairs is shared with the energy gap | `runs/2026-10-13_certified_folding/` (`analysis`, `posthoc`) |
 | measuring the 50 top-ranked motifs exactly would raise the certified share from 40.9% to 47.6%; 20 random sets of 50 raise it by at most 2.5 points; a second training sample gains nearly as much | `runs/2026-10-15_certfold_registration2/` (`analysis_d`), `runs/2026-10-18_certfold_reviewer/` (`analysis`) |
 | in MXfold2 the optimizer, not the data, moves the model along a weight symmetry, and fixing it costs no accuracy | `runs/2026-10-11_mxfold2_weight_decay_ablation/`, `runs/2026-10-12_mxfold2_ablation/` |
@@ -197,6 +197,7 @@ that refuse to run out of order, and records written only by the scripts.
 | `scripts/certfold_additions.py` | A: how many uncertain pairs move under envelope draws; B: runtime | `runs/2026-10-13_certified_folding/metrics.json` → `additions` | descriptive |
 | `scripts/certfold_reg2.py` | C: stability under whole published tables (R4, R5); D: which measurements would certify the most (R6) | `runs/2026-10-15_certfold_registration2/metrics.json` | registered (PRED2) |
 | `scripts/certfold_reviewer.py` | the reviewer's additions: absolute stability, leave one table out, scale, coverage of the published tables, the held-out basis, the measurement-efficiency curve, the ranking's stability, conservativeness, the radius against the gap | `runs/2026-10-18_certfold_reviewer/metrics.json` | post hoc |
+| `scripts/certfold_unread.py` | the four tables' unread entries: the envelope with the int11/int21/int22/bulge entries no TR0 reference reads also free, each by up to the largest published difference on it; G1, G2, G4 and G5 rerun; TS0 labels | `runs/2026-10-19_certfold_unread/metrics.json` | post hoc |
 | `scripts/certfold_reproduce_r4r5.py` | an independent reimplementation of R4 and R5 from the raw shards | `runs/2026-10-18_certfold_reviewer/reproduce_r4r5/` | check (117 of 117 bit-identical) |
 
 ```
@@ -208,6 +209,8 @@ that refuse to run out of order, and records written only by the scripts.
 .venv-certfold/bin/python scripts/certfold_reg2.py --phase measured-labels         # then analyse-d
 .venv-certfold/bin/python scripts/certfold_reviewer.py --phase descriptive        # then pilot2-rank,
                                                     # gates, ts0-folds, analyse
+.venv-certfold/bin/python scripts/certfold_unread.py --phase describe          # then gates,
+                                                    # attacks, run, analyse
 .venv-certfold/bin/python scripts/certfold_reproduce_r4r5.py OUTDIR
 ```
 
@@ -215,7 +218,8 @@ that refuse to run out of order, and records written only by the scripts.
 record under `predictions`. Registration 2: `PRED2` in `scripts/certfold_reg2.py`, with the
 frozen measurement ranking and the sha256 of the MXfold2 predictions it reads. The reviewer's
 additions: `docs/certfold_reviewer_additions.md`, committed before any of them ran, with a dated
-correction. Each record carries the commit it ran at, its seeds and the sha256 of every
+correction. The unread-entries addition: `docs/certfold_unread_addition.md`, committed before
+any of its code. Each record carries the commit it ran at, its seeds and the sha256 of every
 intermediate file it read.
 
 Registration 2's tertiary outcome reads the released MXfold2's TS0 predictions, which ship here:
