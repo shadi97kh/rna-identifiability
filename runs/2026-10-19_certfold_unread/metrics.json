@@ -1,0 +1,77 @@
+{
+ "describe": {
+  "cross_check": "share_inside_registered_span and share_on_unread_four_table_entries equal the reviewer's /descriptive/table_coverage to 1e-12",
+  "definition": "E+_1 = {theta0 + B t + v : t in E_1, v_e = 0 off U, |v_e| <= m_e on U}; u+ = u_env + m (disjoint supports)",
+  "environment": {
+   "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+   "callback_backend": "compiled",
+   "numba": "0.68.0",
+   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+   "viennarna": "2.7.2"
+  },
+  "m_e_kcal": {
+   "argmax_entry": "('int22', 4, 2, 4, 3, 4, 3)",
+   "attained_by": [
+    "Turner1999"
+   ],
+   "max": 5.8,
+   "median_over_U": 0.8,
+   "median_over_nonzero": 0.8,
+   "n_nonzero": 8235
+  },
+  "n_reached_entries_registered": 923,
+  "n_unread": 8270,
+  "n_unread_by_table": {
+   "bulge": 0,
+   "int11": 12,
+   "int21": 1224,
+   "int22": 7034
+  },
+  "projection_contained_in_E_plus": {
+   "Andronescu2007": true,
+   "Langdon2018": true,
+   "Turner1999": true
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "9a0a7c574df2ece9db524dcb8dac29d7b7f7e55f"
+  },
+  "seconds": 0.5,
+  "shares_of_squared_difference": {
+   "Andronescu2007": {
+    "n_unread_entries_differing": 8210,
+    "n_unread_entries_forbidden": 0,
+    "norm_delta_kcal": 116.61083911884006,
+    "share_inside_E_plus_span": 0.7030238748445434,
+    "share_inside_registered_span": 0.033247834716313214,
+    "share_on_unread_four_table_entries": 0.6697760401282302
+   },
+   "Langdon2018": {
+    "n_unread_entries_differing": 3346,
+    "n_unread_entries_forbidden": 924,
+    "norm_delta_kcal": 43.84586639581889,
+    "share_inside_E_plus_span": 0.4551973066912946,
+    "share_inside_registered_span": 0.014147818015327367,
+    "share_on_unread_four_table_entries": 0.4410494886759672
+   },
+   "Turner1999": {
+    "n_unread_entries_differing": 7655,
+    "n_unread_entries_forbidden": 0,
+    "norm_delta_kcal": 132.72790625938467,
+    "share_inside_E_plus_span": 0.738275645886818,
+    "share_inside_registered_span": 0.033057753481777204,
+    "share_on_unread_four_table_entries": 0.7052178924050408
+   }
+  },
+  "u_plus_sha256": "ce2506ac4e54e1e8ff428a45fdb1762ebf8bc64bb828ef77de5cccb3a69316e4"
+ },
+ "run_id": "2026-10-19_certfold_unread",
+ "specification": {
+  "commit": "6a0c14d8382c4518580913dfe1e30c4698dd56e1",
+  "path": "docs/certfold_unread_addition.md",
+  "sha256": "2dbcc2c7d500117f5d488cb25f0007111b8d2c97ab49b0383e34e0bbf68f6b40"
+ },
+ "status": "described"
+}
