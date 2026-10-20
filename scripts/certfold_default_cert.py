@@ -1038,7 +1038,17 @@ def g6() -> int:
                 e0 = int(round(fc.eval_structure(b["star"]) * 100))
                 if e0 != b["e0"]:
                     n_e0 += 1
-                    g_viol.append({"direction": gname, "name": nm, "kind": "E0 of s*"})
+                    # the diagnosis, recorded beside the violation: ViennaRNA's energy under the
+                    # gauge table against the count model at that table, linear and clipped
+                    th = grec["theta"]
+                    cs = lc.counts(b["seq"], b["star"])
+                    nc = _ninio_correction(b["star"], th[("ninio_m",)], th[("ninio_max",)])
+                    g_viol.append({"direction": gname, "name": nm, "kind": "E0 of s*",
+                                   "turner2004_dcal": b["e0"], "gauge_table_dcal": e0,
+                                   "count_model_linear_dcal": _energy(cs, th) + nc,
+                                   "count_model_clipped_dcal": _energy(cs, clip_d2(th)) + nc,
+                                   "mismatchM_uses_in_s_star": sum(
+                                       v for k, v in cs.items() if k[0] == "mismatchM")})
                 star2, _e = fc.mfe()
                 if star2 != b["star"]:
                     n_star += 1
@@ -1056,11 +1066,32 @@ def g6() -> int:
                         g_viol.append({"direction": gname, "name": nm, "kind": "labels",
                                        "set": name})
         g_out[gname] = {k: v for k, v in grec.items() if k != "theta"}
+        clipped_after = {t: [int(min(v for k, v in grec["theta"].items() if k[0] == t)),
+                             int(max(v for k, v in grec["theta"].items() if k[0] == t))]
+                         for t in D2_CLIPPED}
         g_out[gname].update({"par_sha256": cf._sha(path), "n_sequences": len(base),
                              "n_with_a_changed_E0": n_e0,
                              "n_with_a_changed_MFE_structure": n_star,
-                             "n_with_changed_labels": n_lab})
+                             "n_with_changed_labels": n_lab,
+                             "clipped_tables_range_after_shift_dcal": clipped_after})
     if viol or g_viol:
+        # the failure is recorded, not only raised: the run refuses on this status, and the
+        # violations stay in the artifact with their diagnosis (the house rule: keep attempts)
+        out.setdefault("G6_failed_attempts", []).append({
+            "monotonicity_violations": viol, "gauge_violations": g_viol,
+            "gauge_by_direction": g_out,
+            "n_monotonicity_violations": len(viol), "n_gauge_violations": len(g_viol),
+            "count_model_checks": EN.n_checked, "seconds": round(time.time() - t0, 1),
+            "provenance": prov, "environment": cf.env_record()})
+        out["status"] = "G6 FAILED: violations found; the item stops (spec)"
+        write(out)
+        print(json.dumps({"n_monotonicity_violations": len(viol),
+                          "n_gauge_violations": len(g_viol),
+                          "gauge_by_direction": {k: {kk: v[kk] for kk in (
+                              "n_with_a_changed_E0", "n_with_a_changed_MFE_structure",
+                              "n_with_changed_labels", "step_dcal",
+                              "clipped_tables_range_after_shift_dcal")}
+                              for k, v in g_out.items()}}, indent=1, default=str))
         raise GuardFailure(f"G6: {len(viol)} monotonicity violations and {len(g_viol)} gauge "
                            f"violations: {(viol + g_viol)[:3]}")
     z = out["zuker"]
