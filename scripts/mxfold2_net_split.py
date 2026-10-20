@@ -141,6 +141,12 @@ def main() -> int:
                    "3_endpoints_and_starts": True, "4_contributions_sum_to_net": True,
                    "5_files_match_recorded_sha256": True},
         "by_seed": seeds,
+        # the magnitudes across seeds, as the text quotes them (the signs differ by seed)
+        "magnitude_ranges": {
+            h: {part: {"min": min(abs(s[h][part]) for s in seeds),
+                       "max": max(abs(s[h][part]) for s in seeds)}
+                for part in ("adam_step", "decay")}
+            for h in ("epoch_1", "epochs_1_to_10")},
         "reading": {"rule": "Adam's net contribution exceeds decay's in magnitude in every seed "
                             "at both horizons -> the net figures replace '33 times further'; "
                             "otherwise drop the comparison with decay and keep the no-decay arm",
