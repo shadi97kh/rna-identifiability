@@ -1,0 +1,811 @@
+{
+ "config": {
+  "dangles": 0,
+  "special_hp": 0
+ },
+ "curve": {
+  "1000": {
+   "0": {
+    "C2_max_abs_change": 8.817924689041856e-15,
+    "C2_passes": true,
+    "coverage_dim": 11245,
+    "nontrivial_dim": 458,
+    "null_dim_total": 11705,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 460,
+     "eigh_reduced": 460,
+     "exact_mod_p": 460,
+     "qr_svd": 460
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1362
+   },
+   "1": {
+    "C2_max_abs_change": 6.65226811895174e-15,
+    "C2_passes": true,
+    "coverage_dim": 11218,
+    "nontrivial_dim": 457,
+    "null_dim_total": 11677,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 459,
+     "eigh_reduced": 459,
+     "exact_mod_p": 459,
+     "qr_svd": 459
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1389
+   },
+   "2": {
+    "C2_max_abs_change": 1.161050422471277e-14,
+    "C2_passes": true,
+    "coverage_dim": 11259,
+    "nontrivial_dim": 418,
+    "null_dim_total": 11679,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 420,
+     "eigh_reduced": 420,
+     "exact_mod_p": 420,
+     "qr_svd": 420
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1348
+   },
+   "3": {
+    "C2_max_abs_change": 1.0945305534311445e-14,
+    "C2_passes": true,
+    "coverage_dim": 11227,
+    "nontrivial_dim": 434,
+    "null_dim_total": 11663,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 436,
+     "eigh_reduced": 436,
+     "exact_mod_p": 436,
+     "qr_svd": 436
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1380
+   },
+   "4": {
+    "C2_max_abs_change": 8.569967652194421e-15,
+    "C2_passes": true,
+    "coverage_dim": 11297,
+    "nontrivial_dim": 407,
+    "null_dim_total": 11706,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 409,
+     "eigh_reduced": 409,
+     "exact_mod_p": 409,
+     "qr_svd": 409
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1310
+   },
+   "5": {
+    "C2_max_abs_change": 8.940981635618961e-15,
+    "C2_passes": true,
+    "coverage_dim": 11266,
+    "nontrivial_dim": 429,
+    "null_dim_total": 11697,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 431,
+     "eigh_reduced": 431,
+     "exact_mod_p": 431,
+     "qr_svd": 431
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1341
+   },
+   "6": {
+    "C2_max_abs_change": 1.2397635001937246e-14,
+    "C2_passes": true,
+    "coverage_dim": 11279,
+    "nontrivial_dim": 421,
+    "null_dim_total": 11702,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 423,
+     "eigh_reduced": 423,
+     "exact_mod_p": 423,
+     "qr_svd": 423
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1328
+   },
+   "7": {
+    "C2_max_abs_change": 6.471169086696982e-15,
+    "C2_passes": true,
+    "coverage_dim": 11277,
+    "nontrivial_dim": 417,
+    "null_dim_total": 11696,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 419,
+     "eigh_reduced": 419,
+     "exact_mod_p": 419,
+     "qr_svd": 419
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     1000,
+     12607
+    ],
+    "used_columns": 1330
+   },
+   "summary": {
+    "dims": [
+     458,
+     457,
+     418,
+     434,
+     407,
+     429,
+     421,
+     417
+    ],
+    "max": 458,
+    "mean": 430.125,
+    "min": 407
+   }
+  },
+  "2000": {
+   "0": {
+    "C2_max_abs_change": 6.360753937451058e-14,
+    "C2_passes": true,
+    "coverage_dim": 10715,
+    "nontrivial_dim": 416,
+    "null_dim_total": 11133,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 418,
+     "eigh_reduced": 418,
+     "exact_mod_p": 418,
+     "qr_svd": 418
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     2000,
+     12607
+    ],
+    "used_columns": 1892
+   },
+   "1": {
+    "C2_max_abs_change": 4.861996222293996e-15,
+    "C2_passes": true,
+    "coverage_dim": 10690,
+    "nontrivial_dim": 422,
+    "null_dim_total": 11114,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 424,
+     "eigh_reduced": 424,
+     "exact_mod_p": 424,
+     "qr_svd": 424
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     2000,
+     12607
+    ],
+    "used_columns": 1917
+   },
+   "2": {
+    "C2_max_abs_change": 6.120971784984164e-15,
+    "C2_passes": true,
+    "coverage_dim": 10691,
+    "nontrivial_dim": 420,
+    "null_dim_total": 11113,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 422,
+     "eigh_reduced": 422,
+     "exact_mod_p": 422,
+     "qr_svd": 422
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     2000,
+     12607
+    ],
+    "used_columns": 1916
+   },
+   "3": {
+    "C2_max_abs_change": 1.4002687898084787e-14,
+    "C2_passes": true,
+    "coverage_dim": 10719,
+    "nontrivial_dim": 402,
+    "null_dim_total": 11123,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 404,
+     "eigh_reduced": 404,
+     "exact_mod_p": 404,
+     "qr_svd": 404
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     2000,
+     12607
+    ],
+    "used_columns": 1888
+   },
+   "4": {
+    "C2_max_abs_change": 8.348356728138384e-15,
+    "C2_passes": true,
+    "coverage_dim": 10746,
+    "nontrivial_dim": 410,
+    "null_dim_total": 11158,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 412,
+     "eigh_reduced": 412,
+     "exact_mod_p": 412,
+     "qr_svd": 412
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     2000,
+     12607
+    ],
+    "used_columns": 1861
+   },
+   "5": {
+    "C2_max_abs_change": 2.4460902053879963e-14,
+    "C2_passes": true,
+    "coverage_dim": 10732,
+    "nontrivial_dim": 387,
+    "null_dim_total": 11121,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 389,
+     "eigh_reduced": 389,
+     "exact_mod_p": 389,
+     "qr_svd": 389
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     2000,
+     12607
+    ],
+    "used_columns": 1875
+   },
+   "6": {
+    "C2_max_abs_change": 1.096128396382845e-14,
+    "C2_passes": true,
+    "coverage_dim": 10742,
+    "nontrivial_dim": 400,
+    "null_dim_total": 11144,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 402,
+     "eigh_reduced": 402,
+     "exact_mod_p": 402,
+     "qr_svd": 402
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     2000,
+     12607
+    ],
+    "used_columns": 1865
+   },
+   "7": {
+    "C2_max_abs_change": 7.242036831334175e-15,
+    "C2_passes": true,
+    "coverage_dim": 10679,
+    "nontrivial_dim": 460,
+    "null_dim_total": 11141,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 462,
+     "eigh_reduced": 462,
+     "exact_mod_p": 462,
+     "qr_svd": 462
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     2000,
+     12607
+    ],
+    "used_columns": 1928
+   },
+   "summary": {
+    "dims": [
+     416,
+     422,
+     420,
+     402,
+     410,
+     387,
+     400,
+     460
+    ],
+    "max": 460,
+    "mean": 414.625,
+    "min": 387
+   }
+  },
+  "4000": {
+   "0": {
+    "C2_max_abs_change": 7.887489489669108e-15,
+    "C2_passes": true,
+    "coverage_dim": 9960,
+    "nontrivial_dim": 414,
+    "null_dim_total": 10376,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 416,
+     "eigh_reduced": 416,
+     "exact_mod_p": 416,
+     "qr_svd": 416
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     4000,
+     12607
+    ],
+    "used_columns": 2647
+   },
+   "1": {
+    "C2_max_abs_change": 1.5344062825883853e-13,
+    "C2_passes": true,
+    "coverage_dim": 9984,
+    "nontrivial_dim": 416,
+    "null_dim_total": 10402,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 418,
+     "eigh_reduced": 418,
+     "exact_mod_p": 418,
+     "qr_svd": 418
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     4000,
+     12607
+    ],
+    "used_columns": 2623
+   },
+   "2": {
+    "C2_max_abs_change": 1.5014291893100662e-13,
+    "C2_passes": true,
+    "coverage_dim": 9966,
+    "nontrivial_dim": 447,
+    "null_dim_total": 10415,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 449,
+     "eigh_reduced": 449,
+     "exact_mod_p": 449,
+     "qr_svd": 449
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     4000,
+     12607
+    ],
+    "used_columns": 2641
+   },
+   "3": {
+    "C2_max_abs_change": 1.3232991091793878e-13,
+    "C2_passes": true,
+    "coverage_dim": 9987,
+    "nontrivial_dim": 423,
+    "null_dim_total": 10412,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 425,
+     "eigh_reduced": 425,
+     "exact_mod_p": 425,
+     "qr_svd": 425
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     4000,
+     12607
+    ],
+    "used_columns": 2620
+   },
+   "4": {
+    "C2_max_abs_change": 1.0887644952273234e-13,
+    "C2_passes": true,
+    "coverage_dim": 9997,
+    "nontrivial_dim": 427,
+    "null_dim_total": 10426,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 429,
+     "eigh_reduced": 429,
+     "exact_mod_p": 429,
+     "qr_svd": 429
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     4000,
+     12607
+    ],
+    "used_columns": 2610
+   },
+   "5": {
+    "C2_max_abs_change": 1.1424563552131506e-13,
+    "C2_passes": true,
+    "coverage_dim": 10009,
+    "nontrivial_dim": 390,
+    "null_dim_total": 10401,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 392,
+     "eigh_reduced": 392,
+     "exact_mod_p": 392,
+     "qr_svd": 392
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     4000,
+     12607
+    ],
+    "used_columns": 2598
+   },
+   "6": {
+    "C2_max_abs_change": 1.0984529258406539e-13,
+    "C2_passes": true,
+    "coverage_dim": 9924,
+    "nontrivial_dim": 461,
+    "null_dim_total": 10387,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 463,
+     "eigh_reduced": 463,
+     "exact_mod_p": 463,
+     "qr_svd": 463
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     4000,
+     12607
+    ],
+    "used_columns": 2683
+   },
+   "7": {
+    "C2_max_abs_change": 1.242582425842187e-13,
+    "C2_passes": true,
+    "coverage_dim": 9951,
+    "nontrivial_dim": 436,
+    "null_dim_total": 10389,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 438,
+     "eigh_reduced": 438,
+     "exact_mod_p": 438,
+     "qr_svd": 438
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     4000,
+     12607
+    ],
+    "used_columns": 2656
+   },
+   "summary": {
+    "dims": [
+     414,
+     416,
+     447,
+     423,
+     427,
+     390,
+     461,
+     436
+    ],
+    "max": 461,
+    "mean": 426.75,
+    "min": 390
+   }
+  },
+  "8000": {
+   "0": {
+    "C2_max_abs_change": 9.43245048040664e-14,
+    "C2_passes": true,
+    "coverage_dim": 8838,
+    "nontrivial_dim": 445,
+    "null_dim_total": 9285,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 447,
+     "eigh_reduced": 447,
+     "exact_mod_p": 447,
+     "qr_svd": 447
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     8000,
+     12607
+    ],
+    "used_columns": 3769
+   },
+   "1": {
+    "C2_max_abs_change": 9.317335314742992e-15,
+    "C2_passes": true,
+    "coverage_dim": 8865,
+    "nontrivial_dim": 452,
+    "null_dim_total": 9319,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 454,
+     "eigh_reduced": 454,
+     "exact_mod_p": 454,
+     "qr_svd": 454
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     8000,
+     12607
+    ],
+    "used_columns": 3742
+   },
+   "2": {
+    "C2_max_abs_change": 1.505176192018176e-14,
+    "C2_passes": true,
+    "coverage_dim": 8880,
+    "nontrivial_dim": 448,
+    "null_dim_total": 9330,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 450,
+     "eigh_reduced": 450,
+     "exact_mod_p": 450,
+     "qr_svd": 450
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     8000,
+     12607
+    ],
+    "used_columns": 3727
+   },
+   "3": {
+    "C2_max_abs_change": 1.4972769660399898e-13,
+    "C2_passes": true,
+    "coverage_dim": 8838,
+    "nontrivial_dim": 471,
+    "null_dim_total": 9311,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 473,
+     "eigh_reduced": 473,
+     "exact_mod_p": 473,
+     "qr_svd": 473
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     8000,
+     12607
+    ],
+    "used_columns": 3769
+   },
+   "4": {
+    "C2_max_abs_change": 1.8589405188784713e-14,
+    "C2_passes": true,
+    "coverage_dim": 8880,
+    "nontrivial_dim": 451,
+    "null_dim_total": 9333,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 453,
+     "eigh_reduced": 453,
+     "exact_mod_p": 453,
+     "qr_svd": 453
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     8000,
+     12607
+    ],
+    "used_columns": 3727
+   },
+   "5": {
+    "C2_max_abs_change": 1.6149299779388837e-13,
+    "C2_passes": true,
+    "coverage_dim": 8833,
+    "nontrivial_dim": 474,
+    "null_dim_total": 9309,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 476,
+     "eigh_reduced": 476,
+     "exact_mod_p": 476,
+     "qr_svd": 476
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     8000,
+     12607
+    ],
+    "used_columns": 3774
+   },
+   "6": {
+    "C2_max_abs_change": 7.197145440382413e-14,
+    "C2_passes": true,
+    "coverage_dim": 8872,
+    "nontrivial_dim": 450,
+    "null_dim_total": 9324,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 452,
+     "eigh_reduced": 452,
+     "exact_mod_p": 452,
+     "qr_svd": 452
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     8000,
+     12607
+    ],
+    "used_columns": 3735
+   },
+   "7": {
+    "C2_max_abs_change": 1.0731620466949456e-13,
+    "C2_passes": true,
+    "coverage_dim": 8843,
+    "nontrivial_dim": 436,
+    "null_dim_total": 9281,
+    "null_dim_within_used": {
+     "agree": true,
+     "eigh_gram": 438,
+     "eigh_reduced": 438,
+     "exact_mod_p": 438,
+     "qr_svd": 438
+    },
+    "reconstruction_failures": 0,
+    "shape": [
+     8000,
+     12607
+    ],
+    "used_columns": 3764
+   },
+   "summary": {
+    "dims": [
+     445,
+     452,
+     448,
+     471,
+     451,
+     474,
+     450,
+     436
+    ],
+    "max": 474,
+    "mean": 453.375,
+    "min": 436
+   }
+  }
+ },
+ "full_tr0ts0": {
+  "C2_max_abs_change": 2.231854642843257e-13,
+  "C2_passes": true,
+  "coverage_dim": 8046,
+  "nontrivial_dim": 426,
+  "null_dim_total": 8474,
+  "null_dim_within_used": {
+   "agree": true,
+   "eigh_gram": 428,
+   "eigh_reduced": 428,
+   "exact_mod_p": 428,
+   "qr_svd": 428
+  },
+  "reconstruction_failures": 0,
+  "rows": 11955,
+  "shape": [
+   11955,
+   12607
+  ],
+  "used_columns": 4561
+ },
+ "label": "POST HOC (docs/advisor_additions_2026-10-20.md, item 2)",
+ "provenance": {
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "bc27c232f52b731a22412ada48d6e3c769820f98"
+ },
+ "reading": {
+  "no_asymptote_no_extrapolation": true,
+  "sentence": "Within the data the Type B dimension does not reach 0: 189 directions remain for the union of 102,113 structures (post hoc).",
+  "union_nontrivial_dim": 189,
+  "union_structures": 102113
+ },
+ "rfam_alone": {
+  "C2_max_abs_change": 3.094232985840858e-13,
+  "C2_passes": true,
+  "coverage_dim": 4796,
+  "nontrivial_dim": 214,
+  "null_dim_total": 5012,
+  "null_dim_within_used": {
+   "agree": true,
+   "eigh_gram": 216,
+   "eigh_reduced": 216,
+   "exact_mod_p": 216,
+   "qr_svd": 216
+  },
+  "reconstruction_failures": 0,
+  "rows": 94142,
+  "shape": [
+   94142,
+   12607
+  ],
+  "used_columns": 7811
+ },
+ "rows": {
+  "rfam_distinct_pair_bearing": 94142,
+  "shared_between_the_two": 3984,
+  "tr0ts0_distinct_pair_bearing": 11955,
+  "union_distinct_pair_bearing": 102113
+ },
+ "run_id": "2026-10-20_typeb_dimension_curve",
+ "seconds": 2306.4,
+ "seed": {
+  "base": 20261007,
+  "draws": 8,
+  "tag": 92
+ },
+ "specification": {
+  "commit": "f9c5ce8a6c2f821f6b28202329f0d6a389cc502b",
+  "path": "docs/advisor_additions_2026-10-20.md",
+  "sha256": "2f7e5a31a2b51f3557ca96b1f4d903473c5719a26b15a55be665951838344a87"
+ },
+ "status": "done",
+ "union": {
+  "C2_max_abs_change": 3.071709598278487e-13,
+  "C2_passes": true,
+  "coverage_dim": 4434,
+  "nontrivial_dim": 189,
+  "null_dim_total": 4625,
+  "null_dim_within_used": {
+   "agree": true,
+   "eigh_gram": 191,
+   "eigh_reduced": 191,
+   "exact_mod_p": 191,
+   "qr_svd": 191
+  },
+  "reconstruction_failures": 0,
+  "rows": 102113,
+  "shape": [
+   102113,
+   12607
+  ],
+  "used_columns": 8173
+ }
+}
