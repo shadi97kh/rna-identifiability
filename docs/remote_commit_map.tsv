@@ -444,3 +444,26 @@ bd8e0b3b6395	d0d0901aff25	exported	certfold_unread G5 on TS0: 0 violations (post
 140185e534de	24f8de92762d	exported	certfold_unread analyse: 28.9% of TS0 MFE pairs certified under E+_1 beside 40.9% under E_
 7907401b670b	54dba73fc072	exported	the unread-entries addition written up by its fixed reading (post hoc)
 611be3dc05a2	472ceda4fb80	exported	review of the changed passages: its points fixed
+dc99c0fd8ce8	cbc4bac426fc	exported	docs: the remote commit map for the 2026-10-19 export
+05c2eb41c40f	cbc4bac426fc	dropped	the authors' two edits; the analysis freeze is final
+3cff2275841e	cbc4bac426fc	dropped	docs: the authors' checklist for the rewrite, with the current text's baseline
+2e526c84073d	7da809df653e	exported	spec: the default model and the decoupling bound, two post hoc items (the authors, 2026-10
+7e9a7fd5fda9	cc8135dd7ad8	exported	certfold_default_model: the two post hoc items' script, as specified in 2e526c8
+c3a3be6c93e1	9155442764f0	exported	certfold_default_model fold: TS0 under the default model, every check passed (post hoc)
+a2497a9f8a76	782465e7c173	exported	certfold_default_model analyse: R4's statistic under the default model +2.4 [0.9, 4.2]; th
+bb1104c84562	643e8783d738	exported	the default model and the decoupling bound written up by their fixed readings (post hoc)
+42708ca09efc	643e8783d738	dropped	docs: report layout
+121696e39e17	643e8783d738	dropped	review fixes for the default-model passages; the page count corrected: the body is 10.96 p
+7e0725b8d3e1	643e8783d738	dropped	docs: report layout
+360b575d5e3b	643e8783d738	dropped	page limit: a PDF-based page test, and three floats moved to the supplement (the authors' 
+86df7088111e	643e8783d738	dropped	paper folder cleaned; the supplement gets a contents list; one combined PDF
+c343a3568946	643e8783d738	dropped	supplement layout: no forced page breaks, floats free to settle; 37 pages to 33
+7f9e7a7e343c	643e8783d738	dropped	figures: the worked example's script, its selection rule fixed before it runs
+2422a67623c1	643e8783d738	dropped	presentation: a worked-example figure, plain names for the test codes, two references
+f9c5ce8a6c2f	cd9207dfd036	exported	spec: the advisor's two post hoc items (2026-10-20), before any code
+bc27c232f52b	4a255163620a	exported	scripts for the advisor's two post hoc items, as specified in f9c5ce8
+b1396863802e	abbbbddd89d7	exported	mxfold2_net_split: magnitude ranges across seeds, as the text quotes them
+5804ad271c61	7a75a6dd0b5d	exported	mxfold2_net_split: Adam's net contribution exceeds decay's in every seed at both horizons 
+393c34885f6c	6819173baf1f	exported	typeb_dimension_curve: 189 Type B directions remain for the union of 102,113 structures (p
+558de0dae3d7	6819173baf1f	dropped	letter: the advisor's three changes (2026-10-20)
+26288ab888e5	6819173baf1f	dropped	letter: fresh-context review of the advisor's changes, fixes applied
