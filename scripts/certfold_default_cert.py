@@ -385,10 +385,12 @@ def carry_over(EN: Energy, B: dict, rows) -> dict:
     pos = {B["cols"][e]: k for k, e in enumerate(B["used"])}
     idx = {k: n for n, k in enumerate(B["cols"])}
     c2 = {t: int(max(v for k, v in T["theta"].items() if k[0] == t)) for t in D2_CLIPPED}
+    # the clipped tables are unreachable at dangles 0, where the basis was built, so they may
+    # not be among the set's coordinates at all; then no t moves them by construction
     clipped = [k for k in B["cols"] if k[0] in D2_CLIPPED]
     w_b4 = max((float(np.abs(B["B4"][pos[k]]).max()) for k in clipped if k in pos), default=0.0)
-    w_a = max(float(abs(B["a_four"][idx[k]])) for k in clipped)
-    w_u = max(float(abs(B["u_env"][idx[k]])) for k in clipped)
+    w_a = max((float(abs(B["a_four"][idx[k]])) for k in clipped), default=0.0)
+    w_u = max((float(abs(B["u_env"][idx[k]])) for k in clipped), default=0.0)
     if any(v > 0 for v in c2.values()) or w_b4 != 0.0 or w_a != 0.0 or w_u != 0.0:
         raise GuardFailure(f"C2 fails: clipped-table maxima {c2}, weights {w_b4}, {w_a}, {w_u}")
     mx2 = mx0 = 0.0
@@ -404,6 +406,7 @@ def carry_over(EN: Energy, B: dict, rows) -> dict:
             "C2": {"max_turner2004_entry_dcal_by_clipped_table": c2,
                    "n_dangle5_entries_exactly_zero": sum(
                        1 for k, v in T["theta"].items() if k[0] == "dangle5" and v == 0),
+                   "n_clipped_entries_among_the_set_coordinates": len(clipped),
                    "max_weight_on_clipped_tables": {"B_four_rows": w_b4, "a_four": w_a,
                                                     "u_env": w_u},
                    "linear_on_the_set": True},
