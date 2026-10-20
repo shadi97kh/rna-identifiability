@@ -18,6 +18,7 @@ record is committed:
   gate        C1 to C3; (b) G1, both backends; (c) G2 with the power check, and G4
   reproduce   (e) the label driver at dangles 0 reproduces registration 1 on 50 TS0 sequences
   attacks     (d) G5 on TS0 at dangles 2 (8 workers)
+  g6          the addendum: G6 with the three dangles 2 gauge directions, and G3's coverage
   run         TS0 labels, the envelope at lambda = 1 (8 workers)
   analyse     the shares, beside registration 1's
 Run in .venv-certfold. Record: runs/2026-10-20_certfold_default_cert/metrics.json.
@@ -69,6 +70,7 @@ ZUKER_CHECKED = "zuker checked"
 GATE_PASSED = "gate passed"
 REPRODUCED = "reproduced"
 G5_PASSED = "G5 passed"
+G6_PASSED = "G6 passed"
 RUN_DONE = "run done"
 ANALYSED = "analysed"
 
@@ -688,6 +690,11 @@ def label_one(EN: Energy, B: dict, r: dict, zuker: bool = True) -> dict:
     contested = {q for q in outside if bpp[q[0], q[1]] >= cf.CONTESTED_P}
     F = cf.Folder(EN.lc, seq, star, env_weights(B))
     c = cf.certify(F, sp, adm, zuker=zuker)
+    if zuker and c["n_absent_because_unreachable"]:
+        # G3's registered property on the test sequence itself: every admissible pair is in
+        # the Zuker set, so no absent label rests on a pair the set merely failed to return
+        raise GuardFailure(f"{r['name']}: {c['n_absent_because_unreachable']} admissible pairs "
+                           f"are missing from the Zuker set")
     mp = c["margins_present_dcal"]
     cert_a = ({q for q, m in c["margins_absent_dcal"].items() if m is None or m > 0}
               if zuker else set())
@@ -916,11 +923,189 @@ def attacks() -> int:
 
 
 # ----------------------------------------------------------------------------------
+# phase: g6 -- the addendum: G6 at dangles 2, and G3's coverage stated
+# ----------------------------------------------------------------------------------
+def gauge_tables_default(theta0: dict, norm_kcal: float) -> dict:
+    """certfold.gauge_tables, with the gauge directions of the DEFAULT model (three at dangles
+    2: N1 with special hairpins on, N2, and N3 = mismatchM against ML_ci) over every entry of
+    the parameter table, since N3's entries are not among the basis's dangles 0 coordinates."""
+    from scripts.turner_nullspace import analytic_directions
+
+    cols = sorted(theta0, key=repr)
+    out = {}
+    for name, g in analytic_directions(cols, *DEFAULT).items():
+        scale = float(np.linalg.norm(g))
+        step = max(1, int(round(norm_kcal * 100.0 / scale)))
+        shifted = dict(theta0)
+        touched = 0
+        for k, c in zip(cols, g, strict=True):
+            if c:
+                shifted[k] = int(shifted[k] + step * int(round(c)))
+                touched += 1
+        out[name] = {"theta": shifted, "step_dcal": step, "n_entries_touched": touched,
+                     "norm_kcal": step * scale / 100.0,
+                     "max_entry_shift_dcal": int(step * max(abs(int(round(c))) for c in g if c))}
+    return out
+
+
+def g6() -> int:
+    out, prov = gate(G5_PASSED)
+    t0 = time.time()
+    import RNA
+
+    EN = use_model(*DEFAULT)
+    lc = EN.lc
+    B = cf.load_tr0_basis()
+    T = cf.template()
+    rows, _ = cf.tr0_rows()
+    rad = B["radii"]
+    ladder = sorted([1.0, float(rad["Langdon2018"]["radius_on_B_four_kcal"]),
+                     float(rad["Andronescu2007"]["radius_on_B_four_kcal"]),
+                     float(rad["Turner1999"]["radius_on_B_four_kcal"])])
+    lams = list(cf.LAMBDAS)
+    folders = []
+
+    def labels(F, sp, adm):
+        c = cf.certify(F, sp, adm)
+        if c["n_absent_because_unreachable"]:
+            raise GuardFailure("G3: an admissible pair is missing from the Zuker set")
+        return ({p for p, m in c["margins_present_dcal"].items() if m > 0},
+                {q for q, m in c["margins_absent_dcal"].items() if m is None or m > 0})
+
+    # --- monotonicity: the ball over registration 1's ladder, and the envelope over lambda
+    viol, mono = [], []
+    for _t, nm, seq, _db in cf.gate_sequences(rows, cf.G6_SEQUENCES, 50, 150, cf.SEED + 6):
+        plain = plain_compound(seq)
+        star, e = plain.mfe()
+        EN.check(seq, star, int(round(e * 100)), f"G6 {nm} MFE")
+        sp, adm = mfe_pairs(star), cf.admissible_pairs(seq)
+        F = cf.Folder(lc, seq, star, cf.Weights(B["a_four"], B["cols"], ladder[0]))
+        Fe = cf.Folder(lc, seq, star, env_weights(B))
+        folders += [F, Fe]
+        rec = {"name": nm, "n_nt": len(seq)}
+        for kind, Fx, scales in (("ball", F, ladder), ("envelope", Fe, lams)):
+            got = []
+            for x in scales:
+                Fx.set_radius(x)
+                got.append(labels(Fx, sp, adm))
+            for a, b, xa, xb in zip(got[:-1], got[1:], scales[:-1], scales[1:], strict=True):
+                for half, what in ((0, "present"), (1, "absent")):
+                    gained = b[half] - a[half]
+                    if gained:
+                        viol.append({"name": nm, "set": kind, "kind": what, "from": xa,
+                                     "to": xb, "n_gained": len(gained)})
+            rec[kind] = {"certified_present": [len(g[0]) for g in got],
+                         "certified_absent": [len(g[1]) for g in got]}
+        mono.append(rec)
+
+    # --- the gauge: the default model's three directions, written and loaded
+    gauge = gauge_tables_default(T["theta"], cf.G6_GAUGE_NORM)
+    sets = {"ball:1": ("ball", 1.0),
+            "ball:Andronescu2007": ("ball", float(rad["Andronescu2007"]
+                                                  ["radius_on_B_four_kcal"])),
+            "envelope:1": ("envelope", 1.0)}
+
+    def weights(kind, x):
+        return (env_weights(B) if kind == "envelope" else
+                cf.Weights(B["a_four"], B["cols"], x))
+
+    base = {}
+    for _t, nm, seq, _db in cf.gate_sequences(rows, cf.G6_GAUGE_SEQUENCES, 50, 150,
+                                              cf.SEED + 7):
+        plain = plain_compound(seq)
+        star, e = plain.mfe()
+        EN.check(seq, star, int(round(e * 100)), f"G6 gauge {nm} MFE")
+        sp, adm = mfe_pairs(star), cf.admissible_pairs(seq)
+        lab = {}
+        for name, (kind, x) in sets.items():
+            F = cf.Folder(lc, seq, star, weights(kind, x))
+            folders.append(F)
+            lab[name] = labels(F, sp, adm)
+        base[nm] = {"seq": seq, "star": star, "e0": int(round(e * 100)), "pairs": sp,
+                    "adm": adm, "labels": lab}
+    g_out, g_viol = {}, []
+    SHARDS.mkdir(parents=True, exist_ok=True)
+    for gname, grec in gauge.items():
+        path = SHARDS / f"gauge_{gname}.par"
+        write_par(grec["theta"], path)
+        n_e0 = n_star = n_lab = 0
+        with loaded(path):
+            for nm, b in base.items():
+                fc = RNA.fold_compound(b["seq"], model_md(*DEFAULT))
+                bad = params_match(fc, grec["theta"], *DEFAULT)
+                if bad:
+                    raise GuardFailure(f"G6: the loaded table is not the written one: {bad}")
+                e0 = int(round(fc.eval_structure(b["star"]) * 100))
+                if e0 != b["e0"]:
+                    n_e0 += 1
+                    g_viol.append({"direction": gname, "name": nm, "kind": "E0 of s*"})
+                star2, _e = fc.mfe()
+                if star2 != b["star"]:
+                    n_star += 1
+                    g_viol.append({"direction": gname, "name": nm, "kind": "MFE structure"})
+                    continue
+                for name, (kind, x) in sets.items():
+                    # pinned=False: the global table is the written gauge table, so the Turner
+                    # 2004 fingerprint is the wrong pin (params_match above is the right one);
+                    # CheckedFolder still holds every fold's E0 to the count model at theta0,
+                    # which under a gauge table is the gauge claim itself, structure by structure
+                    F = cf.Folder(lc, b["seq"], b["star"], weights(kind, x), pinned=False)
+                    folders.append(F)
+                    if labels(F, b["pairs"], b["adm"]) != b["labels"][name]:
+                        n_lab += 1
+                        g_viol.append({"direction": gname, "name": nm, "kind": "labels",
+                                       "set": name})
+        g_out[gname] = {k: v for k, v in grec.items() if k != "theta"}
+        g_out[gname].update({"par_sha256": cf._sha(path), "n_sequences": len(base),
+                             "n_with_a_changed_E0": n_e0,
+                             "n_with_a_changed_MFE_structure": n_star,
+                             "n_with_changed_labels": n_lab})
+    if viol or g_viol:
+        raise GuardFailure(f"G6: {len(viol)} monotonicity violations and {len(g_viol)} gauge "
+                           f"violations: {(viol + g_viol)[:3]}")
+    z = out["zuker"]
+    out["G6"] = {
+        "addendum": "the addendum of 2026-10-20 (docs/certfold_default_model_cert.md), "
+                    "received after the zuker, gate and reproduce phases had run and during G5",
+        "monotonicity": {"ball_radii_kcal": ladder, "envelope_lambdas": lams,
+                         "n_sequences": len(mono), "n_violations": 0,
+                         "ball_certified_present_totals": [
+                             sum(m["ball"]["certified_present"][k] for m in mono)
+                             for k in range(len(ladder))],
+                         "envelope_certified_present_totals": [
+                             sum(m["envelope"]["certified_present"][k] for m in mono)
+                             for k in range(len(lams))]},
+        "gauge": {"directions_from": "turner_nullspace.analytic_directions(all entries, "
+                                     "dangles 2, special_hp 1): three, as the four-configuration "
+                                     "Type A analysis found",
+                  "target_norm_kcal": cf.G6_GAUGE_NORM, "sets": list(sets),
+                  "directions": g_out, "n_violations": 0},
+        "G3_coverage": {
+            "statement": "no admissible pair is missing from the Zuker set",
+            "zuker_phase": f"n_sampled_omitted = {z['n_sampled_omitted']} over "
+                           f"{z['n_sequences']} sequences and {len(z['sets'])} sets, which "
+                           f"samples min(60, n_omitted) per sequence and set, so n_omitted = 0 "
+                           f"everywhere",
+            "here": "every certify call above has n_absent_because_unreachable = 0 (enforced)",
+            "run": "label_one enforces the same on every TS0 sequence"},
+        "recursion_side": {k: sum(F.recursion[k] for F in folders)
+                           for k in ("folds_checked", "zuker_structures_checked", "violations")},
+        "count_model_checks": EN.n_checked, "pass": True,
+        "seconds": round(time.time() - t0, 1), "provenance": prov,
+        "environment": cf.env_record()}
+    out["status"] = G6_PASSED
+    write(out)
+    print(json.dumps({k: v for k, v in out["G6"].items()
+                      if k not in ("provenance", "environment")}, indent=1, default=str))
+    return 0
+
+
+# ----------------------------------------------------------------------------------
 # phase: run -- TS0 labels
 # ----------------------------------------------------------------------------------
 def run_worker() -> int:
     out = read_out()
-    if out.get("status") != G5_PASSED:
+    if out.get("status") != G6_PASSED:
         raise SystemExit("run workers run only under the run phase")
     cr._in_certfold_env()
     w, n_w = shard_args()
@@ -937,7 +1122,7 @@ def run_worker() -> int:
 
 
 def run() -> int:
-    out, prov = gate(G5_PASSED)
+    out, prov = gate(G6_PASSED)
     load, t0 = os.getloadavg(), time.time()
     pids = drive("run-worker", N_WORKERS)
     recs = []
@@ -1033,5 +1218,5 @@ def analyse() -> int:
 if __name__ == "__main__":
     ph = sys.argv[sys.argv.index("--phase") + 1]
     sys.exit({"zuker": zuker, "gate": gate_phase, "reproduce": reproduce,
-              "attacks": attacks, "attacks-worker": attacks_worker,
+              "attacks": attacks, "attacks-worker": attacks_worker, "g6": g6,
               "run": run, "run-worker": run_worker, "analyse": analyse}[ph]())
