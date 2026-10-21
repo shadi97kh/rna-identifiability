@@ -18,7 +18,7 @@
   "path": "docs/posthoc_additions_2026-10-21.md",
   "sha256": "676f3e2ec1af9305216f22ce6e0660fcba0ab9f1ac7cd1f3cb3c6e79de123ef9"
  },
- "status": "gate passed",
+ "status": "run done",
  "step1_type_a": {
   "analytic_directions": {
    "dim_equals_null_dim": true,
@@ -311,5 +311,57 @@
    "git_sha": "2f4195218b5c7866960ed0d12dfe999c91db841d"
   },
   "seconds": 155.6
+ },
+ "step4_run": {
+  "cpu_seconds": 6985.2,
+  "environment": {
+   "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+   "callback_backend": "compiled",
+   "numba": "0.68.0",
+   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+   "viennarna": "2.7.2"
+  },
+  "files_sha256": {
+   "run_0.jsonl": "649fe7c771e735c223e09bb114de96c248f73aa9a60f93af2033fda9c1f84dbc",
+   "run_1.jsonl": "7b4917fa7fd3ff9f57f6d6935e6f0d543142f35e744b1c04cbf6d9bdb0437117",
+   "run_2.jsonl": "bc2bbe46fb75b228572c671e567f5ce6264a29b9c351e125e9a431201f2c3a15",
+   "run_3.jsonl": "f083972399e69a2ead664fdedd766bded1a25a86388e40be3fe80c217865bdb1",
+   "run_4.jsonl": "5cccc5d50ed92f6540ff77d6159079317b94849ffbba77ddf832163f98581e31",
+   "run_5.jsonl": "7c6bac0029639e976955a35b2aa895159167f8173b69e756f6fe4062ca6396bd",
+   "run_6.jsonl": "c32684d92a828d614cb7232c2861bebed4f0689b860bce66752417d76f57522d",
+   "run_7.jsonl": "1589bedcdf39049e85a3130b072bff993f5700b539fc6261617a6126110060db"
+  },
+  "folds": 54057,
+  "load_at_start": [
+   0.55,
+   1.52,
+   1.19
+  ],
+  "n_sequences": 1288,
+  "pids": [
+   2382340,
+   2382341,
+   2382342,
+   2382343,
+   2382344,
+   2382345,
+   2382346,
+   2382347
+  ],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "f894df2bb17263db6afea43cdd18937a95ca1704"
+  },
+  "recursion_side": {
+   "folds_checked": 54057,
+   "subopt_structures_checked": 0,
+   "violations": 0,
+   "zuker_structures_checked": 4048167
+  },
+  "set": "the published envelope at lambda = 1",
+  "wall_seconds": 1065.1,
+  "workers": 8
  }
 }
