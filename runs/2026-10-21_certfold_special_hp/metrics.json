@@ -1,0 +1,63 @@
+{
+ "label": "POST HOC (docs/posthoc_additions_2026-10-21.md)",
+ "model": {
+  "dangles": 0,
+  "every_other_field": "as thermo.vienna_ref.REFERENCE_MODEL",
+  "special_hp": 1
+ },
+ "provenance_steps_1_2": {
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "5ef0e91f0b6bdb45df27d726a5f6af37bad2e622"
+ },
+ "run_id": "2026-10-21_certfold_special_hp",
+ "seconds_steps_1_2": 234.9,
+ "specification": {
+  "commit": "16a66c9b0592a8da3d0f421263b3b0c0886d2f31",
+  "path": "docs/posthoc_additions_2026-10-21.md",
+  "sha256": "676f3e2ec1af9305216f22ce6e0660fcba0ab9f1ac7cd1f3cb3c6e79de123ef9"
+ },
+ "status": "steps 1-2 passed",
+ "step1_type_a": {
+  "analytic_directions": {
+   "dim_equals_null_dim": true,
+   "directions": {
+    "N1_hairpin_mismatch_vs_init": {
+     "max_abs_row_change": 0.0,
+     "null_to_1e-9": true
+    },
+    "N2_interior_mismatch_vs_init": {
+     "max_abs_row_change": 0.0,
+     "null_to_1e-9": true
+    }
+   },
+   "n_directions": 2,
+   "span_mismatch_sine": 1.859332865518729e-11
+  },
+  "basis_in_words": "N1: +1 on every hairpin mismatch entry, -1 on every hairpin initiation entry of size 4 to 30 (size 3 hairpins read no mismatch when special hairpins are on); N2: +1 on every entry of the three interior-loop mismatch tables, -2 on every interior-loop initiation entry",
+  "config": {
+   "dangles": 0,
+   "n_rows": 23741,
+   "special_hp": 1
+  },
+  "exact_rank": {
+   "agrees_with_eigh": true,
+   "method": "singleton elimination, then Gaussian elimination over GF(p), two primes",
+   "null_dim": 2,
+   "rank": 12627,
+   "rank_mod_p": {
+    "1000000007": 578,
+    "2147483647": 578
+   }
+  },
+  "generating_rows": 23741,
+  "null_dim": 2
+ },
+ "step2_invisibility": {
+  "four_table_counts_equal_to_registered": true,
+  "max_abs_B_four_T_c_ref": 3.435446371824469e-14,
+  "max_abs_B_four_T_c_ref_registered_configuration": 3.435446371824469e-14,
+  "n_tr0_references": 10667
+ }
+}
