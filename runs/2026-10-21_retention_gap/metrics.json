@@ -1,0 +1,557 @@
+{
+ "c1": {
+  "bootstrap": {
+   "n_boot": 10000,
+   "seed": [
+    20261013,
+    95
+   ],
+   "units": "each sequence's pairs within a stratum"
+  },
+  "drop_rule": "a stratum with fewer than 20 certified or uncertified pairs",
+  "n_certified": 10678,
+  "n_pool": 13878,
+  "pool": "TS0 MFE pairs with p >= 0.99; certified = registration 1's lambda = 1 label; retention = ret_primary (three whole tables); gap = nominal_gap_kcal",
+  "primary_gap_deciles": {
+   "by_stratum": {
+    "0": {
+     "interval": [
+      -0.005033908375360906,
+      0.09347780548852348
+     ],
+     "mean_certified": 0.9536477226924622,
+     "mean_uncertified": 0.911041339612767,
+     "n_certified": 827,
+     "n_pairs": 1464,
+     "n_uncertified": 637,
+     "point": 0.04260638307969522
+    },
+    "1": {
+     "interval": [
+      -0.007183207719243297,
+      0.05985841482163087
+     ],
+     "mean_certified": 0.9721504450186618,
+     "mean_uncertified": 0.9491634491634493,
+     "n_certified": 1161,
+     "n_pairs": 1679,
+     "n_uncertified": 518,
+     "point": 0.022986995855212466
+    },
+    "2": {
+     "interval": [
+      -0.003846975583087172,
+      0.053348859437138366
+     ],
+     "mean_certified": 0.97957957957958,
+     "mean_uncertified": 0.9552238805970156,
+     "n_certified": 1110,
+     "n_pairs": 1579,
+     "n_uncertified": 469,
+     "point": 0.0243556989825644
+    },
+    "3": {
+     "interval": [
+      -0.00011229779913543826,
+      0.049810606967470424
+     ],
+     "mean_certified": 0.987018425460636,
+     "mean_uncertified": 0.9646464646464644,
+     "n_certified": 796,
+     "n_pairs": 1060,
+     "n_uncertified": 264,
+     "point": 0.022371960814171588
+    },
+    "4": {
+     "interval": [
+      0.013185199045875165,
+      0.06414912667923536
+     ],
+     "mean_certified": 0.9935838680109988,
+     "mean_uncertified": 0.9558232931726905,
+     "n_certified": 1091,
+     "n_pairs": 1423,
+     "n_uncertified": 332,
+     "point": 0.0377605748383083
+    },
+    "5": {
+     "interval": [
+      0.004592685501512084,
+      0.07756113206301317
+     ],
+     "mean_certified": 0.9957222770648239,
+     "mean_uncertified": 0.9597222222222217,
+     "n_certified": 1013,
+     "n_pairs": 1253,
+     "n_uncertified": 240,
+     "point": 0.03600005484260216
+    },
+    "6": {
+     "interval": [
+      -0.002233604151371965,
+      0.022074949300623502
+     ],
+     "mean_certified": 0.9938271604938269,
+     "mean_uncertified": 0.9853333333333332,
+     "n_certified": 1134,
+     "n_pairs": 1384,
+     "n_uncertified": 250,
+     "point": 0.008493827160493739
+    },
+    "7": {
+     "interval": [
+      0.0019071498240100491,
+      0.04880122464058977
+     ],
+     "mean_certified": 0.9937047529115515,
+     "mean_uncertified": 0.9706790123456789,
+     "n_certified": 1059,
+     "n_pairs": 1275,
+     "n_uncertified": 216,
+     "point": 0.023025740565872588
+    },
+    "8": {
+     "interval": [
+      -0.0018926961775566048,
+      0.018211488003498418
+     ],
+     "mean_certified": 0.9983486671384759,
+     "mean_uncertified": 0.9928315412186381,
+     "n_certified": 1413,
+     "n_pairs": 1599,
+     "n_uncertified": 186,
+     "point": 0.005517125919837773
+    },
+    "9": {
+     "interval": [
+      0.0,
+      0.01388888888888884
+     ],
+     "mean_certified": 1.0,
+     "mean_uncertified": 0.9962121212121211,
+     "n_certified": 1074,
+     "n_pairs": 1162,
+     "n_uncertified": 88,
+     "point": 0.0037878787878788955
+    }
+   },
+   "gap_range_kcal_by_stratum": {
+    "0": [
+     1.0,
+     3.2
+    ],
+    "1": [
+     3.3,
+     3.6
+    ],
+    "2": [
+     3.7,
+     3.9
+    ],
+    "3": [
+     4.0,
+     4.1
+    ],
+    "4": [
+     4.2,
+     4.3
+    ],
+    "5": [
+     4.4,
+     4.6
+    ],
+    "6": [
+     4.7,
+     4.9
+    ],
+    "7": [
+     5.0,
+     5.5
+    ],
+    "8": [
+     5.6,
+     6.4
+    ],
+    "9": [
+     6.5,
+     7.2
+    ]
+   },
+   "n_pairs_dropped": 0,
+   "n_pairs_kept": 13878,
+   "pooled_interval": [
+    0.013780403287693125,
+    0.032229049176470084
+   ],
+   "pooled_point": 0.022792973068720752,
+   "pooled_resamples_undefined": 0,
+   "strata_dropped": {}
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "2e16e3d2e62f46da38e2d6ba62f976abe9c9807a"
+  },
+  "reading": "certified pairs keep a retention advantage when the gap is held fixed",
+  "secondary_length_x_gap_tercile": {
+   "by_stratum": {
+    "0": {
+     "interval": [
+      -0.012689460360113416,
+      0.04341836890917431
+     ],
+     "mean_certified": 0.9818840579710147,
+     "mean_uncertified": 0.9738562091503268,
+     "n_certified": 460,
+     "n_pairs": 511,
+     "n_uncertified": 51,
+     "point": 0.008027848820687966
+    },
+    "10": {
+     "interval": [
+      -0.009433962264150612,
+      0.0
+     ],
+     "mean_certified": 0.9971910112359551,
+     "mean_uncertified": 1.0,
+     "n_certified": 356,
+     "n_pairs": 387,
+     "n_uncertified": 31,
+     "point": -0.002808988764044895
+    },
+    "12": {
+     "interval": [
+      -0.03489801850587102,
+      -0.00520833333333337
+     ],
+     "mean_certified": 0.9818376068376066,
+     "mean_uncertified": 1.0,
+     "n_certified": 312,
+     "n_pairs": 344,
+     "n_uncertified": 32,
+     "point": -0.01816239316239343
+    },
+    "15": {
+     "interval": [
+      -0.0019302801197229372,
+      0.1268910551592673
+     ],
+     "mean_certified": 0.9837037037037037,
+     "mean_uncertified": 0.9351851851851851,
+     "n_certified": 450,
+     "n_pairs": 522,
+     "n_uncertified": 72,
+     "point": 0.04851851851851863
+    },
+    "16": {
+     "interval": [
+      -0.009575104727708061,
+      -0.0011778563015311105
+     ],
+     "mean_certified": 0.9951338199513383,
+     "mean_uncertified": 1.0,
+     "n_certified": 548,
+     "n_pairs": 595,
+     "n_uncertified": 47,
+     "point": -0.0048661800486616835
+    },
+    "18": {
+     "interval": [
+      -0.04206409331409307,
+      0.06102163045416681
+     ],
+     "mean_certified": 0.9703315881326354,
+     "mean_uncertified": 0.9670329670329669,
+     "n_certified": 382,
+     "n_pairs": 473,
+     "n_uncertified": 91,
+     "point": 0.0032986210996684973
+    },
+    "19": {
+     "interval": [
+      -0.022222222222221484,
+      0.09129771369150395
+     ],
+     "mean_certified": 0.9887387387387393,
+     "mean_uncertified": 0.9689922480620156,
+     "n_certified": 444,
+     "n_pairs": 487,
+     "n_uncertified": 43,
+     "point": 0.019746490676723738
+    },
+    "21": {
+     "interval": [
+      0.004785424674643777,
+      0.09847782271862417
+     ],
+     "mean_certified": 0.9845984598459845,
+     "mean_uncertified": 0.939172749391728,
+     "n_certified": 303,
+     "n_pairs": 440,
+     "n_uncertified": 137,
+     "point": 0.045425710454256474
+    },
+    "22": {
+     "interval": [
+      -0.019169401455299898,
+      0.1585116523056434
+     ],
+     "mean_certified": 0.9754901960784318,
+     "mean_uncertified": 0.9157894736842107,
+     "n_certified": 340,
+     "n_pairs": 435,
+     "n_uncertified": 95,
+     "point": 0.059700722394221084
+    },
+    "23": {
+     "interval": [
+      -0.010880316518298797,
+      0.08695652173913049
+     ],
+     "mean_certified": 0.9948559670781895,
+     "mean_uncertified": 0.9738562091503269,
+     "n_certified": 324,
+     "n_pairs": 375,
+     "n_uncertified": 51,
+     "point": 0.020999757927862572
+    },
+    "24": {
+     "interval": [
+      -0.15958406622636162,
+      0.013849064438793664
+     ],
+     "mean_certified": 0.9048760991207024,
+     "mean_uncertified": 0.9713631156930125,
+     "n_certified": 417,
+     "n_pairs": 708,
+     "n_uncertified": 291,
+     "point": -0.06648701657231004
+    },
+    "25": {
+     "interval": [
+      -0.0024275495794188638,
+      0.04342173477846857
+     ],
+     "mean_certified": 0.996141975308642,
+     "mean_uncertified": 0.9783783783783784,
+     "n_certified": 432,
+     "n_pairs": 617,
+     "n_uncertified": 185,
+     "point": 0.017763596930263637
+    },
+    "26": {
+     "interval": [
+      -0.010810896774637443,
+      0.02354337041329954
+     ],
+     "mean_certified": 0.9953239812959254,
+     "mean_uncertified": 0.9924242424242423,
+     "n_certified": 499,
+     "n_pairs": 587,
+     "n_uncertified": 88,
+     "point": 0.002899738871683044
+    },
+    "27": {
+     "interval": [
+      0.009042240975831107,
+      0.1121467851896855
+     ],
+     "mean_certified": 0.9741602067183456,
+     "mean_uncertified": 0.9121989121989116,
+     "n_certified": 258,
+     "n_pairs": 1116,
+     "n_uncertified": 858,
+     "point": 0.061961294519433996
+    },
+    "28": {
+     "interval": [
+      -0.0006517679043152753,
+      0.0655684749758053
+     ],
+     "mean_certified": 0.9898148148148153,
+     "mean_uncertified": 0.9580335731414872,
+     "n_certified": 360,
+     "n_pairs": 916,
+     "n_uncertified": 556,
+     "point": 0.031781241673328076
+    },
+    "29": {
+     "interval": [
+      -0.003332859669364879,
+      0.030424103396139695
+     ],
+     "mean_certified": 0.9954233409610985,
+     "mean_uncertified": 0.9834205933682374,
+     "n_certified": 437,
+     "n_pairs": 819,
+     "n_uncertified": 382,
+     "point": 0.01200274759286113
+    },
+    "6": {
+     "interval": [
+      -0.0038763460320333063,
+      0.082321492526704
+     ],
+     "mean_certified": 0.983673469387755,
+     "mean_uncertified": 0.9466666666666668,
+     "n_certified": 245,
+     "n_pairs": 270,
+     "n_uncertified": 25,
+     "point": 0.03700680272108825
+    },
+    "9": {
+     "interval": [
+      -0.029656348989089542,
+      0.04403546153612636
+     ],
+     "mean_certified": 0.9790897908979089,
+     "mean_uncertified": 0.9751243781094524,
+     "n_certified": 271,
+     "n_pairs": 338,
+     "n_uncertified": 67,
+     "point": 0.003965412788456524
+    }
+   },
+   "gap_range_kcal_by_stratum": {
+    "0": [
+     2.3,
+     3.9
+    ],
+    "10": [
+     4.0,
+     4.7
+    ],
+    "12": [
+     1.8,
+     3.9
+    ],
+    "15": [
+     2.0,
+     3.9
+    ],
+    "16": [
+     4.0,
+     4.7
+    ],
+    "18": [
+     1.6,
+     3.9
+    ],
+    "19": [
+     4.0,
+     4.7
+    ],
+    "21": [
+     2.2,
+     3.9
+    ],
+    "22": [
+     4.0,
+     4.7
+    ],
+    "23": [
+     4.8,
+     7.2
+    ],
+    "24": [
+     1.6,
+     3.9
+    ],
+    "25": [
+     4.0,
+     4.7
+    ],
+    "26": [
+     4.8,
+     7.2
+    ],
+    "27": [
+     1.0,
+     3.9
+    ],
+    "28": [
+     4.0,
+     4.7
+    ],
+    "29": [
+     4.8,
+     7.2
+    ],
+    "6": [
+     2.2,
+     3.9
+    ],
+    "9": [
+     2.4,
+     3.9
+    ]
+   },
+   "n_pairs_dropped": 3938,
+   "n_pairs_kept": 9940,
+   "pooled_interval": [
+    0.0049655901112860635,
+    0.029429815485977923
+   ],
+   "pooled_point": 0.017024114695393194,
+   "pooled_resamples_undefined": 0,
+   "strata_dropped": {
+    "1": {
+     "n_certified": 477,
+     "n_pairs": 492,
+     "n_uncertified": 15
+    },
+    "11": {
+     "n_certified": 446,
+     "n_pairs": 456,
+     "n_uncertified": 10
+    },
+    "13": {
+     "n_certified": 342,
+     "n_pairs": 357,
+     "n_uncertified": 15
+    },
+    "14": {
+     "n_certified": 417,
+     "n_pairs": 424,
+     "n_uncertified": 7
+    },
+    "17": {
+     "n_certified": 592,
+     "n_pairs": 606,
+     "n_uncertified": 14
+    },
+    "2": {
+     "n_certified": 568,
+     "n_pairs": 575,
+     "n_uncertified": 7
+    },
+    "20": {
+     "n_certified": 462,
+     "n_pairs": 479,
+     "n_uncertified": 17
+    },
+    "7": {
+     "n_certified": 264,
+     "n_pairs": 271,
+     "n_uncertified": 7
+    },
+    "8": {
+     "n_certified": 272,
+     "n_pairs": 278,
+     "n_uncertified": 6
+    }
+   }
+  },
+  "seconds": 149.0,
+  "statistic": "certfold_reg2._r4_spec('ret_primary'), no strata merged"
+ },
+ "label": "POST HOC (docs/posthoc_additions_2026-10-21.md)",
+ "run_id": "2026-10-21_retention_gap",
+ "specification": {
+  "commit": "16a66c9b0592a8da3d0f421263b3b0c0886d2f31",
+  "path": "docs/posthoc_additions_2026-10-21.md",
+  "sha256": "676f3e2ec1af9305216f22ce6e0660fcba0ab9f1ac7cd1f3cb3c6e79de123ef9"
+ },
+ "status": "done"
+}
