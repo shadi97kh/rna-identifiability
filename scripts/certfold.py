@@ -937,8 +937,11 @@ def certify(F: Folder, star_pairs: list, adm: list, zuker: bool = True) -> dict:
             continue
         z = zmap.get(q)
         if z is None:
-            n_unreachable += 1
-            absent[q] = None                      # no structure contains it: trivially absent
+            # every admissible pair is in some structure (the pair alone, closing a hairpin), so
+            # a pair the Zuker set misses means the routine failed to backtrack; until
+            # 2026-10-21 this branch labeled the pair certified absent without recording it
+            # (Supplementary S7 shows the case never occurred in the registered run)
+            raise GuardFailure(f"admissible pair {q} is missing from the Zuker set")
         else:
             absent[q] = z - F.eprime_star
     n_p = sum(1 for v in present.values() if v > 0)
