@@ -18,7 +18,7 @@
   "path": "docs/posthoc_additions_2026-10-21.md",
   "sha256": "676f3e2ec1af9305216f22ce6e0660fcba0ab9f1ac7cd1f3cb3c6e79de123ef9"
  },
- "status": "run done",
+ "status": "analysed",
  "step1_type_a": {
   "analytic_directions": {
    "dim_equals_null_dim": true,
@@ -311,6 +311,135 @@
    "git_sha": "2f4195218b5c7866960ed0d12dfe999c91db841d"
   },
   "seconds": 155.6
+ },
+ "step4_analysis": {
+  "certified_present": {
+   "by_stratum": {
+    "0": {
+     "fraction": 0.7318066157760814,
+     "n": 1438,
+     "of": 1965
+    },
+    "1": {
+     "fraction": 0.6758563074352548,
+     "n": 2427,
+     "of": 3591
+    },
+    "2": {
+     "fraction": 0.6579057154776804,
+     "n": 1577,
+     "of": 2397
+    },
+    "3": {
+     "fraction": 0.6091988130563798,
+     "n": 2053,
+     "of": 3370
+    },
+    "4": {
+     "fraction": 0.6706161137440758,
+     "n": 2264,
+     "of": 3376
+    },
+    "5": {
+     "fraction": 0.5730546743795484,
+     "n": 3071,
+     "of": 5359
+    },
+    "6": {
+     "fraction": 0.4799923415661497,
+     "n": 2507,
+     "of": 5223
+    },
+    "7": {
+     "fraction": 0.41946246524559777,
+     "n": 2263,
+     "of": 5395
+    },
+    "8": {
+     "fraction": 0.321537185512856,
+     "n": 2326,
+     "of": 7234
+    },
+    "9": {
+     "fraction": 0.11703344774210916,
+     "n": 1739,
+     "of": 14859
+    }
+   },
+   "pooled": {
+    "fraction": 0.41056301995489775,
+    "n": 21665,
+    "of": 52769
+   }
+  },
+  "n_mfe_structures_differ_from_registered": 300,
+  "n_sequences": 1288,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "845ebabf4f6750fca12edc95dc9ab5338d31865f"
+  },
+  "reading": "descriptive, post hoc",
+  "registered_configuration": {
+   "by_stratum": {
+    "0": {
+     "fraction": 0.7012072434607646,
+     "n": 1394,
+     "of": 1988
+    },
+    "1": {
+     "fraction": 0.6806815059082165,
+     "n": 2477,
+     "of": 3639
+    },
+    "2": {
+     "fraction": 0.6676384839650146,
+     "n": 1603,
+     "of": 2401
+    },
+    "3": {
+     "fraction": 0.6187241582988777,
+     "n": 2095,
+     "of": 3386
+    },
+    "4": {
+     "fraction": 0.6350515463917525,
+     "n": 2156,
+     "of": 3395
+    },
+    "5": {
+     "fraction": 0.5656416866138833,
+     "n": 3072,
+     "of": 5431
+    },
+    "6": {
+     "fraction": 0.49076718065867125,
+     "n": 2578,
+     "of": 5253
+    },
+    "7": {
+     "fraction": 0.4097069597069597,
+     "n": 2237,
+     "of": 5460
+    },
+    "8": {
+     "fraction": 0.33164244584590075,
+     "n": 2419,
+     "of": 7294
+    },
+    "9": {
+     "fraction": 0.11632557829478035,
+     "n": 1745,
+     "of": 15001
+    }
+   },
+   "pooled": {
+    "fraction": 0.4089543269230769,
+    "n": 21776,
+    "of": 53248
+   }
+  }
  },
  "step4_run": {
   "cpu_seconds": 6985.2,
