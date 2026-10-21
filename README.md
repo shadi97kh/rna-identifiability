@@ -1,7 +1,7 @@
 # Same Energies, Different Folds
 
 Code and run artifacts for *Same Energies, Different Folds: Certifying RNA Base Pairs Against
-Parameters the Data Cannot Fix* (S. Khodagholi and N. Yousefi; submitted to RECOMB 2027). Every
+Parameters the Reference Structures Cannot See* (S. Khodagholi and N. Yousefi; submitted to RECOMB 2027). Every
 experimental number the paper reports is read from a `runs/<id>/metrics.json` in this repository,
 and each of those files records the commit and the code that produced it.
 
