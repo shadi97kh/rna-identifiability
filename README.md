@@ -7,29 +7,29 @@ and each of those files records the commit and the code that produced it.
 
 ## What the paper shows
 
-Nearest-neighbor energy models predict RNA secondary structure from tables of loop parameters
-that are refit, learned and compared entry by entry, yet structure data cannot pin down every
-parameter. The paper describes three kinds of change the data cannot detect, and introduces
-certified folding, which certifies for each base pair of a predicted structure that it stays present
-or stays absent under every data-restricted move within stated bounds, or reports it as uncertain.
+Nearest-neighbor energy models predict RNA secondary structure from tables of loop parameters,
+yet structure data do not pin down every parameter. The paper separates three kinds of change that
+reference structures cannot see, and introduces certified folding, which proves for each base pair
+of a predicted structure that it stays present, or stays absent, under every data-restricted change
+within stated bounds, or reports it as uncertain.
 
 | | the change | code |
 |---|---|---|
 | **Type A** | *Gauge directions* leave every structure's energy unchanged. ViennaRNA's Turner 2004 model has exactly two with dangles off. | `scripts/turner_nullspace.py` |
-| **Type B** | *Data-restricted directions* leave the energies of a set of reference structures unchanged but not those of others: 426 for the 11,955 bpRNA structures in TR0 and TS0. | `scripts/turner_nullspace_tr0.py`, `scripts/turner_typeb*.py`, `scripts/typeb_*.py` |
+| **Type B** | *Data-restricted directions* leave every reference energy unchanged but move competing structures, so likelihood training sees them only weakly: 426 for the 11,955 bpRNA structures in TR0 and TS0. | `scripts/turner_nullspace_tr0.py`, `scripts/turner_typeb*.py`, `scripts/typeb_*.py` |
 | **Type C** | Learned models such as MXfold2 add output gauges of their own; the optimizer, not the data, moves MXfold2 along a weight symmetry. | `scripts/mxfold2_*.py` |
-| **Certified folding** | For each base pair of the Turner 2004 MFE structure: certified present, certified absent or uncertain, for every table in a set built from TR0's Type B directions and bounded by the published tables' data-invisible differences, with a verified certified radius. | `scripts/certfold*.py` |
+| **Certified folding** | For each base pair of the Turner 2004 MFE structure: certified present, certified absent or uncertain, for every table in a set built from TR0's Type B directions and bounded by the size of the published tables' differences along them, with a verified certified radius. | `scripts/certfold*.py` |
 
 ## Where each headline number comes from
 
 | claim in the abstract | artifact |
 |---|---|
 | exactly two gauge directions; 426 data-restricted directions for the 11,955 TR0 and TS0 structures | `runs/2026-10-07_turner_nullspace_r2/`, `runs/2026-10-08_turner_nullspace_tr0/` |
-| adding to Turner 2004 only the part of Andronescu 2007's difference the data cannot see reorders 3.9% of predicted structures, with no detectable change in in-sample accuracy (a small, detectable loss on held-out families) | `runs/2026-10-12_turner_typeb_tie_split/`, `runs/2026-10-12_typeb_decoders/`, `runs/2026-10-12_typeb_heldout/` |
-| no false certificate in 1.2 million checks on 5,429 test sequences, including 108,580 targeted worst-case moves | `runs/2026-10-13_certified_folding/` (`gate`) |
-| for moves along TR0's data-restricted directions up to the size of the published tables' differences along them, 40.9% of TS0's predicted pairs certified, 70% in short sequences to 12% in long ones | `runs/2026-10-13_certified_folding/` (`analysis`) |
-| the certified radius ranks pairs less accurately than base-pair probability, and its signal among confident pairs is shared with the energy gap | `runs/2026-10-13_certified_folding/` (`analysis`, `posthoc`) |
-| measuring the 50 top-ranked motifs exactly would raise the certified share from 40.9% to 47.6%; 20 random sets of 50 raise it by at most 2.5 points; a second training sample gains nearly as much | `runs/2026-10-15_certfold_registration2/` (`analysis_d`), `runs/2026-10-18_certfold_checks/` (`analysis`) |
+| adding to Turner 2004 only the part of Andronescu 2007's difference along the data-restricted directions reorders 3.9% of predicted structures, with no detectable change in accuracy on the references and a small, detectable loss on 1,641 held-out Rfam families | `runs/2026-10-12_turner_typeb_tie_split/`, `runs/2026-10-12_typeb_decoders/`, `runs/2026-10-12_typeb_heldout/` |
+| no false certificate in 1.2 million checks on 5,429 test sequences | `runs/2026-10-13_certified_folding/` (`gate`) |
+| for changes up to the size of the published tables' differences, 40.9% of TS0's predicted pairs certified, from 70% in short sequences to 12% in long ones | `runs/2026-10-13_certified_folding/` (`analysis`) |
+| the certified radius is not a better confidence score than base-pair probability | `runs/2026-10-13_certified_folding/` (`analysis`) |
+| exact values for the 50 interior-loop motifs that most often block the certificate would raise the certified share to 47.6%, while random sets of 50 add at most 2.5 points | `runs/2026-10-15_certfold_registration2/` (`analysis_d`) |
 | in MXfold2 the optimizer, not the data, moves the model along a weight symmetry, and fixing it costs no accuracy | `runs/2026-10-11_mxfold2_weight_decay_ablation/`, `runs/2026-10-12_mxfold2_ablation/` |
 
 The other directories under `runs/` back the remaining numbers in the paper and its
