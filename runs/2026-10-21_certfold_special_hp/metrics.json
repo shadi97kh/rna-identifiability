@@ -18,7 +18,7 @@
   "path": "docs/posthoc_additions_2026-10-21.md",
   "sha256": "676f3e2ec1af9305216f22ce6e0660fcba0ab9f1ac7cd1f3cb3c6e79de123ef9"
  },
- "status": "steps 1-2 passed",
+ "status": "gate passed",
  "step1_type_a": {
   "analytic_directions": {
    "dim_equals_null_dim": true,
@@ -59,5 +59,257 @@
   "max_abs_B_four_T_c_ref": 3.435446371824469e-14,
   "max_abs_B_four_T_c_ref_registered_configuration": 3.435446371824469e-14,
   "n_tr0_references": 10667
+ },
+ "step3_gate": {
+  "G1": {
+   "by_backend_and_set": {
+    "compiled:Andronescu2007": {
+     "constructed": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 941,
+       "plus": 941
+      }
+     },
+     "kind": "ball",
+     "pass": true,
+     "sampled": {
+      "n_sequences": 20,
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 2119
+     },
+     "scale": 21.26280733187213
+    },
+    "compiled:envelope": {
+     "constructed": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 941,
+       "plus": 941
+      }
+     },
+     "kind": "envelope",
+     "pass": true,
+     "sampled": {
+      "n_sequences": 20,
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 2107
+     },
+     "scale": 1.0
+    },
+    "compiled:r1": {
+     "constructed": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 941,
+       "plus": 941
+      }
+     },
+     "kind": "ball",
+     "pass": true,
+     "sampled": {
+      "n_sequences": 20,
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 2119
+     },
+     "scale": 1.0
+    },
+    "compiled:r_cap": {
+     "constructed": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 941,
+       "plus": 941
+      }
+     },
+     "kind": "ball",
+     "pass": true,
+     "sampled": {
+      "n_sequences": 20,
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 2119
+     },
+     "scale": 96.52924364315216
+    },
+    "python:Andronescu2007": {
+     "constructed": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 941,
+       "plus": 941
+      }
+     },
+     "kind": "ball",
+     "pass": true,
+     "sampled": {
+      "n_sequences": 20,
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 2119
+     },
+     "scale": 21.26280733187213
+    },
+    "python:envelope": {
+     "constructed": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 941,
+       "plus": 941
+      }
+     },
+     "kind": "envelope",
+     "pass": true,
+     "sampled": {
+      "n_sequences": 20,
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 2107
+     },
+     "scale": 1.0
+    },
+    "python:r1": {
+     "constructed": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 941,
+       "plus": 941
+      }
+     },
+     "kind": "ball",
+     "pass": true,
+     "sampled": {
+      "n_sequences": 20,
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 2119
+     },
+     "scale": 1.0
+    },
+    "python:r_cap": {
+     "constructed": {
+      "n_rows": 23741,
+      "n_with_a_nonzero_offset": {
+       "minus": 941,
+       "plus": 941
+      }
+     },
+     "kind": "ball",
+     "pass": true,
+     "sampled": {
+      "n_sequences": 20,
+      "n_structures": 20020,
+      "n_with_a_nonzero_offset": 2119
+     },
+     "scale": 96.52924364315216
+    }
+   },
+   "lengths": [
+    53,
+    69,
+    74,
+    77,
+    78,
+    85,
+    89,
+    91,
+    98,
+    102,
+    112,
+    118,
+    124,
+    139,
+    140,
+    159,
+    182,
+    196,
+    304,
+    365
+   ],
+   "pass": true,
+   "samples_per_sequence": 1000,
+   "seed": 20261013,
+   "sequences": 20
+  },
+  "G2": {
+   "certified_absent": {
+    "1": 7925,
+    "20": 5951,
+    "5": 7866
+   },
+   "certified_present": {
+    "1": 293,
+    "20": 4,
+    "5": 266
+   },
+   "envelope": {
+    "n_certified_absent": 7882,
+    "n_certified_present": 277,
+    "n_exactly_robust_absent": 7882,
+    "n_exactly_robust_present": 277,
+    "n_false_certificates": 0,
+    "whole_structure_certified": 181
+   },
+   "exactly_robust_present": {
+    "1": 293,
+    "20": 4,
+    "5": 269
+   },
+   "false_certificates": {
+    "1": 0,
+    "20": 0,
+    "5": 0
+   },
+   "folds": 1988,
+   "n_enumerated_energies_checked": 262593,
+   "n_pairs_star_total": 297,
+   "n_sequences": 200,
+   "n_structures_total": 262593,
+   "pair_tables_vs_enumeration": {
+    "x_prime_mismatches": 0,
+    "z_prime_mismatches": 0
+   },
+   "pass": true,
+   "power_check": {
+    "false_certificates_produced": 425,
+    "false_certificates_produced_envelope": 22,
+    "n_sequences": 50,
+    "pass": true,
+    "weights_scaled_by": 0.5
+   },
+   "radii_kcal": [
+    1.0,
+    5.0,
+    20.0
+   ],
+   "recursion_side": {
+    "folds_checked": 1988,
+    "subopt_structures_checked": 0,
+    "violations": 0,
+    "zuker_structures_checked": 23626
+   },
+   "registration_1_n_structures_total": 262593,
+   "rho": "not computed (no radius here)",
+   "sequences": {
+    "lengths": [
+     16,
+     20
+    ],
+    "n_kept": 200,
+    "n_rejected_no_reachable_loop": 40,
+    "n_screened": 240
+   }
+  },
+  "count_model_checks": 323390,
+  "environment": {
+   "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+   "callback_backend": "compiled",
+   "numba": "0.68.0",
+   "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+   "viennarna": "2.7.2"
+  },
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "2f4195218b5c7866960ed0d12dfe999c91db841d"
+  },
+  "seconds": 155.6
  }
 }
