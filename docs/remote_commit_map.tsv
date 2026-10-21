@@ -240,230 +240,249 @@ e5d696dda5bc	7de53ec9e898	exported	Type B Experiment 2: fold complete (193 point
 f1878dda3fa4	d0c3d09973ff	exported	Type B: verdict-reading correction (old text kept verbatim) and priors' outcomes recorded:
 b13f10244f46	80f872f4dadd	exported	Type B: fold driver status starts with RUNNING (the standard waiter read 'fold RUNNING' as
 ba05e6beece0	40ef5c5946cc	exported	vienna_ref guard check: record the reference's values before the Boltzmann guard
-54bdb26bcc99	40ef5c5946cc	dropped	vienna_ref guard check: before values recorded
-87d4b2ed9e52	1014ac40c0d9	exported	vienna_ref: guard the Boltzmann factors behind pf() (separate ViennaRNA cache); two plante
-d5bedbe4086d	1014ac40c0d9	dropped	vienna_ref Boltzmann guard: gate rerun, all 7,203 reference values bitwise unchanged
-7bc9ccdb204b	1014ac40c0d9	dropped	Type B Experiment 2: three exploratory analyses of the shards (paired F1 vs reference, cha
-8e1906e5a11f	1014ac40c0d9	dropped	Type B Experiment 2 (exploratory): accuracy unchanged (paired dF1 CIs contain 0); changes 
-0c1a6bec5066	1014ac40c0d9	dropped	RECOMB 2027 manuscript directory: LNCS 2.26 template (CC BY 4.0, provenance recorded), DOI
-6e2c5a782013	ab2defb9336c	exported	RECOMB 2027 manuscript: Type B methods, Experiment 1 and Experiment 2 results, and supplem
-401cc02c57b8	ee31c63925d8	exported	Type B tie-split refold (exploratory): script with the reporting rule
-f95f10e148ba	48699359c669	exported	Type B tie-split: reporting rule registered before any refold (headline reports real reord
-efbc42fafc8b	15135cddd932	exported	Type B tie split (exploratory): Andronescu point 469 real reorderings (3.9% [3.6, 4.3]) + 
-c984952a6809	15135cddd932	dropped	Type B figure: genuine MFE changes vs perturbation norm, null vs contrast arms, published 
-87922468d1d4	cc17dd840a12	exported	RECOMB: the call's formatting rules verbatim (raw page, sha256); bibliography test moved t
-acef811e2647	4bc13cb3fc7e	exported	vienna_ref guard check: planted phase (old guard vs new, each version from git history)
-c262b3c3cb37	b8f933de0428	exported	vienna_ref guard check: the guard was added in 87d4b2e, not d5bedbe (which only recorded t
-cf481b263197	b8f933de0428	dropped	vienna_ref guard check: planted stale Boltzmann table recorded; the old guard returned -25
-6ecc1785f38a	b8f933de0428	dropped	RECOMB: CLAIM-line check (outline claims tied to tracked artifacts and resolving JSON poin
-0dc769abcedb	b8f933de0428	dropped	STYLE_PROVENANCE: the manuscript now compiles (tectonic)
-019e800af1b0	b8f933de0428	dropped	RECOMB: Type B section cut to 2 pages with its figure (compiled: 2 body pages); claim-pinn
-9fb643c11fdf	b8f933de0428	dropped	RECOMB: one PDF from separate files (sections/*.tex, references, supplement/body.tex as an
-fcfbc236a58c	4485b44cb089	exported	E1: Fisher information by direction class (script); shared loader re-checks the fold's dir
-c32881551e52	8a744a367ea5	exported	E1: preregistration (registered test: contrast/null mean-I ratio > 1; null I > 0 a reporte
-75873408640f	0c8ffed1a62b	exported	Data: Rfam 12.2 family list (CC0), registered by sha256; the release bpRNA-1m drew from (D
-5f580a5d641e	3c8f5da099aa	exported	E3: TR0+TS0 under the whole published tables, and the DNA check (script); shared fold-unde
-5f1dea72b3a0	f220771e45cb	exported	E3 DNA check: test the intrinsic gauge on DNA values directly (writer + ViennaRNA), and cl
-0a0beba7ee21	d16e8657bf0f	exported	E3 DNA check: N1 and N2 are null for ViennaRNA's DNA set (0 of 23,741 energies change); lo
-90aa9ba65c9f	9a258ea243d6	exported	E1 sampled (8/8 workers, must-holds held); E3 energy identities made exact for tables whos
-fe6631438d6e	aadc90379b3c	exported	E1 analysed: registered test passes (contrast/null mean-I ratio 9.41 [9.14, 9.69]); intrin
-8260ebf71b5b	ec5e3084a837	exported	E3 analysed: whole published tables change 65.5% (Turner 1999), 81.9% (Andronescu 2007), 8
-8a76a88d05a7	5422d655ebc5	exported	Ablation arm (c): per-epoch and thinned per-step split of v.w into decay and optimiser con
-318022b911bf	5422d655ebc5	dropped	Figures: shared style and provenance (committed artifacts only, sha256 sidecars); Fig 4, t
-4f7a6476f47c	5422d655ebc5	dropped	Table 1: null-space dimensions by source (model, TR0+TS0, Rfam 15.1 seed) and Type B compo
-7d26615ce59f	5422d655ebc5	dropped	Fig 3 (E1): information by direction class (intrinsic exactly 0, null and published compon
-022ff741486b	5422d655ebc5	dropped	Fig S1: Type B dimension against corpus size (Rfam subsamples, matched size, all Rfam, TR0
-e549ef8c86f7	3f0426c3273b	exported	E2: held-out set built (1,641 Rfam 15.1 families absent from Rfam 12.2; 46,130 sequences a
-ee1a7d40a971	3f0426c3273b	dropped	Fig S2: published-component MFE changes by Turner 2004 MFE gap (exploratory, Wilson CIs); 
-6589ebaf806f	e08626b75015	exported	E2 analysed: registered test NOT supported (16 kcal/mol: held-out and in-sample noise-corr
-6f2c79ac09b9	e08626b75015	dropped	RECOMB manuscript: title, authors and abstract (the authors' text, numbers pinned); Fig 2 
-4779441cc642	2509bdc24118	exported	E1 exploratory gradient (asked after E1 was registered, sampled and analysed; not register
-b32b772e97c3	038881a2ee24	exported	Commit map for the pushed history: local commit -> origin commit (the manuscript and its t
-73d3b40007e9	7110d6801775	exported	E2 exploratory overlap (asked after E2 was analysed; PRED unchanged): 154 of TR0+TS0's 426
-4e7a30df30b4	2228a78196b7	exported	E2 overlap, coverage split (after review): all 154 shared directions are supported only on
-e58716ec5071	2228a78196b7	dropped	RECOMB: Type B cut to 2.5 pages (Fig 3's class panel merged into Fig 2 as (c); spectrum to
-471c152c85f9	2228a78196b7	dropped	PLAN: RECOMB ablations A1-A3 under P10 (decoders, Andronescu 2007 base table, MXfold2 trai
-39e0f7ef617f	2228a78196b7	dropped	Certified folding design doc, saved verbatim as supplied by the user (its benchmark paths 
-985efa549b38	d97130ccdbc1	exported	A1-A3 code (approved plan, implemented and adversarially reviewed): A1 decoder ablation (M
-0ea431fa81cb	4fc2359f993a	exported	MXfold2 gauge runs artifact (2026-10-08, finished with failed or diverged runs): committed
-7d4804e9c248	4cd5e575495b	exported	A3 preregistration (MXfold2 training ablation): rows SGD/Adam/AdamW wd 0.01/gauge penalty/
-8d09534a15ae	780cd369b702	exported	A3 collect-existing: existing rows (Adam, w = 0.125, gauge penalty, SGD) recomputed and re
-9f749542b550	737dc538d8eb	exported	A1 preregistration (decoder ablation): T1 under MEA, Andronescu point minus the +-1 dcal r
-d5e30273cdca	6d9c50d4b343	exported	A1 smoke and mini passed: the three planted failures caught (skipped load, stale Boltzmann
-738ab7a5b756	4cd8ccbcd006	exported	A2 build: Andronescu 2007 written on the Turner template (12,849 shared keys); B1-B9 pass 
-21b864a162b8	87d9319fd5b5	exported	A2 preregistration (Andronescu 2007 base table): mirrored component P_nt(theta_T04 - theta
-f3b543eaf3f7	1bf7fbb6674c	exported	A2 smoke passed: S1 Turner-mode fold reproduces the Type B fold shards, S2 Turner-mode sam
-789e27f28b91	07b1c2ee0974	exported	A3 GPU smoke: G1 passed (two concurrent projection epochs, one per card, bound held), G2 b
-0440ce0b1b08	07b1c2ee0974	dropped	References: Sacco et al. 2026, MERGE-RNA (NAR 54(18), gkag917), fetched from its DOI, for 
-304f702eeead	b53c883cdd7e	exported	A1 analysed: registered T1 passes under MEA (Andronescu point changes 13.4% of MEA structu
-07fa2a0d155a	8ec6fe784077	exported	A2 fold complete (Andronescu 2007 base, 33 points, 6 workers; guards held), before the E1-
-b60c05f6d3bd	09cbbd964538	exported	A2 Fisher sampling complete (E1 at the Andronescu 2007 base, 6 workers, 11 min), before th
-cd7bb87fe405	dcc02d5c82de	exported	A2 analysed: both registered tests pass at the Andronescu 2007 base
-03d7d671f469	dcc02d5c82de	dropped	Table 2 and the robustness paragraph: A1 decoders and A2's second base table
-13ed762ec4e8	dcc02d5c82de	dropped	CALL.md: record the conference's own call page, and correct the LNCS proceedings line
-1120492900f3	dcc02d5c82de	dropped	Draft the five unwritten sections; Table 2 narrowed to fit at the body font size
-2d2bb2ff347e	dcc02d5c82de	dropped	Setup states all three propositions; Type B drops the duplicated setup and the restated He
-cb15bf813093	dcc02d5c82de	dropped	Ledger corrections the writers flagged as the lead's, and Fig 3's panel-b labels
-6ecc8362d4a8	dcc02d5c82de	dropped	Discussion: the ensemble-data point, with D_bpp at the three published points pinned
-a0a865be7bdc	dcc02d5c82de	dropped	Supplementary Section S5: the per-point detail behind Table 2, with Tables S8 and S9
-03d8faf4fe55	dcc02d5c82de	dropped	PLAN: A1 and A2 results, where Table 2 and S5 landed, and the Algorithm 1 page-budget devi
-c502e614a2aa	dcc02d5c82de	dropped	Apply the adversarial review: registration scoping, the two misstated definitions, S5 pins
-a6392f01cf68	dcc02d5c82de	dropped	Two review nits: tie "nontrivial" to Type B at first use, and give the lambda estimate a l
-71e112728d37	dcc02d5c82de	dropped	G(x) is the closed-form part everywhere, and the Table 3 generator is in place
-f606ebada4a0	dcc02d5c82de	dropped	Table 3 and Supplementary Table S10 generators, written against A3's registered output sha
-4de76f917207	cdd266aae40e	exported	A3 training complete: all 6 new runs (AdamW wd 0.01 and projection, seeds 20261006-08) fin
-29d7ba5774a3	1bd647352779	exported	A3 scored: 9 epoch-10 models on TS0, and the scorer reproduces the evaluator for the Adam 
-0ab1b7e1e07c	c475c9ed1e1c	exported	A3 analysed: the weight projection holds v.w at float32 noise with no accuracy cost (regis
-be86808783a5	c475c9ed1e1c	dropped	Table 3, Supplementary Section S6, and the page-budget pass that brings the body to 10 pag
-faeb0c3fe40b	c475c9ed1e1c	dropped	PLAN: A3's result and the page-budget outcome (body at 10 pages exactly)
-4a6c814db895	c475c9ed1e1c	dropped	Captions beneath tables as well as figures (the authors' convention)
-789cebf0464c	d91b5d2a5dca	exported	certfold: the per-loop feature map, exact against the validated count model
-24383f603b43	d91b5d2a5dca	dropped	Fix two defects the caption audit found: "Table ??" in the submitted supplement, and a lat
-d432b7b37e6f	354ad465a580	exported	certfold build-basis: compare spans of unequal dimension, and make B_four exactly four-tab
-9f526e6849fa	fd46db92e5ef	exported	certfold: test the containment that actually holds, against nontrivial AND gauge
-c9c580183bec	470ee83b7a8b	exported	certfold: absolute residuals for the basis comparison; a near-vanishing restriction must n
-b4012b774d7e	1608f44e35e8	exported	certfold: the restricted reference basis loses rank; measure it instead of letting QR pad 
-c3cc282ce789	826347f6eb8c	exported	certfold build-basis: the published radii on B_four, r_cap, and what the ball permits per 
-1641416f44e9	e5070858e1a7	exported	certfold: the component's per-entry shift is |delta_e|, not divided by the loop multiplici
-62fe2248a975	1b974feda39d	exported	certfold: report the per-loop ball allowance over charged loops too; nine in ten carry non
-9c8fccc0472f	24b7fdbb5101	exported	certfold: a physical bar for which loops the ball can actually move
-f861c6752ae5	ff736513ca11	exported	certfold build-basis: record which entries B_four reaches, by table
-9149000b55ad	6275b5d07615	exported	certfold build-basis: B_TR0 built, must-holds hold, and what the ball permits is measured
-77e4c63b90d0	8822698ba534	exported	certfold: the callback, the certificate's weights, and G1 with its constructed-case extens
-e1d7d7cd0db7	1259bab9284c	exported	G1 passed: the callback identity, at three radii, sampled and constructed, zero mismatches
-42beb9e47cc6	1259bab9284c	dropped	paper: the artifact repo URL in the abstract, and a verified TeX zip
-27687bf5ad5b	d8cf421860d2	exported	certfold: the certificate core, G2, and the basis's noise rows zeroed exactly
-6f3914a1c59d	fa43426c88c8	exported	certfold: the rebuilt basis, and rho computed once per pair
-93c326511bac	ee527a5d0083	exported	certfold G1: re-passed on the rebuilt basis
-e3aeb6b09322	88c43058b66a	exported	certfold: forbidding a pair was forbidding its crossing pairs too
-af52d056178b	054f843db17c	exported	certfold: G3 and G6, and no numpy scalars in the artifact
-e61b6fb2bef6	8a0da5801962	exported	certfold: the callback answers the common case with one integer test
-583d27d3a3ce	908d729b575e	exported	certfold gate: G1, G2, G3 and G6 re-passed on the frozen code
-da7033b9460e	bd5d52baf122	exported	certfold: the TR0 pilot and G4
-2940845bb06d	cdbad2f5a673	exported	artifact: the public repository's README, licence, and the export that builds it
-83a5e1a122f0	417e8f2e47eb	exported	artifact: the commit map for the rewritten history, and test_env left out
-e11ab60ddfe2	892b9ee461f0	exported	certfold: the authors' items of 2026-10-13 -- positional oracle, the envelope, recursion c
-c093294c6f9c	3a52867e0944	exported	certfold gate on the amended code: build-basis, G1, G2, G3, G6 all pass
-b36501423b5d	b108343a1062	exported	certfold: the review's confirmed findings, fixed before the pilot
-a66ed5b5a1c3	5a2d68e6c7e3	exported	certfold gate re-passed with the review's fixes: build-basis, G1, G2, G3, G6
-e0f833c67034	a7e3bdd379b3	exported	certfold: the pilot decision figure
-7b56ba86e4d0	a7e3bdd379b3	dropped	Nguyen 2023 read in full: cited, and the design doc no longer says "nothing like it"
-dce5c556e6f9	c4a780dcd446	exported	certfold G4: the envelope too, so the gate covers whichever set the authors choose
-7c688aa3db2e	aa06577a5b13	exported	certfold pilot on TR0: 300 sequences, the ball at four radii and the envelope
-a338666096b4	a2f86a904e74	exported	certfold: the pilot decision figure, rendered from the committed record
-5f2a4702282e	d5bf30e3289e	exported	certfold G4 passed: ball at r = 1, 5, 20 and the envelope, 100 TR0 sequences
-4a9363b6f153	f97eafede75b	exported	certfold: the authors' decisions of 2026-10-13 -- compiled callback, verified rho, PRED
-c7188822bba1	3a8b4e118475	exported	certfold: G5, the evaluation modules, and the pre-freeze review's fixes
-277147aca75a	c4886213e2a9	exported	certfold: the final frozen gate, in .venv-certfold, on c718882 -- all pass
-288205877c60	1814df5ae539	exported	certfold preregister: compare the venv directory, not the resolved interpreter
-3bec8e62cd56	5471638973f4	exported	certfold: the final frozen gate re-run on 2882058, in .venv-certfold -- all pass
-231cccda1e56	6404c6a1e7fa	exported	certfold PRED: registered on 3bec8e6, before any test-set fold
-31e8c8a28d1c	eea7dbb6fc99	exported	certfold_run: the test-set run and the analysis wiring, after the registration
-c75aab8cd78d	da3c19c8b1b6	exported	certfold G5 passed: zero violations on the three test sets, after the registration
-cec7716f0dae	da3c19c8b1b6	dropped	fig5_certfold: draft generator for the registered run (risk-coverage, mechanism)
-5b6f109aee10	336db1003fbf	exported	certfold: the exploratory analyses, specified before any test-set accuracy exists
-87a3fe6231f5	a4ea2e1094dc	exported	certfold run: labels, verified radii and baselines on the three test sets
-a6409f99b7e2	29b6466438d2	exported	certfold_exploratory: E1-E3 as specified, committed before the analysis phase
-059e66fbea82	29b6466438d2	dropped	paper: restructured outline draft, certified folding leads (for approval by Oct 17)
-100c0e09657a	c47fdb4cc6e3	exported	certfold_run: the fresh-context review's analysis-side fixes, before any accuracy
-292afc9e20e4	1c3ef0c307d0	exported	certfold: the authors' reading rules, committed while the analysis runs
-83b7583f5c57	1c3ef0c307d0	dropped	supplement: draft disclosure of the certified-folding run's order of events
-d4a5c310f0be	4c050cb66c75	exported	certfold_exploratory: the authors' review folded in, before the analysis finishes
-1a711ac4dde1	4c050cb66c75	dropped	supplement: disclosure draft, the exploratory review and the blind E2 merge
-863c7cd3fe2f	4c050cb66c75	dropped	paper: the single-column US Letter layout, beside the LNCS manuscript
-30f69b207366	4c050cb66c75	dropped	references: twelve entries for the certified-folding sections, each from its DOI
-c4d96c8b3d43	4c050cb66c75	dropped	paper: outline revision 2, the authors' order and budget
-8cd8c49f6194	4c050cb66c75	dropped	paper: the restructured Letter draft (main_letter.tex), all but the accuracy parts
-5701bb788959	4c050cb66c75	dropped	paper: American spelling in the figures and the draft; G3's fold count
-2a13047a80e5	4c050cb66c75	dropped	artifact: allow-list the certified-folding modules, tests and specifications
-c37338f3479f	4a2aaf14169a	exported	certfold analysis: R1-R3, disagreement sets, descriptive fractions (registration 1)
-5b8cee709e4f	4a2aaf14169a	dropped	paper: Fig 5 in the Letter layout and Section 6's descriptive results
-82d50d3ad157	4a2aaf14169a	dropped	supplement draft: S7, the certified-folding proofs (cited by Theorem 1)
-c4feb4a71531	4a2aaf14169a	dropped	paper: S7 and Theorem 1 over exact energies; the set from TR0 alone, measured
-120b4ea36845	42c16c8ee810	exported	artifact: the registry cut to this paper's sources; data attribution
-f2eda312ae59	42c16c8ee810	dropped	paper: S7 and Section 5 after the fresh-context review of the proof
-7dd3f86aaf5b	bc4ee8a96b89	exported	certfold exploratory: E1-E3 and E2_raw, complete (not registered tests)
-f801469792a4	bc4ee8a96b89	dropped	certfold: the reading-rules report and the draft abstract for Oct 28
-cdbf1e01f1d2	bc4ee8a96b89	dropped	paper: the accuracy paragraph, the abstract's last sentence and the conclusion
-60af83d29281	43da37bf2ec3	exported	reading rules: addendum, one post hoc check (the authors, 2026-10-15)
-d561856b9990	d0e8568170f9	exported	certfold_posthoc: the one post hoc check, as the addendum (60af83d) defines it
-1652884f2e31	d0e8568170f9	dropped	paper: framing per R3, the authors' abstract, and checks not attacks
-e33ed7e7c2cb	d0e8568170f9	dropped	supplement draft: S8, the per-set accuracy tables, generated from the artifact
-7fdb5649a63a	a9087e9e4e76	exported	artifact README: certified folding documented (files, environment, order, results)
-32d341707ac5	c98b8b64a27b	exported	docs: remote commit map for the next artifact export (195 exported, 189 dropped)
-e347dcdcaf31	c98b8b64a27b	dropped	artifact: allow-list scripts/certfold_posthoc.py (the README documents it)
-ea67dcee0555	7846151dc7d6	exported	docs: remote commit map after allow-listing the post hoc script
-5a4db8d21dc5	37f27a925690	exported	reading rules: the authors confirm the post hoc branches, before the result lands
-67b100813e7e	37f27a925690	dropped	paper: the authors' revised abstract, verbatim
-8978e3bd02d6	14ec375806fd	exported	certfold post hoc: the energy gap shows the 2a pattern too (branch b)
-306036557fc1	14ec375806fd	dropped	paper: post hoc branch (b) applied; S8 with the post hoc rows; report updated
-c54491314ae8	e3f55b8ed4e6	exported	certfold_additions: A (uncertain is not unstable) and B (runtime), descriptive
-d5ea9a0ffec9	2347507d4ad6	exported	certfold additions A: 26.8% of uncertain TS0 pairs change in a random envelope table
-e0400c945600	cd5cc71c286f	exported	certfold additions B: one callback fold costs 1.32x a plain MFE fold
-6371f642d60d	cd5cc71c286f	dropped	paper: additions A and B in the text; S9 runtime table
-589b83e2b19b	b03131585638	exported	certfold_reg2: D's entry ranking on TR0 (registration 2, first phase)
-787e29b889c0	7312860cf483	exported	certfold registration 2: D's entry ranking on TR0, before the registration
-8f5ab3df2f9c	d29aadc14ff2	exported	certfold_reg2: PRED2, the authors' design and reading rules verbatim
-b5cacdaca20d	e802b425dcc7	exported	certfold PRED2: registration 2 committed before any whole-table fold on TS0
-5c2bac380eab	018e7cde7658	exported	certfold_reg2: G2 on the measured sets, C's folds, D's measured labels
-6379d36b0a91	2336564606d7	exported	certfold registration 2: G2 on the measured sets passes, before any TS0 fold
-919714ba2e23	e6a5669b370d	exported	certfold registration 2: C's folds on TS0, and analyse-c
-17403aad6f7d	56b85f0f40db	exported	certfold_reg2: analyse-d (R6, gain by stratum, top entries as motifs)
-5c3b7b591108	484398eb42e0	exported	certfold registration 2: C analysed (R4 passes; R5 lower than p on every table)
-a2a21bf8dc69	484398eb42e0	dropped	paper: registration 2 tables (R4, R5) in the S8 generator; D's when present
-ea104e51d824	484398eb42e0	dropped	paper, reading report: C read by registration 2's rules
-5ca89124097d	70f1f0037ca6	exported	certfold registration 2: D's labels on TS0 under the 42 measured sets
-597bdb0d40a5	bae36c9ae250	exported	certfold registration 2: D analysed (R6 passes at K = 10 and 50)
-edd4f2613426	bae36c9ae250	dropped	paper, reading report: D read by registration 2's rules; Fig. 6
-94767990faf9	bae36c9ae250	dropped	paper, report: registration 2 preceded every pair-level comparison, not every TS0 fold
-6f0b16e2b466	bae36c9ae250	dropped	paper: the conclusion carries C and D (R4, R5 by rule 3, R6); body 9.65 pages
-4c42f14dabc7	bae36c9ae250	dropped	paper, report: the independent review of registration 2 acted on
-98f1504c1980	51500573c675	exported	certfold: the reviewer's additions specified (post hoc) before any runs; the experiment re
-b2ddeabd9a65	91b50036e4a8	exported	certfold reviewer additions: the code; R4/R5 reproduced exactly; 67 directions, not 49
-3f8190b145e4	68d2f9b959ad	exported	certfold reviewer additions: the descriptive phase; Section 5 says 67, not 49
-a78a246383fa	16375d574bd3	exported	certfold reviewer additions: the second TR0 pilot ranked; Section 6 restructured (draft)
-e2abbb9824ad	bf2f6468d6c4	exported	certfold reviewer additions: gates pass before any TS0 fold
-90bcb812feca	0373718750e8	exported	certfold reviewer additions: TS0 folds; the paper restructured as the reviewer proposed (d
-5c4ce8f2c180	604962d24fdc	exported	certfold reviewer additions: analysed
-945fa812ae4c	604962d24fdc	dropped	paper: the reviewer's additions written in; body 9.92 Letter pages
-558ba4a2665b	604962d24fdc	dropped	docs: the reviewer's additions read by their pre-committed rules; the experiment report re
-77ad7d8b44de	b94be42574cf	exported	integrity and wording: registered before any test sequence was certified; the authors' abs
-a091947343c2	b94be42574cf	dropped	the outline approved: main_letter.tex is the manuscript of record; one compiled supplement
-99b617b2504b	b94be42574cf	dropped	tests: the pins test covers the Letter manuscript, with a coverage test for its main text
-194c973cb2e3	b94be42574cf	dropped	tests: claims, numbers and refs cover the Letter manuscript
-8d6246421149	b09c086bd932	exported	number checks: every number in the Letter manuscript pinned to its artifact; four errors f
-eedda7b4bee8	c8a085849741	exported	text freeze: the fresh-context review's 21 points fixed
-39dc2ea8dc33	90a70e3a6ce7	exported	docs: the remote commit map for the text-freeze export
-6a0c14d8382c	2dbe2fcbb9bd	exported	spec: the four tables' unread entries, a post hoc addition (the authors, 2026-10-19)
-9a0a7c574df2	27f9a6e4a1fd	exported	certfold_unread: the post hoc addition's script, as specified in 6a0c14d
-d268dcb04aa9	178a5e604ee4	exported	certfold_unread describe: U, m_e and the shares E+'s span holds (post hoc)
-e0e5551502be	28be10d866b7	exported	certfold_unread gates: G1 (both backends), G2 and G4 with u+, no false certificate (post h
-193c7d481646	28be10d866b7	dropped	text: the authors' abstract clause; the ablations not run disclosed in S8; the dangles sen
-bd8e0b3b6395	d0d0901aff25	exported	certfold_unread G5 on TS0: 0 violations (post hoc)
-776766a94744	4e1e2bdc8745	exported	certfold_unread run: TS0 labelled under E+_1, every must-hold holds (post hoc)
-140185e534de	24f8de92762d	exported	certfold_unread analyse: 28.9% of TS0 MFE pairs certified under E+_1 beside 40.9% under E_
-7907401b670b	54dba73fc072	exported	the unread-entries addition written up by its fixed reading (post hoc)
-611be3dc05a2	472ceda4fb80	exported	review of the changed passages: its points fixed
-dc99c0fd8ce8	cbc4bac426fc	exported	docs: the remote commit map for the 2026-10-19 export
-05c2eb41c40f	cbc4bac426fc	dropped	the authors' two edits; the analysis freeze is final
-3cff2275841e	cbc4bac426fc	dropped	docs: the authors' checklist for the rewrite, with the current text's baseline
-2e526c84073d	7da809df653e	exported	spec: the default model and the decoupling bound, two post hoc items (the authors, 2026-10
-7e9a7fd5fda9	cc8135dd7ad8	exported	certfold_default_model: the two post hoc items' script, as specified in 2e526c8
-c3a3be6c93e1	9155442764f0	exported	certfold_default_model fold: TS0 under the default model, every check passed (post hoc)
-a2497a9f8a76	782465e7c173	exported	certfold_default_model analyse: R4's statistic under the default model +2.4 [0.9, 4.2]; th
-bb1104c84562	643e8783d738	exported	the default model and the decoupling bound written up by their fixed readings (post hoc)
-42708ca09efc	643e8783d738	dropped	docs: report layout
-121696e39e17	643e8783d738	dropped	review fixes for the default-model passages; the page count corrected: the body is 10.96 p
-7e0725b8d3e1	643e8783d738	dropped	docs: report layout
-360b575d5e3b	643e8783d738	dropped	page limit: a PDF-based page test, and three floats moved to the supplement (the authors' 
-86df7088111e	643e8783d738	dropped	paper folder cleaned; the supplement gets a contents list; one combined PDF
-c343a3568946	643e8783d738	dropped	supplement layout: no forced page breaks, floats free to settle; 37 pages to 33
-7f9e7a7e343c	643e8783d738	dropped	figures: the worked example's script, its selection rule fixed before it runs
-2422a67623c1	643e8783d738	dropped	presentation: a worked-example figure, plain names for the test codes, two references
-f9c5ce8a6c2f	cd9207dfd036	exported	spec: the advisor's two post hoc items (2026-10-20), before any code
-bc27c232f52b	4a255163620a	exported	scripts for the advisor's two post hoc items, as specified in f9c5ce8
-b1396863802e	abbbbddd89d7	exported	mxfold2_net_split: magnitude ranges across seeds, as the text quotes them
-5804ad271c61	7a75a6dd0b5d	exported	mxfold2_net_split: Adam's net contribution exceeds decay's in every seed at both horizons 
-393c34885f6c	6819173baf1f	exported	typeb_dimension_curve: 189 Type B directions remain for the union of 102,113 structures (p
-558de0dae3d7	6819173baf1f	dropped	letter: the advisor's three changes (2026-10-20)
-26288ab888e5	6819173baf1f	dropped	letter: fresh-context review of the advisor's changes, fixes applied
+54bdb26bcc99	2d44581c5124	exported	vienna_ref guard check: before values recorded
+87d4b2ed9e52	60bc4f45fd68	exported	vienna_ref: guard the Boltzmann factors behind pf() (separate ViennaRNA cache); two plante
+d5bedbe4086d	7abe6b10a1a4	exported	vienna_ref Boltzmann guard: gate rerun, all 7,203 reference values bitwise unchanged
+7bc9ccdb204b	03f336db44f4	exported	Type B Experiment 2: three exploratory analyses of the shards (paired F1 vs reference, cha
+8e1906e5a11f	038d28ab51f2	exported	Type B Experiment 2 (exploratory): accuracy unchanged (paired dF1 CIs contain 0); changes 
+0c1a6bec5066	038d28ab51f2	dropped	RECOMB 2027 manuscript directory: LNCS 2.26 template (CC BY 4.0, provenance recorded), DOI
+6e2c5a782013	62b66b7c5aa3	exported	RECOMB 2027 manuscript: Type B methods, Experiment 1 and Experiment 2 results, and supplem
+401cc02c57b8	b8ddace9b7e6	exported	Type B tie-split refold (exploratory): script with the reporting rule
+f95f10e148ba	262c4f1e2465	exported	Type B tie-split: reporting rule registered before any refold (headline reports real reord
+efbc42fafc8b	3ede637f6687	exported	Type B tie split (exploratory): Andronescu point 469 real reorderings (3.9% [3.6, 4.3]) + 
+c984952a6809	3ede637f6687	dropped	Type B figure: genuine MFE changes vs perturbation norm, null vs contrast arms, published 
+87922468d1d4	9f52e3585e0f	exported	RECOMB: the call's formatting rules verbatim (raw page, sha256); bibliography test moved t
+acef811e2647	a9fda0e60182	exported	vienna_ref guard check: planted phase (old guard vs new, each version from git history)
+c262b3c3cb37	48dbddc98f20	exported	vienna_ref guard check: the guard was added in 87d4b2e, not d5bedbe (which only recorded t
+cf481b263197	6108d85cf72e	exported	vienna_ref guard check: planted stale Boltzmann table recorded; the old guard returned -25
+6ecc1785f38a	6108d85cf72e	dropped	RECOMB: CLAIM-line check (outline claims tied to tracked artifacts and resolving JSON poin
+0dc769abcedb	6108d85cf72e	dropped	STYLE_PROVENANCE: the manuscript now compiles (tectonic)
+019e800af1b0	6108d85cf72e	dropped	RECOMB: Type B section cut to 2 pages with its figure (compiled: 2 body pages); claim-pinn
+9fb643c11fdf	6108d85cf72e	dropped	RECOMB: one PDF from separate files (sections/*.tex, references, supplement/body.tex as an
+fcfbc236a58c	555a9a845fea	exported	E1: Fisher information by direction class (script); shared loader re-checks the fold's dir
+c32881551e52	c5fcd134b4c7	exported	E1: preregistration (registered test: contrast/null mean-I ratio > 1; null I > 0 a reporte
+75873408640f	b26369c6eee2	exported	Data: Rfam 12.2 family list (CC0), registered by sha256; the release bpRNA-1m drew from (D
+5f580a5d641e	8e2100c0c00e	exported	E3: TR0+TS0 under the whole published tables, and the DNA check (script); shared fold-unde
+5f1dea72b3a0	a04580a77eac	exported	E3 DNA check: test the intrinsic gauge on DNA values directly (writer + ViennaRNA), and cl
+0a0beba7ee21	62cf1da4cf33	exported	E3 DNA check: N1 and N2 are null for ViennaRNA's DNA set (0 of 23,741 energies change); lo
+90aa9ba65c9f	6fe8825f87c9	exported	E1 sampled (8/8 workers, must-holds held); E3 energy identities made exact for tables whos
+fe6631438d6e	45af39a710e0	exported	E1 analysed: registered test passes (contrast/null mean-I ratio 9.41 [9.14, 9.69]); intrin
+8260ebf71b5b	ee6928f49726	exported	E3 analysed: whole published tables change 65.5% (Turner 1999), 81.9% (Andronescu 2007), 8
+8a76a88d05a7	42adf63c68c5	exported	Ablation arm (c): per-epoch and thinned per-step split of v.w into decay and optimiser con
+318022b911bf	42adf63c68c5	dropped	Figures: shared style and provenance (committed artifacts only, sha256 sidecars); Fig 4, t
+4f7a6476f47c	42adf63c68c5	dropped	Table 1: null-space dimensions by source (model, TR0+TS0, Rfam 15.1 seed) and Type B compo
+7d26615ce59f	42adf63c68c5	dropped	Fig 3 (E1): information by direction class (intrinsic exactly 0, null and published compon
+022ff741486b	42adf63c68c5	dropped	Fig S1: Type B dimension against corpus size (Rfam subsamples, matched size, all Rfam, TR0
+e549ef8c86f7	61237c0afe3c	exported	E2: held-out set built (1,641 Rfam 15.1 families absent from Rfam 12.2; 46,130 sequences a
+ee1a7d40a971	61237c0afe3c	dropped	Fig S2: published-component MFE changes by Turner 2004 MFE gap (exploratory, Wilson CIs); 
+6589ebaf806f	fb9df3246f5c	exported	E2 analysed: registered test NOT supported (16 kcal/mol: held-out and in-sample noise-corr
+6f2c79ac09b9	fb9df3246f5c	dropped	RECOMB manuscript: title, authors and abstract (the authors' text, numbers pinned); Fig 2 
+4779441cc642	c6e26ab39803	exported	E1 exploratory gradient (asked after E1 was registered, sampled and analysed; not register
+b32b772e97c3	77180600efb8	exported	Commit map for the pushed history: local commit -> origin commit (the manuscript and its t
+73d3b40007e9	92aa5efb499c	exported	E2 exploratory overlap (asked after E2 was analysed; PRED unchanged): 154 of TR0+TS0's 426
+4e7a30df30b4	c327ceb314b6	exported	E2 overlap, coverage split (after review): all 154 shared directions are supported only on
+e58716ec5071	c327ceb314b6	dropped	RECOMB: Type B cut to 2.5 pages (Fig 3's class panel merged into Fig 2 as (c); spectrum to
+471c152c85f9	c327ceb314b6	dropped	PLAN: RECOMB ablations A1-A3 under P10 (decoders, Andronescu 2007 base table, MXfold2 trai
+39e0f7ef617f	c327ceb314b6	dropped	Certified folding design doc, saved verbatim as supplied by the user (its benchmark paths 
+985efa549b38	b20b97b70b2b	exported	A1-A3 code (approved plan, implemented and adversarially reviewed): A1 decoder ablation (M
+0ea431fa81cb	724aec9633fa	exported	MXfold2 gauge runs artifact (2026-10-08, finished with failed or diverged runs): committed
+7d4804e9c248	d9bf0c7b1aa6	exported	A3 preregistration (MXfold2 training ablation): rows SGD/Adam/AdamW wd 0.01/gauge penalty/
+8d09534a15ae	9a537649dd7e	exported	A3 collect-existing: existing rows (Adam, w = 0.125, gauge penalty, SGD) recomputed and re
+9f749542b550	7cfb79953f42	exported	A1 preregistration (decoder ablation): T1 under MEA, Andronescu point minus the +-1 dcal r
+d5e30273cdca	d05df5d55d6f	exported	A1 smoke and mini passed: the three planted failures caught (skipped load, stale Boltzmann
+738ab7a5b756	11f7969b201b	exported	A2 build: Andronescu 2007 written on the Turner template (12,849 shared keys); B1-B9 pass 
+21b864a162b8	b31ed42e15bd	exported	A2 preregistration (Andronescu 2007 base table): mirrored component P_nt(theta_T04 - theta
+f3b543eaf3f7	a71ed69a5b32	exported	A2 smoke passed: S1 Turner-mode fold reproduces the Type B fold shards, S2 Turner-mode sam
+789e27f28b91	dc687557adfd	exported	A3 GPU smoke: G1 passed (two concurrent projection epochs, one per card, bound held), G2 b
+0440ce0b1b08	dc687557adfd	dropped	References: Sacco et al. 2026, MERGE-RNA (NAR 54(18), gkag917), fetched from its DOI, for 
+304f702eeead	9fe60a75a0f1	exported	A1 analysed: registered T1 passes under MEA (Andronescu point changes 13.4% of MEA structu
+07fa2a0d155a	3f90b94e8a55	exported	A2 fold complete (Andronescu 2007 base, 33 points, 6 workers; guards held), before the E1-
+b60c05f6d3bd	4a4a67ee2e84	exported	A2 Fisher sampling complete (E1 at the Andronescu 2007 base, 6 workers, 11 min), before th
+cd7bb87fe405	796ec224e857	exported	A2 analysed: both registered tests pass at the Andronescu 2007 base
+03d7d671f469	796ec224e857	dropped	Table 2 and the robustness paragraph: A1 decoders and A2's second base table
+13ed762ec4e8	796ec224e857	dropped	CALL.md: record the conference's own call page, and correct the LNCS proceedings line
+1120492900f3	796ec224e857	dropped	Draft the five unwritten sections; Table 2 narrowed to fit at the body font size
+2d2bb2ff347e	796ec224e857	dropped	Setup states all three propositions; Type B drops the duplicated setup and the restated He
+cb15bf813093	796ec224e857	dropped	Ledger corrections the writers flagged as the lead's, and Fig 3's panel-b labels
+6ecc8362d4a8	796ec224e857	dropped	Discussion: the ensemble-data point, with D_bpp at the three published points pinned
+a0a865be7bdc	796ec224e857	dropped	Supplementary Section S5: the per-point detail behind Table 2, with Tables S8 and S9
+03d8faf4fe55	796ec224e857	dropped	PLAN: A1 and A2 results, where Table 2 and S5 landed, and the Algorithm 1 page-budget devi
+c502e614a2aa	796ec224e857	dropped	Apply the adversarial review: registration scoping, the two misstated definitions, S5 pins
+a6392f01cf68	796ec224e857	dropped	Two review nits: tie "nontrivial" to Type B at first use, and give the lambda estimate a l
+71e112728d37	796ec224e857	dropped	G(x) is the closed-form part everywhere, and the Table 3 generator is in place
+f606ebada4a0	796ec224e857	dropped	Table 3 and Supplementary Table S10 generators, written against A3's registered output sha
+4de76f917207	4c887541b4fc	exported	A3 training complete: all 6 new runs (AdamW wd 0.01 and projection, seeds 20261006-08) fin
+29d7ba5774a3	99a9562d50a9	exported	A3 scored: 9 epoch-10 models on TS0, and the scorer reproduces the evaluator for the Adam 
+0ab1b7e1e07c	51a3e0410349	exported	A3 analysed: the weight projection holds v.w at float32 noise with no accuracy cost (regis
+be86808783a5	51a3e0410349	dropped	Table 3, Supplementary Section S6, and the page-budget pass that brings the body to 10 pag
+faeb0c3fe40b	51a3e0410349	dropped	PLAN: A3's result and the page-budget outcome (body at 10 pages exactly)
+4a6c814db895	51a3e0410349	dropped	Captions beneath tables as well as figures (the authors' convention)
+789cebf0464c	f4d28def657b	exported	certfold: the per-loop feature map, exact against the validated count model
+24383f603b43	f4d28def657b	dropped	Fix two defects the caption audit found: "Table ??" in the submitted supplement, and a lat
+d432b7b37e6f	9f0a4f8e2143	exported	certfold build-basis: compare spans of unequal dimension, and make B_four exactly four-tab
+9f526e6849fa	2a66b405e4b7	exported	certfold: test the containment that actually holds, against nontrivial AND gauge
+c9c580183bec	02a3d0db5917	exported	certfold: absolute residuals for the basis comparison; a near-vanishing restriction must n
+b4012b774d7e	0d9188957d00	exported	certfold: the restricted reference basis loses rank; measure it instead of letting QR pad 
+c3cc282ce789	2344e2260954	exported	certfold build-basis: the published radii on B_four, r_cap, and what the ball permits per 
+1641416f44e9	2b18180493dd	exported	certfold: the component's per-entry shift is |delta_e|, not divided by the loop multiplici
+62fe2248a975	dd7d7d3b73c8	exported	certfold: report the per-loop ball allowance over charged loops too; nine in ten carry non
+9c8fccc0472f	74b49f8871a0	exported	certfold: a physical bar for which loops the ball can actually move
+f861c6752ae5	5086c67f1b65	exported	certfold build-basis: record which entries B_four reaches, by table
+9149000b55ad	69c92142f850	exported	certfold build-basis: B_TR0 built, must-holds hold, and what the ball permits is measured
+77e4c63b90d0	40b10a158142	exported	certfold: the callback, the certificate's weights, and G1 with its constructed-case extens
+e1d7d7cd0db7	3f62298abd5c	exported	G1 passed: the callback identity, at three radii, sampled and constructed, zero mismatches
+42beb9e47cc6	3f62298abd5c	dropped	paper: the artifact repo URL in the abstract, and a verified TeX zip
+27687bf5ad5b	79786d4ffdc0	exported	certfold: the certificate core, G2, and the basis's noise rows zeroed exactly
+6f3914a1c59d	4f55f16be286	exported	certfold: the rebuilt basis, and rho computed once per pair
+93c326511bac	752f498f1182	exported	certfold G1: re-passed on the rebuilt basis
+e3aeb6b09322	40336fd6b943	exported	certfold: forbidding a pair was forbidding its crossing pairs too
+af52d056178b	184276a6dd8b	exported	certfold: G3 and G6, and no numpy scalars in the artifact
+e61b6fb2bef6	675e18ed77b0	exported	certfold: the callback answers the common case with one integer test
+583d27d3a3ce	bfc61394444a	exported	certfold gate: G1, G2, G3 and G6 re-passed on the frozen code
+da7033b9460e	b01cea197806	exported	certfold: the TR0 pilot and G4
+2940845bb06d	476d084fe3ae	exported	artifact: the public repository's README, licence, and the export that builds it
+83a5e1a122f0	9934f9f3b017	exported	artifact: the commit map for the rewritten history, and test_env left out
+e11ab60ddfe2	ecf2b555fce7	exported	certfold: the authors' items of 2026-10-13 -- positional oracle, the envelope, recursion c
+c093294c6f9c	bf827463daef	exported	certfold gate on the amended code: build-basis, G1, G2, G3, G6 all pass
+b36501423b5d	904f910d5403	exported	certfold: the review's confirmed findings, fixed before the pilot
+a66ed5b5a1c3	c995f55bf07b	exported	certfold gate re-passed with the review's fixes: build-basis, G1, G2, G3, G6
+e0f833c67034	e4a639dd045d	exported	certfold: the pilot decision figure
+7b56ba86e4d0	e4a639dd045d	dropped	Nguyen 2023 read in full: cited, and the design doc no longer says "nothing like it"
+dce5c556e6f9	f24db770e678	exported	certfold G4: the envelope too, so the gate covers whichever set the authors choose
+7c688aa3db2e	7e4fe960fdd0	exported	certfold pilot on TR0: 300 sequences, the ball at four radii and the envelope
+a338666096b4	da8b533087d6	exported	certfold: the pilot decision figure, rendered from the committed record
+5f2a4702282e	cc6e01a720b5	exported	certfold G4 passed: ball at r = 1, 5, 20 and the envelope, 100 TR0 sequences
+4a9363b6f153	d2654e6285e1	exported	certfold: the authors' decisions of 2026-10-13 -- compiled callback, verified rho, PRED
+c7188822bba1	559ede2b9539	exported	certfold: G5, the evaluation modules, and the pre-freeze review's fixes
+277147aca75a	164250565aa6	exported	certfold: the final frozen gate, in .venv-certfold, on c718882 -- all pass
+288205877c60	7efc08ae43bb	exported	certfold preregister: compare the venv directory, not the resolved interpreter
+3bec8e62cd56	12d93311d455	exported	certfold: the final frozen gate re-run on 2882058, in .venv-certfold -- all pass
+231cccda1e56	e173e11c5491	exported	certfold PRED: registered on 3bec8e6, before any test-set fold
+31e8c8a28d1c	7d44e1ce9c63	exported	certfold_run: the test-set run and the analysis wiring, after the registration
+c75aab8cd78d	d57440c1a468	exported	certfold G5 passed: zero violations on the three test sets, after the registration
+cec7716f0dae	d57440c1a468	dropped	fig5_certfold: draft generator for the registered run (risk-coverage, mechanism)
+5b6f109aee10	a5a3e7a13967	exported	certfold: the exploratory analyses, specified before any test-set accuracy exists
+87a3fe6231f5	764463752734	exported	certfold run: labels, verified radii and baselines on the three test sets
+a6409f99b7e2	3ce2d15416fe	exported	certfold_exploratory: E1-E3 as specified, committed before the analysis phase
+059e66fbea82	3ce2d15416fe	dropped	paper: restructured outline draft, certified folding leads (for approval by Oct 17)
+100c0e09657a	c61103f8fa65	exported	certfold_run: the fresh-context review's analysis-side fixes, before any accuracy
+292afc9e20e4	e8fd210796ed	exported	certfold: the authors' reading rules, committed while the analysis runs
+83b7583f5c57	e8fd210796ed	dropped	supplement: draft disclosure of the certified-folding run's order of events
+d4a5c310f0be	c806cb756c37	exported	certfold_exploratory: the authors' review folded in, before the analysis finishes
+1a711ac4dde1	c806cb756c37	dropped	supplement: disclosure draft, the exploratory review and the blind E2 merge
+863c7cd3fe2f	c806cb756c37	dropped	paper: the single-column US Letter layout, beside the LNCS manuscript
+30f69b207366	c806cb756c37	dropped	references: twelve entries for the certified-folding sections, each from its DOI
+c4d96c8b3d43	c806cb756c37	dropped	paper: outline revision 2, the authors' order and budget
+8cd8c49f6194	c806cb756c37	dropped	paper: the restructured Letter draft (main_letter.tex), all but the accuracy parts
+5701bb788959	c806cb756c37	dropped	paper: American spelling in the figures and the draft; G3's fold count
+2a13047a80e5	c806cb756c37	dropped	artifact: allow-list the certified-folding modules, tests and specifications
+c37338f3479f	9257c7215903	exported	certfold analysis: R1-R3, disagreement sets, descriptive fractions (registration 1)
+5b8cee709e4f	9257c7215903	dropped	paper: Fig 5 in the Letter layout and Section 6's descriptive results
+82d50d3ad157	9257c7215903	dropped	supplement draft: S7, the certified-folding proofs (cited by Theorem 1)
+c4feb4a71531	9257c7215903	dropped	paper: S7 and Theorem 1 over exact energies; the set from TR0 alone, measured
+120b4ea36845	80e9b514d285	exported	artifact: the registry cut to this paper's sources; data attribution
+f2eda312ae59	80e9b514d285	dropped	paper: S7 and Section 5 after the fresh-context review of the proof
+7dd3f86aaf5b	6b053a552caa	exported	certfold exploratory: E1-E3 and E2_raw, complete (not registered tests)
+f801469792a4	6b053a552caa	dropped	certfold: the reading-rules report and the draft abstract for Oct 28
+cdbf1e01f1d2	6b053a552caa	dropped	paper: the accuracy paragraph, the abstract's last sentence and the conclusion
+60af83d29281	224df451c7f7	exported	reading rules: addendum, one post hoc check (the authors, 2026-10-15)
+d561856b9990	0ed375f50157	exported	certfold_posthoc: the one post hoc check, as the addendum (60af83d) defines it
+1652884f2e31	0ed375f50157	dropped	paper: framing per R3, the authors' abstract, and checks not attacks
+e33ed7e7c2cb	0ed375f50157	dropped	supplement draft: S8, the per-set accuracy tables, generated from the artifact
+7fdb5649a63a	35e12248d115	exported	artifact README: certified folding documented (files, environment, order, results)
+32d341707ac5	d3e6505423c4	exported	docs: remote commit map for the next artifact export (195 exported, 189 dropped)
+e347dcdcaf31	d3e6505423c4	dropped	artifact: allow-list scripts/certfold_posthoc.py (the README documents it)
+ea67dcee0555	e61af22780b1	exported	docs: remote commit map after allow-listing the post hoc script
+5a4db8d21dc5	f18e6ee6d2ff	exported	reading rules: the authors confirm the post hoc branches, before the result lands
+67b100813e7e	f18e6ee6d2ff	dropped	paper: the authors' revised abstract, verbatim
+8978e3bd02d6	4fed4ab29a8d	exported	certfold post hoc: the energy gap shows the 2a pattern too (branch b)
+306036557fc1	4fed4ab29a8d	dropped	paper: post hoc branch (b) applied; S8 with the post hoc rows; report updated
+c54491314ae8	e59326f9b239	exported	certfold_additions: A (uncertain is not unstable) and B (runtime), descriptive
+d5ea9a0ffec9	abdf9a111dc6	exported	certfold additions A: 26.8% of uncertain TS0 pairs change in a random envelope table
+e0400c945600	baf26e1da245	exported	certfold additions B: one callback fold costs 1.32x a plain MFE fold
+6371f642d60d	baf26e1da245	dropped	paper: additions A and B in the text; S9 runtime table
+589b83e2b19b	6f3d26273ad6	exported	certfold_reg2: D's entry ranking on TR0 (registration 2, first phase)
+787e29b889c0	b1e1a8670b3f	exported	certfold registration 2: D's entry ranking on TR0, before the registration
+8f5ab3df2f9c	91103f85c7c2	exported	certfold_reg2: PRED2, the authors' design and reading rules verbatim
+b5cacdaca20d	067d9613b4cb	exported	certfold PRED2: registration 2 committed before any whole-table fold on TS0
+5c2bac380eab	9e9c1305fa0e	exported	certfold_reg2: G2 on the measured sets, C's folds, D's measured labels
+6379d36b0a91	85e8848a5454	exported	certfold registration 2: G2 on the measured sets passes, before any TS0 fold
+919714ba2e23	d3bab844f0da	exported	certfold registration 2: C's folds on TS0, and analyse-c
+17403aad6f7d	854ff3611e0a	exported	certfold_reg2: analyse-d (R6, gain by stratum, top entries as motifs)
+5c3b7b591108	69f462cf1b3a	exported	certfold registration 2: C analysed (R4 passes; R5 lower than p on every table)
+a2a21bf8dc69	69f462cf1b3a	dropped	paper: registration 2 tables (R4, R5) in the S8 generator; D's when present
+ea104e51d824	69f462cf1b3a	dropped	paper, reading report: C read by registration 2's rules
+5ca89124097d	67ffdeb77688	exported	certfold registration 2: D's labels on TS0 under the 42 measured sets
+597bdb0d40a5	8aadc6ad9f1a	exported	certfold registration 2: D analysed (R6 passes at K = 10 and 50)
+edd4f2613426	8aadc6ad9f1a	dropped	paper, reading report: D read by registration 2's rules; Fig. 6
+94767990faf9	8aadc6ad9f1a	dropped	paper, report: registration 2 preceded every pair-level comparison, not every TS0 fold
+6f0b16e2b466	8aadc6ad9f1a	dropped	paper: the conclusion carries C and D (R4, R5 by rule 3, R6); body 9.65 pages
+4c42f14dabc7	8aadc6ad9f1a	dropped	paper, report: the independent review of registration 2 acted on
+98f1504c1980	92fdee8f82c9	exported	certfold: the reviewer's additions specified (post hoc) before any runs; the experiment re
+b2ddeabd9a65	0b8655270839	exported	certfold reviewer additions: the code; R4/R5 reproduced exactly; 67 directions, not 49
+3f8190b145e4	3ca2fa3d3fe1	exported	certfold reviewer additions: the descriptive phase; Section 5 says 67, not 49
+a78a246383fa	050cc6debff1	exported	certfold reviewer additions: the second TR0 pilot ranked; Section 6 restructured (draft)
+e2abbb9824ad	cc9e63596a93	exported	certfold reviewer additions: gates pass before any TS0 fold
+90bcb812feca	2f2dd7f189ad	exported	certfold reviewer additions: TS0 folds; the paper restructured as the reviewer proposed (d
+5c4ce8f2c180	4c290612aac1	exported	certfold reviewer additions: analysed
+945fa812ae4c	4c290612aac1	dropped	paper: the reviewer's additions written in; body 9.92 Letter pages
+558ba4a2665b	4c290612aac1	dropped	docs: the reviewer's additions read by their pre-committed rules; the experiment report re
+77ad7d8b44de	47106822a026	exported	integrity and wording: registered before any test sequence was certified; the authors' abs
+a091947343c2	47106822a026	dropped	the outline approved: main_letter.tex is the manuscript of record; one compiled supplement
+99b617b2504b	47106822a026	dropped	tests: the pins test covers the Letter manuscript, with a coverage test for its main text
+194c973cb2e3	47106822a026	dropped	tests: claims, numbers and refs cover the Letter manuscript
+8d6246421149	aefd90ebcd56	exported	number checks: every number in the Letter manuscript pinned to its artifact; four errors f
+eedda7b4bee8	01d81e89ff4b	exported	text freeze: the fresh-context review's 21 points fixed
+39dc2ea8dc33	ce63fd7ceaba	exported	docs: the remote commit map for the text-freeze export
+6a0c14d8382c	f92b3ae00e36	exported	spec: the four tables' unread entries, a post hoc addition (the authors, 2026-10-19)
+9a0a7c574df2	7637e16102d9	exported	certfold_unread: the post hoc addition's script, as specified in 6a0c14d
+d268dcb04aa9	abf9692f777c	exported	certfold_unread describe: U, m_e and the shares E+'s span holds (post hoc)
+e0e5551502be	3e3df17ef5d4	exported	certfold_unread gates: G1 (both backends), G2 and G4 with u+, no false certificate (post h
+193c7d481646	3e3df17ef5d4	dropped	text: the authors' abstract clause; the ablations not run disclosed in S8; the dangles sen
+bd8e0b3b6395	d8bf1057ca12	exported	certfold_unread G5 on TS0: 0 violations (post hoc)
+776766a94744	d2d898f26efc	exported	certfold_unread run: TS0 labelled under E+_1, every must-hold holds (post hoc)
+140185e534de	c30e539079c9	exported	certfold_unread analyse: 28.9% of TS0 MFE pairs certified under E+_1 beside 40.9% under E_
+7907401b670b	4d0e78a56893	exported	the unread-entries addition written up by its fixed reading (post hoc)
+611be3dc05a2	b31efbf4143d	exported	review of the changed passages: its points fixed
+dc99c0fd8ce8	3815d504988b	exported	docs: the remote commit map for the 2026-10-19 export
+05c2eb41c40f	3815d504988b	dropped	the authors' two edits; the analysis freeze is final
+3cff2275841e	3815d504988b	dropped	docs: the authors' checklist for the rewrite, with the current text's baseline
+2e526c84073d	d1ea72189766	exported	spec: the default model and the decoupling bound, two post hoc items (the authors, 2026-10
+7e9a7fd5fda9	0e9dbb61853e	exported	certfold_default_model: the two post hoc items' script, as specified in 2e526c8
+c3a3be6c93e1	f7de8168fa12	exported	certfold_default_model fold: TS0 under the default model, every check passed (post hoc)
+a2497a9f8a76	5a45f9270da4	exported	certfold_default_model analyse: R4's statistic under the default model +2.4 [0.9, 4.2]; th
+bb1104c84562	8ea25e08b28d	exported	the default model and the decoupling bound written up by their fixed readings (post hoc)
+42708ca09efc	8ea25e08b28d	dropped	docs: report layout
+121696e39e17	8ea25e08b28d	dropped	review fixes for the default-model passages; the page count corrected: the body is 10.96 p
+7e0725b8d3e1	8ea25e08b28d	dropped	docs: report layout
+360b575d5e3b	8ea25e08b28d	dropped	page limit: a PDF-based page test, and three floats moved to the supplement (the authors' 
+86df7088111e	8ea25e08b28d	dropped	paper folder cleaned; the supplement gets a contents list; one combined PDF
+c343a3568946	8ea25e08b28d	dropped	supplement layout: no forced page breaks, floats free to settle; 37 pages to 33
+7f9e7a7e343c	8ea25e08b28d	dropped	figures: the worked example's script, its selection rule fixed before it runs
+2422a67623c1	8ea25e08b28d	dropped	presentation: a worked-example figure, plain names for the test codes, two references
+f9c5ce8a6c2f	6cd80cbd0471	exported	spec: the advisor's two post hoc items (2026-10-20), before any code
+bc27c232f52b	2dd769ee50ed	exported	scripts for the advisor's two post hoc items, as specified in f9c5ce8
+b1396863802e	cf19ea42f3c6	exported	mxfold2_net_split: magnitude ranges across seeds, as the text quotes them
+5804ad271c61	ef5faaab9971	exported	mxfold2_net_split: Adam's net contribution exceeds decay's in every seed at both horizons 
+393c34885f6c	571a3262fc3c	exported	typeb_dimension_curve: 189 Type B directions remain for the union of 102,113 structures (p
+558de0dae3d7	571a3262fc3c	dropped	letter: the advisor's three changes (2026-10-20)
+26288ab888e5	571a3262fc3c	dropped	letter: fresh-context review of the advisor's changes, fixes applied
+b98f7ecdef1b	6ac9c3e46d03	exported	docs: the remote commit map for the 2026-10-20 export (advisor's post hoc items)
+cd397178d9fc	6ac9c3e46d03	dropped	PLAN: the 2026-10-20 export, at the user's request
+442cd213d47e	6ac9c3e46d03	dropped	spec: certified folding at ViennaRNA's default model, one post hoc item (the authors, 2026
+cd4a61a3943c	6ac9c3e46d03	dropped	certfold_default_cert: the default-model certificate's script, as specified in 442cd21
+a2230dc732f2	6ac9c3e46d03	dropped	certfold_default_cert zuker: Zuker at dangles 2 agrees with enforced folds on all 1,800 sa
+43c23558b9cb	6ac9c3e46d03	dropped	certfold_default_cert: C2 records that the clipped tables are not among the set's coordina
+9c4035ae8dac	6ac9c3e46d03	dropped	certfold_default_cert gate: C1-C3 hold; G1 exact on both backends; G2 and G4 find no false
+c38ece507db3	6ac9c3e46d03	dropped	certfold_default_cert reproduce: the label driver reproduces registration 1 exactly on 50 
+2e3484a96b37	6ac9c3e46d03	dropped	tables_certfold: the default-model certificate's table, written once that record is analys
+80f9996f2bf1	6ac9c3e46d03	dropped	certfold_default_cert attacks: G5 finds no violation in 286,624 attacks on TS0 at dangles 
+e02197e180a7	6ac9c3e46d03	dropped	spec addendum (the authors, 2026-10-20): G3's coverage enforced, G6 with the three dangles
+d99913697ebe	6ac9c3e46d03	dropped	certfold_default_cert g6: record a failed attempt, with the diagnosis, instead of only rai
+fcfa523ad140	6ac9c3e46d03	dropped	certfold_default_cert g6: STOPPED, gauge violations along N3 past the dangles 2 clip; the 
+43c8c41bb685	6ac9c3e46d03	dropped	Revert "tables_certfold: the default-model certificate's table, written once that record i
+da00bf6a9966	6ac9c3e46d03	dropped	letter: Table 1's dangles 2 gauge clause; main-text spacing so the body fits (9.838 pages)
+b298bd52de06	6ac9c3e46d03	dropped	letter: the authors' rewrite of the introduction and Section 7 (2026-10-20)
+af379c26fb55	6ac9c3e46d03	dropped	letter: fresh-context review of the rewritten introduction and Section 7, fixes applied
+fadbf35bccfe	6ac9c3e46d03	dropped	letter: the authors' correctness fixes from the 19:04 PDF; a test that every printed repos
+b63695075537	6ac9c3e46d03	dropped	paper: delete supplement/certfold_disclosure_DRAFT.tex, a draft neither document inputs
