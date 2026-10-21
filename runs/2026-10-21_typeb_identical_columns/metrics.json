@@ -1,0 +1,80 @@
+{
+ "c2": {
+  "method": "exact: identical integer columns, dimensions by exact rank over the rationals and modulo both primes; the table split in floating point",
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "2fbe6de138e49bbe6418315dd99f7505b60facfb"
+  },
+  "seconds": 67.3,
+  "tr0": {
+   "dim_D": 353,
+   "dim_D_cap_type_a_restricted": 0,
+   "dim_D_cap_type_b": 353,
+   "group_sizes": {
+    "2": 245,
+    "3": 41,
+    "4": 6,
+    "5": 2
+   },
+   "n_groups_two_or_more": 294,
+   "n_rows": 10667,
+   "n_used_columns": 4337,
+   "rank_inner_products": {
+    "1000000007": 0,
+    "2147483647": 0,
+    "rational": 0
+   },
+   "rank_membership_on_type_a": {
+    "1000000007": 2,
+    "2147483647": 2,
+    "rational": 2
+   },
+   "type_b_dim": 448,
+   "type_b_split_by_table": {
+    "int11": 0.013692162417374882,
+    "int21": 0.2887629839471201,
+    "int22": 0.6975448536355047
+   }
+  },
+  "tr0_ts0": {
+   "dim_D": 328,
+   "dim_D_cap_type_a_restricted": 0,
+   "dim_D_cap_type_b": 328,
+   "group_sizes": {
+    "2": 246,
+    "3": 30,
+    "4": 6,
+    "5": 1
+   },
+   "n_groups_two_or_more": 283,
+   "n_rows": 11955,
+   "n_used_columns": 4561,
+   "rank_inner_products": {
+    "1000000007": 0,
+    "2147483647": 0,
+    "rational": 0
+   },
+   "rank_membership_on_type_a": {
+    "1000000007": 2,
+    "2147483647": 2,
+    "rational": 2
+   },
+   "type_b_dim": 426,
+   "type_b_split_by_table": {
+    "int11": 0.013211382113821137,
+    "int21": 0.2654979674796748,
+    "int22": 0.7212906504065036
+   }
+  }
+ },
+ "label": "POST HOC (docs/posthoc_additions_2026-10-21.md)",
+ "run_id": "2026-10-21_typeb_identical_columns",
+ "specification": {
+  "commit": "16a66c9b0592a8da3d0f421263b3b0c0886d2f31",
+  "path": "docs/posthoc_additions_2026-10-21.md",
+  "sha256": "676f3e2ec1af9305216f22ce6e0660fcba0ab9f1ac7cd1f3cb3c6e79de123ef9"
+ },
+ "status": "done"
+}
