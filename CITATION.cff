@@ -4,9 +4,9 @@ title: "Same Energies, Different Folds: Certifying RNA Base Pairs Against Parame
 authors:
   - family-names: Khodagholi
     given-names: "Shadi (Zahra)"
-    affiliation: "Complex Adaptive Systems Laboratory, University of Central Florida"
+    affiliation: "Department of Industrial Engineering and Management Systems, University of Central Florida"
   - family-names: Yousefi
     given-names: Niloofar
-    affiliation: "Complex Adaptive Systems Laboratory, University of Central Florida"
+    affiliation: "Department of Industrial Engineering and Management Systems, University of Central Florida"
 repository-code: "https://github.com/shadi97kh/rna-identifiability"
 license: MIT
