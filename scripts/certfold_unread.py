@@ -216,14 +216,14 @@ def describe() -> int:
         dU = np.where(unread, d, 0.0)
         n2 = float(d @ d)
         s_in, s_u = float(inside @ inside) / n2, float(dU @ dU) / n2
-        # the cross-check against the post hoc committed coverage table: the set's part plus
+        # the cross-check against the post hoc checks' committed coverage table: the set's part plus
         # the four tables' unread parts, from its per-family norms
         c = cov[X]
         nr = c["parts"]["outside: columns no TR0 reference reads"]["by_family_norm_kcal"]
         want_u = sum(nr.get(f, 0.0) ** 2 for f in FOUR) / c["norm_delta_kcal"] ** 2
         want_in = c["parts"]["inside the set"]["share_of_squared_norm"]
         if abs(s_in - want_in) > 1e-12 or abs(s_u - want_u) > 1e-12:
-            raise GuardFailure(f"{X}: the shares disagree with the post hoc coverage table "
+            raise GuardFailure(f"{X}: the shares disagree with the post hoc checks' coverage table "
                                f"({s_in}, {s_u}) vs ({want_in}, {want_u})")
         shares[X] = {"norm_delta_kcal": float(np.sqrt(n2)),
                      "share_inside_registered_span": s_in,
@@ -249,7 +249,7 @@ def describe() -> int:
         "shares_of_squared_difference": shares,
         "projection_contained_in_E_plus": contained,
         "cross_check": "share_inside_registered_span and share_on_unread_four_table_entries equal "
-                       "the post hoc /descriptive/table_coverage to 1e-12",
+                       "the post hoc checks' /descriptive/table_coverage to 1e-12",
         "u_plus_sha256": _vec_sha(ub["u_plus"]),
         "seconds": round(time.time() - t0, 1), "provenance": prov,
         "environment": cf.env_record()}

@@ -214,8 +214,8 @@ def retention_table(recs: list[dict], key: str) -> dict:
 def analyse() -> int:
     out, prov = gate(FOLDED)
     t0 = time.time()
-    import scripts.certfold_exploratory as cx
     import scripts.certfold_checks as rv
+    import scripts.certfold_exploratory as cx
 
     path = SHARDS / "default_mfe.jsonl"
     if cf._sha(path) != out["fold"]["files_sha256"]["default_mfe.jsonl"]:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent reproduction of registration 2's R4 and R5 (post hoc additions, item 1).
+"""Independent reproduction of registration 2's R4 and R5 (post hoc checks, item 1).
 
 Reads only the raw shard files and the MXfold2 predictions; imports nothing from the
 repository. Written from the docstrings of certfold_reg2._r4_spec/_c_task,
@@ -15,7 +15,7 @@ Implementation differs from the committed one on purpose (no record dicts are co
       sequence as certfold_metrics._curve.
 
 usage: python scripts/certfold_reproduce_r4r5.py OUTDIR [R4_TAG R5_TAG]
-Written from the specification alone (2026-10-18); its run on tags 60 and 61 is in
+Written independently of scripts/certfold_reg2.py (2026-10-18); its run on tags 60 and 61 is in
 runs/2026-10-18_certfold_checks/reproduce_r4r5/ (117 of 117 quantities bit-identical).
 """
 from __future__ import annotations

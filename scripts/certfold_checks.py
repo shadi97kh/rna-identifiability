@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CERTIFIED FOLDING: the post hoc additions, all POST HOC, as specified before any of them ran
+"""CERTIFIED FOLDING: post hoc checks, all POST HOC, as specified before any of them ran
 in docs/certfold_checks_additions.md (the section numbers below are that file's).
 
   2   stability made interpretable: absolute retention, pairs lost, relative reduction in loss,

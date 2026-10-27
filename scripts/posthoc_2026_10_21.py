@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Four POST HOC additions after an internal read-through, as specified before any code in
-docs/posthoc_additions_2026-10-21.md (the freeze lifted for them by the decision of
+"""Four POST HOC additions, as specified before any code in
+docs/posthoc_additions_2026-10-21.md (the analysis freeze lifted for them on
 2026-10-21). C4 was decided in the specification itself (skipped by its own condition), so it
 has no phase here.
 
@@ -31,9 +31,9 @@ import numpy as np
 R = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(R))
 
+import scripts.certfold_checks as rv  # noqa: E402
 import scripts.certfold_default_cert as dc  # noqa: E402
 import scripts.certfold_exploratory as cx  # noqa: E402
-import scripts.certfold_checks as rv  # noqa: E402
 
 r2, cf, cr = dc.r2, dc.cf, dc.cr
 GuardFailure = dc.GuardFailure
