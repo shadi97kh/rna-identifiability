@@ -917,6 +917,20 @@ def zprime_map(F: Folder, structures: list[tuple[str, int]]) -> dict:
     return best
 
 
+def absent_margins(zmap: dict, outside: list, eprime_star: int) -> dict:
+    """Z'(q) - E'(s*) in dcal for every admissible pair q outside s*.
+
+    Every admissible pair is in some structure (the pair alone, closing a hairpin), so a pair the
+    Zuker set misses means the routine failed to backtrack: an error, never a certified-absent
+    label. certify() has raised since 2026-10-21; certify_sequence, which labels the test sets,
+    raises through this since 2026-10-27 (Supplementary S7 shows the case never occurred).
+    """
+    for q in outside:
+        if q not in zmap:
+            raise GuardFailure(f"admissible pair {q} is missing from the Zuker set")
+    return {q: zmap[q] - eprime_star for q in outside}
+
+
 def certify(F: Folder, star_pairs: list, adm: list, zuker: bool = True) -> dict:
     """Labels at F's current radius: certified present, certified absent, or uncertain.
 
@@ -3276,8 +3290,8 @@ def certify_sequence(lc: LoopCounts, B: dict, sets: dict, name: str, seq: str, r
         F = folders[kind]
         F.set_radius(x)
         zmap = zprime_map(F, F.zuker())
-        ma = {q: (None if zmap.get(q) is None else zmap[q] - F.eprime_star) for q in outside}
-        cert = {q for q, m in ma.items() if m is None or m > 0}
+        ma = absent_margins(zmap, outside, F.eprime_star)
+        cert = {q for q, m in ma.items() if m > 0}
         for (i, j) in sp:
             F.set_radius(x)
             _s, xp, _e0 = F.without(i, j)
