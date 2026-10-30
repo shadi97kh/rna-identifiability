@@ -1,0 +1,81 @@
+{
+ "TR0": {
+  "by_source": {
+   "CRW": 645,
+   "RFAM": 9545,
+   "RNP": 110,
+   "SPR": 140,
+   "SRP": 148,
+   "tmRNA": 94
+  },
+  "n": 10682,
+  "rfam": 9545,
+  "rfam_fraction": 0.8935592585658116
+ },
+ "TS0": {
+  "by_source": {
+   "CRW": 94,
+   "RFAM": 1125,
+   "RNP": 17,
+   "SPR": 24,
+   "SRP": 11,
+   "tmRNA": 17
+  },
+  "n": 1288,
+  "rfam": 1125,
+  "rfam_fraction": 0.8734472049689441
+ },
+ "TS0_pair_bearing": {
+  "by_source": {
+   "CRW": 94,
+   "RFAM": 1125,
+   "RNP": 17,
+   "SPR": 24,
+   "SRP": 11,
+   "tmRNA": 17
+  },
+  "n": 1288,
+  "rfam": 1125,
+  "rfam_fraction": 0.8734472049689441
+ },
+ "all": {
+  "by_source": {
+   "CRW": 739,
+   "RFAM": 10670,
+   "RNP": 127,
+   "SPR": 164,
+   "SRP": 159,
+   "tmRNA": 111
+  },
+  "n": 11970,
+  "rfam": 10670,
+  "rfam_fraction": 0.8913951545530493
+ },
+ "checks": {
+  "loader_equals": "runs/2026-10-08_turner_nullspace_tr0 /tr0_ts0",
+  "ts0_equals": "runs/2026-10-13_certified_folding /gate/G5/by_test_set/TS0/n_sequences"
+ },
+ "label": "DESCRIPTIVE: bpRNA source database of each TR0+TS0 reference, by file name",
+ "pair_bearing": {
+  "by_source": {
+   "CRW": 737,
+   "RFAM": 10657,
+   "RNP": 127,
+   "SPR": 164,
+   "SRP": 159,
+   "tmRNA": 111
+  },
+  "n": 11955,
+  "rfam": 10657,
+  "rfam_fraction": 0.8914261815140109
+ },
+ "provenance": {
+  "git_dirty": true,
+  "git_dirty_excluding_runs": false,
+  "git_dirty_paths_outside_runs": [],
+  "git_sha": "a34fcce17047cf36d729ee5a08b1a444b0a04d2d"
+ },
+ "run_id": "2026-10-30_reference_sources",
+ "script": "scripts/reference_sources.py",
+ "status": "done"
+}
