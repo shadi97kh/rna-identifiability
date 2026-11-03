@@ -1,7 +1,7 @@
 # Same Energies, Different Folds
 
 Code and run artifacts for *Same Energies, Different Folds: Certifying RNA Base Pairs Against
-Parameters the Reference Structures Cannot See* (S. Khodagholi and N. Yousefi; submitted to RECOMB 2027). Every
+Parameter Changes the Reference Structures Cannot See* (S. Khodagholi and N. Yousefi; submitted to RECOMB 2027). Every
 experimental number the paper reports is read from a `runs/<id>/metrics.json` in this repository,
 and each of those files records the commit and the code that produced it.
 
@@ -34,7 +34,8 @@ within stated bounds, or reports it as uncertain.
 
 The other directories under `runs/` back the remaining numbers in the paper and its
 supplement, or are the registrations and inputs those runs name. The paper's TeX sources
-(`main_letter.tex`, `supplement_letter.tex`) are not part of this repository; every number in
+(`main_letter.tex`, `supplement_letter.tex`) and the scripts that build it and generate its figures
+and tables are not part of this repository, which holds the code behind the results; every number in
 them is tied to its artifact by a pin, checked by `tests/test_recomb_pins.py` in the
 working repository.
 
@@ -126,6 +127,13 @@ of the working repository; this repository is a filtered copy of its history tha
 keeps only the code and results the paper uses, so its commits have different hashes.
 `docs/remote_commit_map.tsv` maps each working-repository commit to the commit here that
 carries its code.
+
+This copy also differs from the working repository in wording. Comments, labels, commit messages
+and descriptive text were reworded, the text of the registrations included; four renamed paths
+carry their current names throughout the history; and recorded hashes of reworded files were
+recomputed so that they still name those files. Every number, date and author is the same. In a
+registration, keys ending in `_spec` hold what the specification stated, and keys ending in `_impl`
+hold what the implementation added.
 
 ## Certified folding
 

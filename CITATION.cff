@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this code or these results, please cite the paper."
-title: "Same Energies, Different Folds: Certifying RNA Base Pairs Against Parameters the Reference Structures Cannot See"
+title: "Same Energies, Different Folds: Certifying RNA Base Pairs Against Parameter Changes the Reference Structures Cannot See"
 authors:
   - family-names: Khodagholi
     given-names: "Shadi (Zahra)"

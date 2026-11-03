@@ -1,8 +1,6 @@
 # Licence audit of the public artifact
 
-Audited 2026-10-18 against the allow-lists in this directory (`keep_files.txt`, `keep_runs.txt`,
-`keep_sources.txt`), which decide everything `export.sh` publishes. The artifact is still
-private; making it public waits for an explicit go-ahead.
+Audited 2026-10-18 against the allow-lists that decide everything exported to this repository.
 
 **Verdict: nothing in the export carries third-party code or redistributes a dataset.** The MXfold2
 TS0 predictions ship with their attribution (below).
@@ -40,5 +38,5 @@ identifier, with no sequences. Both licences allow redistributing it; the README
 commit and gives the data bundle's attribution beside the file. The run's `ts0.fa`, which holds the
 sequences, is not committed and not exported.
 
-Also not on the allow-list, by choice rather than licence: `docs/certfold_reading_report.md` and
-`docs/certfold_experiment_report.*`, which carry the text text and open decisions.
+Also not on the allow-list, by choice rather than licence: the working repository's reports on
+the runs.
