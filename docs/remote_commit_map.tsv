@@ -1,0 +1,559 @@
+# Local commit -> commit in the public artifact (github shadi97kh/rna-identifiability).
+# The artifact keeps only the code and results the paper uses, everywhere in its history
+# by an allow-list, so EVERY commit was rewritten: the git_sha a run artifact records is
+# the local commit, and this map gives the artifact commit carrying its code. 'dropped'
+# marks a local commit that touched only excluded paths; it maps to the artifact commit
+# that already carried everything it kept. The commit adding this file is not in it.
+local	artifact	status	subject
+b5cc23bf6509	068d4a4005ea	exported	wip: state before setup_all.sh
+8acf54a6ffd7	068d4a4005ea	dropped	
+3d0e31d4ffd4	068d4a4005ea	dropped	
+d86099cb0f6c	068d4a4005ea	dropped	
+edefc47587c8	068d4a4005ea	dropped	
+045d9dc04d25	840db66c3108	exported	fix: reconcile LNA role inversion across registry, rules and configs
+e861a39be13c	1796c4b4efb3	exported	P3: ingest and register the thermodynamic reference tables
+e7fb376be3c9	1796c4b4efb3	dropped	
+55e24e9afdc6	1796c4b4efb3	dropped	
+855070916cca	1796c4b4efb3	dropped	
+915ee9462ee1	1796c4b4efb3	dropped	
+561a82edc284	1796c4b4efb3	dropped	
+6707b2bb59f5	1796c4b4efb3	dropped	
+345f526efc72	1796c4b4efb3	dropped	
+e6990e581b06	f7ec581d1c5e	exported	RETRACT and correct the transfer reading: the flip pairing was wrong
+a259a9912eb3	f7ec581d1c5e	dropped	
+1293f264c55a	f7ec581d1c5e	dropped	
+fc6cabfdc082	f7ec581d1c5e	dropped	
+edb76de00c3c	f7ec581d1c5e	dropped	
+99fd87456ca1	f7ec581d1c5e	dropped	
+edaa18bd1836	f7ec581d1c5e	dropped	
+300d3e3fc183	f7ec581d1c5e	dropped	
+fd2a065a4978	f7ec581d1c5e	dropped	
+965b7f4e00cc	f7ec581d1c5e	dropped	
+bcdc95b022c8	f7ec581d1c5e	dropped	
+0d4a44310c89	f7ec581d1c5e	dropped	
+ddecb5f4a73a	f7ec581d1c5e	dropped	
+bb897ebdec75	f7ec581d1c5e	dropped	
+b9147221c062	f7ec581d1c5e	dropped	
+70908027702f	f7ec581d1c5e	dropped	
+797049f2b10b	f7ec581d1c5e	dropped	
+57cb75072179	4eb9c0d64c71	exported	fix two manuscript errors, pin the counts that hid them
+9258ee6b8d05	4eb9c0d64c71	dropped	
+9eb15293171d	4eb9c0d64c71	dropped	
+41887fc876ac	4eb9c0d64c71	dropped	
+bb0c12133366	4eb9c0d64c71	dropped	
+3cf8dee8d1ec	4eb9c0d64c71	dropped	
+7bd161cbe385	4eb9c0d64c71	dropped	
+c4cdccd12647	4eb9c0d64c71	dropped	
+2a46aa914ea1	4eb9c0d64c71	dropped	
+05e0edb80a0b	4eb9c0d64c71	dropped	
+7a411dfaebf0	4eb9c0d64c71	dropped	
+3a80cd7e2485	4eb9c0d64c71	dropped	
+40e7b66d1e68	4eb9c0d64c71	dropped	
+a00728b86a4e	4eb9c0d64c71	dropped	
+b17522c1357e	4eb9c0d64c71	dropped	
+0ccb0ff2c578	4eb9c0d64c71	dropped	
+3005d26ab789	4eb9c0d64c71	dropped	
+325b6e8dbc4c	4eb9c0d64c71	dropped	
+34bd89070640	4eb9c0d64c71	dropped	
+2a30151e7e61	4eb9c0d64c71	dropped	
+64de0c3ac318	4eb9c0d64c71	dropped	
+8c86e13a669f	4eb9c0d64c71	dropped	
+7828999c6b14	4eb9c0d64c71	dropped	
+ad454e62738a	4eb9c0d64c71	dropped	
+e830306857a0	4eb9c0d64c71	dropped	
+88b5f6020ac7	4eb9c0d64c71	dropped	
+2e9ae3f79343	4eb9c0d64c71	dropped	
+f4f13dfab926	4eb9c0d64c71	dropped	
+3b1a5b0d53e4	4eb9c0d64c71	dropped	
+80974b992675	4eb9c0d64c71	dropped	
+fbd8a52078d4	4eb9c0d64c71	dropped	
+da077f750fd9	4eb9c0d64c71	dropped	
+6a61abcf54a9	4eb9c0d64c71	dropped	
+95e50f04d837	4eb9c0d64c71	dropped	
+fc183157b45c	4eb9c0d64c71	dropped	
+848194960b42	4eb9c0d64c71	dropped	
+46b1b2dd729f	4eb9c0d64c71	dropped	
+fff954205ea9	4eb9c0d64c71	dropped	
+559c01f00f70	4eb9c0d64c71	dropped	
+42db7a5220da	4eb9c0d64c71	dropped	
+f0262ff9dadc	4eb9c0d64c71	dropped	
+c087b5ecbb05	4eb9c0d64c71	dropped	
+854b60aca99a	4eb9c0d64c71	dropped	
+ec4372f1cde5	4eb9c0d64c71	dropped	
+6fa94a62452c	4eb9c0d64c71	dropped	
+c5ad3eb8a690	4eb9c0d64c71	dropped	
+a43f079a9610	dfcf407c64b3	exported	record provenance as committed-code, not whole-tree cleanliness
+ac0437cfeefc	dfcf407c64b3	dropped	
+abff31796c00	dfcf407c64b3	dropped	
+3da19d46ec02	dfcf407c64b3	dropped	
+25c3d0a1bfd7	dfcf407c64b3	dropped	
+ff259710af9e	dfcf407c64b3	dropped	
+95e9c9b072c2	dfcf407c64b3	dropped	
+3c54fa5d921c	dfcf407c64b3	dropped	
+a1d04bb8a0cf	dfcf407c64b3	dropped	
+b9655ae681a9	dfcf407c64b3	dropped	
+0010c8421916	dfcf407c64b3	dropped	
+7c1d59f53f46	dfcf407c64b3	dropped	
+bd398dbf60e8	dfcf407c64b3	dropped	
+95fcb72945b7	dfcf407c64b3	dropped	
+784dc990d053	dfcf407c64b3	dropped	
+2932b59f120c	dfcf407c64b3	dropped	
+eb36393ddc2b	dfcf407c64b3	dropped	
+a34488e7a91d	dfcf407c64b3	dropped	
+8ec964204601	e8208a3d4a54	exported	wip: real-label paper, pins and provenance fix
+29c840e455e9	e8208a3d4a54	dropped	
+083b11877076	e8208a3d4a54	dropped	
+2d7bdb305bf9	e8208a3d4a54	dropped	
+1bd41d4cfbad	e8208a3d4a54	dropped	
+c638041c59ad	e8208a3d4a54	dropped	
+86b18c5de246	e8208a3d4a54	dropped	
+fef90b555e4e	e8208a3d4a54	dropped	
+fad6f15ff7e0	e8208a3d4a54	dropped	
+a60e4ade6fe8	e8208a3d4a54	dropped	
+6376fc635a1f	e8208a3d4a54	dropped	
+85d96bc10f08	e8208a3d4a54	dropped	
+dff347b33364	abc2bc28da22	exported	pooled gauge alignment: six arms over the published stack tables
+ab51e10555b5	1cf66dcefc48	exported	encode each distinct molecule once per step, not once per slot
+31f714e8e76d	4f35a1cbfc6c	exported	Turner-gauge direction: model-level null spaces of Turner 2004 and MXfold2
+64bbc2619df8	894bc78e384a	exported	Register Rfam 15.1 seed (CC0); data-restricted Turner null space on it
+25f088fdf24d	13381eff8933	exported	Rfam null space: exact GF(p) rank by blocked LU with exact float64 GEMMs
+ad67313c86a9	c2be6d6c99c7	exported	Rfam null space r2: take the basis from QR of A, not eigh of A^T A
+2aa05b0a24e7	de008acacadd	exported	Rfam projection robustness: low-drop subset vs matched random subsamples
+273e7ca99135	1f93c6b773f2	exported	Rfam effective rank: keep the whole singular spectrum, not just its zeros
+6da70a514b06	6070e4a5d160	exported	MXfold2 seed study, phase epoch1: registered data, timed runner, pre-registration
+05876d960500	627eff44aae6	exported	MXfold2 pin-override check: shipped weights on TS0, ours vs a pinned environment
+a8d9fb161e6b	7c021910b702	exported	Step 2: the regulariser pins exactly one direction per sequence (correction)
+605ee494797f	c4867f67bb93	exported	MXfold2 seed study: OOM re-runs, determinism control, full-study phase
+5c1828e7f287	85c02785fddc	exported	Rfam robustness: random control matched on row count AND family membership
+8c1f2fa6f5a7	a3da892996e1	exported	MXfold2 decomposition evaluator; empty-interval correction; constant lower triangle
+a85e995c4fdb	2aaa135aaba8	exported	Step 2: note that C3 has no power when the count matrix has full row rank
+320055b16b12	5d505fc0f332	exported	MXfold2 gauge methods: head as post-hoc canonicaliser, v-tracking, regulariser, launcher
+e7c1ef09a470	b1f3a204a725	exported	Pre-register the MXfold2 gauge methods study
+7ed9b2632978	cba59b12dcbe	exported	PREREG: correct G3 -- the determinism floor is measured, not bitwise zero
+5a35084a0b71	eeaad0575019	exported	Amendment 1 to the MXfold2 gauge study pre-registration (G3 floor)
+536cb5d7971d	15dd88ae492b	exported	PREREG: make S1 well-posed before any SGD run (amendment 2)
+c75c107a3409	4498357dbade	exported	Amendment 2 to the MXfold2 gauge study pre-registration (S1 criteria)
+63e65d4f2e47	ab4661a94e23	exported	MXfold2 gauge study: Phase 2 evaluator (adversarially audited)
+71f85df0f0bb	27c944ce590d	exported	README and docs: the folding-model direction, its results so far, and its status
+6307d0f0ebe4	5294957cf090	exported	Run artifacts for the folding-model work (October 2026)
+1b8ec801fabf	5294957cf090	dropped	
+41b24e388c2d	2d4ba448852a	exported	Gauge launcher: require 'make gpu' to report OK after the live-study wait
+181ae0fe7bed	8fa36509db6b	exported	Turner null space on TR0+TS0 reference structures, with Rfam control and saturation
+7c9f9d41d43d	10c71a4eb2d4	exported	TR0+TS0 Turner null space: artifact
+02b20cce78e9	cb80b94f9458	exported	TR0 null space: amendment entry point for the joint read (NOT APPLICABLE)
+5c70778d8ef4	ed0c686ad5f9	exported	TR0 null space artifact: amendment 1, joint read NOT APPLICABLE
+8c50fe51d0fc	4e9901e7b581	exported	Seed study artifact as the 2026-10-09 interruption left it
+22fb42c68197	5c599cec24ef	exported	Wait for predecessors by recorded status; rerun the interrupted seed-study runs
+a847a1ef306e	e789e91a87c1	exported	Gauge pre-registration: amendment 3, wait by recorded status
+67e45ef511c7	57f820e2c4a3	exported	Seed study: interruption event recorded, fresh rerun of the six launched
+112f626894d4	57f820e2c4a3	dropped	
+fab58b8fcba6	57f820e2c4a3	dropped	
+66f948de7a34	57f820e2c4a3	dropped	
+1589bcb92fd0	57f820e2c4a3	dropped	
+d6ce41f62258	9b7022bd86d1	exported	Which sequences carry the converged SGD run's large v.g steps
+83062c18e110	8adaec84b1d7	exported	SGD v.g steps: the 11 high-|v.g| sequences, all inside the 13 long-run set
+1aae55c955df	a97af312ce9f	exported	POST-HOC: the v.w drift carried by the 11 high-|v.g| steps, signed
+5c544bba5129	12805582efeb	exported	POST-HOC v.w rebuild: the 11 high-|v.g| steps carry 99.996% of the signed drift
+d296ed843cdf	32b385dd50db	exported	Breaker vs non-breaker: theta shift, scored energies, and the C_HELIX_E traceback
+4cc13df3b00b	bdfdc141dcf8	exported	Breaker analysis: score the prediction the DP scored (restore the dropped pair, validated 
+2dc05b8fd25a	3a362082d475	exported	Breaker artifact: v breaks exactly where a scored helix exceeds 30 pairs
+7582aec29b5b	bd4c83fa5136	exported	Breaker analysis: per-helix check of where the DP's returned structure loses the pair
+79b5d25b1784	66a2de66349d	exported	Breaker artifact: the DP returns every long helix split at the cap (29 | gap | m-30)
+9cbfb8726f67	524cb8348a44	exported	v.w rebuild: record median |v.g| and the reconstruction's share of the observed drift
+6177b61dd6e3	4eb692c805b9	exported	v.w rebuild artifact: median |v.g| 1.30e-8 pooled; reconstruction explains 99.35% of the o
+e59e90c32f2e	f14e7f552a05	exported	Breaker analysis: configuration dependence of the exception (rescoring at other --max-heli
+c43919c820bf	d0cd42aee062	exported	Breaker artifact: the exception set depends on --max-helix-length
+404876fe4833	d0cd42aee062	dropped	
+71ce9aa6c431	8164d0540d5d	exported	Seed study: full COMPLETE (training) after the fresh rerun of the six interrupted runs
+e98c81777faa	8164d0540d5d	dropped	
+c1e2ec1587dc	8164d0540d5d	dropped	
+4c9f22c6d586	7b1fcda4da57	exported	Gauge pre-registration: how R1/R2 read under the asymmetric duplicate floor (code; amendme
+a2a2c0ca1e04	42ff770e712e	exported	Gauge pre-registration: amendment 4, R1/R2 reading under the asymmetric floor (before any 
+82d79bd80605	42ff770e712e	dropped	
+fefa7fe464c1	42ff770e712e	dropped	
+76aa9aaf7139	42ff770e712e	dropped	
+47c4651c216b	42ff770e712e	dropped	
+9f5754b6bbe0	42ff770e712e	dropped	
+56060afe70de	42ff770e712e	dropped	
+d21d8bc7eac8	42ff770e712e	dropped	
+e662769d767b	15f435888c87	exported	MXfold2 release reproduction: the long-helix pair drop and the loss-augmentation omission
+63d322221277	d7e6646e05e3	exported	MXfold2 release reproduction artifact: both long-helix defects on the released weights
+c635a97b1d41	d7e6646e05e3	dropped	
+f93f723cb09f	3b67c90ab0de	exported	Gauge evaluation stage 2a: STOPPED, V3 not detected on 1-2 of 1,305 sequences in three epo
+2e7fb90c1b0b	3b67c90ab0de	dropped	
+421bba652923	3b67c90ab0de	dropped	
+084ae2fc0045	3b67c90ab0de	dropped	
+cb19b4bc6c62	d507b330f83c	exported	Gauge pre-registration: V3 amendment text (three directions, fixed streams, equivalence pr
+06e34588b063	65241f5b634b	exported	Gauge pre-registration: amendment 5, V3 with three fixed directions (before any statistic)
+ae5999ac714b	94ad59e15e5c	exported	V3 amendment 5: re-draw script, and reduce() reads it (worker unchanged)
+2d2050886c95	1a8afcbf6ab4	exported	V3 re-draw for stage 2a: all four direction-0 misses hit on directions 1 and 2
+9196ade8bf11	b6aac7900df1	exported	Gauge evaluation stage 2a: complete under amendment 5 (statistics computed for the first t
+9bbaef4676c5	b6aac7900df1	dropped	
+4d1ac95619c3	7444bf71ed09	exported	Gauge evaluation stage 2b: complete under amendment 5; reproduces 2a bitwise
+03f414705599	7444bf71ed09	dropped	
+85992f0f7fba	7444bf71ed09	dropped	
+906b550c7b52	1e4bf17a9edb	exported	Shipped MXfold2 on TS0 with the gauge evaluator's scorer, against the CLI run, the arms an
+b3ffa7f05c5c	bfa01606fc5e	exported	Shipped TS0 check: record the paper's stated training and the code's defaults, and the gap
+cf2df9c06a6e	bf5f5156aa6f	exported	Shipped TS0 check: parse train.py defaults past a choices tuple
+ae66850bc934	bf5f5156aa6f	dropped	
+1b9cf9e8824b	c631343ad6d3	exported	Weight-decay ablation: runner (v.w around every optimiser step) and study phases
+09a32a469a40	3a4eef0b0f5c	exported	Weight-decay ablation: pre-registration (A1, A2, NC1, NC2, AR(1) confinement with floor ru
+27e171d8b009	479e828897a0	exported	Weight-decay ablation arms a and b: A1 confirmed, preconditioner 33x the decay
+0bd97d923124	22e326aa1dc6	exported	Weight-decay ablation: arm c analysis (TS0 F with the arms' scorer, registered AR(1) path 
+7a9e1d2ed969	932ac6fd1741	exported	Weight-decay ablation arm c: AR(1) tracks (10/10 epochs), width 5.07; TS0 F 0.5574
+90ce2d94d9da	58b1842021c4	exported	Weight-decay ablation: no-decay late-epoch drift bound (computed after arm c, labelled so)
+1e45d4e102a7	f759b7699b00	exported	Weight-decay ablation: no-decay late-epoch drift bound recorded (after arm c)
+a14bfe587504	f759b7699b00	dropped	
+890f66ca9f8c	f759b7699b00	dropped	
+296cd6c0e837	3d41070a409c	exported	Weight-decay ablation: decay rate required for a stated v.w width (post hoc)
+611e2b93ae5b	55d351425a02	exported	Weight-decay ablation: lambda for width 1.0 recorded (arm c sigma_LR: 0.257, 26x)
+ce3f1f622b77	c3faba9061b8	exported	Type B: ViennaRNA .par writer, the inverse of theta_from_par by construction (probe locato
+004da9e06983	5fcfabb94133	exported	Type B writer: defeat ViennaRNA's table cache, guard each configuration, label d2 tables n
+5c12b2e8c0f1	89433f86bf6e	exported	Type B writer check: all pass (W1-W5, C1; V1 cache and V2 d2 clip measured)
+c39956ba60f8	d1f7af04d226	exported	Type B writer tests: format round trip, refusals, rounding; slow reader check on 23,741 ro
+b60f94b8e51a	9fa18a0b00be	exported	Weight-decay ablation: lambda-for-width text (linearised estimate) and arm c sigma_LR by e
+cf98a87d0079	7953dcab0f05	exported	Weight-decay ablation: arm c sigma_LR flat across epochs (epoch 1 already 0.023)
+0e3746b2cae8	8fd2e1e2865a	exported	Type B: script (preregister, bases, Experiment 1 projection) with the registered design
+3fa965a078a4	2e3b3c10aca6	exported	Type B: pre-registration (Experiment 1 controls, Experiment 2 grid/floor/claim rules, guar
+1104f4d79614	f8e6d2217059	exported	Type B: tests for the orthogonal split and controls; zero-norm guard; project-phase proven
+66ea18e9f68c	96b05ae87e1f	exported	Type B: fold worker, points, smoke test (guards: rebuild, params_match, carry rows, refere
+b7652241f12d	a597723d0b80	exported	Type B: bases recomputed, registered dimensions reproduced exactly (426/428/8046; 214/216/
+b7dc016c5af1	ce5eb76136b7	exported	Type B: Experiment 1 first run (registered control (a) does not fail)
+62df3de42bc8	99ec8150600b	exported	Type B: record Experiment 1's registered verdict; post-hoc intrinsic fraction with the sam
+5497c8cf1ce3	16c6343154db	exported	Type B: Experiment 1 verdict recorded (control (a) does not fail anywhere: dimension count
+e35dab609e78	83ed81dd97e7	exported	Type B: contrast directions built exactly in-table (the null basis's out-of-table entries 
+7ee61614a275	ad8f8651f529	exported	turner_par: _rebuild also refreshes ViennaRNA's separate Boltzmann-factor cache; V3 measur
+c7269b443c84	054d2ae55499	exported	Writer check rerun with V3 (Boltzmann-factor cache measured); all pass
+d7eea63a78c9	b11af15fefbf	exported	Type B: Boltzmann-factor carry check (constrained pf on the top carry row) and its planted
+1fdbef2a50a8	36fffadd639d	exported	Type B: planted stale-Boltzmann control reproduces the hazard (model-A pf under Turner bef
+dcf3b472320b	b87cfaed57ad	exported	Type B: fold smoke test passes (guards hold; stale energy table and stale Boltzmann table 
+02f97e4dcd49	9685d923d859	exported	Type B: control (c) restricted to the shared support; null-arm leak asserted per point; am
+2ea781b7a108	33e6433c632e	exported	Type B: Langdon control (c) corrected to the shared support (rank 3.2 -> 3.8 TR0+TS0, 72.2
+2d66f619824b	592774c7577f	exported	Type B: amendments written before the fold (Experiment 1 priors failed; amendment 1 'less'
+8677126737ad	19b7ae9e6e34	exported	Type B amendment 2: Langdon per-table constant-shift control and gauge canonicaliser (expl
+e2fe045a65e3	b424e5e2ee81	exported	Type B amendment 2 (exploratory): Langdon's intrinsic component is per-table constant shif
+871ca7380126	c6d6840cdb7b	exported	Type B: exploratory check of control (c)'s depletion against per-table constant shifts
+b8c0af6e88a0	40bc65a72555	exported	Type B (exploratory): per-table constants explain little of control (c)'s TR0+TS0 low rank
+e5d696dda5bc	ac8c41fb110a	exported	Type B Experiment 2: fold complete (193 points, 12 workers, all guards held) and analysed
+911282611c59	98acde551eea	exported	Type B: record-outcomes phase (verdict-reading correction with exact-Beta evidence; regist
+f1878dda3fa4	a10aad5f0822	exported	Type B: verdict-reading correction (old text kept unchanged) and priors' outcomes recorded
+b13f10244f46	365e1c560456	exported	Type B: fold driver status starts with RUNNING (the standard waiter read 'fold RUNNING' as
+ba05e6beece0	d17d4d4f7082	exported	vienna_ref guard check: record the reference's values before the Boltzmann guard
+54bdb26bcc99	48818cb6b679	exported	vienna_ref guard check: before values recorded
+87d4b2ed9e52	baf595ef467c	exported	vienna_ref: guard the Boltzmann factors behind pf() (separate ViennaRNA cache); two plante
+d5bedbe4086d	207880995d5c	exported	vienna_ref Boltzmann guard: gate rerun, all 7,203 reference values bitwise unchanged
+7bc9ccdb204b	0481f0d52724	exported	Type B Experiment 2: three exploratory analyses of the shards (paired F1 vs reference, cha
+8e1906e5a11f	55cfb2700928	exported	Type B Experiment 2 (exploratory): accuracy unchanged (paired dF1 CIs contain 0); changes 
+0c1a6bec5066	55cfb2700928	dropped	
+6e2c5a782013	68503637d6de	exported	RECOMB 2027 manuscript: Type B methods, Experiment 1 and Experiment 2 results, and supplem
+401cc02c57b8	33c40d70f954	exported	Type B tie-split refold (exploratory): script with the reporting rule
+f95f10e148ba	d76001833a38	exported	Type B tie-split: reporting rule registered before any refold (headline reports real reord
+efbc42fafc8b	f6268eea771e	exported	Type B tie split (exploratory): Andronescu point 469 real reorderings (3.9% [3.6, 4.3]) + 
+c984952a6809	f6268eea771e	dropped	
+87922468d1d4	02fe0ac6bf28	exported	RECOMB: the call's formatting rules unchanged (raw page, sha256); bibliography test moved 
+acef811e2647	a216260c2a09	exported	vienna_ref guard check: planted phase (old guard vs new, each version from git history)
+c262b3c3cb37	b9fcea529057	exported	vienna_ref guard check: the guard was added in 87d4b2e, not d5bedbe (which only recorded t
+cf481b263197	1939c33bf93d	exported	vienna_ref guard check: planted stale Boltzmann table recorded; the old guard returned -25
+6ecc1785f38a	1939c33bf93d	dropped	
+0dc769abcedb	1939c33bf93d	dropped	
+019e800af1b0	1939c33bf93d	dropped	
+9fb643c11fdf	1939c33bf93d	dropped	
+fcfbc236a58c	6cea05ed9412	exported	E1: Fisher information by direction class (script); shared loader re-checks the fold's dir
+c32881551e52	c0466780c2d8	exported	E1: preregistration (registered test: contrast/null mean-I ratio > 1; null I > 0 a reporte
+75873408640f	a12c5bc29a12	exported	Data: Rfam 12.2 family list (CC0), registered by sha256; the release bpRNA-1m drew from (D
+5f580a5d641e	c4e59344cead	exported	E3: TR0+TS0 under the whole published tables, and the DNA check (script); shared fold-unde
+5f1dea72b3a0	db55103c74c3	exported	E3 DNA check: test the intrinsic gauge on DNA values directly (writer + ViennaRNA), and cl
+0a0beba7ee21	80f3c7717258	exported	E3 DNA check: N1 and N2 are null for ViennaRNA's DNA set (0 of 23,741 energies change); lo
+90aa9ba65c9f	72f68b26c3a8	exported	E1 sampled (8/8 workers, must-holds held); E3 energy identities made exact for tables whos
+fe6631438d6e	2b6cbc57f94c	exported	E1 analysed: registered test passes (contrast/null mean-I ratio 9.41 [9.14, 9.69]); intrin
+8260ebf71b5b	c14a9d50839a	exported	E3 analysed: whole published tables change 65.5% (Turner 1999), 81.9% (Andronescu 2007), 8
+8a76a88d05a7	fd5ca49fbc11	exported	Ablation arm (c): per-epoch and thinned per-step split of v.w into decay and optimiser con
+318022b911bf	fd5ca49fbc11	dropped	
+4f7a6476f47c	fd5ca49fbc11	dropped	
+7d26615ce59f	fd5ca49fbc11	dropped	
+022ff741486b	fd5ca49fbc11	dropped	
+e549ef8c86f7	8d1230a3cf02	exported	E2: held-out set built (1,641 Rfam 15.1 families absent from Rfam 12.2; 46,130 sequences a
+ee1a7d40a971	8d1230a3cf02	dropped	
+6589ebaf806f	586a28749b59	exported	E2 analysed: registered test NOT supported (16 kcal/mol: held-out and in-sample noise-corr
+6f2c79ac09b9	586a28749b59	dropped	
+4779441cc642	4c14297d52e1	exported	E1 exploratory gradient (asked after E1 was registered, sampled and analysed; not register
+b32b772e97c3	4c14297d52e1	dropped	
+73d3b40007e9	2364cc53e3a1	exported	E2 exploratory overlap (asked after E2 was analysed; PRED unchanged): 154 of TR0+TS0's 426
+4e7a30df30b4	4353a63dc53c	exported	E2 overlap, coverage split (after audit): all 154 shared directions are supported only on 
+e58716ec5071	4353a63dc53c	dropped	
+471c152c85f9	4353a63dc53c	dropped	
+39e0f7ef617f	4353a63dc53c	dropped	
+985efa549b38	72c95e0aea03	exported	A1-A3 code (approved plan, implemented and adversarially audited): A1 decoder ablation (MF
+0ea431fa81cb	b2ea7f150d9b	exported	MXfold2 gauge runs artifact (2026-10-08, finished with failed or diverged runs): committed
+7d4804e9c248	49aebb679f84	exported	A3 preregistration (MXfold2 training ablation): rows SGD/Adam/AdamW wd 0.01/gauge penalty/
+8d09534a15ae	6b467f29889e	exported	A3 collect-existing: existing rows (Adam, w = 0.125, gauge penalty, SGD) recomputed and re
+9f749542b550	3a1d84c36059	exported	A1 preregistration (decoder ablation): T1 under MEA, Andronescu point minus the +-1 dcal r
+d5e30273cdca	f71d8d8d977c	exported	A1 smoke and mini passed: the three planted failures caught (skipped load, stale Boltzmann
+738ab7a5b756	e894c21e7b23	exported	A2 build: Andronescu 2007 written on the Turner template (12,849 shared keys); B1-B9 pass 
+21b864a162b8	cfae30d78da9	exported	A2 preregistration (Andronescu 2007 base table): mirrored component P_nt(theta_T04 - theta
+f3b543eaf3f7	88df931bed45	exported	A2 smoke passed: S1 Turner-mode fold reproduces the Type B fold shards, S2 Turner-mode sam
+789e27f28b91	62a00858ccbd	exported	A3 GPU smoke: G1 passed (two concurrent projection epochs, one per card, bound held), G2 b
+0440ce0b1b08	62a00858ccbd	dropped	
+304f702eeead	af7752152a85	exported	A1 analysed: registered T1 passes under MEA (Andronescu point changes 13.4% of MEA structu
+07fa2a0d155a	887cc1c57ccd	exported	A2 fold complete (Andronescu 2007 base, 33 points, 6 workers; guards held), before the E1-
+b60c05f6d3bd	2812cfa86d80	exported	A2 Fisher sampling complete (E1 at the Andronescu 2007 base, 6 workers, 11 min), before th
+cd7bb87fe405	4c869ae4c57b	exported	A2 analysed: both registered tests pass at the Andronescu 2007 base
+03d7d671f469	4c869ae4c57b	dropped	
+13ed762ec4e8	4c869ae4c57b	dropped	
+1120492900f3	4c869ae4c57b	dropped	
+2d2bb2ff347e	4c869ae4c57b	dropped	
+cb15bf813093	4c869ae4c57b	dropped	
+6ecc8362d4a8	4c869ae4c57b	dropped	
+a0a865be7bdc	4c869ae4c57b	dropped	
+03d8faf4fe55	4c869ae4c57b	dropped	
+c502e614a2aa	4c869ae4c57b	dropped	
+a6392f01cf68	4c869ae4c57b	dropped	
+71e112728d37	4c869ae4c57b	dropped	
+f606ebada4a0	4c869ae4c57b	dropped	
+4de76f917207	b3c3cbcae43c	exported	A3 training complete: all 6 new runs (AdamW wd 0.01 and projection, seeds 20261006-08) fin
+29d7ba5774a3	c8dee3f8d744	exported	A3 scored: 9 epoch-10 models on TS0, and the scorer reproduces the evaluator for the Adam 
+0ab1b7e1e07c	6ea5945a25df	exported	A3 analysed: the weight projection holds v.w at float32 noise with no accuracy cost (regis
+be86808783a5	6ea5945a25df	dropped	
+faeb0c3fe40b	6ea5945a25df	dropped	
+4a6c814db895	6ea5945a25df	dropped	
+789cebf0464c	ef25cdf59902	exported	certfold: the per-loop feature map, exact against the validated count model
+24383f603b43	ef25cdf59902	dropped	
+d432b7b37e6f	1cc72c862493	exported	certfold build-basis: compare spans of unequal dimension, and make B_four exactly four-tab
+9f526e6849fa	aeabb6897eb9	exported	certfold: test the containment that actually holds, against nontrivial AND gauge
+c9c580183bec	be6f09945d8b	exported	certfold: absolute residuals for the basis comparison; a near-vanishing restriction must n
+b4012b774d7e	15b945acaba7	exported	certfold: the restricted reference basis loses rank; measure it instead of letting QR pad 
+c3cc282ce789	4b18c630502d	exported	certfold build-basis: the published radii on B_four, r_cap, and what the ball permits per 
+1641416f44e9	11ccaefd2c1d	exported	certfold: the component's per-entry shift is |delta_e|, not divided by the loop multiplici
+62fe2248a975	48bbd19ca564	exported	certfold: report the per-loop ball allowance over charged loops too; nine in ten carry non
+9c8fccc0472f	8c5955aeb2d9	exported	certfold: a physical bar for which loops the ball can actually move
+f861c6752ae5	596094570f8e	exported	certfold build-basis: record which entries B_four reaches, by table
+9149000b55ad	539291a6bf25	exported	certfold build-basis: B_TR0 built, must-holds hold, and what the ball permits is measured
+77e4c63b90d0	b545a3de8d0d	exported	certfold: the callback, the certificate's weights, and G1 with its constructed-case extens
+e1d7d7cd0db7	eb56f3f08678	exported	G1 passed: the callback identity, at three radii, sampled and constructed, zero mismatches
+42beb9e47cc6	eb56f3f08678	dropped	
+27687bf5ad5b	ca33c9c2440e	exported	certfold: the certificate core, G2, and the basis's noise rows zeroed exactly
+6f3914a1c59d	10a009d99629	exported	certfold: the rebuilt basis, and rho computed once per pair
+93c326511bac	b6f2ba6ff58f	exported	certfold G1: re-passed on the rebuilt basis
+e3aeb6b09322	7c6571380d90	exported	certfold: forbidding a pair was forbidding its crossing pairs too
+af52d056178b	8189b65a0c39	exported	certfold: G3 and G6, and no numpy scalars in the artifact
+e61b6fb2bef6	aac5b7a28363	exported	certfold: the callback answers the common case with one integer test
+583d27d3a3ce	1d28a721b72d	exported	certfold gate: G1, G2, G3 and G6 re-passed on the frozen code
+da7033b9460e	4d1ccf43162a	exported	certfold: the TR0 pilot and G4
+2940845bb06d	58a4d16aa692	exported	artifact: the public repository's README, licence, and the export that builds it
+83a5e1a122f0	58a4d16aa692	dropped	
+e11ab60ddfe2	e5a84e802402	exported	certfold: the items of 2026-10-13 -- positional oracle, the envelope, recursion checks
+c093294c6f9c	d96a3dc7cc1c	exported	certfold gate on the amended code: build-basis, G1, G2, G3, G6 all pass
+b36501423b5d	afa64bce8feb	exported	certfold: the audit's confirmed findings, fixed before the pilot
+a66ed5b5a1c3	db407a005490	exported	certfold gate re-passed with the audit's fixes: build-basis, G1, G2, G3, G6
+e0f833c67034	db407a005490	dropped	
+7b56ba86e4d0	db407a005490	dropped	
+dce5c556e6f9	49151e175610	exported	certfold G4: the envelope too, so the gate covers whichever set is chosen
+7c688aa3db2e	2b679ae121e5	exported	certfold pilot on TR0: 300 sequences, the ball at four radii and the envelope
+a338666096b4	2f6752e434b3	exported	certfold: the pilot decision figure, rendered from the committed record
+5f2a4702282e	870c3725436c	exported	certfold G4 passed: ball at r = 1, 5, 20 and the envelope, 100 TR0 sequences
+4a9363b6f153	591808c656bc	exported	certfold: the decisions of 2026-10-13 -- compiled callback, verified rho, PRED
+c7188822bba1	656d348ed895	exported	certfold: G5, the evaluation modules, and the pre-freeze audit's fixes
+277147aca75a	af54e38d9770	exported	certfold: the final frozen gate, in .venv-certfold, on c718882 -- all pass
+288205877c60	a69b82e6717b	exported	certfold preregister: compare the venv directory, not the resolved interpreter
+3bec8e62cd56	ec96b2fd4016	exported	certfold: the final frozen gate re-run on 2882058, in .venv-certfold -- all pass
+231cccda1e56	28406de6e68c	exported	certfold PRED: registered on 3bec8e6, before any test-set fold
+31e8c8a28d1c	d03f026bd0fb	exported	certfold_run: the test-set run and the analysis wiring, after the registration
+c75aab8cd78d	3468165e1263	exported	certfold G5 passed: zero violations on the three test sets, after the registration
+cec7716f0dae	3468165e1263	dropped	
+5b6f109aee10	8a92032a36ef	exported	certfold: the exploratory analyses, specified before any test-set accuracy exists
+87a3fe6231f5	72481bfb0657	exported	certfold run: labels, verified radii and baselines on the three test sets
+a6409f99b7e2	c7148b336f0e	exported	certfold_exploratory: E1-E3 as specified, committed before the analysis phase
+059e66fbea82	c7148b336f0e	dropped	
+100c0e09657a	383211b406af	exported	certfold_run: the independent audit's analysis-side fixes, before any accuracy
+292afc9e20e4	199698b7c55a	exported	certfold: the reading rules, committed while the analysis runs
+83b7583f5c57	199698b7c55a	dropped	
+d4a5c310f0be	dd3ae2821062	exported	certfold_exploratory: the audit folded in, before the analysis finishes
+1a711ac4dde1	dd3ae2821062	dropped	
+863c7cd3fe2f	dd3ae2821062	dropped	
+30f69b207366	dd3ae2821062	dropped	
+c4d96c8b3d43	dd3ae2821062	dropped	
+8cd8c49f6194	dd3ae2821062	dropped	
+5701bb788959	dd3ae2821062	dropped	
+2a13047a80e5	dd3ae2821062	dropped	
+c37338f3479f	6bcb2481d216	exported	certfold analysis: R1-R3, disagreement sets, descriptive fractions (registration 1)
+5b8cee709e4f	6bcb2481d216	dropped	
+82d50d3ad157	6bcb2481d216	dropped	
+c4feb4a71531	6bcb2481d216	dropped	
+120b4ea36845	fa45a2d46808	exported	artifact: the registry cut to this paper's sources; data attribution
+f2eda312ae59	fa45a2d46808	dropped	
+7dd3f86aaf5b	9bbbf927422c	exported	certfold exploratory: E1-E3 and E2_raw, complete (not registered tests)
+f801469792a4	9bbbf927422c	dropped	
+cdbf1e01f1d2	9bbbf927422c	dropped	
+60af83d29281	1de361d6d778	exported	reading rules: addendum, one post hoc check (2026-10-15)
+d561856b9990	6e875eb64e17	exported	certfold_posthoc: the one post hoc check, as the addendum (60af83d) defines it
+1652884f2e31	6e875eb64e17	dropped	
+e33ed7e7c2cb	6e875eb64e17	dropped	
+7fdb5649a63a	c663b99c39f1	exported	artifact README: certified folding documented (files, environment, order, results)
+32d341707ac5	c663b99c39f1	dropped	
+e347dcdcaf31	c663b99c39f1	dropped	
+ea67dcee0555	c663b99c39f1	dropped	
+5a4db8d21dc5	4518eea9131a	exported	reading rules: confirmed the post hoc branches, before the result lands
+67b100813e7e	4518eea9131a	dropped	
+8978e3bd02d6	17611da34927	exported	certfold post hoc: the energy gap shows the 2a pattern too (branch b)
+306036557fc1	17611da34927	dropped	
+c54491314ae8	3642dc8f97b7	exported	certfold_additions: A (uncertain is not unstable) and B (runtime), descriptive
+d5ea9a0ffec9	02c3aecb54b9	exported	certfold additions A: 26.8% of uncertain TS0 pairs change in a random envelope table
+e0400c945600	79ddc7592fc4	exported	certfold additions B: one callback fold costs 1.32x a plain MFE fold
+6371f642d60d	79ddc7592fc4	dropped	
+589b83e2b19b	94e185750d35	exported	certfold_reg2: D's entry ranking on TR0 (registration 2, first phase)
+787e29b889c0	99851193fb32	exported	certfold registration 2: D's entry ranking on TR0, before the registration
+8f5ab3df2f9c	8ad68630a876	exported	certfold_reg2: PRED2, the design and reading rules unchanged
+b5cacdaca20d	4722917c9699	exported	certfold PRED2: registration 2 committed before any whole-table fold on TS0
+5c2bac380eab	9182d0f08f03	exported	certfold_reg2: G2 on the measured sets, C's folds, D's measured labels
+6379d36b0a91	7cec42db9d22	exported	certfold registration 2: G2 on the measured sets passes, before any TS0 fold
+919714ba2e23	3be99ca6a2c2	exported	certfold registration 2: C's folds on TS0, and analyse-c
+17403aad6f7d	bf00fd787608	exported	certfold_reg2: analyse-d (R6, gain by stratum, top entries as motifs)
+5c3b7b591108	e37dd89fd6c0	exported	certfold registration 2: C analysed (R4 passes; R5 lower than p on every table)
+a2a21bf8dc69	e37dd89fd6c0	dropped	
+ea104e51d824	e37dd89fd6c0	dropped	
+5ca89124097d	be50f0035874	exported	certfold registration 2: D's labels on TS0 under the 42 measured sets
+597bdb0d40a5	bcadf7a672ea	exported	certfold registration 2: D analysed (R6 passes at K = 10 and 50)
+edd4f2613426	bcadf7a672ea	dropped	
+94767990faf9	bcadf7a672ea	dropped	
+6f0b16e2b466	bcadf7a672ea	dropped	
+4c42f14dabc7	bcadf7a672ea	dropped	
+98f1504c1980	a6ee3db945f1	exported	certfold: the post hoc additions specified (post hoc) before any runs; the experiment repo
+b2ddeabd9a65	c62d8771051f	exported	certfold post hoc additions: the code; R4/R5 reproduced exactly; 67 directions, not 49
+3f8190b145e4	d26c456670c4	exported	certfold post hoc additions: the descriptive phase; Section 5 says 67, not 49
+a78a246383fa	dcb3939f8eb8	exported	certfold post hoc additions: the second TR0 pilot ranked; Section 6 restructured (text)
+e2abbb9824ad	2aefda26d4ac	exported	certfold post hoc additions: gates pass before any TS0 fold
+90bcb812feca	f59ead7b655b	exported	certfold post hoc additions: TS0 folds; the paper restructured as the reader proposed (tex
+5c4ce8f2c180	85818e70e5af	exported	certfold post hoc additions: analysed
+945fa812ae4c	85818e70e5af	dropped	
+558ba4a2665b	85818e70e5af	dropped	
+77ad7d8b44de	9da13cfcda1f	exported	integrity and wording: registered before any test sequence was certified; the abstract
+a091947343c2	9da13cfcda1f	dropped	
+99b617b2504b	9da13cfcda1f	dropped	
+194c973cb2e3	9da13cfcda1f	dropped	
+8d6246421149	2db83899994f	exported	number checks: every number in the Letter manuscript pinned to its artifact; four errors f
+eedda7b4bee8	e2bfdfd2246d	exported	text freeze: the independent audit's 21 points fixed
+39dc2ea8dc33	e2bfdfd2246d	dropped	
+6a0c14d8382c	01e22865f796	exported	spec: the four tables' unread entries, a post hoc addition (2026-10-19)
+9a0a7c574df2	0413ce878146	exported	certfold_unread: the post hoc addition's script, as specified in 6a0c14d
+d268dcb04aa9	ae444e9a9ac2	exported	certfold_unread describe: U, m_e and the shares E+'s span holds (post hoc)
+e0e5551502be	f4a9002f30d2	exported	certfold_unread gates: G1 (both backends), G2 and G4 with u+, no false certificate (post h
+193c7d481646	f4a9002f30d2	dropped	
+bd8e0b3b6395	8d5d8bd9538b	exported	certfold_unread G5 on TS0: 0 violations (post hoc)
+776766a94744	fd18dee011ed	exported	certfold_unread run: TS0 labelled under E+_1, every must-hold holds (post hoc)
+140185e534de	19e488c7fc82	exported	certfold_unread analyse: 28.9% of TS0 MFE pairs certified under E+_1 beside 40.9% under E_
+7907401b670b	d48473c87133	exported	the unread-entries addition written up by its fixed reading (post hoc)
+611be3dc05a2	b2edf2f42d72	exported	audit of the changed passages: its points fixed
+dc99c0fd8ce8	b2edf2f42d72	dropped	
+05c2eb41c40f	b2edf2f42d72	dropped	
+3cff2275841e	b2edf2f42d72	dropped	
+2e526c84073d	6d3c37e3a52d	exported	spec: the default model and the decoupling bound, two post hoc items (2026-10-19)
+7e9a7fd5fda9	7ea775e49be5	exported	certfold_default_model: the two post hoc items' script, as specified in 2e526c8
+c3a3be6c93e1	0a5f5fa02d6c	exported	certfold_default_model fold: TS0 under the default model, every check passed (post hoc)
+a2497a9f8a76	bf7ea688f94d	exported	certfold_default_model analyse: R4's statistic under the default model +2.4 [0.9, 4.2]; th
+bb1104c84562	0890c53e7d78	exported	the default model and the decoupling bound written up by their fixed readings (post hoc)
+42708ca09efc	0890c53e7d78	dropped	
+121696e39e17	0890c53e7d78	dropped	
+7e0725b8d3e1	0890c53e7d78	dropped	
+360b575d5e3b	0890c53e7d78	dropped	
+86df7088111e	0890c53e7d78	dropped	
+c343a3568946	0890c53e7d78	dropped	
+7f9e7a7e343c	0890c53e7d78	dropped	
+2422a67623c1	0890c53e7d78	dropped	
+f9c5ce8a6c2f	187939b57ff9	exported	spec: the two post hoc items (2026-10-20), before any code
+bc27c232f52b	99b4767efa3b	exported	scripts for the two post hoc items, as specified in f9c5ce8
+b1396863802e	6d6fa7ed5161	exported	mxfold2_net_split: magnitude ranges across seeds, as the text quotes them
+5804ad271c61	9b7bb3c8cfe8	exported	mxfold2_net_split: Adam's net contribution exceeds decay's in every seed at both horizons 
+393c34885f6c	58928175e1e2	exported	typeb_dimension_curve: 189 Type B directions remain for the union of 102,113 structures (p
+558de0dae3d7	58928175e1e2	dropped	
+26288ab888e5	58928175e1e2	dropped	
+b98f7ecdef1b	58928175e1e2	dropped	
+cd397178d9fc	58928175e1e2	dropped	
+442cd213d47e	58928175e1e2	dropped	
+cd4a61a3943c	6271796135bf	exported	certfold_default_cert: the default-model certificate's script, as specified in 442cd21
+a2230dc732f2	6271796135bf	dropped	
+43c23558b9cb	c37196c3c391	exported	certfold_default_cert: C2 records that the clipped tables are not among the set's coordina
+9c4035ae8dac	c37196c3c391	dropped	
+c38ece507db3	c37196c3c391	dropped	
+2e3484a96b37	c37196c3c391	dropped	
+80f9996f2bf1	c37196c3c391	dropped	
+e02197e180a7	7afa6dbe6d6f	exported	spec addendum (2026-10-20): G3's coverage enforced, G6 with the three dangles 2 gauge dire
+d99913697ebe	b2c6033fe65b	exported	certfold_default_cert g6: record a failed attempt, with the diagnosis, instead of only rai
+fcfa523ad140	b2c6033fe65b	dropped	
+43c8c41bb685	b2c6033fe65b	dropped	
+da00bf6a9966	b2c6033fe65b	dropped	
+b298bd52de06	b2c6033fe65b	dropped	
+af379c26fb55	b2c6033fe65b	dropped	
+fadbf35bccfe	b2c6033fe65b	dropped	
+b63695075537	b2c6033fe65b	dropped	
+5bc4b626e780	b2c6033fe65b	dropped	
+06b021b87d3f	b2c6033fe65b	dropped	
+875542602e91	0bef83c88448	exported	paper: make_final.py builds final/ (main, supplement, references) and the paper as one PDF
+3155bae78c5e	0bef83c88448	dropped	
+f9dab95b4dc1	0bef83c88448	dropped	
+84563525c870	0bef83c88448	dropped	
+32abf0418d8e	0bef83c88448	dropped	
+a039eb0dcebb	0bef83c88448	dropped	
+16a66c9b0592	6710d9740c88	exported	spec: four post hoc additions (C1 to C4), before any code
+2e16e3d2e62f	a61632c30f68	exported	posthoc_2026_10_21: the script for C1 to C3, as specified in 16a66c9
+28a253b251aa	10cdf1579291	exported	A: the new title everywhere and the abstract, unchanged
+2fbe6de138e4	e35084388b45	exported	C1: within nominal-gap deciles certified pairs keep a retention advantage, +2.28 points [1
+22d619a7122e	4d4c2c5443e0	exported	C2: 328 of the 426 Type B directions are differences of entries every reference reads equa
+5ef0e91f0b6b	3234976aba52	exported	certify: an admissible pair missing from the Zuker set is an error, not a certified-absent
+d5b29d839d17	9b510d02ab0a	exported	C3 steps 1-2: with special hairpins on, Type A is still exactly 2 directions and B_four is
+a929da507b7b	49dcdc646bbb	exported	B: 'cannot see' and 'weakly fixed' for Type B (B1-B3), and C2's sentence in Section 3
+2f4195218b5c	49dcdc646bbb	dropped	
+ad1d8c7e99da	2a523bb92ba9	exported	C3 step 3: with special hairpins on, G1 is exact on both backends and G2 finds no false ce
+f894df2bb172	2a523bb92ba9	dropped	
+7d0f1dba9da4	2a523bb92ba9	dropped	
+bbfb102e5930	2a523bb92ba9	dropped	
+67cd7cb5e38c	2a523bb92ba9	dropped	
+845ebabf4f67	e5e27aa8daf3	exported	C3 step 4: TS0 labels with special hairpins on, at lambda = 1 under E1 (post hoc; record o
+2c758636c957	020b14a5974b	exported	C3 step 4 analysed: with special hairpins on, 41.1% of TS0's MFE pairs are certified at la
+fdbc94e7e2cd	020b14a5974b	dropped	
+a26cafae8aca	020b14a5974b	dropped	
+9658ed233341	020b14a5974b	dropped	
+823a7e9b2f83	020b14a5974b	dropped	
+538dbc997e79	020b14a5974b	dropped	
+24b8e0d1af22	020b14a5974b	dropped	
+a4a93131fd8a	020b14a5974b	dropped	
+6c30978e8984	020b14a5974b	dropped	
+1b3ccd59d79a	020b14a5974b	dropped	
+cbc3bc4ca48b	020b14a5974b	dropped	
+18db53a8a088	020b14a5974b	dropped	
+10382e8ed443	020b14a5974b	dropped	
+46dc49fb4a10	020b14a5974b	dropped	
+404712d25ec1	020b14a5974b	dropped	
+ab21f04d65e4	020b14a5974b	dropped	
+9c865dfcaf68	020b14a5974b	dropped	
+cad28cb52181	020b14a5974b	dropped	
+7105b1f2bcf9	020b14a5974b	dropped	
+dd1413750551	c2378854f8bc	exported	Clickable supplement contents (hyperref, hidelinks, in both documents, with the supplement
+db57e48be7bc	c2378854f8bc	dropped	
+c6767590537d	c2378854f8bc	dropped	
+8d962bda49ee	c2378854f8bc	dropped	
+9aaa6122e62e	c2378854f8bc	dropped	
+1b3c42e960bc	b868ae9882c5	exported	Post hoc checks: paths and wording
+0d66cb7673b2	5c785ee4b81b	exported	certify_sequence, which labels the test sets, now treats an admissible pair missing from t
+c150f72abbdd	5c785ee4b81b	dropped	
+3b77d0983f90	5c785ee4b81b	dropped	
+720aaf10c16e	5c785ee4b81b	dropped	
+17437d7dda40	5c785ee4b81b	dropped	
+13f8f1badc38	5c785ee4b81b	dropped	
+252583f1b1db	5c785ee4b81b	dropped	
+911fb008e959	5c785ee4b81b	dropped	
+5d594f844838	5c785ee4b81b	dropped	
+a34fcce17047	116583be8a36	exported	scripts/reference_sources.py: the bpRNA source database of each TR0+TS0 reference, by file
+6e096f5a7144	5cc138b02060	exported	runs/2026-10-30_reference_sources: 10,657 of the 11,955 pair-bearing TR0+TS0 references an
+b1a3aaac13e6	5cc138b02060	dropped	
+a495faed9a9e	5cc138b02060	dropped	
+fbba9665c01c	5cc138b02060	dropped	
+466aea5d46ec	5cc138b02060	dropped	
+17efbeab3393	5cc138b02060	dropped	
+3c2c0f3dd51f	5cc138b02060	dropped	
+13dc97b956ee	5cc138b02060	dropped	
+824a1fcb076a	5cc138b02060	dropped	
+9f47f090fa34	5cc138b02060	dropped	
+2e0e8b9e6757	5cc138b02060	dropped	
+a3cd57cdb59a	5cc138b02060	dropped	
+751b407b10d6	5cc138b02060	dropped	
+b44774007c4b	73a102c10945	exported	Public files: the paper's current title in the README, citation and project description; t
