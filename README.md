@@ -16,8 +16,8 @@ within stated bounds, or reports it as uncertain.
 | | the change | code |
 |---|---|---|
 | **Type A** | *Gauge directions* leave every structure's energy unchanged. ViennaRNA's Turner 2004 model has exactly two with dangles off. | `scripts/turner_nullspace.py` |
-| **Type B** | *Data-restricted directions* leave every reference energy unchanged but move competing structures, so likelihood training sees them only weakly: 426 for the 11,955 bpRNA structures in TR0 and TS0. | `scripts/turner_nullspace_tr0.py`, `scripts/turner_typeb*.py`, `scripts/typeb_*.py` |
-| **Type C** | Learned models such as MXfold2 add output gauges of their own; the optimizer, not the data, moves MXfold2 along a weight symmetry. | `scripts/mxfold2_*.py` |
+| **Type B** | *Data-restricted directions* leave every reference energy unchanged but move competing structures, so likelihood training sees them more weakly than identified directions: 426 for the 11,955 bpRNA structures in TR0 and TS0. | `scripts/turner_nullspace_tr0.py`, `scripts/turner_typeb*.py`, `scripts/typeb_*.py` |
+| **Type C** | Learned models such as MXfold2 add output gauges of their own; Adam moves MXfold2 along the gauge's helix direction. | `scripts/mxfold2_*.py` |
 | **Certified folding** | For each base pair of the Turner 2004 MFE structure: certified present, certified absent or uncertain, for every table in a set built from TR0's Type B directions and bounded by the size of the published tables' differences along them, with a verified certified radius. | `scripts/certfold*.py` |
 
 ## Where each headline number comes from
@@ -25,12 +25,12 @@ within stated bounds, or reports it as uncertain.
 | claim in the abstract | artifact |
 |---|---|
 | exactly two gauge directions; 426 data-restricted directions for the 11,955 TR0 and TS0 structures | `runs/2026-10-07_turner_nullspace_r2/`, `runs/2026-10-08_turner_nullspace_tr0/` |
-| adding to Turner 2004 only the part of Andronescu 2007's difference along the data-restricted directions reorders 3.9% of predicted structures, with no detectable change in accuracy on the references and a small, detectable loss on 1,641 held-out Rfam families | `runs/2026-10-12_turner_typeb_tie_split/`, `runs/2026-10-12_typeb_decoders/`, `runs/2026-10-12_typeb_heldout/` |
+| adding to Turner 2004 only the part of Andronescu 2007's difference along the data-restricted directions reorders 3.9% of predicted structures, with almost no change in accuracy on the references and a small, detectable loss on 1,641 held-out Rfam families | `runs/2026-10-12_turner_typeb_tie_split/`, `runs/2026-10-12_typeb_decoders/`, `runs/2026-10-12_typeb_heldout/` |
 | no false certificate in 1.2 million checks on 5,429 test sequences | `runs/2026-10-13_certified_folding/` (`gate`) |
 | for changes up to the size of the published tables' differences, 40.9% of TS0's predicted pairs certified, from 70% in short sequences to 12% in long ones | `runs/2026-10-13_certified_folding/` (`analysis`) |
 | the certified radius is not a better confidence score than base-pair probability | `runs/2026-10-13_certified_folding/` (`analysis`) |
-| exact values for the 50 interior-loop motifs that most often block the certificate would raise the certified share to 47.6%, while random sets of 50 add at most 2.5 points | `runs/2026-10-15_certfold_registration2/` (`analysis_d`) |
-| in MXfold2 the optimizer, not the data, moves the model along a weight symmetry, and fixing it costs no accuracy | `runs/2026-10-11_mxfold2_weight_decay_ablation/`, `runs/2026-10-12_mxfold2_ablation/` |
+| exact values for the 50 interior-loop motifs that most often block the certificate, if they confirmed Turner 2004's, would raise the certified share to 47.6%, while random sets of 50 add at most 2.5 points | `runs/2026-10-15_certfold_registration2/` (`analysis_d`) |
+| in MXfold2, Adam moves the model along the gauge's helix direction, and fixing that direction keeps F1 within the registered ±0.005 | `runs/2026-10-11_mxfold2_weight_decay_ablation/`, `runs/2026-10-12_mxfold2_ablation/` |
 
 The other directories under `runs/` back the remaining numbers in the paper and its
 supplement, or are the registrations and inputs those runs name. The paper's TeX sources
@@ -208,6 +208,7 @@ that refuse to run out of order, and records written only by the scripts.
 | `scripts/certfold_unread.py` | the four tables' unread entries: the envelope with the int11/int21/int22/bulge entries no TR0 reference reads also free, each by up to the largest published difference on it; G1, G2, G4 and G5 rerun; TS0 labels | `runs/2026-10-19_certfold_unread/metrics.json` | post hoc |
 | `scripts/certfold_default_model.py` | TS0 folded once under ViennaRNA's default model (dangles 2, special hairpins on): R4's statistic with that MFE as the substitution, absolute retention by label; and an upper bound on what a decoupled certificate could certify, from stored records | `runs/2026-10-19_certfold_default_model/metrics.json` | post hoc |
 | `scripts/certfold_reproduce_r4r5.py` | an independent reimplementation of R4 and R5 from the raw shards | `runs/2026-10-18_certfold_checks/reproduce_r4r5/` | check (117 of 117 bit-identical) |
+| `scripts/certfold_zuker_missing.py` | the primary set's Zuker pass rerun on all 5,429 test sequences with code that stops on a missing pair: 0 of 17,404,249 admissible pairs missing, and the registered certified-absent counts reproduced | `runs/2026-11-03_certfold_zuker_missing/metrics.json` | post hoc check |
 
 ```
 .venv-certfold/bin/python scripts/certfold_additions.py --phase uncertain-change  # then runtime
@@ -222,6 +223,7 @@ that refuse to run out of order, and records written only by the scripts.
                                                     # attacks, run, analyse
 .venv-certfold/bin/python scripts/certfold_default_model.py --phase fold       # then analyse
 .venv-certfold/bin/python scripts/certfold_reproduce_r4r5.py OUTDIR
+.venv-certfold/bin/python scripts/certfold_zuker_missing.py --phase run        # needs the run's shards
 ```
 
 **Frozen configurations.** Registration 1: `PRED` in `scripts/certfold.py`, committed in its
