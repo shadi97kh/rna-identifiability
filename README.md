@@ -210,6 +210,7 @@ that refuse to run out of order, and records written only by the scripts.
 | `scripts/certfold_reproduce_r4r5.py` | an independent reimplementation of R4 and R5 from the raw shards | `runs/2026-10-18_certfold_checks/reproduce_r4r5/` | check (117 of 117 bit-identical) |
 | `scripts/certfold_zuker_missing.py` | the primary set's Zuker pass rerun on all 5,429 test sequences with code that stops on a missing pair: 0 of 17,404,249 admissible pairs missing, and the registered certified-absent counts reproduced | `runs/2026-11-03_certfold_zuker_missing/metrics.json` | post hoc check |
 | `scripts/retention_gap_sequence_bootstrap.py` | retention after stratifying by nominal-gap decile, with whole TS0 sequences resampled once per replicate: 2.3 points [1.0, 3.7], correcting the within-decile resampling's [1.4, 3.2] | `runs/2026-11-03_retention_gap_sequence_bootstrap/metrics.json` | post hoc correction |
+| `scripts/certfold_frequency_rankings.py` | the certificate's measurement ranking against two rankings that need no certificate, from the same pilot: at K = 50 it gains 6.73 points against 4.63 (reads by the pilot's MFE structures) and 3.25 (reads by its admissible interior loops), differences 2.09 [1.05, 3.13] and 3.48 [2.23, 4.73] with the rankings held fixed | `runs/2026-11-03_certfold_frequency_rankings/metrics.json` | post hoc |
 
 ```
 .venv-certfold/bin/python scripts/certfold_additions.py --phase uncertain-change  # then runtime
@@ -226,6 +227,7 @@ that refuse to run out of order, and records written only by the scripts.
 .venv-certfold/bin/python scripts/certfold_reproduce_r4r5.py OUTDIR
 .venv-certfold/bin/python scripts/certfold_zuker_missing.py --phase run        # needs the run's shards
 .venv-certfold/bin/python scripts/retention_gap_sequence_bootstrap.py        # needs the runs' shards
+.venv-certfold/bin/python scripts/certfold_frequency_rankings.py --phase rank  # then g2, labels, analyse
 ```
 
 **Frozen configurations.** Registration 1: `PRED` in `scripts/certfold.py`, committed in its
