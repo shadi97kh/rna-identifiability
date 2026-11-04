@@ -1,0 +1,310 @@
+{
+ "by_set": {
+  "TS0": {
+   "absent_admissible": 5526635,
+   "absent_contested": 40291,
+   "by_stratum": {
+    "0": {
+     "absent_admissible": 71260,
+     "absent_contested": 2707,
+     "contested": 3554,
+     "n_sequences": 124,
+     "outside": 72732
+    },
+    "1": {
+     "absent_admissible": 153844,
+     "absent_contested": 4818,
+     "contested": 6650,
+     "n_sequences": 165,
+     "outside": 156882
+    },
+    "2": {
+     "absent_admissible": 108355,
+     "absent_contested": 2346,
+     "contested": 3565,
+     "n_sequences": 96,
+     "outside": 110683
+    },
+    "3": {
+     "absent_admissible": 170059,
+     "absent_contested": 3155,
+     "contested": 5160,
+     "n_sequences": 122,
+     "outside": 173759
+    },
+    "4": {
+     "absent_admissible": 195587,
+     "absent_contested": 3579,
+     "contested": 5381,
+     "n_sequences": 113,
+     "outside": 198576
+    },
+    "5": {
+     "absent_admissible": 348703,
+     "absent_contested": 4756,
+     "contested": 8521,
+     "n_sequences": 154,
+     "outside": 357783
+    },
+    "6": {
+     "absent_admissible": 395658,
+     "absent_contested": 4563,
+     "contested": 9777,
+     "n_sequences": 135,
+     "outside": 409511
+    },
+    "7": {
+     "absent_admissible": 490252,
+     "absent_contested": 5509,
+     "contested": 12091,
+     "n_sequences": 120,
+     "outside": 511841
+    },
+    "8": {
+     "absent_admissible": 837545,
+     "absent_contested": 4709,
+     "contested": 13494,
+     "n_sequences": 120,
+     "outside": 870636
+    },
+    "9": {
+     "absent_admissible": 2755372,
+     "absent_contested": 4149,
+     "contested": 36038,
+     "n_sequences": 139,
+     "outside": 3099786
+    }
+   },
+   "contested": 104231,
+   "n_admissible": 6015437,
+   "n_lines_backtrack_failed": 0,
+   "n_missing": 0,
+   "n_sequences": 1288,
+   "n_sequences_with_missing": 0,
+   "n_stopped": 0,
+   "n_structures": 4054125,
+   "outside": 5962189
+  },
+  "bpRNA-new": {
+   "absent_admissible": 6862517,
+   "absent_contested": 79431,
+   "by_stratum": {
+    "0": {
+     "absent_admissible": 317265,
+     "absent_contested": 12015,
+     "contested": 15152,
+     "n_sequences": 586,
+     "outside": 321972
+    },
+    "1": {
+     "absent_admissible": 203288,
+     "absent_contested": 6350,
+     "contested": 8374,
+     "n_sequences": 227,
+     "outside": 206296
+    },
+    "2": {
+     "absent_admissible": 240834,
+     "absent_contested": 6836,
+     "contested": 9552,
+     "n_sequences": 223,
+     "outside": 246768
+    },
+    "3": {
+     "absent_admissible": 339707,
+     "absent_contested": 7836,
+     "contested": 11738,
+     "n_sequences": 251,
+     "outside": 347191
+    },
+    "4": {
+     "absent_admissible": 333277,
+     "absent_contested": 6769,
+     "contested": 10104,
+     "n_sequences": 199,
+     "outside": 339773
+    },
+    "5": {
+     "absent_admissible": 529962,
+     "absent_contested": 8015,
+     "contested": 13695,
+     "n_sequences": 239,
+     "outside": 541256
+    },
+    "6": {
+     "absent_admissible": 655110,
+     "absent_contested": 8508,
+     "contested": 15268,
+     "n_sequences": 231,
+     "outside": 670549
+    },
+    "7": {
+     "absent_admissible": 810204,
+     "absent_contested": 8077,
+     "contested": 17813,
+     "n_sequences": 197,
+     "outside": 835144
+    },
+    "8": {
+     "absent_admissible": 1289796,
+     "absent_contested": 9624,
+     "contested": 25901,
+     "n_sequences": 194,
+     "outside": 1361381
+    },
+    "9": {
+     "absent_admissible": 2143074,
+     "absent_contested": 5401,
+     "contested": 36678,
+     "n_sequences": 153,
+     "outside": 2445483
+    }
+   },
+   "contested": 164275,
+   "n_admissible": 7398419,
+   "n_lines_backtrack_failed": 0,
+   "n_missing": 0,
+   "n_sequences": 2500,
+   "n_sequences_with_missing": 0,
+   "n_stopped": 0,
+   "n_structures": 4939003,
+   "outside": 7315813
+  },
+  "held-out": {
+   "absent_admissible": 3640946,
+   "absent_contested": 31672,
+   "by_stratum": {
+    "0": {
+     "absent_admissible": 219870,
+     "absent_contested": 4651,
+     "contested": 5696,
+     "n_sequences": 361,
+     "outside": 221267
+    },
+    "1": {
+     "absent_admissible": 225755,
+     "absent_contested": 3089,
+     "contested": 4261,
+     "n_sequences": 236,
+     "outside": 227324
+    },
+    "2": {
+     "absent_admissible": 300106,
+     "absent_contested": 3869,
+     "contested": 5443,
+     "n_sequences": 259,
+     "outside": 302703
+    },
+    "3": {
+     "absent_admissible": 344376,
+     "absent_contested": 4236,
+     "contested": 6089,
+     "n_sequences": 246,
+     "outside": 347571
+    },
+    "4": {
+     "absent_admissible": 216366,
+     "absent_contested": 2753,
+     "contested": 4699,
+     "n_sequences": 122,
+     "outside": 220505
+    },
+    "5": {
+     "absent_admissible": 262497,
+     "absent_contested": 3236,
+     "contested": 5335,
+     "n_sequences": 116,
+     "outside": 266792
+    },
+    "6": {
+     "absent_admissible": 248589,
+     "absent_contested": 2643,
+     "contested": 4552,
+     "n_sequences": 84,
+     "outside": 253101
+    },
+    "7": {
+     "absent_admissible": 315415,
+     "absent_contested": 2721,
+     "contested": 5064,
+     "n_sequences": 73,
+     "outside": 321757
+    },
+    "8": {
+     "absent_admissible": 492152,
+     "absent_contested": 3049,
+     "contested": 8389,
+     "n_sequences": 72,
+     "outside": 516215
+    },
+    "9": {
+     "absent_admissible": 1015820,
+     "absent_contested": 1425,
+     "contested": 15637,
+     "n_sequences": 72,
+     "outside": 1257596
+    }
+   },
+   "contested": 65165,
+   "n_admissible": 3990393,
+   "n_lines_backtrack_failed": 0,
+   "n_missing": 0,
+   "n_sequences": 1641,
+   "n_sequences_with_missing": 0,
+   "n_stopped": 0,
+   "n_structures": 2766444,
+   "outside": 3934831
+  }
+ },
+ "cpu_seconds": 4938.4,
+ "env": {
+  "RNA_so_sha256": "a78745d432d2ce50ab3ef3be5eaa1922784bfe557b1caea2db17fd0c2da93e06",
+  "callback_backend": "compiled",
+  "numba": "0.68.0",
+  "python": "/home/shadi/sirna-thermo/.venv-certfold/bin/python",
+  "viennarna": "2.7.2"
+ },
+ "git_dirty": true,
+ "git_dirty_excluding_runs": false,
+ "git_dirty_paths_outside_runs": [],
+ "git_sha": "d04f14692505b3faf2df95d84421ae5b20dfd830",
+ "label_mismatches": [],
+ "load_at_start": [
+  0.48388671875,
+  0.166015625,
+  0.17041015625
+ ],
+ "missing_examples": [],
+ "n_label_mismatches": 0,
+ "n_other_log_lines_kept": 0,
+ "nice": 10,
+ "other_log_lines_sample": [],
+ "post_hoc": true,
+ "question": "is any admissible pair missing from the Zuker set under the primary set?",
+ "reproduces_registered_counts": true,
+ "run_id": "2026-11-03_certfold_zuker_missing",
+ "script": "scripts/certfold_zuker_missing.py",
+ "set": "envelope:1",
+ "shards_sha256": {
+  "zuker_0.jsonl": "3bf22d6fb6a0073754c4e95085ad97b357038b94b35d9e4500b4caca872975be",
+  "zuker_1.jsonl": "561e44d5551915d225de25c6adca12e0a1f2c6bc1a581ac2238747f49d2b2ec1",
+  "zuker_2.jsonl": "6e38aae0ad339f0ec4099156e0adab5ded925f896d84d2c986bf968f181efebb",
+  "zuker_3.jsonl": "101d69bb347768fd235e5c0dd8d75e99a0874c1df2ce16047653307ddfd99ac2",
+  "zuker_4.jsonl": "75112d0be72376af5815ac8003e24c83f1fe235b2034ff679f333a42a2f9f0f2",
+  "zuker_5.jsonl": "e11ebb716884c205df41c2cb3c3b4dcf30040c32446bdf598e9c85a2d9ea0a55",
+  "zuker_6.jsonl": "c2b8472e8f97a2e59fc8afa2eaf4db92307027f315e3ecf714a34b201589a278",
+  "zuker_7.jsonl": "e03c4f28f5b532f755f3e2154805e0e74bb92fb88033ab65c95fdba537230eed"
+ },
+ "status": "complete: no pair missing, labels reproduced",
+ "total": {
+  "n_admissible": 17404249,
+  "n_lines_backtrack_failed": 0,
+  "n_missing": 0,
+  "n_sequences": 5429,
+  "n_sequences_with_missing": 0,
+  "n_stopped": 0,
+  "n_structures": 11759572
+ },
+ "wall_seconds": 719.1,
+ "workers": 8
+}
