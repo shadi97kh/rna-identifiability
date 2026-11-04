@@ -209,6 +209,7 @@ that refuse to run out of order, and records written only by the scripts.
 | `scripts/certfold_default_model.py` | TS0 folded once under ViennaRNA's default model (dangles 2, special hairpins on): R4's statistic with that MFE as the substitution, absolute retention by label; and an upper bound on what a decoupled certificate could certify, from stored records | `runs/2026-10-19_certfold_default_model/metrics.json` | post hoc |
 | `scripts/certfold_reproduce_r4r5.py` | an independent reimplementation of R4 and R5 from the raw shards | `runs/2026-10-18_certfold_checks/reproduce_r4r5/` | check (117 of 117 bit-identical) |
 | `scripts/certfold_zuker_missing.py` | the primary set's Zuker pass rerun on all 5,429 test sequences with code that stops on a missing pair: 0 of 17,404,249 admissible pairs missing, and the registered certified-absent counts reproduced | `runs/2026-11-03_certfold_zuker_missing/metrics.json` | post hoc check |
+| `scripts/retention_gap_sequence_bootstrap.py` | retention with the nominal gap held fixed, with whole TS0 sequences resampled once per replicate: 2.3 points [1.0, 3.7] within gap deciles, correcting the within-decile resampling's [1.4, 3.2] | `runs/2026-11-03_retention_gap_sequence_bootstrap/metrics.json` | post hoc correction |
 
 ```
 .venv-certfold/bin/python scripts/certfold_additions.py --phase uncertain-change  # then runtime
@@ -224,6 +225,7 @@ that refuse to run out of order, and records written only by the scripts.
 .venv-certfold/bin/python scripts/certfold_default_model.py --phase fold       # then analyse
 .venv-certfold/bin/python scripts/certfold_reproduce_r4r5.py OUTDIR
 .venv-certfold/bin/python scripts/certfold_zuker_missing.py --phase run        # needs the run's shards
+.venv-certfold/bin/python scripts/retention_gap_sequence_bootstrap.py        # needs the runs' shards
 ```
 
 **Frozen configurations.** Registration 1: `PRED` in `scripts/certfold.py`, committed in its
