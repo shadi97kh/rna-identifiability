@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""POST HOC correctness check: is any admissible pair missing from the Zuker set in the registered run?
+"""POST HOC correctness check: is any admissible pair missing from the registered run's Zuker set?
 
 The registered run's code (commit c75aab8) would have labeled a pair missing from the Zuker set
 certified absent without recording it, and its logs cannot rule that out: a backtracking failure
