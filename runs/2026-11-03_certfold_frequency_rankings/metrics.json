@@ -46,6 +46,53 @@
   }
  },
  "label": "POST HOC (docs/posthoc_additions_2026-11-03.md)",
+ "labels": {
+  "files_sha256": {
+   "labels_0.jsonl": "bf9c270b975b81a5400d3e78da95af2c6f6a9cba8e92e75114cc7dbc2b4b959a",
+   "labels_1.jsonl": "4f0f3bebefd2d8a191d7b497ca4841a1c99c6055d805ba8534705c51b757fd8a",
+   "labels_10.jsonl": "de55da385b27b6cc70e1f9e3636a3318c71f83ab14cf31ba7885241d8bdb2f73",
+   "labels_11.jsonl": "e694a69e567481989159a0a1062bc819508c7f21724a9bc05235409cb65e63e1",
+   "labels_2.jsonl": "8616c268c783a9cc6e6acab89f10a263942875e670f04a03487dea4d82057a5e",
+   "labels_3.jsonl": "759261325c8f53bd8d6d72b3645bfc3d3ce10339a8deb8545634a9fbda784071",
+   "labels_4.jsonl": "78a69ad07ff8d9ef1bc84279f42a0b9a94e7cde04cfce4aaec71cf2bbd7c88a4",
+   "labels_5.jsonl": "c03cf4f47684309d95730fff1746133ab03d4454ad5eb1bb9375b6c1ac5c7291",
+   "labels_6.jsonl": "0d56791aa97ad08a34164e77cd33832cefd177db1f650497934d39d93e225888",
+   "labels_7.jsonl": "e3ea9baf50d5ffb6088bfddc670a764f7084b988443942ea8f4449d704475c60",
+   "labels_8.jsonl": "c4ccb933da2010973c116afce3831739aa47f634763e8de7102fdced2cfe5ee0",
+   "labels_9.jsonl": "5c593280e8a160930c6d221ec26b4d826cb43147d749e487b637d7182ad8ded4"
+  },
+  "folds": 94352,
+  "load_at_start": [
+   0.603515625,
+   0.41064453125,
+   0.3330078125
+  ],
+  "n_refolded_sequence_sets": 3041,
+  "n_sequences": 1288,
+  "pids": [
+   3666444,
+   3666445,
+   3666446,
+   3666447,
+   3666448,
+   3666449,
+   3666450,
+   3666451,
+   3666452,
+   3666453,
+   3666454,
+   3666455
+  ],
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "235c1d4cfa687c9fa9d90ae776f35a5a16932767"
+  },
+  "recursion_violations": 0,
+  "seconds": 1195.5,
+  "workers": 12
+ },
  "rankings": {
   "admissible_reads": {
    "n_entries_with_a_count": 923,
@@ -7482,5 +7529,5 @@
   "path": "docs/posthoc_additions_2026-11-03.md",
   "sha256": "2451eb1a671e734278f72ab8c53d1d2d1421ba40e880eb20249f4f2dfb11e484"
  },
- "status": "G2 passed"
+ "status": "TS0 labelled"
 }
