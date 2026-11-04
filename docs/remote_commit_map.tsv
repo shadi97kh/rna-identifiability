@@ -573,3 +573,7 @@ aa2195f8947f	2580932cc9f4	exported	certfold_zuker_missing.py: a shorter first do
 fd2fb4ed1c5c	2580932cc9f4	dropped	
 8e3bd91babe6	60861be5dcb5	exported	certfold_zuker_missing.py: docstring without a local commit hash; export wording for one c
 fb1c4faa0b92	81a062f0e8d7	exported	Last wording: no reference reads them; at least 0.13; Table S7's units; three further depa
+058bbcf0e139	1fcda54c65aa	exported	docs: the commit map for the export with the Zuker rerun
+5bc389c432c1	00f3878422eb	exported	retention_gap_sequence_bootstrap.py: the gap-held-fixed interval with whole sequences resa
+dd07985e2df6	b75a701108e5	exported	The retention interval with whole sequences resampled once per replicate: 2.3 points [1.0,
+08c9c2fd705c	15e1748994da	exported	Wording and scope in Sections 2 to 7, S4 and S10; robust against s* named for the benchmar
