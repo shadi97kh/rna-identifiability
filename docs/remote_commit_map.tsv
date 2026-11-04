@@ -577,3 +577,12 @@ fb1c4faa0b92	81a062f0e8d7	exported	Last wording: no reference reads them; at lea
 5bc389c432c1	00f3878422eb	exported	retention_gap_sequence_bootstrap.py: the gap-held-fixed interval with whole sequences resa
 dd07985e2df6	b75a701108e5	exported	The retention interval with whole sequences resampled once per replicate: 2.3 points [1.0,
 08c9c2fd705c	15e1748994da	exported	Wording and scope in Sections 2 to 7, S4 and S10; robust against s* named for the benchmar
+ed274640ff6d	3d5d9f7f3ca8	exported	docs: the commit map for the export with the retention interval over whole sequences
+77ed4d864334	575d95aae396	exported	spec: two certificate-free rankings of the reached entries against the certificate's, befo
+d3c43376915a	f33fd0d38fb9	exported	certfold_frequency_rankings.py: the two rankings, G2 on each top 50, TS0 labels with a con
+0c13cb5b5d9a	5e02b8f07427	exported	The two certificate-free rankings of the reached entries, on the TR0 pilot, before any TS0
+235c1d4cfa68	88774e36baa9	exported	G2 on each frequency ranking's top 50: no false certificate, and halved weights still prod
+801e824589cc	49e4b91c80df	exported	Wording in Sections 2, 3, 5, 6, 7, S7, S8 and S10: the asymmetry term, E_{1,K}, independen
+806de9635bdd	43ecd9584675	exported	TS0 labels under each frequency ranking's top 50, with the certificate's own as a control.
+4afc1ed40f75	398209193162	exported	The comparison at K = 50: the certificate's ranking gains more than either frequency ranki
+9616f5d3c4db	a3544a043b5f	exported	The frequency rankings' result in Section 6 and S10: the certificate's ranking gains more 
