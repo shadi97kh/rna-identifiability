@@ -557,3 +557,19 @@ fbba9665c01c	5cc138b02060	dropped
 a3cd57cdb59a	5cc138b02060	dropped	
 751b407b10d6	5cc138b02060	dropped	
 b44774007c4b	73a102c10945	exported	Public files: the paper's current title in the README, citation and project description; t
+9d418e94b525	3f8691078cf9	exported	docs: the commit map for the cleaned export
+a4cca9f726fb	3f8691078cf9	dropped	
+bbd577e8c515	3f8691078cf9	dropped	
+6016da58b929	3f8691078cf9	dropped	
+de383fcb9836	3f8691078cf9	dropped	
+1f9aeeb6588f	3f8691078cf9	dropped	
+570fd293ec7c	3f8691078cf9	dropped	
+2980503b359c	3f8691078cf9	dropped	
+9fb6f8ad423b	3f8691078cf9	dropped	
+eda672bb1449	3f8691078cf9	dropped	
+d04f14692505	955a9de0ea88	exported	Post hoc correctness check: rerun the primary set's Zuker pass on all 5,429 test sequences
+19f9bce32aa8	727853a7dd82	exported	Zuker rerun record: 0 of 17,404,249 admissible pairs missing on all 5,429 test sequences, 
+aa2195f8947f	2580932cc9f4	exported	certfold_zuker_missing.py: a shorter first docstring line
+fd2fb4ed1c5c	2580932cc9f4	dropped	
+8e3bd91babe6	60861be5dcb5	exported	certfold_zuker_missing.py: docstring without a local commit hash; export wording for one c
+fb1c4faa0b92	81a062f0e8d7	exported	Last wording: no reference reads them; at least 0.13; Table S7's units; three further depa
