@@ -1,4 +1,50 @@
 {
+ "g2": {
+  "n_sequences": 200,
+  "pass": true,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "0c13cb5b5d9a0d0f0d449488eafeceaef46c74d4"
+  },
+  "seconds": 50.0,
+  "sequences": {
+   "lengths": [
+    16,
+    20
+   ],
+   "n_kept": 200,
+   "n_rejected_no_reachable_loop": 40,
+   "n_screened": 240
+  },
+  "sets": {
+   "admissible_reads": {
+    "n_certified_absent": 7801,
+    "n_certified_present": 353,
+    "n_exactly_robust_absent": 7801,
+    "n_exactly_robust_present": 353,
+    "n_false_certificates": 0,
+    "n_sequences_reading_a_zeroed_entry": 71,
+    "n_structures": 262593,
+    "n_structures_reading_a_zeroed_entry": 1182,
+    "power_check_false_certificates_at_half_weights": 27,
+    "power_check_sequences": 50
+   },
+   "mfe_reads": {
+    "n_certified_absent": 7810,
+    "n_certified_present": 360,
+    "n_exactly_robust_absent": 7810,
+    "n_exactly_robust_present": 360,
+    "n_false_certificates": 0,
+    "n_sequences_reading_a_zeroed_entry": 57,
+    "n_structures": 262593,
+    "n_structures_reading_a_zeroed_entry": 855,
+    "power_check_false_certificates_at_half_weights": 19,
+    "power_check_sequences": 50
+   }
+  }
+ },
  "label": "POST HOC (docs/posthoc_additions_2026-11-03.md)",
  "rankings": {
   "admissible_reads": {
@@ -7436,5 +7482,5 @@
   "path": "docs/posthoc_additions_2026-11-03.md",
   "sha256": "2451eb1a671e734278f72ab8c53d1d2d1421ba40e880eb20249f4f2dfb11e484"
  },
- "status": "ranked"
+ "status": "G2 passed"
 }
