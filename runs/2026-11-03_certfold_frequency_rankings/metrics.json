@@ -1,4 +1,56 @@
 {
+ "analysis": {
+  "baselines": {
+   "admissible_reads": {
+    "certificate_minus_baseline": 0.034761868990384616,
+    "gain": 0.03250826322115385,
+    "interval": [
+     0.022335108193906154,
+     0.047309249717678865
+    ],
+    "n_sequences_refolded": 1015,
+    "newly_certified": 1731,
+    "reading": "higher"
+   },
+   "mfe_reads": {
+    "certificate_minus_baseline": 0.02092097355769231,
+    "gain": 0.04634915865384615,
+    "interval": [
+     0.010549647071873315,
+     0.03131964365269127
+    ],
+    "n_sequences_refolded": 1015,
+    "newly_certified": 2468,
+    "reading": "higher"
+   }
+  },
+  "bootstrap": {
+   "n_boot": 10000,
+   "n_units": 1288,
+   "seed": [
+    20261013,
+    98
+   ],
+   "units": "TS0 sequences, drawn once per resample, one set of draws for both comparisons; the rankings are held fixed"
+  },
+  "certificate": {
+   "gain": 0.06727013221153846,
+   "newly_certified": 3582
+  },
+  "control": {
+   "certificate_top50_equals_registration_2_on_every_sequence": true,
+   "n_sequences_compared": 1288
+  },
+  "n_mfe_pairs": 53248,
+  "provenance": {
+   "git_dirty": true,
+   "git_dirty_excluding_runs": false,
+   "git_dirty_paths_outside_runs": [],
+   "git_sha": "806de9635bdd4e11195551da7ac1e2296812d75d"
+  },
+  "seconds": 0.2,
+  "stop_rule_fires": false
+ },
  "g2": {
   "n_sequences": 200,
   "pass": true,
@@ -7529,5 +7581,5 @@
   "path": "docs/posthoc_additions_2026-11-03.md",
   "sha256": "2451eb1a671e734278f72ab8c53d1d2d1421ba40e880eb20249f4f2dfb11e484"
  },
- "status": "TS0 labelled"
+ "status": "analysed"
 }
